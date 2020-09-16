@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const users = require('./routes/api/users');
+const userRoute = require('./routes/api/users');
 
 const app = express();
 
@@ -19,8 +19,8 @@ mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
     .catch(err=>console.log(err));
 
 
-//Use Routes
-app.use('/api/users', users);
+// Use Routes. Whenever the specified route is required, enter userRoute to handle it
+app.use('/api/users', userRoute);
 
 
 const port = process.env.PORT || 5000
