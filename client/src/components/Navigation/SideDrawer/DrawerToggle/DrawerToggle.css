@@ -1,0 +1,33 @@
+ 
+ /* Some code in this file is from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_menu_icon_js */
+ 
+ .DrawerToggle {
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .DrawerToggle .bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+ 
+  .DrawerToggle .change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-9px, 6px);
+  }
+  
+  .DrawerToggle .change .bar2 {opacity: 0;}
+  
+  .DrawerToggle .change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-8px, -8px);
+  }
+
+@media (min-width: 500px) {
+    .DrawerToggle {
+        display: none;
+    }
+}

@@ -28,3 +28,14 @@
 .NavBar button {
     color: #333333
 }
+
+@media (max-width: 499px) {
+    .NavBar a {
+        display: none;
+    }
+    .NavBar img {
+        width: 200px;
+        height: auto;
+        max-width: none;
+    }
+}
