@@ -10,7 +10,7 @@ const usersController = require('../../controllers/usersController');
 // @access Public
 
 router.get('/', (req, res) => {
-    User.find()
+    User.findOne()
         .sort({date: -1})
         .then(users => res.json(users))
 });

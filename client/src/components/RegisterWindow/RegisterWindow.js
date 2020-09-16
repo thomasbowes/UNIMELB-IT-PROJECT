@@ -7,7 +7,8 @@ class LoginWindow extends Component {
         username: '',
         email: '',
         password: '',
-        emailCheck: false
+        emailCheck: false,
+        message: ''
     }
 
 
@@ -20,7 +21,7 @@ class LoginWindow extends Component {
 
         axios.post('http://localhost:5000/api/users/register', data)
             .then(response => {
-                console.log(response);
+                this.setState({message: response.data.status});
             });
 
     }
@@ -30,9 +31,7 @@ class LoginWindow extends Component {
         return (
             <div className={classes.LoginWindow}>
                 <p>Please enter your information</p>
-                <p>{this.state.username} </p>
-                <p>{this.state.password} </p>
-                <p>{this.state.email} </p>
+                <p>{this.state.message} </p>
 
                 <input type='text' placeholder='User Name' onChange={(event) => this.setState({username: event.target.value})} />
                 <input type='text' placeholder='Email' onChange={(event) => this.setState({email: event.target.value})} />

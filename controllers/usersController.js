@@ -1,3 +1,5 @@
+const bcrypt  = require('bcryptjs');
+
 const User = require('./../models/Users');
 
 
@@ -42,9 +44,21 @@ const registerNewUser = function(req, res){
         password:req.body.password
     });
 
-    newUser.save()
-        .then(() => console.log('a'));
-
+    bcrypt.genSalt(10, function(err, salt){
+        bcrypt.hash(newUser.password, salt, function(err, hash){
+            if(err){
+                console.log(err);
+            }
+            newUser.password = hash;
+            newUser.save()
+                .then(() => {
+                    res.status(201).json({
+                        status: 'success',
+                        data: newUser
+                    });
+                });
+        });
+    });
 }
 
 module.exports.registerNewUser = registerNewUser;
