@@ -9,21 +9,6 @@ const usersController = require('../../controllers/usersController');
 // @desc Get All Items
 // @access Public
 
-router.get('/', (req, res) => {
-    User.find()
-        .sort({date: -1})
-        .then(users => res.json(users))
-});
-
-
-// Chainable route handler, execute different functionalities depending on the type of request
-//router.route('/')
-//    .get(usersController.getAllUser)
-//    .post(usersController.createUser)
-
-router.post('/register', usersController.registerNewUser);
-
-
 // @route POST api/items
 // @desc Create A Post
 // @access Public
@@ -32,5 +17,14 @@ router.post('/register', usersController.registerNewUser);
 // @desc Create A Item
 // @access Public
 
+// Chainable route handler, execute different functionalities depending on the type of request
+router.route('/alluser')
+    .get(usersController.getAllUser);
+
+router.route('/register')
+    .post(usersController.registerNewUser);
+
+router.route('/confirmation/:userId')
+    .get(usersController.userEmailConfirmation);
 
 module.exports = router;

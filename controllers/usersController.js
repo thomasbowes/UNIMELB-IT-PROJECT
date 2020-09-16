@@ -5,11 +5,11 @@ const User = require('./../models/Users');
 
 
 // Get all the users
-exports.getAllUser = async (req, res) => {
+const getAllUser =  (req, res) => {
     try{
-        await User.find()
-        .sort({date: -1})
-        .then(users => res.json(users))
+        User.find()
+            .sort({date: -1})
+            .then(users => res.json(users))
     } catch (err) {
         res.status(404).json({
             status: 'failure',
@@ -18,53 +18,51 @@ exports.getAllUser = async (req, res) => {
     }
 };
 
-
-// Create a new user from user input (req.body) ASYNC
-exports.createUser = async (req, res) => {
-    try {
-        const newUser = await User.create(req.body);
-        res.status(201).json({
-            status: 'success',
-            data: newUser
-        });
-
-    } catch (err) {
-        res.status(400).json({
-            status: 'failure',
-            message: err
-        });
-    }
-};
-
-
+//register new user
 const registerNewUser = function(req, res){
 
-    let newUser = new User({
-        email:req.body.email,
-        username:req.body.username,
-        password:req.body.password
-    });
+    //check the email
+    const email = req.body.email;
 
-    sendEmail(newUser.email, newUser._id);
+    User.findOne({email: email})
+        .then(foundObject => {
+           if(foundObject){
+               res.status(200).json({
+                   status: 'Email is already registered',
+               });
+           }
+           else{
 
-    bcrypt.genSalt(10, function(err, salt){
-        bcrypt.hash(newUser.password, salt, function(err, hash){
-            if(err){
-                console.log(err);
-            }
-            newUser.password = hash;
-            newUser.save()
-                .then(() => {
-                    res.status(201).json({
-                        status: 'Thank you for register - please confirm your email address',
-                        data: newUser
-                    });
-                });
+               //create new user
+               let newUser = new User({
+                   email:req.body.email,
+                   username:req.body.username,
+                   password:req.body.password
+               });
+
+               //send confirmation email
+               sendEmail(newUser.email, newUser._id);
+
+               //hash the password
+               bcrypt.genSalt(10, function(err, salt){
+                   bcrypt.hash(newUser.password, salt, function(err, hash){
+                       if(err){
+                           console.log(err);
+                       }
+                       newUser.password = hash;
+                       newUser.save()
+                           .then(() => {
+                               res.status(201).json({
+                                   status: 'Thank you for register - please confirm your email address',
+                               });
+                           });
+                   });
+               });
+           }
         });
-    });
 }
 
-
+//send confirmation email
 const sendEmail =  function(userEmail, userId) {
 
     const transporter = nodemailer.createTransport({
@@ -79,7 +77,7 @@ const sendEmail =  function(userEmail, userId) {
         from: 'folio.exchange.team@gmail.com',
         to: userEmail,
         subject: 'Folio.Exchange - confirmation email',
-        text: "Thank you for register with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/users/confirmation/" + userId + " Heroku: " + userId
+        text: "Thank you for register with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
     };
 
     // send mail with defined transport object
@@ -92,5 +90,34 @@ const sendEmail =  function(userEmail, userId) {
     });
 }
 
+//confirm the email address
+const userEmailConfirmation = function(req, res){
+    const userId = req.params.userId;
+
+    if(userId.length != 24)
+    {
+        console.log('We could not found the verify link, please make sure it is correct');
+        res.redirect('http://localhost:3000/');
+        return;
+    }
+
+    User.findOne({_id: userId})
+        .then(foundObject => {
+
+            if(!foundObject){
+                console.log('We could not found the verify link, please make sure it is correct');
+                res.redirect('http://localhost:3000/');
+            }
+            else{
+                foundObject.confirm = true;
+                foundObject.save();
+                console.log('Thank you, your unimelb email address have been verified. You can login now!');
+                res.redirect('http://localhost:3000/');
+            }
+    });
+
+}
 
 module.exports.registerNewUser = registerNewUser;
+module.exports.getAllUser = getAllUser;
+module.exports.userEmailConfirmation = userEmailConfirmation;
