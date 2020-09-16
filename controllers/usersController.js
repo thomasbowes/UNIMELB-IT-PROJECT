@@ -1,4 +1,5 @@
 const bcrypt  = require('bcryptjs');
+const nodemailer = require("nodemailer");
 
 const User = require('./../models/Users');
 
@@ -44,6 +45,8 @@ const registerNewUser = function(req, res){
         password:req.body.password
     });
 
+    sendEmail(newUser.email, newUser._id);
+
     bcrypt.genSalt(10, function(err, salt){
         bcrypt.hash(newUser.password, salt, function(err, hash){
             if(err){
@@ -53,12 +56,41 @@ const registerNewUser = function(req, res){
             newUser.save()
                 .then(() => {
                     res.status(201).json({
-                        status: 'success',
+                        status: 'Thank you for register - please confirm your email address',
                         data: newUser
                     });
                 });
         });
     });
 }
+
+
+const sendEmail =  function(userEmail, userId) {
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'folio.exchange.team@gmail.com',
+            pass: 'folioexchange'
+        }
+    });
+
+    const mailOptions = {
+        from: 'folio.exchange.team@gmail.com',
+        to: userEmail,
+        subject: 'Folio.Exchange - confirmation email',
+        text: "Thank you for register with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/users/confirmation/" + userId + " Heroku: " + userId
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
+
 
 module.exports.registerNewUser = registerNewUser;
