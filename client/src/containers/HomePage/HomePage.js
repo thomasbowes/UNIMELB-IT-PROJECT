@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import LoginWindow from '../../components/LoginWindow/LoginWindow'
+import RegisterWindow from '../../components/RegisterWindow/RegisterWindow'
 import bazinga from '../../assets/bazinga.jpg'
 import classes from './HomePage.css'
 
@@ -29,6 +30,8 @@ class HomePage extends Component {
                         <button onClick={this.changeWantLogInHandler}> Go back to log in </button>
                     </div> 
                 }
+                <RegisterWindow />
+
             </div>
         )
     }

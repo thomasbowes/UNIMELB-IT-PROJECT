@@ -32,3 +32,19 @@ exports.createUser = async (req, res) => {
         });
     }
 };
+
+
+const registerNewUser = function(req, res){
+
+    let newUser = new User({
+        email:req.body.email,
+        username:req.body.username,
+        password:req.body.password
+    });
+
+    newUser.save()
+        .then(() => console.log('a'));
+
+}
+
+module.exports.registerNewUser = registerNewUser;
