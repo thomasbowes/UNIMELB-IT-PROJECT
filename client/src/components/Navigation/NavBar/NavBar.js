@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import classes from './NavBar.css';
-import Logo from '../../assets/Logo/Logo.png';
+import Logo from '../../../assets/Logo/Logo.png';
+import NavBarItems from '../NavBar/NavBarItems/NavBarItems'
+import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle'
 
 class NavBar extends Component {
     render(){
@@ -8,12 +10,11 @@ class NavBar extends Component {
             <div className={classes.NavBar}>
                 <div>
                     <img src={Logo} alt='' />
+                    <DrawerToggle clicked={this.props.sideDrawerClicked}/>
                 </div>
-                <a href="#Home">Home</a>
-                <a href="#BrowseEportfolior">BrowseEportfolio</a>
-                <a href="#MyPage">MyPage</a>
-                <a href="#About">About</a>
-                <a href="#Settings">Settings</a>
+                
+                <NavBarItems />
+
             </div>
         );
     }
