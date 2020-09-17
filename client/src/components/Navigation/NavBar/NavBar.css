@@ -2,7 +2,7 @@
     background-color: #b3b3b3;
     overflow: hidden;
 }
-.NavBar a {
+/* .NavBar a {
     float: left;
     color:#5c5c5c;
     background-color: #b3b3b3;
@@ -10,7 +10,7 @@
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
-}
+} */
 
 .NavBar img {
     align-content: center;
@@ -20,11 +20,11 @@
     margin-left: auto;
     margin-right: auto;
 }
-
+/* 
 .NavBar a:hover{
     background-color: #3ad6a7;
     color: #454545;
-}
+} */
 .NavBar button {
     color: #333333
 }

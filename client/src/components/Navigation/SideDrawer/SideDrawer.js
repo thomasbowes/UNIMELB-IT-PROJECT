@@ -1,11 +1,19 @@
 import React, {Component} from 'react'
 import Logo from '../../../assets/Logo/Logo.png'
 import classes from './SideDrawer.css'
+//import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle'
 
 class SideDrawer extends Component {
     render () {
+
+        let attachedClasses = [classes.SideDrawer, classes.Close];
+        if (this.props.open){
+            attachedClasses = [classes.SideDrawer, classes.Open];
+        }
+
         return (
-            <div className={classes.SideDrawer}>
+            <div className={attachedClasses.join(' ')}>
+                {/* <DrawerToggle /> */}
                 <img src={Logo} alt="FolioExchangeLogo"/>
                 <a href="#Home">Home</a>
                 <a href="#BrowseEportfolio">BrowseEportfolio</a>

@@ -37,6 +37,15 @@
     margin-right: auto;
 }
 
+.Open {
+    transform: translateX(0);
+
+}
+
+.Close {
+    transform: translateX(-100%);
+}
+
 @media (min-width: 500px){
     .SideDrawer {
         display: none;

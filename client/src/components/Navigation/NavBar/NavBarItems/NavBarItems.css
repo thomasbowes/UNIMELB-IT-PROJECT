@@ -1,0 +1,20 @@
+.NavBarItems a {
+    float: left;
+    color:#5c5c5c;
+    background-color: #b3b3b3;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.NavBarItems a:hover{
+    background-color: #3ad6a7;
+    color: #454545;
+}
+
+@media (max-width: 499px) {
+    .NavBar a {
+        display: none;
+    }
+}
