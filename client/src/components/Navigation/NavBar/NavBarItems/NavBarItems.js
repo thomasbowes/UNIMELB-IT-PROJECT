@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import classes from './NavBarItems.css';
-import DrawerToggle from '../../SideDrawer/DrawerToggle/DrawerToggle';
-import Aux from '../../../../hoc/Auxiliary/Auxiliary'
 
 class NavBarItems extends Component {
     render(){
