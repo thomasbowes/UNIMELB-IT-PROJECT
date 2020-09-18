@@ -27,4 +27,7 @@ router.route('/register')
 router.route('/confirmation/:userId')
     .get(usersController.userEmailConfirmation);
 
+router.route('/login')
+	.post(usersController.loginUser)
+
 module.exports = router;
