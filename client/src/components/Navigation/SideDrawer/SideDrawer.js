@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
 import Logo from '../../../assets/Logo/Logo.png'
-import classes from './SideDrawer.css'
+import './SideDrawer.css'
 //import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle'
 
 class SideDrawer extends Component {
     render () {
 
-        let attachedClasses = [classes.SideDrawer, classes.Close];
+        let attachedClasses = ["SideDrawer", "Close"];
         if (this.props.open){
-            attachedClasses = [classes.SideDrawer, classes.Open];
+            attachedClasses = ["SideDrawer", "Open"];
         }
 
         return (

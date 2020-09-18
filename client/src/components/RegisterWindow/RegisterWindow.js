@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import classes from '../LoginWindow/LoginWindow.css';
+import '../LoginWindow/LoginWindow.css';
 import axios from 'axios';
 
 class LoginWindow extends Component {
@@ -29,7 +29,7 @@ class LoginWindow extends Component {
 
     render(){
         return (
-            <div className={classes.LoginWindow}>
+            <div className="LoginWindow">
                 <p>Please enter your information</p>
                 <p>{this.state.message} </p>
 
