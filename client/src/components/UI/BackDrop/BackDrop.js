@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import classes from './BackDrop.css';
+import './BackDrop.css';
 
 class Backdrop extends Component {
     render(){
         return (
-            this.props.show ? <div className={classes.Backdrop} onClick={this.props.clicked}></div>: null
+            this.props.show ? <div className="Backdrop" onClick={this.props.clicked}></div>: null
         );
     }
 }

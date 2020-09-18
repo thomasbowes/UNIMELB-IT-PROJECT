@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import classes from './LoginWindow.css';
+import './LoginWindow.css';
 
 class LoginWindow extends Component {
     render(){
         return (
-            <div className={classes.LoginWindow}>
+            <div className="LoginWindow">
                 <p>Please Log In Your Account</p>
                 <input type='text' placeholder='User Name'/>
                 <input type= 'password' placeholder='Password'/>
