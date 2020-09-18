@@ -46,16 +46,18 @@ const loginUser = (req, res) => {
               userId: user[0]._id,
               email: user[0].email,
               username: user[0].username,
-              isAdmin: user[0].isAdmin
+              isAdmin: user[0].isAdmin,
+              iat: Date.now()
             },  
             process.env.JWT_KEY, 
             {
-              expiresIn: "1h"
+              expiresIn: "1d"
             }
           );
           return res.status(200).json({
             message: 'Login successful',
-            token: token
+            // needed to find token (though there are other ways)
+            token: "Bearer " + token
           })
         }
         return res.status(401).json({
@@ -69,7 +71,7 @@ const loginUser = (req, res) => {
         error: err
       })
     }); 
-}
+};
 
 //register new user
 const registerNewUser = function(req, res){
@@ -113,7 +115,7 @@ const registerNewUser = function(req, res){
                });
            }
         });
-}
+};
 
 //send confirmation email
 const sendEmail =  function(userEmail, userId) {
@@ -141,7 +143,7 @@ const sendEmail =  function(userEmail, userId) {
             console.log('Email sent: ' + info.response);
         }
     });
-}
+};
 
 //confirm the email address
 const userEmailConfirmation = function(req, res){
@@ -168,9 +170,18 @@ const userEmailConfirmation = function(req, res){
                 res.redirect('http://localhost:3000/');
             }
     });
+};
 
-}
+// THIS IS FOR TESTING PURPOSE (to test if token can be authorized)
+const testUser = (req, res) => {
+  res.status(200).json({
+    success: true,
+    msg: "Authorization successful"
+  });
+};
 
 module.exports.registerNewUser = registerNewUser;
+module.exports.loginUser = loginUser;
 module.exports.getAllUser = getAllUser;
 module.exports.userEmailConfirmation = userEmailConfirmation;
+module.exports.testUser = testUser;
