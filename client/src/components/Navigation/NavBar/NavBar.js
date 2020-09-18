@@ -7,7 +7,7 @@ import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle'
 class NavBar extends Component {
     render(){
         return (
-            <div className={classes.NavBar}>
+            <div className='NavBar'>
                 <div>
                     <img src={Logo} alt='' />
                     <DrawerToggle clicked={this.props.sideDrawerClicked}/>
