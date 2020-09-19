@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import LoginWindow from '../../components/LoginWindow/LoginWindow'
 import RegisterWindow from '../../components/RegisterWindow/RegisterWindow'
+import FilesUpload from '../../components/FilesUpload/FilesUpload'
 import bazinga from '../../assets/bazinga.jpg'
 import classes from './HomePage.css'
 
@@ -31,6 +32,7 @@ class HomePage extends Component {
                     </div> 
                 }
                 <RegisterWindow />
+                <FilesUpload />
 
             </div>
         )
