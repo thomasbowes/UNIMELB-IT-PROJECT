@@ -41,23 +41,22 @@ class FilesUpload extends Component {
                             parseInt(
                                 Math.round((progressEvent.loaded * 100) / progressEvent.total))});
                 }
-            });
+            })
+                .then( (response) => {
+                    console.log(response);
+
+                    this.setState({message: response.data.status});
+
+                });
 
             //const { fileName, filePath } = res.data;
 
             //setUploadedFile({ fileName, filePath });
 
-            this.setState({message: 'File Uploaded: ' + this.state.filename});
-
         } catch (err) {
-            if (err.response.status === 500) {
-                this.setState({message: 'There was a problem with the server'});
-            } else {
-                this.setState({message: err.response.data.msg});
-            }
+            this.setState({message: err.response.data.status});
         }
     };
-
 
     render(){
         return (
