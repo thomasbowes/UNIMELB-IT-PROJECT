@@ -15,10 +15,3 @@ start the client:
 start both:
     npm run dev
 
-How to generate API Docs:
-
-Foremost, you must globally download the apidoc module:
-   npm install apidoc -g
-
-Then:
-   npm run docs
