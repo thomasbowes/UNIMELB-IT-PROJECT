@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const passport = require('passport');
 
 // Item Model and Controller
 const User = require('../../models/Users');
@@ -27,5 +27,14 @@ router.route('/register')
 
 router.route('/confirmation/:userId')
     .get(usersController.userEmailConfirmation);
+
+router.route('/login')
+	.post(usersController.loginUser);
+
+// THIS IS FOR TESTING (TO MAKE SURE THAT TOKENS ARE VALIDATED)
+// authentication middleware passed here to make sure if token is valid
+router.use('/test', passport.authenticate('jwt', { session: false } ));
+router.route('/test')
+	.get(usersController.testUser);
 
 module.exports = router;
