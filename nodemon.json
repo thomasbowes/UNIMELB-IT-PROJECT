@@ -1,6 +1,7 @@
 {
 	"env": {
 		"JWT_KEY": "gWIFTd8Bgie7BboN9HL9Nuj5CbWh07EXcyGPZYoQgSqOf4YyGro5Pt82EQhYr6iPxzRWrsHARevfv7loiIMcWHKWn8CPkZ2QWuH7AGljLa26uPSdGdv9rlrG6xpRyyjU",
-		"DB_KEY": "project123"
+		"DB_KEY": "project123",
+		"TESTDB_KEY": "tester123"
 	}
 }

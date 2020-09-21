@@ -1,23 +1,4 @@
-const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const passport = require('passport');
-
-const userRoute = require('./routes/api/users');
-
-// Authentication Middleware
-// pass passport variable and insert into configuration function 
-require('./config/passport')(passport);
-
-const app = express();
-
-app.use(cors());
-
-
-//Bodyparser Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // DB Config
 const db = require('./config/keys').mongoURI;
@@ -27,10 +8,7 @@ mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log('MongoDB Connected...'))
     .catch(err=>console.log(err));
 
-
-// Use Routes. Whenever the specified route is required, enter userRoute to handle it
-app.use('/api/users', userRoute);
-
+const app = require('./app');
 
 const port = process.env.PORT || 5000
 
