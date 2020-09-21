@@ -1,0 +1,41 @@
+.NavBar {
+    background-color: #b3b3b3;
+    overflow: hidden;
+}
+/* .NavBar a {
+    float: left;
+    color:#5c5c5c;
+    background-color: #b3b3b3;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+} */
+
+.NavBar img {
+    align-content: center;
+    max-width: 25%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* 
+.NavBar a:hover{
+    background-color: #3ad6a7;
+    color: #454545;
+} */
+.NavBar button {
+    color: #333333
+}
+
+@media (max-width: 499px) {
+    .NavBar a {
+        display: none;
+    }
+    .NavBar img {
+        width: 200px;
+        height: auto;
+        max-width: none;
+    }
+}
