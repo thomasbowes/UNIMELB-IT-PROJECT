@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 
+import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
+
 class FilesUpload extends Component {
 
     state = {
@@ -14,8 +16,7 @@ class FilesUpload extends Component {
 
     readFileHandler = event => {
         event.preventDefault();
-        this.setState({uploadPercentage: 0});
-        //console.log(event.target.files[0]);
+        this.setState({message: '', uploadPercentage: 0});
         if(!event.target.files[0]) return;
 
         this.setState({file: event.target.files[0]});
@@ -29,6 +30,8 @@ class FilesUpload extends Component {
         event.preventDefault();
         const formData = new FormData();
         formData.append('file', this.state.file);
+
+        this.setState({loading: true});
 
         try {
             const res = await axios.post('http://localhost:5000/api/portfolio/upload', formData, {
@@ -49,6 +52,9 @@ class FilesUpload extends Component {
 
                 });
 
+            //remove file details
+            this.setState({file: null, filename: ''});
+
             //const { fileName, filePath } = res.data;
 
             //setUploadedFile({ fileName, filePath });
@@ -56,35 +62,68 @@ class FilesUpload extends Component {
         } catch (err) {
             this.setState({message: err.response.data.status});
         }
+        this.setState({loading: false});
     };
 
     render(){
-        return (
-            <div className="LoginWindow">
-                <p>Please Upload Your Files</p>
-                {this.state.message}
-                <form onSubmit={this.postFileHandler}>
-                    <div>
+        let result;
+
+        if(this.state.loading){
+            result = (
+                <div className="LoginWindow">
+                    <LoadingAnimation />
+                    <p>Please Upload Your Files</p>
+                    {this.state.message}
+                    <form>
+                        <div>
+                            <input
+                                type='file'
+                                className='custom-file-input'
+                                id='customFile'
+                                disabled
+                            />
+                            <label>
+                                {this.state.filename}
+                            </label>
+                        </div>
+
                         <input
-                            type='file'
-                            className='custom-file-input'
-                            id='customFile'
-                            onChange={(event) => this.readFileHandler(event)}
+                            type='submit'
+                            value='Upload'
+                            disabled
                         />
-                        <label>
-                            {this.state.filename}
-                        </label>
-                    </div>
+                    </form>
+                </div>
+                );
 
-                    <input
-                        type='submit'
-                        value='Upload'
-                    />
-                </form>
+        }else{
 
+            result = (
+                <div className="LoginWindow">
+                    <p>Please Upload Your Files</p>
+                    {this.state.message}
+                    <form onSubmit={this.postFileHandler}>
+                        <div>
+                            <input
+                                type='file'
+                                className='custom-file-input'
+                                id='customFile'
+                                onChange={(event) => this.readFileHandler(event)}
+                            />
+                            <label>
+                                {this.state.filename}
+                            </label>
+                        </div>
 
-            </div>
-        );
+                        <input
+                            type='submit'
+                            value='Upload'
+                        />
+                    </form>
+                </div>
+            );
+        }
+        return result;
     }
 }
 
