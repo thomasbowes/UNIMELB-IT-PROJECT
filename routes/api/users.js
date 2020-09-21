@@ -78,7 +78,7 @@ router.route('/alluser')
  *     "status": "Thank you for registering - Please confirm your email address."
  * }
  *
- * @apiError EmailAlreadyRegistered Email inputted is already registered in database.
+ * @apiError (200) EmailAlreadyRegistered Email inputted is already registered in database.
  * 
  * @apiErrorExample Error-Response:
  * HTTP/1.1 200 OK
@@ -117,15 +117,7 @@ router.route('/confirmation/:userId')
  *     "token": "Bearer foawheof8f89k23nkjy87yfiuawfkhfaiuwhui"
  * }
  * 
- * @apiError EmailAlreadyRegistered Email inputted is already registered in database.
- * 
- * @apiErrorExample Error-Response: 
- * HTTP/1.1 401 Unauthorized
- * {
- *     "message": "Email or Password is incorrect."
- * }
- *
- * @apiError PasswordDoesNotMatch Password inputted is not correct.
+ * @apiError IncorrectUserDetails Email already exist or password is wrong
  * 
  * @apiErrorExample Error-Response: 
  * HTTP/1.1 401 Unauthorized
