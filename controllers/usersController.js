@@ -7,7 +7,7 @@ const User = require('./../models/Users');
 
 
 // Get all the users
-const getAllUser =  (req, res) => {
+const getAllUser = (req, res) => {
     try{
         User.find()
             .sort({date: -1})

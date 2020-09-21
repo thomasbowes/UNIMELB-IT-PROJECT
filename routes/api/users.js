@@ -34,7 +34,7 @@ const usersController = require('../../controllers/usersController');
  *     "confirm": true,
  *	   "isAdmin": false,
  * 	   "_id": "5f644add72d3ff4a0413ff56",
- *	   "email": "rayjtchen@gmail.com",
+ *	   "email": "itsmemario@gmail.com",
  *	   "username": "a",
  *	   "password": "$2a$10$vyPiyp4YrYxI20.wP4Suc.4dj7okRR5pM1g7s1j1UoTOJS09hWZ8G",
  *	   "date": "2020-09-18T05:51:25.921Z",

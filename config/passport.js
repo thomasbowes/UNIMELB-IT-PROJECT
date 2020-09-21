@@ -2,6 +2,8 @@ const User = require('mongoose').model('User');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
+require('dotenv').config();
+
 const options = {
 	// where to extract the jSON web token from (in this case,
 	// from Authorization header with Bearer string attached to token)
