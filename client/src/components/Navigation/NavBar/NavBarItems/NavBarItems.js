@@ -17,6 +17,7 @@ class NavBarItems extends Component {
                 <NavLink to='/myfolio' onClick={this.props.click}>MyPage</NavLink>
                 <NavLink to='/about' exact onClick={this.props.click}>About</NavLink>
                 <NavLink to='/settings' exact onClick={this.props.click}>Settings</NavLink>
+                <NavLink to='/login' exact onClick={this.props.click}>Login</NavLink>
             </div>
         );
     }

@@ -1,0 +1,12 @@
+.LogInPage {
+    background-color: white;
+}
+
+.Bazinga{
+    max-width: 300px;
+    height: auto;
+}
+
+.LogInPage button{
+    display: block;
+}

@@ -2,38 +2,18 @@ import React, {Component} from 'react';
 import LoginWindow from '../../components/LoginWindow/LoginWindow'
 import RegisterWindow from '../../components/RegisterWindow/RegisterWindow'
 import FilesUpload from '../../components/FilesUpload/FilesUpload'
-import bazinga from '../../assets/bazinga.jpg'
-import classes from './HomePage.css'
+import './HomePage.css'
+import happyAnimal from '../../assets/Pictures/happyAnimal.jpg'
 
 
 class HomePage extends Component {
-    state = {
-        wantToLogIn: true
-    }
-
-    changeWantLogInHandler = () =>{
-        const login = this.state.wantToLogIn;
-        this.setState({
-            wantToLogIn: !login
-        });
-    }
 
 
     render() {
-        console.log(this.state.wantToLogIn);
         return (
-            <div className={classes.HomePage}>
-                { this.state.wantToLogIn ? 
-                    <LoginWindow wantLogIn={this.changeWantLogInHandler}/> : 
-                    <div>
-                        <h1>Just kidding~ You need to log in first~~~</h1>
-                        <img className={classes.Bazinga} alt='' src={bazinga} />
-                        <button onClick={this.changeWantLogInHandler}> Go back to log in </button>
-                    </div> 
-                }
-                <RegisterWindow />
-                <FilesUpload />
-
+            <div className={"HomePage"}>
+                <h1>Welcome to folio exchange! We've been waiting for you</h1>
+                <img src={happyAnimal} alt='' className='HappyAnimal'/>
             </div>
         )
     }
