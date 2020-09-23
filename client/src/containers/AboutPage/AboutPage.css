@@ -5,3 +5,11 @@
 .AboutPage MemberCard {
     display: inline;
 }
+
+.AboutPage .text {
+    width: 60%;
+    text-align: center;
+    margin: auto;
+    font-weight: bold;
+    font-family: monospace;
+}
