@@ -23,6 +23,6 @@
 
 @media (max-width: 499px) {
     .NavBar a {
-        display: none;
+        display: none; 
     }
 }

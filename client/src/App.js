@@ -8,6 +8,8 @@ import AboutPage from './containers/AboutPage/AboutPage'
 import RegisterWindow from './components/RegisterWindow/RegisterWindow'
 import LogInPage from './containers/LogInPage/LogInPage'
 import MyPage from './containers/MyPage/MyPage';
+import './App.css'
+
 
 class App extends Component {
   state = {
@@ -26,7 +28,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div class='App'>
         <NavBar sideDrawerClicked={this.showSideDrawerHandler} />
         <BackDrop show={this.state.showBackDrop} clicked={this.showSideDrawerHandler}/>
         <SideDrawer open={this.state.showSideDrawer} clickItem={this.showSideDrawerHandler} />
