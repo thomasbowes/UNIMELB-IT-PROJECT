@@ -1,0 +1,7 @@
+.AboutPage{
+    text-align: center;
+}
+
+.AboutPage MemberCard {
+    display: inline;
+}

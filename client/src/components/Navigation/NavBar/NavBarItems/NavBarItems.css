@@ -1,17 +1,25 @@
 .NavBarItems a {
     float: left;
     color:#5c5c5c;
-    background-color: #b3b3b3;
+    background-color: #e8e8e8;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
 }
 
-.NavBarItems a:hover{
-    background-color: #3ad6a7;
+.NavBarItems a:hover,
+.NavBarItems a:active{
+    background-color: #7ef5d1;
     color: #454545;
 }
+
+
+.NavBarItems a.active {
+    font-weight: bolder;
+    color: #484848;
+}
+
 
 @media (max-width: 499px) {
     .NavBar a {
