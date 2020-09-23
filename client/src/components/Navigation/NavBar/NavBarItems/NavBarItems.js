@@ -12,11 +12,11 @@ class NavBarItems extends Component {
                 <a href="#About">About</a>
                 <a href="#Settings">Settings</a> */}
 
-                <NavLink to='/home' exact>Home</NavLink>
-                <NavLink to='/search'>SearchEportfolio</NavLink>
-                <NavLink to='/myfolio'>MyPage</NavLink>
-                <NavLink to='/about' exact>About</NavLink>
-                <NavLink to='/settings' exact>Settings</NavLink>
+                <NavLink to='/home' exact onClick={this.props.click}>Home</NavLink>
+                <NavLink to='/search' onClick={this.props.click}>SearchEportfolio</NavLink>
+                <NavLink to='/myfolio' onClick={this.props.click}>MyPage</NavLink>
+                <NavLink to='/about' exact onClick={this.props.click}>About</NavLink>
+                <NavLink to='/settings' exact onClick={this.props.click}>Settings</NavLink>
             </div>
         );
     }
