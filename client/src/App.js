@@ -3,6 +3,13 @@ import HomePage from './containers/HomePage/HomePage';
 import NavBar from './components/Navigation/NavBar/NavBar'
 import SideDrawer from './components/Navigation/SideDrawer/SideDrawer'
 import BackDrop from './components/UI/BackDrop/BackDrop'
+import {Redirect, Route} from 'react-router-dom';
+import AboutPage from './containers/AboutPage/AboutPage'
+import RegisterWindow from './components/RegisterWindow/RegisterWindow'
+import LogInPage from './containers/LogInPage/LogInPage'
+import MyPage from './containers/MyPage/MyPage';
+import './App.css'
+
 
 class App extends Component {
   state = {
@@ -21,11 +28,18 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div class='App'>
         <NavBar sideDrawerClicked={this.showSideDrawerHandler} />
         <BackDrop show={this.state.showBackDrop} clicked={this.showSideDrawerHandler}/>
-        <SideDrawer open={this.state.showSideDrawer}/>
-        <HomePage />
+        <SideDrawer open={this.state.showSideDrawer} clickItem={this.showSideDrawerHandler} />
+        {/* <HomePage /> */}
+
+        <Route path='/home' component={HomePage} />
+        <Route path='/about' component={AboutPage} />
+        <Route path='/signup' exact component={RegisterWindow}/>
+        <Route path='/login' exact component={LogInPage} />
+        <Route path='/myfolio' component={MyPage} />
+        <Redirect from='/' to='/home' />
       </div>
     );
   }
