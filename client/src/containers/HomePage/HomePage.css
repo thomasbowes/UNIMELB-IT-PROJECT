@@ -1,12 +1,11 @@
-.HomePage {
-    background-color: white;
-}
-
-.Bazinga{
-    max-width: 300px;
+.HappyAnimal{
+    max-width: 500px;
     height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
-.HomePage button{
-    display: block;
+.HomePage h1{
+    text-align: center;
 }
