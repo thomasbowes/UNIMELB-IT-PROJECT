@@ -7,7 +7,7 @@ const User = require('./../models/Users');
 
 
 // Get all the users
-const getAllUser =  (req, res) => {
+const getAllUser = (req, res) => {
     try{
         User.find()
             .sort({date: -1})
@@ -108,7 +108,7 @@ const registerNewUser = function(req, res){
                        newUser.save()
                            .then(() => {
                                res.status(201).json({
-                                   status: 'Thank you for register - please confirm your email address',
+                                   status: 'Thank you for registering - Please confirm your email address.',
                                });
                            });
                    });
@@ -132,7 +132,7 @@ const sendEmail =  function(userEmail, userId) {
         from: 'folio.exchange.team@gmail.com',
         to: userEmail,
         subject: 'Folio.Exchange - confirmation email',
-        text: "Thank you for register with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
+        text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
     };
 
     // send mail with defined transport object
@@ -151,7 +151,7 @@ const userEmailConfirmation = function(req, res){
 
     if(userId.length != 24)
     {
-        console.log('We could not found the verify link, please make sure it is correct');
+        console.log('We could not find the verify link, please make sure it is correct');
         res.redirect('http://localhost:3000/');
         return;
     }
@@ -160,13 +160,13 @@ const userEmailConfirmation = function(req, res){
         .then(foundObject => {
 
             if(!foundObject){
-                console.log('We could not found the verify link, please make sure it is correct');
+                console.log('We could not find the verify link, please make sure it is correct');
                 res.redirect('http://localhost:3000/');
             }
             else{
                 foundObject.confirm = true;
                 foundObject.save();
-                console.log('Thank you, your unimelb email address have been verified. You can login now!');
+                console.log('Thank you, your email address has been verified. You can login now!');
                 res.redirect('http://localhost:3000/');
             }
     });

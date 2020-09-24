@@ -15,4 +15,3 @@ start the client:
 start both:
     npm run dev
 
-
