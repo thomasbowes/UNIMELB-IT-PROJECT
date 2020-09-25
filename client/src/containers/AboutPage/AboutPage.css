@@ -4,10 +4,6 @@
     width: 100%;
 }
 
-/* .AboutPage MemberCard {
-    display: inline;
-} */
-
 .AboutPage h1 {
     font-weight: bold;
     font-size: 2.5rem;
@@ -34,6 +30,7 @@
     margin: auto;
 }
 
+/* for larger screens */
 @media (min-width: 100rem) {
     .AboutPage .text {
         width: 100rem;
