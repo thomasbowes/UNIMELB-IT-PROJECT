@@ -29,13 +29,13 @@ describe('App test', () => {
 	});
 
 	// after finishing tests, delete all records in mock db and closing server
-	/*
+	
 	after(async function() {
 		await User.deleteMany({});
 		await mongoose.connection.close();
 		await server.close();
 	});
-	*/
+	
 
 	// tests whether server returns all users in database
 	// P.S this function isn't done yet, needs more tests 
