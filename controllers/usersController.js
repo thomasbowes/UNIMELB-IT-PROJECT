@@ -3,8 +3,25 @@ const nodemailer = require("nodemailer");
 // needed to generate and sign token 
 const jwt = require('jsonwebtoken');
 
-const User = require('./../models/Users');
+const User = require('mongoose').model('User');
 
+// if auth is successful, create a token
+const signToken = (user) => {
+  const token = jwt.sign({
+      userId: user._id,
+      email: user.email,
+      username: user.username,
+      isAdmin: user.isAdmin,
+      iat: Date.now()
+    },  
+    process.env.JWT_KEY, 
+    {
+      // IMPORTANT
+      expiresIn: "1d"
+    }
+  );
+  return token;
+};
 
 // Get all the users
 const getAllUser = (req, res) => {
@@ -22,18 +39,18 @@ const getAllUser = (req, res) => {
 
 /* Logins in user to website assuming that correct email and password is given */
 const loginUser = (req, res) => {
-  User.find({ email: req.body.email })
+  User.findOne({ email: req.body.email })
     .exec()
     .then(user => {
       // in the case that empty array is received (no user exists)
-      if (user.length < 1) {
+      if (!user) {
         return res.status(401).json({
           message: 'Email or Password is incorrect.'
         })
       }
       /* comparing passwords between database and given request 
        * response parameter is true or false depending if passwords matches */
-      bcrypt.compare(req.body.password, user[0].password, (err, response) => {
+      bcrypt.compare(req.body.password, user.password, (err, response) => {
         if (err) {
           return res.status(401).json({
             message: 'Email or Password is incorrect.'
@@ -42,18 +59,7 @@ const loginUser = (req, res) => {
         if (response) {
           // generation and signature of token - EXPIRES IN 1 HOUR 
           // FAIR WARNING - TOKEN IS ENCODED, NOT ENCRYPTED!!!!!!!
-          const token = jwt.sign({
-              userId: user[0]._id,
-              email: user[0].email,
-              username: user[0].username,
-              isAdmin: user[0].isAdmin,
-              iat: Date.now()
-            },  
-            process.env.JWT_KEY, 
-            {
-              expiresIn: "1d"
-            }
-          );
+          const token = signToken(user);
           return res.status(200).json({
             message: 'Login successful',
             // needed to find token (though there are other ways)
@@ -172,6 +178,23 @@ const userEmailConfirmation = function(req, res){
     });
 };
 
+// if facebook credentials are correct, return back a JWT
+const facebookOAuth = (req, res) => {
+  if (req.user.err) {
+    res.status(401).json({
+      message: "Authentication failed",
+      error: req.user.err
+    });
+  } else {
+    const token = signToken(req.user);
+    res.status(200).json({
+      message: 'Authentication Successful',
+      // needed to find token (though there are other ways)
+      token: "Bearer " + token
+    });
+  }
+};
+
 // THIS IS FOR TESTING PURPOSE (to test if token can be authorized)
 const testUser = (req, res) => {
   res.status(200).json({
@@ -184,4 +207,5 @@ module.exports.registerNewUser = registerNewUser;
 module.exports.loginUser = loginUser;
 module.exports.getAllUser = getAllUser;
 module.exports.userEmailConfirmation = userEmailConfirmation;
+module.exports.facebookOAuth = facebookOAuth;
 module.exports.testUser = testUser;
