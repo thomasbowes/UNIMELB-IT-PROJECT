@@ -8,6 +8,7 @@ import AboutPage from './containers/AboutPage/AboutPage'
 import RegisterWindow from './components/RegisterWindow/RegisterWindow'
 import LogInPage from './containers/LogInPage/LogInPage'
 import MyPage from './containers/MyPage/MyPage';
+import Footer from './components/Footer/Footer';
 import './App.css'
 
 
@@ -40,6 +41,8 @@ class App extends Component {
         <Route path='/login' exact component={LogInPage} />
         <Route path='/myfolio' component={MyPage} />
         <Redirect from='/' to='/home' />
+
+        <Footer />
       </div>
     );
   }
