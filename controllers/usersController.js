@@ -62,8 +62,11 @@ const loginUser = (req, res) => {
           const token = signToken(user);
           return res.status(200).json({
             message: 'Login successful',
-            // needed to find token (though there are other ways)
-            token: "Bearer " + token
+            userAuthToken: {
+              token: "Bearer " + token,
+              email: user.email,
+              username: user.username
+            }
           })
         }
         return res.status(401).json({
