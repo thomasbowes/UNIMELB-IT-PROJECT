@@ -12,6 +12,7 @@ const db = require('../config/keys').testMongoURI;
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const User = require('../models/Users');
+const testInput = require('./testInput');
 
 // testing our whole application 
 describe('App test', () => {
@@ -19,28 +20,12 @@ describe('App test', () => {
 
 	// setting things up before testing (inputting test examples)
 	before(function () {
-		const tests = [
-			{
-				username: 'tester1',
-				password: 'lkjfklajfa98awjfk',
-				email: 'tester1@mail.com',
-				confirm: true,
-				isAdmin: false
-			},
-			{
-				username: 'tester2',
-				password: 'laksdfjklhhwhfuwhfhwuifh',
-				email: 'tester2@mail.com',
-				confirm: false,
-				isAdmin: false
-			}
-		]
 
 		// starting local server
 		server = app.listen(5001);
 
 		// inserting all tests into mock database
-		return User.insertMany(tests);
+		return User.insertMany(testInput.tests);
 	});
 
 	// after finishing tests, delete all records in mock db and closing server
@@ -55,7 +40,7 @@ describe('App test', () => {
 	// tests whether server returns all users in database
 	// P.S this function isn't done yet, needs more tests 
 	describe("Getting all users from database", () => {
-		it("getting all users", function(done) {
+		it("Getting all existing users", function(done) {
 			request(app)
 				.get('/api/users/alluser')
 				.expect('Content-Type', /json/)
@@ -65,33 +50,11 @@ describe('App test', () => {
 	
 	// Tests if a POST request (i.e. register) will be made successfully
 	describe("Register a new user in the database", function () {
-		
-		const newUser = {
-			username: 'TinTin',
-			email: 'haoxinli89@gmail.com',
-			password: 'tesing123',
-			confirm: false,
-			isAdmin: false
-		};
 
-		const newUserDupEmail = {
-			username: 'Captain',
-			email: 'haoxinli89@gmail.com',
-			password: 1234,
-			confirm: false,
-			isAdmin: false
-		}
-
-		const newUserNoName = {
-			email: 'haoxinl1@student.unimelb.edu.au',
-			password: 1234
-		}
-		
-		// Question: check that a confirmation email address has been sent?
-		it("Register a new user with unique email", function(done) {
+		it("Register new user with unique email", function(done) {
 			request(app)
 				.post('/api/users/register')
-				.send(newUser)
+				.send(testInput.newUser)
 				.expect('Content-Type', /json/)
 				.expect(201, done);
 		});
@@ -99,7 +62,7 @@ describe('App test', () => {
 		it("Register new user with duplicated email", function(done) {
 			request(app)
 				.post('/api/users/register')
-				.send(newUserDupEmail)
+				.send(testInput.newUserDupEmail)
 				.expect('Content-Type', /json/)
 				.expect({
 					status: "Email is already registered"
@@ -110,9 +73,46 @@ describe('App test', () => {
 		it("Register new user without username", function(done) {
 			request(app)
 				.post('/api/users/register')
-				.send(newUserNoName)
+				.send(testInput.newUserNoName)
 				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing username, email, or password"
+				})
 				.expect(400, done)
 		});
+
+		it("Register new user without email", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.newUserNoEmail)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing username, email, or password"
+				})
+				.expect(400, done)
+		});
+
+		it("Register new user without password", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.newUserNoPassword)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing username, email, or password"
+				})
+				.expect(400, done)
+		});
+		
+		it("Register new user with invalid email", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.newUserInvalidEmail)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Invalid Email"
+				})
+				.expect(400, done)
+		});
+
 	});
 });
