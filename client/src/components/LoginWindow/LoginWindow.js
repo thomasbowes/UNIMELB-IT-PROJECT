@@ -2,6 +2,12 @@ import React, {Component} from 'react';
 import './LoginWindow.css';
 import {Link} from 'react-router-dom';
 
+//import relevent redux things
+import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
+
+
+
 class LoginWindow extends Component {
     render(){
         return (
@@ -18,4 +24,24 @@ class LoginWindow extends Component {
     }
 }
 
-export default LoginWindow;
+
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+    };
+};
+
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+        //onAuth: ( email, password, isSignup ) => dispatch( actions.auth( email, password, isSignup ))
+
+    };
+};
+
+
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginWindow);

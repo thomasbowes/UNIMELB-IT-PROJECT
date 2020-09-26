@@ -6,17 +6,28 @@ import {BrowserRouter} from 'react-router-dom';
 
 
 //import redux
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
+
+//redux thunk
+import thunk from 'redux-thunk';
+
 //import reducers
-import usersReducer from './store/reducers/users/users';
+import usersReducer from './store/reducers/users';
+import authReducer from './store/reducers/auth';
 
 //combine reducers
 const rootReducer = combineReducers({
-    persons: usersReducer
+    users: usersReducer,
+    auth: authReducer
 });
+
+// import redux dev tools for chrome
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 //create store
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+
 
 
 
