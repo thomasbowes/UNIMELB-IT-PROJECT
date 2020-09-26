@@ -26,6 +26,7 @@ body {
     align-items: center;
 }
 
+
 .nav-bar__container {
     display: flex;
     justify-content: space-between;
@@ -118,7 +119,15 @@ body {
 
 /* for mobile */
 @media (max-width: 40rem) {
-    .nav-bar__container {
+    /* .nav-bar__container {
         display: none;
+    } */
+
+    .main-nav__logo-hamburger {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .main-header__spacer {
+        display: inline;
     }
 }

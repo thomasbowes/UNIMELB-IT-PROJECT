@@ -2,9 +2,9 @@
  /* Some code in this file is from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_menu_icon_js */
  
  .DrawerToggle {
-  width: 30px;
+    width: 30px;
     height: 100%;
-    display: flex;
+    display: block;
     flex-flow: column;
     justify-content: space-around;
     align-items: center;

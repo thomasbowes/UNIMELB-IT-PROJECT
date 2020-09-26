@@ -9,9 +9,9 @@ class NavBar extends Component {
     render(){
         return (
             <header className="NavBar" >
-                <DrawerToggle clicked={this.props.sideDrawerClicked}/>
                 <div className="nav-bar__container">
                     <div className="main-nav__logo-hamburger">
+                        <DrawerToggle clicked={this.props.sideDrawerClicked}/>
                         {/* <DrawerToggle clicked={this.props.sideDrawerClicked}/> */}
                         <Link to="/home" className="main-header__brand">
                             <img src={Logo} alt="folio.exchange- logo" style={{float: "left"}}/>

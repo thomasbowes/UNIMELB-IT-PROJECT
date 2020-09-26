@@ -82,3 +82,9 @@
         display: flex; 
     }
 }
+
+@media (max-width: 40rem) {
+    .NavBarItems {
+        display: none;
+    }
+}
