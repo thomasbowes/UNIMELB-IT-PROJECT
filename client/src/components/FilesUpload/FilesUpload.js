@@ -14,30 +14,40 @@ class FilesUpload extends Component {
         uploadPercentage: 0
     }
 
+    //read the file from user's computer
     readFileHandler = event => {
         event.preventDefault();
+        //init current state
         this.setState({message: '', uploadPercentage: 0});
+        //if the file pointer point to null return
         if(!event.target.files[0]) return;
 
+        //get the file path and name and store into state
         this.setState({file: event.target.files[0]});
         this.setState({filename: event.target.files[0].name});
     };
 
 
+    //post the file to backend by axios
     postFileHandler = async (event) => {
 
         if(!this.state.file) return;
         event.preventDefault();
+
+        //create a container for the file
         const formData = new FormData();
         formData.append('file', this.state.file);
 
+        //set the loading to true
         this.setState({loading: true});
 
         try {
+            //post the file
             const res = await axios.post('http://localhost:5000/api/portfolio/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
+                //store progression percentage to state //for future use
                 onUploadProgress: progressEvent => {
 
                     this.setState({uploadPercentage:

@@ -12,7 +12,8 @@ class LoginWindow extends Component {
     }
 
 
-    postDataHandler = () =>{
+    postDataHandler = (event) =>{
+        event.preventDefault();
         const data = {
             username: this.state.username,
             email: this.state.email,
@@ -36,7 +37,6 @@ class LoginWindow extends Component {
                 <input type='text' placeholder='User Name' onChange={(event) => this.setState({username: event.target.value})} />
                 <input type='text' placeholder='Email' onChange={(event) => this.setState({email: event.target.value})} />
                 <input type= 'password' placeholder='Password' onChange={(event) => this.setState({password: event.target.value})} />
-                <button>Check Email</button>
                 <button onClick={this.postDataHandler}>Register</button>
 
             </div>
