@@ -33,7 +33,7 @@
     transform: rotate(45deg) translate(-8px, -8px);
   }
 
-@media (min-width: 500px) {
+@media (min-width: 40rem) {
     .DrawerToggle {
         display: none;
     }

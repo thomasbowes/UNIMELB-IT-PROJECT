@@ -6,27 +6,12 @@
     left: 0;
     top: 0;
     z-index: 200;
-    background-color: #b3b3b3;
+    background: linear-gradient(165deg,#003A58 , rgba(8, 103, 150, 1)) 40%;
     padding: 32px 16px;
     box-sizing: border-box;
     transition: transform 0.3s ease-out;
 }
 
-.SideDrawer a {
-    float: left;
-    color:#5c5c5c;
-    background-color: #b3b3b3;
-    text-align: left;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 4vw;
-    display: block;
-}
-
-.SideDrawer a:hover{
-    background-color: #3ad6a7;
-    color: #454545;
-}
 
 .SideDrawer img {
     align-content: center;
@@ -37,6 +22,11 @@
     margin-right: auto;
 }
 
+.SideDrawer .NavBarItems {
+    display: block;
+}
+
+
 .Open {
     transform: translateX(0);
 
@@ -46,7 +36,7 @@
     transform: translateX(-100%);
 }
 
-@media (min-width: 500px){
+@media (min-width: 40rem){
     .SideDrawer {
         display: none;
     }
