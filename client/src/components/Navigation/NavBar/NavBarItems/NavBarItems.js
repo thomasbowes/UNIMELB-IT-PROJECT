@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './NavBarItems.css';
-import {NavLink, Redirect, withRouter} from 'react-router-dom'
+import {NavLink, withRouter} from 'react-router-dom'
 
 class NavBarItems extends Component {
 
