@@ -37,6 +37,7 @@ describe('App test', () => {
 	});
 
 	describe("Authenticating user via facebook auth", () => {
+		// TEST UNSTABLE, NOT SURE IF FB TOKEN CAN EXPIRE
 		it("Correct access token supplied", function(done) {
 			request(app)
 				.post('/api/users/oauth/facebook')

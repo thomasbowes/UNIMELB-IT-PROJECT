@@ -16,13 +16,15 @@ exports.tests = [
     }
 ]
 
+// MAY EXPIRE ANYTIME, INPUT UNSTABLE
 exports.correctFbCreds = {
-    access_token: `EAALIqkOxw2EBAGxg2rHpL88bkZCDXZCqn2ZA
-                   ZB9lFWFoCMHsp0jIkXxmsFcCjzKZAAFcVBbFa
-                   kWG3acBw8NY6cBB7PKEZCux3ifkEra02dR7qt
-                   965jtWieuS0ZBtUbx9vxNXeI3o1WTg2bqe13h
-                   GRQDHmQc6H5kg54qlmHVTW1XzrlOffAnKV0vg
-                   v3YGSAwopA4GwRZBkHNFWwZDZD`
+    access_token: `EAALIqkOxw2EBAFrYahcxTdOlXxaWKyj
+                   cjXTSc13O6qaMwQ63sVHFEhIwPjEr1pq
+                   MTnGwlLIyMRhunuXMruKza4cgQkYmF7u
+                   rRdMRCUQZCpDZA8PTXs6ZArxoZB071GW
+                   P9SxN2ZB1ZASCejJqPFBQI3uOCnNYteJ
+                   gfICLRvSmv5ddmxhBEhj366OZBZC9MIq
+                   ykeYxTe5Mj7NYmAZDZD`
 }
 
 exports.incorrectFbCreds = {

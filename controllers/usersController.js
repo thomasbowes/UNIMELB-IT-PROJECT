@@ -202,12 +202,11 @@ const userEmailConfirmation = function(req, res){
     });
 };
 
-// if facebook credentials are correct, return back a JWT
-const facebookOAuth = (req, res) => {
+// if given credentials (either fb or google) are correct, return back a JWT
+const oAuth = (req, res) => {
   if (req.user.err) {
     res.status(401).json({
-      message: "Authentication failed",
-      error: req.user.err
+      message: "Authentication failed"
     });
   } else {
     const token = signToken(req.user);
@@ -231,6 +230,6 @@ module.exports.registerNewUser = registerNewUser;
 module.exports.loginUser = loginUser;
 module.exports.getAllUser = getAllUser;
 module.exports.userEmailConfirmation = userEmailConfirmation;
-module.exports.facebookOAuth = facebookOAuth;
+module.exports.oAuth = oAuth;
 module.exports.testUser = testUser;
 module.exports.checkBody = checkBody;

@@ -3,6 +3,7 @@ const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const FacebookTokenStrategy = require('passport-facebook-token');
+const GoogleTokenStrategy = require('passport-google-token').Strategy;
 
 require('dotenv').config();
 
@@ -60,13 +61,50 @@ const facebookStrategy = new FacebookTokenStrategy(fbOptions,
 							return done(null, newUser);
 						})
 						.catch((err) => {
-							return done(err, null);
+							return done(err, false);
 						});
 				}
 			})
 			.catch((err) => {
-				done(err, null);
+				done(err, false);
 			});
-	});
+});
 
 passport.use('facebookToken', facebookStrategy);
+
+const googleOptions = {
+	clientID: process.env.GOOGLE_ID,
+	clientSecret: process.env.GOOGLE_SECRET
+}
+
+const googleStrategy = new GoogleTokenStrategy(googleOptions, 
+	(accessToken, refreshToken, profile, done) => {
+		User.findOne({ googleID: profile.id })	
+			.then((user) => {
+				// if google user exists in db, return back user details
+				if (user) {
+					return done(null, user);
+
+				// if google user doesn't exist, create in db and return user details
+				} else {
+					const newUser = new User({
+						username: profile.displayName,
+						email: profile.emails[0].value,
+						googleID: profile.id
+					});
+
+					newUser.save()
+						.then(() => {
+							return done(null, newUser);
+						})
+						.catch((err) => {
+							return done(err, false);
+						});
+				}
+			})
+			.catch((err) => {
+				done(err, false);
+			});
+});
+
+passport.use('googleToken', googleStrategy);
