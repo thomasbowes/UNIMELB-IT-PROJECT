@@ -17,37 +17,37 @@ class Footer extends Component {
                         <div id="main-footer__contacts-label">Contact Us:</div>
                         <ul className="main-footer__contacts">
                             <li className="main-footer__contact">
-                                <a href="#">support@folio.exchange</a>
+                                <a href="#support">support@folio.exchange</a>
                             </li>
                             <li className="main-footer__contact">
-                                <a href="#">0400 000 000</a>
+                                <a href="#contact">0400 000 000</a>
                             </li>
                             <li className="main-footer__contact">
-                                <a href="#">(03) 9999 0000</a>
+                                <a href="#contact">(03) 9999 0000</a>
                             </li>
                             <ul className="main-footer__socials">
                                 <li className="main-footer__social">
-                                    <a href="#">
+                                    <a href="#facebook">
                                         <img src={FacebookIcon} alt="facebook/link/icon" />
                                     </a>
                                 </li>
                                 <li className="main-footer__social">
-                                    <a href="#">
+                                    <a href="#youtube">
                                         <img src={YoutubeIcon} alt="youtube/link/icon" />
                                     </a>
                                 </li>
                                 <li className="main-footer__social">
-                                    <a href="#">
+                                    <a href="#linkedin">
                                         <img src={LinkedInIcon} alt="linkedin/link/icon" />
                                     </a>
                                 </li>
                                 <li className="main-footer__social">
-                                    <a href="#">
+                                    <a href="#twitter">
                                         <img src={TwitterIcon} alt="twitter/link/icon" />
                                     </a>
                                 </li>
                                 <li className="main-footer__social">
-                                    <a href="#">
+                                    <a href="#instagram">
                                         <img src={InstagramIcon} alt="instagram/link/icon" />
                                     </a>
                                 </li>
@@ -56,13 +56,13 @@ class Footer extends Component {
                     </div>
                     <ul className="main-footer__important-links">
                         <li className="main-footer__important-link">
-                            <a href="#">COOKIES POLICY</a>
+                            <a href="#policy">COOKIES POLICY</a>
                         </li>
                         <li className="main-footer__important-link">
-                            <a href="#">TERMS AND CONDITIONS</a>
+                            <a href="#terms">TERMS AND CONDITIONS</a>
                         </li>
                         <li className="main-footer__important-link">
-                            <a href="#">PRIVACY POLICY</a>
+                            <a href="#policy">PRIVACY POLICY</a>
                         </li>
                     </ul>
                 </nav>
