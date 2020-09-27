@@ -6,7 +6,7 @@ main {
 .product-promo {
     background: url("../../assets/images/aurora.jpg") center/cover no-repeat border-box,
     #ff1b68;
-    height: calc(100vh - 6.428rem);
+    height: calc(100vh - 2.5rem);
     margin-top: 0;
 }
 
@@ -219,6 +219,12 @@ main {
 
 /* for mobile */
 @media (max-width: 40rem) {
+
+    .product-promo__slogan {
+        bottom: 50%;
+        left: 3%;
+    }
+
     .feature-list {
         flex-direction: column;
         justify-content: center;
