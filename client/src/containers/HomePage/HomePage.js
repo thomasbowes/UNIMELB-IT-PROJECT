@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
+
 import './HomePage.css'
+
 import easy from "../../assets/shapes/easy.svg"
 import share from "../../assets/shapes/share.svg"
 import computer from "../../assets/shapes/computer.svg"
