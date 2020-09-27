@@ -52,7 +52,7 @@ class MemberCard extends Component{
         return (
             <div className="Card">
                 <img src={this.state.image} alt="Keizo" width="100%"></img>
-                <p class="title">{this.state.name}</p>
+                <p className="title">{this.state.name}</p>
                 <p>{this.state.work}</p>
                 <p>{this.state.email}</p>
                 <p>{unimelb}</p>

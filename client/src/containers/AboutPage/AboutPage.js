@@ -11,13 +11,13 @@ class AboutPage extends Component{
                     app for guaduates to upload/show their works, and for employers to search for the portfolio of potential employees.
                 </p>
 
-                <ul></ul>
-
-                <MemberCard name="Thomas"/>
-                <MemberCard name="Song"/>
-                <MemberCard name="Ray"/>
-                <MemberCard name="Lily"/>
-                <MemberCard name="Keizo"/>
+                <div className="AboutPage__member-list">
+                    <MemberCard name="Thomas"/>
+                    <MemberCard name="Song"/>
+                    <MemberCard name="Ray"/>
+                    <MemberCard name="Lily"/>
+                    <MemberCard name="Keizo"/>
+                </div>
             </div>
         );
     };

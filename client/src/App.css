@@ -1,9 +1,13 @@
 .App {
-    background-color: #f0f0f0;
+    background-color: white;
+    font-family: "kumbh sans", sans-serif;
 }
 
+
+/* color was #f0f0f0 we can change back later, but for now i would prefer white
+also setting a default text*/
 body {
-    background-color: #f0f0f0;
+    background-color: white;
     margin: 0;
     margin-top: 2.5rem;
 }

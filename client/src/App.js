@@ -29,7 +29,7 @@ class App extends Component {
 
   render() {
     return (
-      <div class='App'>
+      <div className='App'>
         <NavBar sideDrawerClicked={this.showSideDrawerHandler} />
         <BackDrop show={this.state.showBackDrop} clicked={this.showSideDrawerHandler}/>
         <SideDrawer open={this.state.showSideDrawer} clickItem={this.showSideDrawerHandler} />
