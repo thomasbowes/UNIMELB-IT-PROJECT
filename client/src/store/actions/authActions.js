@@ -13,6 +13,10 @@ export const authStart = () => {
 
 // auth success
 export const authSuccess = (userAuthToken, message) => {
+    //stores the token into the browser
+    //JSON.stringify(userAuthToken): since local storage does not support OBJECT,
+    // so turn into string
+    localStorage.setItem('userAuthToken', JSON.stringify(userAuthToken));
     return {
         type: actionTypes.AUTH_SUCCESS,
         userAuthToken: userAuthToken,
@@ -45,11 +49,35 @@ export const auth = (email, password) => {
                 dispatch(authSuccess(response.data.userAuthToken, response.data.message));
             })
             .catch(error => {
-                //console.log(err);
-                //when code 401 is fix, manually add error message
-                //dispatch(authFail(error.message));
-                dispatch(authFail('temp message: email or pw is incorrect or both!!'));
+                //console.log(error.response.data.message);
+                dispatch(authFail(error.response.data.message));
             });
+    };
+};
+
+// auth start
+export const authLogout = () => {
+    //removes the token from the browser
+    localStorage.removeItem('userAuthToken');
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    };
+};
+
+//check if the token is stores into the local storage at the start of the website
+export const authCheckState = () => {
+    return dispatch => {
+        //get the token from local storage
+        const userAuthToken = localStorage.getItem('userAuthToken');
+
+        if(!userAuthToken) {
+            dispatch(authLogout());
+        }
+        else{
+            //JSON.parse(userAuthToken): since local storage does not support OBJECT,
+            // so transform string to object
+            dispatch(authSuccess(JSON.parse(userAuthToken), ''));
+        }
     };
 };
 

@@ -1,6 +1,8 @@
 //auth
 export {
-    auth
+    auth,
+    authLogout,
+    authCheckState
 } from './authActions';
 
 

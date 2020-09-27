@@ -63,6 +63,7 @@ const loginUser = (req, res) => {
           return res.status(200).json({
             message: 'Login successful',
             userAuthToken: {
+              userID: user._id,
               token: "Bearer " + token,
               email: user.email,
               username: user.username

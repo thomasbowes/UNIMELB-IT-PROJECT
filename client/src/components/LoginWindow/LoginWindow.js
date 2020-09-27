@@ -44,6 +44,7 @@ class LoginWindow extends Component {
                         <input type= 'password' placeholder='Password' onChange={(event) => this.setState({password: event.target.value})} />
                         <button onClick={this.loginSubmitHandler}>Log In</button>
                         <Link to={'/signup'}><button>Sign Up</button></Link>
+                        <button onClick={this.props.onLogout}>Log Out</button>
                         <button onClick={this.props.wantLogIn}>Look Around Without Logging In</button>
                     </div>
                 );
@@ -64,7 +65,8 @@ const mapStateToProps = state => {
 //bring in redux actions
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password) => dispatch( actionCreators.auth(email, password))
+        onAuth: (email, password) => dispatch( actionCreators.auth(email, password)),
+        onLogout: () => dispatch(actionCreators.authLogout())
 
     };
 };

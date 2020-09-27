@@ -10,6 +10,9 @@ import LogInPage from './containers/LogInPage/LogInPage'
 import MyPage from './containers/MyPage/MyPage';
 import './App.css'
 
+//import relevent redux things
+import { connect } from 'react-redux';
+import * as actionCreators from './store/actions/index';
 
 class App extends Component {
   state = {
@@ -24,9 +27,12 @@ class App extends Component {
     })
   }
 
+  componentDidMount() {
+      this.props.onAuthFromLocalStorage();
+  }
 
 
-  render() {
+    render() {
     return (
       <div class='App'>
         <NavBar sideDrawerClicked={this.showSideDrawerHandler} />
@@ -45,4 +51,20 @@ class App extends Component {
   }
 }
 
-export default App;
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+    };
+};
+
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuthFromLocalStorage: () => dispatch( actionCreators.authCheckState()),
+
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

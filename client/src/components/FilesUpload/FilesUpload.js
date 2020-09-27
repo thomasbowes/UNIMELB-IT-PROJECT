@@ -3,6 +3,10 @@ import axios from 'axios';
 
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 
+//import relevent redux things
+import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
+
 class FilesUpload extends Component {
 
     state = {
@@ -38,14 +42,21 @@ class FilesUpload extends Component {
         const formData = new FormData();
         formData.append('file', this.state.file);
 
+        //construct and add auth token to header
+        let authToken;
+        if(!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
         //set the loading to true
         this.setState({loading: true});
 
         try {
             //post the file
-            const res = await axios.post('http://localhost:5000/api/portfolio/upload', formData, {
+            await axios.post('http://localhost:5000/api/portfolio/upload', formData,  {
+                //config the http request header with content-type and Authorization header
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': authToken
                 },
                 //store progression percentage to state //for future use
                 onUploadProgress: progressEvent => {
@@ -56,11 +67,12 @@ class FilesUpload extends Component {
                 }
             })
                 .then( (response) => {
-                    console.log(response);
-
                     this.setState({message: response.data.status});
 
-                });
+                })
+                .catch((error) => {
+                        this.setState({message: error.response.data});
+                    });
 
             //remove file details
             this.setState({file: null, filename: ''});
@@ -137,4 +149,19 @@ class FilesUpload extends Component {
     }
 }
 
-export default FilesUpload;
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+        userAuthToken: state.auth.userAuthToken
+    };
+};
+
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilesUpload);
