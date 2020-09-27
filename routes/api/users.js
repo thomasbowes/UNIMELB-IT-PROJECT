@@ -86,7 +86,7 @@ router.route('/alluser')
  * }
  */
 router.route('/register')
-    .post(usersController.registerNewUser);
+    .post(usersController.checkBody, usersController.registerNewUser);
 
 
 router.route('/confirmation/:userId')
