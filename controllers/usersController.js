@@ -1,9 +1,31 @@
 const bcrypt  = require('bcryptjs');
 const nodemailer = require("nodemailer");
+const validator = require('validator');
+
 // needed to generate and sign token 
 const jwt = require('jsonwebtoken');
 
 const User = require('./../models/Users');
+
+// Middleware to check the input body is ok
+const checkBody = (req, res, next) => {
+  
+  // Check the required fields are not missing from input
+  if(!req.body.username || !req.body.email || !req.body.password){
+    return res.status(400).json({
+        status: "Missing username, email, or password"
+    });                  
+  }
+
+  // Check that the input email is indeed an email
+  else if( !(validator.isEmail(req.body.email)) ){
+    return res.status(400).json({
+      status: "Invalid Email"
+    });
+  }
+
+  next();
+}
 
 
 // Get all the users
@@ -75,7 +97,7 @@ const loginUser = (req, res) => {
 
 //register new user
 const registerNewUser = function(req, res){
-
+    
     //check the email
     const email = req.body.email;
 
@@ -185,3 +207,4 @@ module.exports.loginUser = loginUser;
 module.exports.getAllUser = getAllUser;
 module.exports.userEmailConfirmation = userEmailConfirmation;
 module.exports.testUser = testUser;
+module.exports.checkBody = checkBody;
