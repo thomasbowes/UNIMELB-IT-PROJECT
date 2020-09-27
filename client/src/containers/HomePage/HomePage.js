@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import classes from './HomePage.css'
+
+import './HomePage.css'
+
 import easy from "../../assets/shapes/easy.svg"
 import share from "../../assets/shapes/share.svg"
 import computer from "../../assets/shapes/computer.svg"
@@ -11,7 +13,6 @@ class HomePage extends Component {
     }
 
     render() {
-        console.log(this.state.wantToLogIn);
         return (
             <main>
                 <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans&display=swap" rel="stylesheet"></link>  

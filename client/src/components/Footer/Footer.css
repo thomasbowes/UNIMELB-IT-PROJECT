@@ -1,0 +1,153 @@
+main {
+    min-height: calc(100vh - 2.75rem - 8.5rem);
+}
+
+.main-footer {
+    background-color: gray;
+    height: 8.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+}
+
+.main-footer nav {
+    box-sizing: border-box;
+    display: flex;  
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+#contact-us-container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 20rem;
+}
+
+#main-footer__contacts-label {
+    color: black;
+    display: table-cell;
+    font-family: "kumbh sans", sans-serif;
+    white-space: nowrap;
+    margin-top: 1.25rem;
+    font-weight: 600;
+}
+
+.main-footer__contacts {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.main-footer__contact a {
+    white-space: nowrap;
+    text-decoration: none;
+    font-family: "kumbh sans", sans-serif;
+    color: black;
+    display: table-cell;
+    padding: 0.25rem 0;
+    vertical-align: middle;
+    
+}
+
+.main-footer__socials {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    justify-content: space-between;
+}
+
+.main-footer__socials a {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    justify-content: space-between;
+}
+
+.main-footer__important-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    list-style-type: none;
+    height: inherit;
+    margin: 1rem 0;
+    padding: 0;
+}
+
+.main-footer__important-link {
+    height: inherit;
+}
+
+.main-footer__important-link a {
+
+    padding: 0;
+    text-decoration: none;
+    font-family: "kumbh sans", sans-serif;
+    color: black;
+    display: table-cell;
+    padding: 0.5rem;
+    vertical-align: middle;
+    white-space: nowrap;
+    height: inherit;
+}
+
+.color-fade {
+    background: linear-gradient(30deg, #08ed6a, #03889e 60%);
+    height: 0.5rem;
+}
+
+
+/* for really wide screens */
+@media (min-width: 120rem) {
+    .main-footer nav {
+        width: 120rem;
+        margin: 0 auto;
+        padding: 0;
+    }
+}
+
+/* for mobile */
+@media (max-width: 40rem) {
+
+    main {
+        min-height: calc(100vh - 2.75rem - 18rem);
+    }
+
+    .main-footer {
+        height: 18rem;
+    }
+
+    .main-footer nav { 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #contact-us-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .main-footer__contacts {
+        margin: 0.25rem 0;
+        align-items: center;
+    }
+
+    .main-footer__socials {
+        width: 10rem;
+    }
+
+    .main-footer__important-links {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+}
