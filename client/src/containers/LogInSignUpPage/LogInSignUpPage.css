@@ -14,9 +14,12 @@ a:hover {
     text-decoration: underline;
 }
 
-.LogInSignUpPage {
+.LoginSignupPage {
     font-family: "kumbh sans", sans-serif;
     color: black;
+}
+
+.modal {
     background: white;
     width: 60%;
     border-radius: 8px;
