@@ -5,9 +5,9 @@ import SideDrawer from './components/Navigation/SideDrawer/SideDrawer'
 import BackDrop from './components/UI/BackDrop/BackDrop'
 import {Redirect, Route} from 'react-router-dom';
 import AboutPage from './containers/AboutPage/AboutPage'
-
 import LogInSignUpPage from './containers/LogInSignUpPage/LogInSignUpPage'
 import UserFolioPage from './containers/UserFolioPage/UserFolioPage';
+import SearchPage from './containers/SearchPage/SearchPage'
 
 import Footer from './components/Footer/Footer';
 import './App.css'
@@ -63,6 +63,7 @@ class App extends Component {
 
         <Route path='/signup' exact component={LogInSignUpPage} />
         <Route path='/userfolio' component={UserFolioPage} />
+        <Route path='/search' component={SearchPage} />
         <Redirect from='/' to='/home' />
 
         <Footer />
