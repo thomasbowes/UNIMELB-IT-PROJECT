@@ -1,9 +1,9 @@
 import React from 'react';
-import { WaveLoading     } from 'react-loadingg';
+import { SolarSystemLoading     } from 'react-loadingg';
 
 const loadingAnimation = () => {
     return(
-        <WaveLoading size='large'/>
+        <SolarSystemLoading size='large'/>
     )
 }
 

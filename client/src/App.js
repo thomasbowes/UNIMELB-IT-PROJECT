@@ -12,6 +12,9 @@ import SearchPage from './containers/SearchPage/SearchPage'
 import Footer from './components/Footer/Footer';
 import './App.css'
 
+//import relevent redux things
+import { connect } from 'react-redux';
+import * as actionCreators from './store/actions/index';
 
 class App extends Component {
   state = {
@@ -42,6 +45,10 @@ class App extends Component {
       showSideDrawer: false
     })
   }
+  
+  componentDidMount() {
+      this.props.onAuthFromLocalStorage();
+  }
 
 
 
@@ -54,12 +61,10 @@ class App extends Component {
         <SideDrawer open={this.state.showSideDrawer} clickItem={this.clickBackDrop} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
         {this.state.showLoginSignUpPage? <LogInSignUpPage clickCross={this.clickBackDrop}/>: null }
 
-
-        <Route path='/home' 
-          render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler} loggedIn={this.state.loggedIn}/>
-        }/>
-
         <Switch>
+          <Route path='/home' 
+            render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler} loggedIn={this.state.loggedIn}/>
+          }/>
           <Route path='/about' component={AboutPage} />
           <Route path='/signup' exact component={LogInSignUpPage} />
           <Route path='/userfolio' component={UserFolioPage} />
@@ -74,4 +79,20 @@ class App extends Component {
   }
 }
 
-export default App;
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+    };
+};
+
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuthFromLocalStorage: () => dispatch( actionCreators.authCheckState()),
+
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
