@@ -1,10 +1,6 @@
-main {
-    min-height: calc(100vh - 2.75rem - 8.5rem);
-}
-
 .main-footer {
     background-color: gray;
-    height: 8.5rem;
+    height: 9rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -151,3 +147,4 @@ main {
 
 
 }
+

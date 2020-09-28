@@ -34,13 +34,14 @@ class App extends Component {
         <BackDrop show={this.state.showBackDrop} clicked={this.showSideDrawerHandler}/>
         <SideDrawer open={this.state.showSideDrawer} clickItem={this.showSideDrawerHandler} />
         {/* <HomePage /> */}
-
+        
         <Route path='/home' component={HomePage} />
         <Route path='/about' component={AboutPage} />
         <Route path='/signup' exact component={RegisterWindow}/>
         <Route path='/login' exact component={LogInPage} />
         <Route path='/myfolio' component={MyPage} />
         <Redirect from='/' to='/home' />
+        
 
         <Footer />
       </div>
