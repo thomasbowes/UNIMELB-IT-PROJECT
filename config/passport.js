@@ -2,8 +2,8 @@ const User = require('mongoose').model('User');
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const FacebookTokenStrategy = require('passport-facebook-token');
-const GoogleTokenStrategy = require('passport-google-token').Strategy;
+const FacebookTokenStrategy = require('passport-facebook');
+const GoogleTokenStrategy = require('passport-google-oauth20');
 
 require('dotenv').config();
 
@@ -36,7 +36,8 @@ passport.use(strategy);
 
 const fbOptions = {
 	clientID: process.env.FACEBOOK_ID,
-	clientSecret: process.env.FACEBOOK_SECRET
+	clientSecret: process.env.FACEBOOK_SECRET,
+	callbackURL: "http://localhost:5000/api/users/oauth/facebook/callback"
 };
 
 // how the passport middleware is going to authorize a request with facebook credentials	
@@ -70,11 +71,12 @@ const facebookStrategy = new FacebookTokenStrategy(fbOptions,
 			});
 });
 
-passport.use('facebookToken', facebookStrategy);
+passport.use('facebook', facebookStrategy);
 
 const googleOptions = {
 	clientID: process.env.GOOGLE_ID,
-	clientSecret: process.env.GOOGLE_SECRET
+	clientSecret: process.env.GOOGLE_SECRET,
+	callbackURL: "http://localhost:5000/api/users/oauth/google/callback"
 }
 
 const googleStrategy = new GoogleTokenStrategy(googleOptions, 
@@ -107,4 +109,4 @@ const googleStrategy = new GoogleTokenStrategy(googleOptions,
 			});
 });
 
-passport.use('googleToken', googleStrategy);
+passport.use('google', googleStrategy);

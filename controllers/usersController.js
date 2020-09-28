@@ -231,6 +231,7 @@ const testUser = (req, res) => {
   });
 };
 
+module.exports = { signToken };
 module.exports.registerNewUser = registerNewUser;
 module.exports.loginUser = loginUser;
 module.exports.getAllUser = getAllUser;

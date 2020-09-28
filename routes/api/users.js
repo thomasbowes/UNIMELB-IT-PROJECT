@@ -181,8 +181,17 @@ router.route('/login')
  *     "message": "Authentication unsuccessful"
  * }
  */
-router.route('/oauth/facebook', authenticate('/oauth/facebook', 'facebookToken'))
-	.post(usersController.oAuth);
+router.route('/oauth/facebook')
+	.get(passport.authenticate('facebook', { scope: 'email' }));
+
+router.route('/oauth/facebook/callback')
+	.get(passport.authenticate('facebook', { 
+		session: false 
+	}), (req, res) => {
+		const token = usersController.signToken(req.user);
+		res.cookie('auth', token);
+		res.redirect('http://localhost:5000');
+	});
 
 /**
  * @api {post} /oauth/google User uses google to login our website
@@ -215,7 +224,16 @@ router.route('/oauth/facebook', authenticate('/oauth/facebook', 'facebookToken')
  * }
  */
 router.route('/oauth/google')
-	.post(passport.authenticate('googleToken', { session: false }));
+	.get(passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+router.route('/oauth/google/callback')
+	.get(passport.authenticate('google', { 
+		session: false 
+	}), (req, res) => {
+		const token = usersController.signToken(req.user);
+		res.cookie('auth', token);
+		res.redirect('http://localhost:5000');
+	});
 
 /**
  * @api {get} /authenticate to see if a given token is valid
@@ -241,5 +259,4 @@ router.route('/oauth/google')
 router.route('/authenticate', authenticate('/authenticate', 'jwt'))
 	.get(usersController.testUser);
 
-module.exports.authenticate = authenticate;
 module.exports = router;
