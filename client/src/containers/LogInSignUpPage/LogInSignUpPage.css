@@ -85,7 +85,7 @@ a:hover {
     margin-top: 6rem;
   }
 
-.field-container {
+/* .field-container {
     display: flex;
     width: 100%;
     margin: 0;
@@ -110,7 +110,7 @@ a:hover {
 
 .field-container__input-field:focus {
     border: 2px solid rgba(8, 103, 150, 1);
-}
+} */
 
 .login-signup__form button {
     background-color: rgba(8, 103, 150, 1);

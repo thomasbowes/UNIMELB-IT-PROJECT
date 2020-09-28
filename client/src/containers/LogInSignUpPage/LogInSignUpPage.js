@@ -2,6 +2,11 @@ import React, {Component} from 'react'
 import bazinga from '../../assets/Pictures/bazinga.jpg'
 import './LogInSignUpPage.css'
 import LoginWindow from '../../components/LoginWindow/LoginWindow'
+import FieldContainer from './FieldContainer/FieldContainer'
+import crossIcon from '../../assets/LoginPage-icons/cross.svg';
+import emailIcon from '../../assets/LoginPage-icons/email.svg';
+import keyIcon from '../../assets/LoginPage-icons/key.svg';
+import personIcon from '../../assets/LoginPage-icons/person.svg';
 
 class LogInPage extends Component{
     state = {
@@ -36,15 +41,19 @@ class LogInPage extends Component{
                     </a>
                     <div className="login-signup__form">
                         <h1>Log In</h1>
-                        <div className="field-container">
+                        {/* <div className="field-container">
                             <img className="field-container__icon" src="images/email.svg" alt=""></img>
                             <input className="field-container__input-field" type="text" placeholder="Email" name="email" />
-                        </div>
+                        </div> */}
+
+                        <FieldContainer image={emailIcon} placeholder="Email"/>
         
-                        <div className="field-container">
+                        {/* <div className="field-container">
                             <img className="field-container__icon" src="images/key.svg" alt=""></img>
                             <input className="field-container__input-field" type="text" placeholder="Password" name="email" />
-                        </div>
+                        </div> */}
+
+                        <FieldContainer image={keyIcon} placeholder="Password"/>
         
                         <button type="button">Log In</button>
                         <button type="button">Log In with google</button>
