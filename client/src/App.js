@@ -26,6 +26,12 @@ class App extends Component {
     })
   }
 
+  showLoginSignUpPagehandler = () => {
+    this.setState({
+      showLoginSignUpPage: !this.state.showLoginSignUpPage
+    })
+  }
+
 
 
   render() {
