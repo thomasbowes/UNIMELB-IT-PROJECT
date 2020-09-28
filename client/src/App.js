@@ -6,8 +6,10 @@ import BackDrop from './components/UI/BackDrop/BackDrop'
 import {Redirect, Route} from 'react-router-dom';
 import AboutPage from './containers/AboutPage/AboutPage'
 import RegisterWindow from './components/RegisterWindow/RegisterWindow'
+
 import LogInSignUpPage from './containers/LogInSignUpPage/LogInSignUpPage'
-import MyPage from './containers/MyPage/MyPage';
+import UserFolioPage from './containers/UserFolioPage/UserFolioPage';
+
 import Footer from './components/Footer/Footer';
 import './App.css'
 
@@ -46,8 +48,10 @@ class App extends Component {
         <Route path='/home' component={HomePage} />
         <Route path='/about' component={AboutPage} />
         <Route path='/signup' exact component={RegisterWindow}/>
-        {/* <Route path='/login' exact component={LogInSignUpPage} /> */}
-        <Route path='/myfolio' component={MyPage} />
+
+
+        <Route path='/login' exact component={LogInPage} />
+        <Route path='/userfolio' component={UserFolioPage} />
         <Redirect from='/' to='/home' />
 
         <Footer />
