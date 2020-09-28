@@ -1,4 +1,5 @@
-const expect = require('chai').expect;
+const chai = require('chai');
+const expect = chai.expect;
 
 // to test our endpoints
 const request = require('supertest');
@@ -11,7 +12,7 @@ const db = require('../config/keys').testMongoURI;
 // connecting to mock database...
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true});
 
-const User = require('../models/Users');
+const User = mongoose.model('User');
 const testInput = require('./testInput');
 
 // testing our whole application 
@@ -19,13 +20,13 @@ describe('App test', () => {
 	let server;
 
 	// setting things up before testing (inputting test examples)
-	before(function () {
+	before(async function () {
 		this.timeout(15000);
 		// starting local server
 		server = app.listen(5001);
 
 		// inserting all tests into mock database
-		return User.insertMany(testInput.tests);
+		await User.insertMany(testInput.tests);
 	});
 
 	// after finishing tests, delete all records in mock db and closing server
@@ -44,6 +45,72 @@ describe('App test', () => {
 			this.timeout(15000);
 			request(app)
 				.get('/api/users/alluser')
+				.expect('Content-Type', /json/)
+				.expect(200, done);
+		});
+	});
+
+	describe("Authenticate JWT", function() {
+		it("Incorrect JWT provided", function(done) {
+			request(app)
+				.get('/api/users/authenticate')
+				.set("Authorization", testInput.authInvalidToken)
+				.expect({
+					message: "Authentication unsuccessful"
+				})
+				.expect(401, done);
+		});
+
+		it("Bearer header not provided", function(done) {
+			request(app)
+				.get('/api/users/authenticate')
+				.set("Authorization", testInput.authBearerNotProvided)
+				.expect('Content-Type', /json/)
+				.expect({
+					message: "Authentication unsuccessful"
+				})
+				.expect(401, done);
+		});
+	});
+
+	describe("Login a user into our website", function() {
+		it("User logins in with incorrect email", function(done) {
+			request(app)
+				.post('/api/users/login')
+				.send(testInput.loginInvalidEmail)
+				.expect('Content-Type', /json/)
+				.expect({
+					message: 'Email or Password is incorrect'
+				})
+				.expect(401, done);
+		});
+
+		it("User logins in with incorrect password", function(done) {
+			request(app)
+				.post('/api/users/login')
+				.send(testInput.loginInvalidPassword)
+				.expect('Content-Type', /json/)
+				.expect({
+					message: 'Email or Password is incorrect'
+				})
+				.expect(401, done);
+		});
+
+		it("User puts correct credentials but did not confirm email", function(done) {
+			request(app)
+				.post('/api/users/login')
+				.send(testInput.loginEmailNotConfirm)
+				.expect('Content-Type', /json/)
+				.expect({
+					message: 'Confirm your email'
+				})
+				.expect(401, done);
+		});
+
+		it("User logs in successfully", function(done) {
+			request(app)
+				.post('/api/users/login')
+				.send(testInput.loginOkay)
 				.expect('Content-Type', /json/)
 				.expect(200, done);
 		});
