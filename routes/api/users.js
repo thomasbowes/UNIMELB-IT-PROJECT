@@ -20,7 +20,7 @@ const authenticate = (route, stratType) => {
 			// not sure if this is really needed 
 			if (!user) {
 				return res.status(401).json({
-					message: "Authentication unsuccessful",
+					message: "Authentication unsuccessful"
 				});
 			}
 
