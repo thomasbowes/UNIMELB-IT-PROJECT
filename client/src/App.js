@@ -24,14 +24,23 @@ class App extends Component {
 
   showSideDrawerHandler = () => {
     this.setState({
-      showBackDrop: !this.state.showBackDrop,
+      showBackDrop: true,
       showSideDrawer: !this.state.showSideDrawer
     })
   }
 
   showLoginSignUpPagehandler = () => {
     this.setState({
-      showLoginSignUpPage: !this.state.showLoginSignUpPage
+      showLoginSignUpPage: !this.state.showLoginSignUpPage,
+      showBackDrop: true
+    })
+  }
+
+  clickBackDrop = () => {
+    this.setState({
+      showBackDrop: false,
+      showLoginSignUpPage: false,
+      showSideDrawer: false
     })
   }
 
@@ -42,9 +51,9 @@ class App extends Component {
     return (
       <div className='App'>
         <NavBar sideDrawerClicked={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
-        <BackDrop show={this.state.showBackDrop} clicked={this.showSideDrawerHandler}/>
-        <SideDrawer open={this.state.showSideDrawer} clickItem={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
-        {this.state.showLoginSignUpPage? <LogInSignUpPage clickCross={this.showLoginSignUpPagehandler}/>: null }
+        <BackDrop show={this.state.showBackDrop} clicked={this.clickBackDrop}/>
+        <SideDrawer open={this.state.showSideDrawer} clickItem={this.clickBackDrop} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
+        {this.state.showLoginSignUpPage? <LogInSignUpPage clickCross={this.clickBackDrop}/>: null }
 
         <Route path='/home' 
           render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler} loggedIn={this.state.loggedIn}/>
