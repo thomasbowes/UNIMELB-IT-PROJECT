@@ -29,8 +29,9 @@
     "npm-check-updates": "^9.0.1",
     "passport": "^0.4.1",
     "passport-facebook-token": "^4.0.0",
-    "passport-jwt": "^4.0.0",
     "streamifier": "^0.1.1"
+    "passport-jwt": "^4.0.0",
+    "validator": "^13.1.17"
   },
   "devDependencies": {
     "apidoc": "^0.25.0",

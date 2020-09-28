@@ -1,15 +1,49 @@
 .AboutPage{
     text-align: center;
+    background-color: white;
+    width: 100%;
 }
 
-.AboutPage MemberCard {
-    display: inline;
+.AboutPage h1 {
+    font-weight: bold;
+    font-size: 2.5rem;
 }
 
 .AboutPage .text {
-    width: 60%;
+    width: 100%;
     text-align: center;
     margin: auto;
-    font-weight: bold;
-    font-family: monospace;
+    font-size: 1.4rem;
+    box-sizing: border-box;
+    padding: 0 5%;
+}
+
+.AboutPage__member-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0 5%;
+    padding-top: 3rem;
+    box-sizing: border-box;
+    margin: auto;
+}
+
+/* for larger screens */
+@media (min-width: 100rem) {
+    .AboutPage .text {
+        width: 100rem;
+    }
+
+    .AboutPage__member-list {
+        width: 100rem;
+    }
+}
+
+/* for mobile */
+@media (max-width: 40rem) {
+    .AboutPage__member-list {
+        padding: 0 1%;
+    }
 }

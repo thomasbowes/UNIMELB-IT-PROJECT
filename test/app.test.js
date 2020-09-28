@@ -12,6 +12,7 @@ const db = require('../config/keys').testMongoURI;
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const User = require('../models/Users');
+const testInput = require('./testInput');
 
 // testing our whole application 
 describe('App test', () => {
@@ -19,44 +20,101 @@ describe('App test', () => {
 
 	// setting things up before testing (inputting test examples)
 	before(function () {
-		const tests = [
-			{
-				username: 'tester1',
-				password: 'lkjfklajfa98awjfk',
-				email: 'tester1@mail.com',
-				confirm: true,
-				isAdmin: false
-			},
-			{
-				username: 'tester2',
-				password: 'laksdfjklhhwhfuwhfhwuifh',
-				email: 'tester2@mail.com',
-				confirm: false,
-				isAdmin: false
-			}
-		]
-
+		this.timeout(15000);
 		// starting local server
 		server = app.listen(5001);
 
 		// inserting all tests into mock database
-		return User.insertMany(tests);
+		return User.insertMany(testInput.tests);
 	});
 
 	// after finishing tests, delete all records in mock db and closing server
+	
 	after(async function() {
+		this.timeout(15000);
 		await User.deleteMany({});
 		await mongoose.connection.close();
 		await server.close();
 	});
+	
 
 	// tests whether server returns all users in database
 	// P.S this function isn't done yet, needs more tests 
 	describe("Getting all users from database", () => {
-		it("getting all users", function() {
-			return request(app)
+		it("Getting all existing users", function(done) {
+			this.timeout(15000);
+			request(app)
 				.get('/api/users/alluser')
-				.expect(200);
+				.expect('Content-Type', /json/)
+				.expect(200, done);
 		});
-	});	
+	});
+	
+	// Tests if a POST request (i.e. register) will be made successfully
+	describe("Register a new user in the database", function () {
+
+		it("Register new user with unique email", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.newUser)
+				.expect('Content-Type', /json/)
+				.expect(201, done);
+		});
+
+		it("Register new user with duplicated email", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.newUserDupEmail)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Email is already registered"
+				})
+				.expect(200, done);
+		});
+
+		it("Register new user without username", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.newUserNoName)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing username, email, or password"
+				})
+				.expect(400, done)
+		});
+
+		it("Register new user without email", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.newUserNoEmail)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing username, email, or password"
+				})
+				.expect(400, done)
+		});
+
+		it("Register new user without password", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.newUserNoPassword)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing username, email, or password"
+				})
+				.expect(400, done)
+		});
+		
+		it("Register new user with invalid email", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.newUserInvalidEmail)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Invalid Email"
+				})
+				.expect(400, done)
+		});
+
+	});
 });

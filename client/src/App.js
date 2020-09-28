@@ -8,6 +8,7 @@ import AboutPage from './containers/AboutPage/AboutPage'
 import RegisterWindow from './components/RegisterWindow/RegisterWindow'
 import LogInPage from './containers/LogInPage/LogInPage'
 import MyPage from './containers/MyPage/MyPage';
+import Footer from './components/Footer/Footer';
 import './App.css'
 
 //import relevent redux things
@@ -34,7 +35,7 @@ class App extends Component {
 
     render() {
     return (
-      <div class='App'>
+      <div className='App'>
         <NavBar sideDrawerClicked={this.showSideDrawerHandler} />
         <BackDrop show={this.state.showBackDrop} clicked={this.showSideDrawerHandler}/>
         <SideDrawer open={this.state.showSideDrawer} clickItem={this.showSideDrawerHandler} />
@@ -46,6 +47,8 @@ class App extends Component {
         <Route path='/login' exact component={LogInPage} />
         <Route path='/myfolio' component={MyPage} />
         <Redirect from='/' to='/home' />
+
+        <Footer />
       </div>
     );
   }
