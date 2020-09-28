@@ -4,6 +4,7 @@ const validator = require('validator');
 
 // needed to generate and sign token 
 const jwt = require('jsonwebtoken');
+
 const User = require('mongoose').model('User');
 
 // if auth is successful, create a token
@@ -66,7 +67,7 @@ const loginUser = (req, res) => {
       // in the case that empty array is received (no user exists)
       if (!user) {
         return res.status(401).json({
-          message: 'Email or Password is incorrect.'
+          message: 'Email or Password is incorrect'
         })
       }
       /* comparing passwords between database and given request 
@@ -74,25 +75,30 @@ const loginUser = (req, res) => {
       bcrypt.compare(req.body.password, user.password, (err, response) => {
         if (err) {
           return res.status(401).json({
-            message: 'Email or Password is incorrect.'
+            message: 'Email or Password is incorrect'
           })
         }
         if (response) {
-          // generation and signature of token - EXPIRES IN 1 HOUR 
-          // FAIR WARNING - TOKEN IS ENCODED, NOT ENCRYPTED!!!!!!!
-          const token = signToken(user);
-          return res.status(200).json({
-            message: 'Login successful',
-            userAuthToken: {
-              token: "Bearer " + token,
-              email: user.email,
-              username: user.username
-            }
-          })
+          if (user.confirm) {
+            const token = signToken(user);
+            return res.status(200).json({
+              message: 'Login successful',
+              userAuthToken: {
+                userID: user._id,
+                token: "Bearer " + token,
+                email: user.email,
+                username: user.username
+              }
+            });
+          } else {
+            return res.status(401).json({
+              message: "Confirm your email"
+            });
+          }
         }
         return res.status(401).json({
-          message: 'Email or Password is incorrect.'
-        })
+          message: 'Email or Password is incorrect'
+        });
       });
     })
     .catch(err => {
@@ -218,11 +224,10 @@ const oAuth = (req, res) => {
   }
 };
 
-// THIS IS FOR TESTING PURPOSE (to test if token can be authorized)
+// to test if token is valid
 const testUser = (req, res) => {
   res.status(200).json({
-    success: true,
-    msg: "Authorization successful"
+    message: "Token is valid"
   });
 };
 

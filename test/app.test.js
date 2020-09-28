@@ -20,7 +20,7 @@ describe('App test', () => {
 
 	// setting things up before testing (inputting test examples)
 	before(function () {
-
+		this.timeout(15000);
 		// starting local server
 		server = app.listen(5001);
 
@@ -31,34 +31,17 @@ describe('App test', () => {
 	// after finishing tests, delete all records in mock db and closing server
 	
 	after(async function() {
+		this.timeout(15000);
 		await User.deleteMany({});
 		await mongoose.connection.close();
 		await server.close();
-	});
-
-	describe("Authenticating user via facebook auth", () => {
-		// TEST UNSTABLE, NOT SURE IF FB TOKEN CAN EXPIRE
-		it("Correct access token supplied", function(done) {
-			request(app)
-				.post('/api/users/oauth/facebook')
-				.send(testInput.correctFbCreds)
-				.expect('Content-Type', /json/)
-				.expect(200, done);
-		});
-
-		it("Incorrect access token supplied", function(done) {
-			request(app)
-				.post('/api/users/oauth/facebook')
-				.send(testInput.incorrectFbCreds)
-				.expect('Content-Type', /json/)
-				.expect(401, done);
-		});
 	});
 
 	// tests whether server returns all users in database
 	// P.S this function isn't done yet, needs more tests 
 	describe("Getting all users from database", () => {
 		it("Getting all existing users", function(done) {
+			this.timeout(15000);
 			request(app)
 				.get('/api/users/alluser')
 				.expect('Content-Type', /json/)

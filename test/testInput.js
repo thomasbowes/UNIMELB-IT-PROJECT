@@ -16,21 +16,6 @@ exports.tests = [
     }
 ]
 
-// MAY EXPIRE ANYTIME, INPUT UNSTABLE
-exports.correctFbCreds = {
-    access_token: `EAALIqkOxw2EBAFrYahcxTdOlXxaWKyj
-                   cjXTSc13O6qaMwQ63sVHFEhIwPjEr1pq
-                   MTnGwlLIyMRhunuXMruKza4cgQkYmF7u
-                   rRdMRCUQZCpDZA8PTXs6ZArxoZB071GW
-                   P9SxN2ZB1ZASCejJqPFBQI3uOCnNYteJ
-                   gfICLRvSmv5ddmxhBEhj366OZBZC9MIq
-                   ykeYxTe5Mj7NYmAZDZD`
-}
-
-exports.incorrectFbCreds = {
-    access_token: `itsamemario`
-}
-
 // Inputs for Register users functionality
 exports.newUser = {
     username: 'TinTin',

@@ -83,8 +83,24 @@
     }
 }
 
+
 @media (max-width: 40rem) {
-    .NavBarItems {
-        display: none;
+    .NavBarItems{
+        display: none; 
+        margin: 0 auto;
+        margin-top: 1rem;
+        padding-left: 0;
+        max-width: 90%;
     }
+
+    .search-bar {
+        width: 100%;
+        margin: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .search-bar input[type=text] {
+        box-sizing: border-box;
+    }
+    
 }

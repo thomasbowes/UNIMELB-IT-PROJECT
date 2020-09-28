@@ -217,9 +217,29 @@ router.route('/oauth/facebook', authenticate('/oauth/facebook', 'facebookToken')
 router.route('/oauth/google')
 	.post(passport.authenticate('googleToken', { session: false }));
 
-// THIS IS FOR TESTING (TO MAKE SURE THAT TOKENS ARE VALIDATED)
-// authentication middleware passed here to make sure if token is valid
-router.route('/test', authenticate('/test', 'jwt'))
+/**
+ * @api {get} /authenticate to see if a given token is valid
+ * @apiName AuthenticateToken
+ * @apiGroup Users
+ *
+ * @apiSuccess {String} message token is valid
+ * 
+ * @apiSuccessExample Successful Response:
+ * HTTP/1.1 200
+ * {
+ *     "message": "Token is valid"
+ * }
+ * 
+ * @apiError InvalidToken token is not valid
+ * 
+ * @apiErrorExample Error-Response: 
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *     "message": "Authentication unsuccessful"
+ * }
+ */
+router.route('/authenticate', authenticate('/authenticate', 'jwt'))
 	.get(usersController.testUser);
 
+module.exports.authenticate = authenticate;
 module.exports = router;

@@ -11,6 +11,9 @@ import MyPage from './containers/MyPage/MyPage';
 import Footer from './components/Footer/Footer';
 import './App.css'
 
+//import relevent redux things
+import { connect } from 'react-redux';
+import * as actionCreators from './store/actions/index';
 
 class App extends Component {
   state = {
@@ -25,22 +28,26 @@ class App extends Component {
     })
   }
 
+  componentDidMount() {
+      this.props.onAuthFromLocalStorage();
+  }
 
 
-  render() {
+    render() {
     return (
       <div className='App'>
         <NavBar sideDrawerClicked={this.showSideDrawerHandler} />
         <BackDrop show={this.state.showBackDrop} clicked={this.showSideDrawerHandler}/>
         <SideDrawer open={this.state.showSideDrawer} clickItem={this.showSideDrawerHandler} />
         {/* <HomePage /> */}
-
+        
         <Route path='/home' component={HomePage} />
         <Route path='/about' component={AboutPage} />
         <Route path='/signup' exact component={RegisterWindow}/>
         <Route path='/login' exact component={LogInPage} />
         <Route path='/myfolio' component={MyPage} />
         <Redirect from='/' to='/home' />
+        
 
         <Footer />
       </div>
@@ -48,4 +55,20 @@ class App extends Component {
   }
 }
 
-export default App;
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+    };
+};
+
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuthFromLocalStorage: () => dispatch( actionCreators.authCheckState()),
+
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
