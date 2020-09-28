@@ -51,13 +51,12 @@ class NavBarItems extends Component {
                 <div className="search-bar">
                     <input type="text" placeholder="Search..." onKeyPress={this.handleKeyPress}/>
                 </div>
-
-                {this.state.loggedIn ? this.myProfileButton: this.logInSignUpButtons}
-
+                
                 <li className="main-nav__item">
                     <NavLink to='/about' exact onClick={this.props.click}>About</NavLink>
                 </li>
 
+                {this.state.loggedIn ? this.myProfileButton: this.logInSignUpButtons}
             </ul>
         );
     }
