@@ -5,7 +5,6 @@ import SideDrawer from './components/Navigation/SideDrawer/SideDrawer'
 import BackDrop from './components/UI/BackDrop/BackDrop'
 import {Redirect, Route} from 'react-router-dom';
 import AboutPage from './containers/AboutPage/AboutPage'
-import RegisterWindow from './components/RegisterWindow/RegisterWindow'
 
 import LogInSignUpPage from './containers/LogInSignUpPage/LogInSignUpPage'
 import UserFolioPage from './containers/UserFolioPage/UserFolioPage';

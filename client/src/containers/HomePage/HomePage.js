@@ -18,7 +18,7 @@ class HomePage extends Component {
                         <h1>Reach for the stars!</h1>
                         <h2>Sign up to folio.exchange and shine like a star</h2>
                         <div id="slogan__cta-buttons">
-                            {this.props.loggedIn? <button className="cta-button" onClick={this.props.loginSignUpclicked}>SIGN UP</button> : null }
+                            {!this.props.loggedIn? <button className="cta-button" onClick={this.props.loginSignUpclicked}>SIGN UP</button> : null }
                             <a href="#feature-list">
                                 <button className="cta-button">LEARN MORE</button>
                             </a>
