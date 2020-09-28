@@ -17,7 +17,7 @@ class LogInPage extends Component{
                 <div className="modal">
                     <div className="modal__color-bar"></div>
                     <div className="login-signup"> 
-                        <a className="login-signup__close" href="#login-signup__close">
+                        <a className="login-signup__close" href="#login-signup__close" onClick={this.props.clickCross}>
                             <img src={crossIcon} alt="" />
                         </a>
                         <div className="login-signup__form">

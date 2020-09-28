@@ -24,7 +24,7 @@ class NavBar extends Component {
                         <div className="main-header__spacer"></div>
                     </div>
                     <nav className="main-nav"> 
-                        <NavBarItems click={this.doNothing}/>
+                        <NavBarItems click={this.doNothing} loginSignUpclicked={this.props.loginSignUpclicked}/>
                     </nav>
 
 

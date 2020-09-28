@@ -39,18 +39,18 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <NavBar sideDrawerClicked={this.showSideDrawerHandler} />
+        <NavBar sideDrawerClicked={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
         <BackDrop show={this.state.showBackDrop} clicked={this.showSideDrawerHandler}/>
-        <SideDrawer open={this.state.showSideDrawer} clickItem={this.showSideDrawerHandler} />
+        <SideDrawer open={this.state.showSideDrawer} clickItem={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
         {/* <HomePage /> */}
-        {this.state.showLoginSignUpPage? <LogInSignUpPage />: null }
+        {this.state.showLoginSignUpPage? <LogInSignUpPage clickCross={this.showLoginSignUpPagehandler}/>: null }
 
         <Route path='/home' component={HomePage} />
         <Route path='/about' component={AboutPage} />
-        <Route path='/signup' exact component={RegisterWindow}/>
+        {/* <Route path='/signup' exact component={RegisterWindow}/> */}
 
 
-        <Route path='/login' exact component={LogInPage} />
+        <Route path='/signup' exact component={LogInSignUpPage} />
         <Route path='/userfolio' component={UserFolioPage} />
         <Redirect from='/' to='/home' />
 

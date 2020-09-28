@@ -12,7 +12,7 @@ class NavBarItems extends Component {
 
     logInSignUpButtons = ( 
         <li className="main-nav__item main-nav__item--cta">
-            <NavLink to='/signup' exact onClick={this.props.click}>Login/SignUp</NavLink>
+            <NavLink to= '#loginSignIn' exact onClick={() => {this.props.click(); this.props.loginSignUpclicked()}}>Login/SignUp</NavLink>
         </li>
 
     );
