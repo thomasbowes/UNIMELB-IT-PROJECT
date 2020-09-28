@@ -7,6 +7,7 @@ import crossIcon from '../../assets/LoginPage-icons/cross.svg';
 import emailIcon from '../../assets/LoginPage-icons/email.svg';
 import keyIcon from '../../assets/LoginPage-icons/key.svg';
 import personIcon from '../../assets/LoginPage-icons/person.svg';
+import { text } from 'body-parser'
 
 class LogInPage extends Component{
     state = {
@@ -21,6 +22,9 @@ class LogInPage extends Component{
     }
 
     render() {
+        const textInput = "text";
+        const passwordInput = "password";
+
         return(
             // <div className={"LogInPage"}>
             //     { this.state.wantToLogIn ? 
@@ -41,19 +45,9 @@ class LogInPage extends Component{
                     </a>
                     <div className="login-signup__form">
                         <h1>Log In</h1>
-                        {/* <div className="field-container">
-                            <img className="field-container__icon" src="images/email.svg" alt=""></img>
-                            <input className="field-container__input-field" type="text" placeholder="Email" name="email" />
-                        </div> */}
+                        <FieldContainer image={emailIcon} placeholder="Email" inputType={textInput}/>
 
-                        <FieldContainer image={emailIcon} placeholder="Email"/>
-        
-                        {/* <div className="field-container">
-                            <img className="field-container__icon" src="images/key.svg" alt=""></img>
-                            <input className="field-container__input-field" type="text" placeholder="Password" name="email" />
-                        </div> */}
-
-                        <FieldContainer image={keyIcon} placeholder="Password"/>
+                        <FieldContainer image={keyIcon} placeholder="Password" inputType={passwordInput}/>
         
                         <button type="button">Log In</button>
                         <button type="button">Log In with google</button>
@@ -62,30 +56,16 @@ class LogInPage extends Component{
                     <div className="vertical-line"></div>
                     <div className="login-signup__form">
                         <h1>Sign Up</h1>
-                        <div className="field-container">
-                            <img className="field-container__icon" src="images/person.svg" alt=""></img>
-                            <input className="field-container__input-field" type="text" placeholder="First Name" name="email" />
-                        </div>
+
+                        <FieldContainer image={personIcon} placeholder="First Name" inputType={textInput}/>
+
+                        <FieldContainer image={personIcon} placeholder="Last Name" inputType={textInput}/>
+
+                        <FieldContainer image={emailIcon} placeholder="Email" inputType={textInput}/>
+
+                        <FieldContainer image={keyIcon} placeholder="Password" inputType={passwordInput}/>
         
-                        <div className="field-container">
-                            <img className="field-container__icon" src="images/person.svg" alt=""></img>
-                            <input className="field-container__input-field" type="text" placeholder="Last Name" name="email" />
-                        </div>
-        
-                        <div className="field-container">
-                            <img className="field-container__icon" src="images/email.svg" alt=""></img>
-                            <input className="field-container__input-field" type="text" placeholder="Email" name="email" />
-                        </div>
-        
-                        <div className="field-container">
-                            <img className="field-container__icon" src="images/key.svg" alt=""></img>
-                            <input className="field-container__input-field" type="text" placeholder="Password" name="email" />
-                        </div>
-        
-                        <div className="field-container">
-                            <img className="field-container__icon" src="images/key.svg" alt=""></img>
-                            <input className="field-container__input-field" type="text" placeholder="Confirm Password" name="email" />
-                        </div>
+                        <FieldContainer image={keyIcon} placeholder="Confirm Password" inputType={passwordInput}/>
         
         
         
