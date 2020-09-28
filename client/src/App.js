@@ -3,7 +3,7 @@ import HomePage from './containers/HomePage/HomePage';
 import NavBar from './components/Navigation/NavBar/NavBar'
 import SideDrawer from './components/Navigation/SideDrawer/SideDrawer'
 import BackDrop from './components/UI/BackDrop/BackDrop'
-import {Redirect, Route} from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import AboutPage from './containers/AboutPage/AboutPage'
 import LogInSignUpPage from './containers/LogInSignUpPage/LogInSignUpPage'
 import UserFolioPage from './containers/UserFolioPage/UserFolioPage';
@@ -54,17 +54,19 @@ class App extends Component {
         <SideDrawer open={this.state.showSideDrawer} clickItem={this.clickBackDrop} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
         {this.state.showLoginSignUpPage? <LogInSignUpPage clickCross={this.clickBackDrop}/>: null }
 
+
         <Route path='/home' 
           render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler} loggedIn={this.state.loggedIn}/>
         }/>
-        <Route path='/about' component={AboutPage} />
-        {/* <Route path='/signup' exact component={RegisterWindow}/> */}
 
-
-        <Route path='/signup' exact component={LogInSignUpPage} />
-        <Route path='/userfolio' component={UserFolioPage} />
-        <Route path='/search' component={SearchPage} />
-        <Redirect from='/' to='/home' />
+        <Switch>
+          <Route path='/about' component={AboutPage} />
+          <Route path='/signup' exact component={LogInSignUpPage} />
+          <Route path='/userfolio' component={UserFolioPage} />
+          <Route path='/search' component={SearchPage} />
+          <Redirect from='/' exact to='/home' />
+          <Route render={() => <h1>URL Not found</h1>}/>
+        </Switch>
 
         <Footer />
       </div>
