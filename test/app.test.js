@@ -20,7 +20,7 @@ describe('App test', () => {
 
 	// setting things up before testing (inputting test examples)
 	before(function () {
-
+		this.timeout(15000);
 		// starting local server
 		server = app.listen(5001);
 
@@ -31,6 +31,7 @@ describe('App test', () => {
 	// after finishing tests, delete all records in mock db and closing server
 	
 	after(async function() {
+		this.timeout(15000);
 		await User.deleteMany({});
 		await mongoose.connection.close();
 		await server.close();
@@ -41,6 +42,7 @@ describe('App test', () => {
 	// P.S this function isn't done yet, needs more tests 
 	describe("Getting all users from database", () => {
 		it("Getting all existing users", function(done) {
+			this.timeout(15000);
 			request(app)
 				.get('/api/users/alluser')
 				.expect('Content-Type', /json/)

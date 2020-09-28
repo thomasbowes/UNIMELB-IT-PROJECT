@@ -1,7 +1,3 @@
-html {
-    height: 100%;
-}
-
 body {
     margin: 0;
 
@@ -10,9 +6,6 @@ body {
 }
 
 .NavBar {
-    /* background-color: #e8e8e8;
-    overflow: hidden; */
-
     background: linear-gradient(165deg,#003A58 , rgba(8, 103, 150, 1)) 40%;
     padding: 1rem;
     width: 100%;
@@ -48,11 +41,11 @@ body {
 
 .NavBar img {
     align-content: center;
-    max-width: 25%;
-    height: auto;
+    height: 2.65rem;
     display: block;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 0.1rem;
 }
 /* 
 .NavBar a:hover{
