@@ -8,10 +8,6 @@ import computer from "../../assets/shapes/computer.svg"
 import arrow from "../../assets/shapes/arrow.svg"
 
 class HomePage extends Component {
-    state = {
-        wantToLogIn: true
-    }
-
     render() {
         return (
             <main>
@@ -22,8 +18,10 @@ class HomePage extends Component {
                         <h1>Reach for the stars!</h1>
                         <h2>Sign up to folio.exchange and shine like a star</h2>
                         <div id="slogan__cta-buttons">
-                            <button className="cta-button">SIGN UP</button>
-                            <button className="cta-button">LEARN MORE</button>
+                            {this.props.loggedIn? <button className="cta-button" onClick={this.props.loginSignUpclicked}>SIGN UP</button> : null }
+                            <a href="#feature-list">
+                                <button className="cta-button">LEARN MORE</button>
+                            </a>
                         </div>    
                     </div>
 
@@ -31,7 +29,7 @@ class HomePage extends Component {
                     
                 </section>
                 
-                <div className="feature-list">
+                <div className="feature-list" id="feature-list">
                     <article className="feature">
                         <div className="feature__image">
                             <img src={easy} alt="" />    
