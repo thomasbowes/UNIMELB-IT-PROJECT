@@ -15,7 +15,8 @@ import './App.css'
 class App extends Component {
   state = {
     showBackDrop: false,
-    showSideDrawer: false 
+    showSideDrawer: false,
+    showLoginSignUpPage: false
   }
 
   showSideDrawerHandler = () => {
@@ -34,11 +35,12 @@ class App extends Component {
         <BackDrop show={this.state.showBackDrop} clicked={this.showSideDrawerHandler}/>
         <SideDrawer open={this.state.showSideDrawer} clickItem={this.showSideDrawerHandler} />
         {/* <HomePage /> */}
+        {this.state.showLoginSignUpPage? <LogInSignUpPage />: null }
 
         <Route path='/home' component={HomePage} />
         <Route path='/about' component={AboutPage} />
         <Route path='/signup' exact component={RegisterWindow}/>
-        <Route path='/login' exact component={LogInSignUpPage} />
+        {/* <Route path='/login' exact component={LogInSignUpPage} /> */}
         <Route path='/myfolio' component={MyPage} />
         <Redirect from='/' to='/home' />
 
