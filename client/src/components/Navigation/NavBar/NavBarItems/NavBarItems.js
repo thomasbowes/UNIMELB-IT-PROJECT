@@ -1,8 +1,32 @@
 import React, {Component} from 'react';
 import './NavBarItems.css';
-import {NavLink, withRouter} from 'react-router-dom'
+import {NavLink, withRouter} from 'react-router-dom';
+import Aux from '../../../../hoc/Auxiliary/Auxiliary'
+
 
 class NavBarItems extends Component {
+
+    state = {
+        loggedIn: true
+    }
+
+    logInSignUpButtons = ( 
+        <li className="main-nav__item main-nav__item--cta">
+            <NavLink to= '#loginSignIn' exact onClick={() => {this.props.click(); this.props.loginSignUpclicked()}}>Login/SignUp</NavLink>
+        </li>
+
+    );
+
+    myProfileButton = (
+        <Aux>
+            <li className="main-nav__item">
+                <NavLink to='/userfolio' exact onClick={this.props.click}>MyFolioPage</NavLink>
+            </li>
+            <li className="main-nav__item">
+                <NavLink to='/home' exact onClick={() => {this.props.click(); this.logoutHandler()}}>Logout</NavLink>
+            </li>
+        </Aux>
+    );
 
     handleKeyPress = (event) => {
         if(event.key === 'Enter'){
@@ -10,7 +34,12 @@ class NavBarItems extends Component {
         }
     }
 
+    logoutHandler = () => {
+        this.setState({loggedIn: false});
+    }
+
     render(){
+
         return (
             <ul className="NavBarItems">
                 {/* <a href="#Home">Home</a>
@@ -22,23 +51,12 @@ class NavBarItems extends Component {
                 <div className="search-bar">
                     <input type="text" placeholder="Search..." onKeyPress={this.handleKeyPress}/>
                 </div>
-
+                
                 <li className="main-nav__item">
                     <NavLink to='/about' exact onClick={this.props.click}>About</NavLink>
                 </li>
-                <li className="main-nav__item">
-                    <NavLink to='/login' exact onClick={this.props.click}>Login</NavLink>
-                </li>
-                <li className="main-nav__item main-nav__item--cta">
-                    <NavLink to='/signup' exact onClick={this.props.click}>SignUp</NavLink>
-                </li>
 
-                {/* <NavLink to='/home' exact onClick={this.props.click}>Home</NavLink>
-                <NavLink to='/search' onClick={this.props.click}>SearchEportfolio</NavLink>
-                <NavLink to='/myfolio' onClick={this.props.click}>MyPage</NavLink>
-                <NavLink to='/about' exact onClick={this.props.click}>About</NavLink>
-                <NavLink to='/settings' exact onClick={this.props.click}>Settings</NavLink>
-                <NavLink to='/login' exact onClick={this.props.click}>Login</NavLink> */}
+                {this.state.loggedIn ? this.myProfileButton: this.logInSignUpButtons}
             </ul>
         );
     }
