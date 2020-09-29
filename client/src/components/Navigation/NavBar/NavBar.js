@@ -6,6 +6,11 @@ import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle'
 import {Link} from "react-router-dom"
 
 class NavBar extends Component {
+
+    doNothing = () => {
+
+    }
+
     render(){
         return (
             <header className="NavBar" >
@@ -19,7 +24,7 @@ class NavBar extends Component {
                         <div className="main-header__spacer"></div>
                     </div>
                     <nav className="main-nav"> 
-                        <NavBarItems />
+                        <NavBarItems click={this.doNothing} loginSignUpclicked={this.props.loginSignUpclicked}/>
                     </nav>
 
 
