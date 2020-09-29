@@ -21,7 +21,7 @@ class App extends Component {
     showBackDrop: false,
     showSideDrawer: false,
     showLoginSignUpPage: false,
-    loggedIn: true
+    loggedIn: false
   }
 
   showSideDrawerHandler = () => {
