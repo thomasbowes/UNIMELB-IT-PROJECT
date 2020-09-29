@@ -1,0 +1,25 @@
+.User {
+    margin-top: 5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    display: flex;
+    border-style: solid;
+    border-color: #003A58;
+}
+
+.UserPicture{
+    width: 15rem;
+    max-width: 100%;
+    height: auto;
+}
+
+.UserInfoHolder{
+    flex-wrap: wrap;
+}
+
+@media (max-width: 40rem) {
+    .User{
+        display: block;
+    }
+
+}
