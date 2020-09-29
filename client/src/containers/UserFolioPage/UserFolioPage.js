@@ -1,10 +1,35 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import FilesUpload from '../../components/FilesUpload/FilesUpload';
-import eggImage from '../../assets/ProfileImages/egg.jpg'
+import eggImage from '../../assets/ProfilePageDocuments/egg.jpg'
 import './UserFolioPage.css'
+import eggPdf from '../../assets/ProfilePageDocuments/eggPdf.pdf';
+
+import { Document, Page } from 'react-pdf';
 
 class UserFolioPage extends Component {
+
+    // pdfView = () => {
+    //     const [numPages, setNumPages] = useState(null);
+    //     const [pageNumber, setPageNumber] = useState(1);
+
+    //     return (
+    //         <div>
+    //             <Document
+    //                 file={eggPdf}
+    //                 onLoadSuccess={({ numPages }) => {
+    //                     setNumPages(numPages);
+    //                 }}
+    //             >
+    //                 <Page pageNumber={pageNumber} />
+    //             </Document>
+    //             <p>Page {pageNumber} of {numPages}</p>
+    //         </div>
+    //     );
+    // }
+
     render(){
+        // const pdfViwer = this.pdfView();
+
         return(
             <div className="UserFolioPage">
                 <div className="User">
@@ -27,6 +52,9 @@ class UserFolioPage extends Component {
                         </div>
                     </div>
                 </div>
+
+                {/* {pdfViwer} */}
+
                 <FilesUpload />
             </div>
         );
