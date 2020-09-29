@@ -3,40 +3,18 @@ import FilesUpload from '../../components/FilesUpload/FilesUpload';
 import eggImage from '../../assets/ProfilePageDocuments/egg.jpg'
 import './UserFolioPage.css'
 import eggPdf from '../../assets/ProfilePageDocuments/eggPdf.pdf';
+import PdfViwer from '../../components/Viewer/PdfViewer/PdfViewer';
 
-import { Document, Page } from 'react-pdf';
 
 class UserFolioPage extends Component {
-
-    // pdfView = () => {
-    //     const [numPages, setNumPages] = useState(null);
-    //     const [pageNumber, setPageNumber] = useState(1);
-
-    //     return (
-    //         <div>
-    //             <Document
-    //                 file={eggPdf}
-    //                 onLoadSuccess={({ numPages }) => {
-    //                     setNumPages(numPages);
-    //                 }}
-    //             >
-    //                 <Page pageNumber={pageNumber} />
-    //             </Document>
-    //             <p>Page {pageNumber} of {numPages}</p>
-    //         </div>
-    //     );
-    // }
-
-    render(){
-        // const pdfViwer = this.pdfView();
-
-        return(
+    render() {
+        return (
             <div className="UserFolioPage">
                 <div className="User">
                     <div className="UserPictureHolder">
                         <img className="UserPicture"src={eggImage} alt='egg' />
                     </div>
-
+    
                     <div className="UserInfoHolder">
                         <div className="UserInfo">
                             <p><b>Name: </b> Mr. Eggy</p>
@@ -52,13 +30,15 @@ class UserFolioPage extends Component {
                         </div>
                     </div>
                 </div>
-
-                {/* {pdfViwer} */}
-
+    
+                <PdfViwer file={eggPdf} />
+    
                 <FilesUpload />
             </div>
+    
         );
     }
 }
+
 
 export default UserFolioPage;
