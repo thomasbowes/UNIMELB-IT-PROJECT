@@ -1,6 +1,7 @@
 const bcrypt  = require('bcryptjs');
 const nodemailer = require("nodemailer");
 const validator = require('validator');
+const mongoose = require('mongoose');
 
 // needed to generate and sign token 
 const jwt = require('jsonwebtoken');
@@ -11,12 +12,25 @@ const User = require('mongoose').model('User');
 const signToken = (user) => {
   const token = jwt.sign({
       userId: user._id,
-      email: user.email,
       username: user.username,
       isAdmin: user.isAdmin,
       iat: Date.now()
     },  
     process.env.JWT_KEY, 
+    {
+      // IMPORTANT
+      expiresIn: "15m"
+    }
+  );
+  return token;
+};
+
+const signRefreshToken = (user) => {
+  const token = jwt.sign({
+      userId: user._id,
+      iat: Date.now()
+    },  
+    process.env.REFRESH_JWT_KEY, 
     {
       // IMPORTANT
       expiresIn: "1d"
@@ -62,7 +76,6 @@ const getAllUser = (req, res) => {
 /* Logins in user to website assuming that correct email and password is given */
 const loginUser = (req, res) => {
   User.findOne({ email: req.body.email })
-    .exec()
     .then(user => {
       // in the case that empty array is received (no user exists)
       if (!user) {
@@ -81,13 +94,15 @@ const loginUser = (req, res) => {
         if (response) {
           if (user.confirm) {
             const token = signToken(user);
+            const refreshToken = signRefreshToken(user);
             return res.status(200).json({
               message: 'Login successful',
               userAuthToken: {
                 userID: user._id,
-                token: "Bearer " + token,
                 email: user.email,
-                username: user.username
+                username: user.username,
+                token: token,
+                refresh_token: refreshToken
               }
             });
           } else {
@@ -208,34 +223,58 @@ const userEmailConfirmation = function(req, res){
     });
 };
 
-// if given credentials (either fb or google) are correct, return back a JWT
-const oAuth = (req, res) => {
-  if (req.user.err) {
-    res.status(401).json({
-      message: "Authentication failed"
+// to test if access token is valid
+const testUser = (req, res) => {
+  res.status(200).json({
+    message: "Token is valid",
+    status: true
+  });
+};
+
+// to refresh both access token and refresh token
+const refreshTokens = (req, res) => {
+  if (req.body.refresh_token) {
+    // verify if refresh token given is still valid
+    jwt.verify(req.body.refresh_token, process.env.REFRESH_JWT_KEY, (err, decoded) => {
+      if (err) {
+        res.status(401).json({
+          message: "Token is invalid",
+          status: false
+        });
+      } else {
+        User.findOne({_id: decoded.userId})
+          .then(user => {
+            const token = signToken(user);
+            const refreshToken = signRefreshToken(user);
+            res.status(201).json({
+              message: "Successfully created tokens",
+              token: token,
+              refresh_token: refreshToken,
+              status: true
+            });
+          })
+          .catch(err => {
+            res.status(500).json({
+              message: "Database error",
+              status: false,
+              error: err
+            });
+          });
+      }
     });
   } else {
-    const token = signToken(req.user);
-    res.status(200).json({
-      message: 'Authentication Successful',
-      // needed to find token (though there are other ways)
-      token: "Bearer " + token
+    res.status(401).json({
+      message: "Token not provided",
+      status: false
     });
   }
 };
 
-// to test if token is valid
-const testUser = (req, res) => {
-  res.status(200).json({
-    message: "Token is valid"
-  });
-};
-
-module.exports = { signToken };
+module.exports = { signToken, signRefreshToken };
 module.exports.registerNewUser = registerNewUser;
 module.exports.loginUser = loginUser;
 module.exports.getAllUser = getAllUser;
 module.exports.userEmailConfirmation = userEmailConfirmation;
-module.exports.oAuth = oAuth;
 module.exports.testUser = testUser;
 module.exports.checkBody = checkBody;
+module.exports.refreshTokens = refreshTokens;

@@ -6,21 +6,25 @@ const passportConf = require('../../config/passport');
 
 const usersController = require('../../controllers/usersController');
 
-// a shorthand middleware used to authenticate a given credential (JWT, fb creds)
+// a shorthand middleware used to authenticate a given JWT
 const authenticate = (route, stratType) => {
 	router.use(route, (req, res, next) => {
 		// custom callback - needed to send error in JSON format
-		passport.authenticate(stratType, (err, user, info) => {		
+		passport.authenticate(stratType, (err, user, info) => {	
+			// if some error has been encountered while verifying JWT	
 			if (err) {
 				return res.status(401).json({
-					message: "Authentication unsuccessful"
+					message: "Authentication unsuccessful",
+					status: false,
+					error: err
 				});
 			}
 
-			// not sure if this is really needed 
+			// if JWT isn't valid, return back error
 			if (!user) {
 				return res.status(401).json({
-					message: "Authentication unsuccessful"
+					message: "Token provided is invalid",
+					status: false
 				});
 			}
 
@@ -45,7 +49,7 @@ const authenticate = (route, stratType) => {
 // Chainable route handler, execute different functionalities depending on the type of request
 
 /**
- * @api {get} /api/users/alluser Get all user's info from DB
+ * @api {get} /api/users/alluser Get all users from our MongoDB database
  * @apiName GetAllUsers
  * @apiGroup Users
  *
@@ -117,7 +121,7 @@ router.route('/confirmation/:userId')
     .get(usersController.userEmailConfirmation);
 
 /**
- * @api {post} /login Login user into our website
+ * @api {post} /login Login a user into our website
  * @apiName LoginUser
  * @apiGroup Users
  *
@@ -189,7 +193,9 @@ router.route('/oauth/facebook/callback')
 		session: false 
 	}), (req, res) => {
 		const token = usersController.signToken(req.user);
+		const refreshToken = usersController.signRefreshToken(req.user);
 		res.cookie('auth', token);
+		res.cookie('refresh', refreshToken);
 		res.redirect('http://localhost:5000');
 	});
 
@@ -231,12 +237,14 @@ router.route('/oauth/google/callback')
 		session: false 
 	}), (req, res) => {
 		const token = usersController.signToken(req.user);
+		const refreshToken = usersController.signRefreshToken(req.user);
 		res.cookie('auth', token);
+		res.cookie('refresh', refreshToken);
 		res.redirect('http://localhost:5000');
 	});
 
 /**
- * @api {get} /authenticate to see if a given token is valid
+ * @api {get} /authenticate Check if an access token is still valid
  * @apiName AuthenticateToken
  * @apiGroup Users
  *
@@ -258,5 +266,43 @@ router.route('/oauth/google/callback')
  */
 router.route('/authenticate', authenticate('/authenticate', 'jwt'))
 	.get(usersController.testUser);
+
+/**
+ * @api {post} /refresh Retrieve a new access token and update refresh token
+ * @apiName RefreshTokens
+ * @apiGroup Users
+ *
+ * @apiParam {String} refresh_token refresh token provided by front-end
+ *
+ * @apiParamExample Example Body:
+ * {
+ *     "access_token": "EAljafjaojoiaewfhiafhfajKLFJhhaflj80xWGqWSPiVXSzCRMl"
+ * }
+ *
+ * @apiSuccess {String} message tokens have been created
+ * @apiSuccess {String} token access token is generated
+ * @apiSuccess {String} refresh_token refresh token is generated
+ * @apiSuccess {Boolean} status successful generation of tokens
+ * 
+ * @apiSuccessExample Successful Response:
+ * HTTP/1.1 200
+ * {
+ *     "message": "Successfully created tokens",
+ *     "token": "iojafiojeIhfoiheawfAEW9879817815789175899afhafh",
+ *     "refresh_token": "fklajfaf982rh1rhHIhi2249898fhahKJGYFHOHKGuih92839",
+ *     "status": true
+ * }
+ * 
+ * @apiError InvalidToken token is not valid
+ * 
+ * @apiErrorExample Error-Response: 
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *     "message": "Token is invalid",
+ *     "status": false
+ * }
+ */
+router.route('/refresh')
+	.post(usersController.refreshTokens);
 
 module.exports = router;

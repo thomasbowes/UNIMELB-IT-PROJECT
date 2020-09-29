@@ -18,6 +18,8 @@ const testInput = require('./testInput');
 // testing our whole application 
 describe('App test', () => {
 	let server;
+	let access_token;
+	let refresh_token;
 
 	// setting things up before testing (inputting test examples)
 	before(async function () {
@@ -47,29 +49,6 @@ describe('App test', () => {
 				.get('/api/users/alluser')
 				.expect('Content-Type', /json/)
 				.expect(200, done);
-		});
-	});
-
-	describe("Authenticate JWT", function() {
-		it("Incorrect JWT provided", function(done) {
-			request(app)
-				.get('/api/users/authenticate')
-				.set("Authorization", testInput.authInvalidToken)
-				.expect({
-					message: "Authentication unsuccessful"
-				})
-				.expect(401, done);
-		});
-
-		it("Bearer header not provided", function(done) {
-			request(app)
-				.get('/api/users/authenticate')
-				.set("Authorization", testInput.authBearerNotProvided)
-				.expect('Content-Type', /json/)
-				.expect({
-					message: "Authentication unsuccessful"
-				})
-				.expect(401, done);
 		});
 	});
 
@@ -112,7 +91,75 @@ describe('App test', () => {
 				.post('/api/users/login')
 				.send(testInput.loginOkay)
 				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					access_token = res.body.userAuthToken.token;
+					refresh_token = res.body.userAuthToken.refresh_token;
+					done();
+				});	
+		});
+	});
+
+	describe("Authenticate JWT", function() {
+		it("Incorrect JWT provided", function(done) {
+			request(app)
+				.get('/api/users/authenticate')
+				.set("Authorization", testInput.authInvalidToken)
+				.expect({
+					message: "Token provided is invalid",
+					status: false
+				})
+				.expect(401, done);
+		});
+
+		it("Bearer header not provided", function(done) {
+			request(app)
+				.get('/api/users/authenticate')
+				.set("Authorization", testInput.authBearerNotProvided)
+				.expect('Content-Type', /json/)
+				.expect({
+					message: "Token provided is invalid",
+					status: false
+				})
+				.expect(401, done);
+		});
+
+		it("Valid access token provided", function(done) {
+			request(app)
+				.get('/api/users/authenticate')
+				.set("Authorization", "Bearer " + access_token)
+				.expect('Content-Type', /json/)
+				.expect({
+					message: "Token is valid",
+					status: true
+				})
 				.expect(200, done);
+		});
+	});
+
+	describe("Retrieve new access token", function() {
+		it("Invalid refresh token is provided", function(done) {
+			request(app)
+				.post('/api/users/refresh')
+				.send(testInput.invalidRefreshToken)
+				.expect('Content-Type', /json/)
+				.expect({
+					message: "Token is invalid",
+					status: false
+				})
+				.expect(401, done);
+		});
+
+		it("Valid refresh token is provided", function(done) {
+			const postBody = {
+				refresh_token: refresh_token
+			};
+
+			request(app)
+				.post('/api/users/refresh')
+				.send(postBody)
+				.expect('Content-Type', /json/)
+				.expect(201, done);
 		});
 	});
 	

@@ -20,6 +20,10 @@ exports.authBearerNotProvided = "foaiwefhwfhiofhufhahfa91898";
 
 exports.authInvalidToken = "Bearer flaesiofhoiahao9285982ihaiof";
 
+exports.invalidRefreshToken = {
+    refresh_token: "flahfiauhuhfuha858772895iaahfih"
+};
+
 exports.loginInvalidEmail = {
     email: "aight@check.com",
     password: "123"
