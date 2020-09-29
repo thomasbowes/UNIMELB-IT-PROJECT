@@ -18,6 +18,7 @@ const PdfViewer = (props) => {
 
     return (
             <div className="PdfViewer">
+                <h1>My PDF folio</h1>
                 <Document className="Pdf"
                     file={props.file}
                     onLoadSuccess={onDocumentLoadSuccess}
@@ -25,9 +26,9 @@ const PdfViewer = (props) => {
                     <Page pageNumber={pageNumber} />
                 </Document>
                 <div className="PageChanger">
-                    <button onClick={() => setPageNumber(nextPage())}>Next Page</button>
-                    <p>Page {pageNumber} of {numPages}</p>
                     <button onClick={() => setPageNumber(lastPage())}>Last Page</button>
+                    <p>Page {pageNumber} of {numPages}</p>
+                    <button onClick={() => setPageNumber(nextPage())}>Next Page</button>
                 </div>
             </div>
 
