@@ -4,6 +4,7 @@ import eggImage from '../../assets/ProfilePageDocuments/egg.jpg'
 import './UserFolioPage.css'
 import eggPdf from '../../assets/ProfilePageDocuments/eggPdf.pdf';
 import PdfViwer from '../../components/Viewer/PdfViewer/PdfViewer';
+import PdfPreview from '../../components/Viewer/PdfPreview/PdfPreview';
 
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -73,12 +74,21 @@ class UserFolioPage extends Component {
                     </div>
                 </div>
     
+                <div className="test">
+                    <PdfPreview file={eggPdf} />
+                </div>
+    
+
+
                 <PdfViwer file={eggPdf} />
     
-                <FilesUpload />
+                
 
                 <h1>My image folio</h1>
-                <ImageGallery items={images} />
+                <ImageGallery items={images} 
+                showThumbnails={false}
+                autoPlay={true}
+                />
                 <ProfileBlockWithImage image={google2} text={text} title="Founded Eooggle" />
                 <ProfileBlockNoImage text={text} title="Founded Eooggle" />
                 <ProfileBlockTwoProject texts={[text, text]} titles={["Founded Eooggle", "Founded Eggipedia"]} />
@@ -88,7 +98,7 @@ class UserFolioPage extends Component {
                         images={[google1, google1, google2]}
                         durations={["2022-2024", "2024-2027", "2027-2???"]} />
                 
-                
+                <FilesUpload />
             </div>
     
         );
