@@ -12,6 +12,11 @@ import SearchPage from './containers/SearchPage/SearchPage'
 import Footer from './components/Footer/Footer';
 import './App.css'
 
+//import for dark mode
+import {ThemeProvider} from "styled-components";
+import { GlobalStyles } from "./components/Style/GlobalStyles/globalStyles";
+import { lightTheme, darkTheme } from "./components/Style/Themes/Themes"
+
 //import relevent redux things
 import { connect } from 'react-redux';
 import * as actionCreators from './store/actions/index';
@@ -21,8 +26,13 @@ class App extends Component {
     showBackDrop: false,
     showSideDrawer: false,
     showLoginSignUpPage: false,
-    loggedIn: false
+    loggedIn: false,
+
+    theme: 'light'
   }
+
+  themeToggler = () => {
+    this.state.theme === 'light' ?  this.setState({theme: 'dark'}): this.setState({theme: 'light'})}
 
   showSideDrawerHandler = () => {
     this.setState({
@@ -55,26 +65,34 @@ class App extends Component {
   render() {
 
     return (
-      <div className='App'>
-        <NavBar sideDrawerClicked={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
-        <BackDrop show={this.state.showBackDrop} clicked={this.clickBackDrop}/>
-        <SideDrawer open={this.state.showSideDrawer} clickItem={this.clickBackDrop} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
-        {this.state.showLoginSignUpPage? <LogInSignUpPage clickCross={this.clickBackDrop}/>: null }
+      <ThemeProvider theme={this.state.theme === 'light' ? lightTheme : darkTheme}>
+        <>
+        <GlobalStyles/>
+          <div className='App'>
+            <button onClick={this.themeToggler}>Switch Theme</button>
+            <NavBar sideDrawerClicked={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
+            <BackDrop show={this.state.showBackDrop} clicked={this.clickBackDrop}/>
+            <SideDrawer open={this.state.showSideDrawer} clickItem={this.clickBackDrop} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
+            {this.state.showLoginSignUpPage? <LogInSignUpPage clickCross={this.clickBackDrop}/>: null }
 
-        <Switch>
-          <Route path='/home' 
-            render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler} loggedIn={this.state.loggedIn}/>
-          }/>
-          <Route path='/about' component={AboutPage} />
-          <Route path='/signup' exact component={LogInSignUpPage} />
-          <Route path='/userfolio' component={UserFolioPage} />
-          <Route path='/search' component={SearchPage} />
-          <Redirect from='/' exact to='/home' />
-          <Route render={() => <h1>URL Not found</h1>}/>
-        </Switch>
+            <Switch>
+              <Route path='/home' 
+                render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler} loggedIn={this.state.loggedIn}/>
+              }/>
+              <Route path='/about' component={AboutPage} />
+              <Route path='/signup' exact component={LogInSignUpPage} />
+              <Route path='/userfolio' component={UserFolioPage} />
+              <Route path='/search' component={SearchPage} />
+              <Redirect from='/' exact to='/home' />
+              <Route render={() => <h1>URL Not found</h1>}/>
+            </Switch>
 
-        <Footer />
-      </div>
+            <Footer />
+          </div>
+        </>
+    </ThemeProvider>
+
+      
     );
   }
 }
