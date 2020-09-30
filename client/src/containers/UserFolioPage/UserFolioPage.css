@@ -1,0 +1,88 @@
+
+.UserFolioPage {
+    background-color: #F3F6F8;
+    height: 1000rem;
+}
+
+
+.User-info {
+    background-color: white;
+    width: 90%;
+    max-width: 108rem;
+    margin: 1rem auto;
+    margin-top: 5rem;
+    display: flex;
+    border: 1px solid rgba(0, 58, 88, 0.2);
+    height: 15rem;
+    align-items: flex-start;
+    overflow-y: hidden;
+}
+
+.User-info:hover {
+    border: 1px solid rgba(0, 58, 88, 0.8);
+    background: #fbfbfb;
+}
+
+.UserPicture{
+    width: 15rem;
+    height: 15rem;
+    margin:  auto 0;
+}
+
+.UserPicture img{
+    width: 15rem;
+    height: 15rem;
+}
+
+/* .UserInfoHolder{
+    flex-wrap: wrap;
+} */
+
+.UserInfoHolder {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+}
+
+.UserInfoHolder h1{
+    margin: 0;
+    margin-bottom: 0.5rem;
+    
+}
+
+.UserInfoHolder h2{
+    margin: 0;
+}
+
+.UserInfoHolder p {
+    height: auto;
+}
+
+.ImageGallery {
+    width: 90%;
+    max-width: 108rem;
+    margin: 0 auto;
+}
+
+.image-gallery-slide {
+    background-color: grey;
+}
+
+.image-gallery-slide img {
+    width: 100%;
+    height: 300px;
+
+}
+@media (max-width: 40rem) {
+    /* .User{
+        display: block;
+    } */
+    .User-info {
+        flex-direction: column;
+        align-items: center;
+        height: 30rem;
+    }
+
+}
