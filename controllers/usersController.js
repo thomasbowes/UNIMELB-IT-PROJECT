@@ -270,24 +270,41 @@ const refreshTokens = (req, res) => {
           status: false
         });
       } else {
-        User.findOne({_id: decoded.userId})
-          .then(user => {
-            const token = signToken(user);
-            const refreshToken = signRefreshToken(user);
-            res.status(201).json({
-              message: "Successfully created tokens",
-              token: token,
-              refresh_token: refreshToken,
-              status: true
-            });
-          })
-          .catch(err => {
-            res.status(500).json({
-              message: "Database error",
-              status: false,
-              error: err
-            });
-          });
+        // optimised code, don't need to search database EVERYTIME
+
+        const user = {
+          _id: decoded.userId,
+          username: decoded.username,
+          isAdmin: decoded.isAdmin,
+        };
+
+        const token = signToken(user);
+        const refreshToken = signRefreshToken(user);
+        res.status(201).json({
+          message: "Successfully created tokens",
+          token: token,
+          refresh_token: refreshToken,
+          status: true
+        });
+
+        // User.findOne({_id: decoded.userId})
+        //   .then(user => {
+        //     const token = signToken(user);
+        //     const refreshToken = signRefreshToken(user);
+        //     res.status(201).json({
+        //       message: "Successfully created tokens",
+        //       token: token,
+        //       refresh_token: refreshToken,
+        //       status: true
+        //     });
+        //   })
+        //   .catch(err => {
+        //     res.status(500).json({
+        //       message: "Database error",
+        //       status: false,
+        //       error: err
+        //     });
+        //   });
       }
     });
   } else {
