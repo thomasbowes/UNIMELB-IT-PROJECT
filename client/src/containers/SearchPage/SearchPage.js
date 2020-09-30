@@ -7,11 +7,9 @@ class SearchPage extends Component {
 
     cssName = () => {
         if (true) {
-            return import('./SearchPage.css')
+            return import('./SearchPage.css');
         }
-        else{
-            return import('./SearchPage.css')
-        }
+        return import('./SearchPage.css');
       };
 
     render(){
