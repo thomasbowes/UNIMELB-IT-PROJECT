@@ -37,7 +37,7 @@ class LogInPage extends Component{
             password: this.state.registerPassword
         };
 
-        axios.post('http://localhost:5000/api/users/register', data)
+        axios.post('https://folioexchangetest.herokuapp.com/home/api/users/register', data)
             .then(response => {
                 this.setState({registerMessage: response.data.status});
             });

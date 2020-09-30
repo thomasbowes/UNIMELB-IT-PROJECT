@@ -184,7 +184,7 @@ const userEmailConfirmation = function(req, res){
     if(userId.length != 24)
     {
         console.log('We could not find the verify link, please make sure it is correct');
-        res.redirect('http://localhost:3000/');
+        res.redirect('https://folioexchangetest.herokuapp.com/home');
         return;
     }
 
@@ -193,13 +193,13 @@ const userEmailConfirmation = function(req, res){
 
             if(!foundObject){
                 console.log('We could not find the verify link, please make sure it is correct');
-                res.redirect('http://localhost:3000/');
+                res.redirect('https://folioexchangetest.herokuapp.com/home');
             }
             else{
                 foundObject.confirm = true;
                 foundObject.save();
                 console.log('Thank you, your email address has been verified. You can login now!');
-                res.redirect('http://localhost:3000/');
+                res.redirect('https://folioexchangetest.herokuapp.com/home');
             }
     });
 };

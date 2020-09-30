@@ -41,7 +41,7 @@ export const auth = (email, password) => {
             password: password
         };
 
-        const url = 'http://localhost:5000/api/users/login'
+        const url = 'https://folioexchangetest.herokuapp.com/home/api/users/login'
 
         axios.post(url, data)
             .then(response => {
