@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import FilesUpload from '../../components/FilesUpload/FilesUpload';
 import eggImage from '../../assets/ProfilePageDocuments/egg.jpg'
 import './UserFolioPage.css'
@@ -23,7 +23,6 @@ import eggImg5 from '../../assets/ProfilePageDocuments/egg5.jpg'
 
 import google1 from '../../assets/ProfilePageDocuments/google.png';
 import google2 from '../../assets/ProfilePageDocuments/google2.jpg';
-import { text } from 'body-parser';
 
 
 class UserFolioPage extends Component {

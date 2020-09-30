@@ -7,7 +7,7 @@ class EducationalHistoryItem extends Component {
             <div className="education-history-item">
                 <div className="education-history__pic">
                     <a href="#image">
-                        <img src={this.props.image} />
+                        <img src={this.props.image} alt="education-history"/>
                     </a>
                 </div>
 

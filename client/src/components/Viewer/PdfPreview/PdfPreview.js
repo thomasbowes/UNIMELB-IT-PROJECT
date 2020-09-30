@@ -7,7 +7,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const PdfPreview = (props) => {
     const [numPages, setNumPages] = useState(null);
-    const [pageNumber, setPageNumber] = useState(1);
 
     function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages);
@@ -15,12 +14,13 @@ const PdfPreview = (props) => {
 
     return (
             <div className="PdfPreview" onClick={props.clicked}>
-                <a href="#">
+                <a href="#preview">
                     <Document className="Pdf"
                         file={props.file}
                         onLoadSuccess={onDocumentLoadSuccess}>
                         <Page pageNumber={1} 
                         />
+                        <p>{numPages} pages in total.</p>
                     </Document>
                 </a>
             </div>
