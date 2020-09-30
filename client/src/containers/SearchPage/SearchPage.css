@@ -1,3 +1,10 @@
+.SearchPage {
+    background-color: white;
+}
+.SearchPage-D {
+    background-color: #003B59;
+}
+
 .search__info {
     font-family: "kumbh sans", sans-serif;
     width: 90%;

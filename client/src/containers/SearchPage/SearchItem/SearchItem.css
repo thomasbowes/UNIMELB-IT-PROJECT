@@ -12,7 +12,26 @@
     overflow: hidden;
 }
 
+.search-item-D {
+    background:  #003B59;
+    border: 1px solid rgba(0, 58, 88, 0.2);
+    height: 8rem;
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin: 0.5rem auto;
+    max-width: 108rem;
+    height: 10rem;
+    font-family: "kumbh sans", sans-serif;
+    overflow: hidden;
+}
+
 .search-item:hover {
+    border: 1px solid rgba(0, 58, 88, 0.8);
+    background: #fbfbfb;
+}
+
+.search-item-D:hover {
     border: 1px solid rgba(0, 58, 88, 0.8);
     background: #fbfbfb;
 }
@@ -58,6 +77,11 @@
     margin-bottom: .4rem;
 }
 
+.bio__title-D {
+    margin-bottom: .4rem;
+    color: white;
+}
+
 .bio__title h2{
     padding: 0.1rem 0;
     font-size: 1rem;
@@ -65,11 +89,27 @@
     font-weight: 500;
 }
 
+.bio__title-D h2{
+    padding: 0.1rem 0;
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 500;
+    color: white;
+}
+
 .bio__about {
     height: 3.2rem;
     overflow: hidden;
     text-overflow: ellipsis;
     color: rgba(0,0,0,0.6);
+    font-size: 0.8rem;
+}
+
+.bio__about-D {
+    height: 3.2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
     font-size: 0.8rem;
 }
 
@@ -87,6 +127,24 @@
 
 .bio__see-more a:hover {
     color: rgba(8, 103, 150, 1);
+    text-decoration: underline;
+}
+
+.bio__see-more-D {
+    height: 1rem;
+    padding: 0.5rem 0;
+    margin-top: auto;
+    color: white;
+}
+
+.bio__see-more-D a {
+    color: white;
+    text-decoration: none;    
+    font-size: 1rem;
+}
+
+.bio__see-more-D a:hover {
+    color: white;
     text-decoration: underline;
 }
 

@@ -7,7 +7,7 @@ import SearchItem from './SearchItem/SearchItem';
 class SearchPage extends Component {
     render(){
         return (
-            <Aux>
+            <div className="SearchPage">
                 <div className="search__info">Showing 10 of 1009 results:</div>
 
                 <div className="search-list">
@@ -38,7 +38,7 @@ class SearchPage extends Component {
                     <div  className="page-selector__next-previous">Next </div>
 
                 </div>
-            </Aux>
+            </div>
         );
 
     }
