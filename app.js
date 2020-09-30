@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
+const path = require('path');
 
 // import user schema
 /* why this? - rationale found in 
