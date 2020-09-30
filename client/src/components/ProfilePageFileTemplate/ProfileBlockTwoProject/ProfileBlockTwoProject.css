@@ -69,3 +69,10 @@
     color: rgba(8, 103, 150, 1);
     text-decoration: underline;
 }
+
+/* for mobile */
+@media (max-width: 40rem) {
+    .project-block-two-project {
+        flex-direction: column;
+    }
+}

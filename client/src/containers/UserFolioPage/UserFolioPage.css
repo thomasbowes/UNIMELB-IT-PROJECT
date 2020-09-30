@@ -1,25 +1,70 @@
+
 .UserFolioPage {
+    background-color: #F3F6F8;
     height: 1000rem;
 }
-.User {
+
+
+.User-info {
+    background-color: white;
+    width: 90%;
+    max-width: 108rem;
+    margin: 1rem auto;
     margin-top: 5rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
     display: flex;
-    border-style: solid;
-    border-color: #003A58;
+    border: 1px solid rgba(0, 58, 88, 0.2);
+    height: 15rem;
+    align-items: flex-start;
+    overflow-y: hidden;
+}
+
+.User-info:hover {
+    border: 1px solid rgba(0, 58, 88, 0.8);
+    background: #fbfbfb;
 }
 
 .UserPicture{
     width: 15rem;
-    max-width: 100%;
+    height: 15rem;
+    margin:  auto 0;
+}
+
+.UserPicture img{
+    width: 15rem;
+    height: 15rem;
+}
+
+/* .UserInfoHolder{
+    flex-wrap: wrap;
+} */
+
+.UserInfoHolder {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+}
+
+.UserInfoHolder h1{
+    margin: 0;
+    margin-bottom: 0.5rem;
+    
+}
+
+.UserInfoHolder h2{
+    margin: 0;
+}
+
+.UserInfoHolder p {
     height: auto;
 }
 
-.UserInfoHolder{
-    flex-wrap: wrap;
+.ImageGallery {
+    width: 90%;
+    max-width: 108rem;
+    margin: 0 auto;
 }
-
 
 .image-gallery-slide {
     background-color: grey;
@@ -31,8 +76,13 @@
 
 }
 @media (max-width: 40rem) {
-    .User{
+    /* .User{
         display: block;
+    } */
+    .User-info {
+        flex-direction: column;
+        align-items: center;
+        height: 30rem;
     }
 
 }
