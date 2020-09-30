@@ -228,5 +228,27 @@ describe('App test', () => {
 				})
 				.expect(400, done)
 		});
+
+		it("Link local user details with facebook details", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.localUserRegister)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Thank you for registering - Please log in"
+				})
+				.expect(200, done)
+		});
+
+		it("Register new user with already existing email and google log in", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.localInvalidUserRegister)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Email is already registered"
+				})
+				.expect(200, done)
+		});
 	});
 });

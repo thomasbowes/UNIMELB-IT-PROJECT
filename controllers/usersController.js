@@ -133,9 +133,37 @@ const registerNewUser = function(req, res){
     User.findOne({email: email})
         .then(foundObject => {
            if(foundObject){
-               res.status(200).json({
-                   status: 'Email is already registered',
-               });
+               // checking if user details contain facebook or google id
+               if (foundObject.facebookID || foundObject.googleID) {
+                 // if user has already registered locally, reject request
+                 if (foundObject.password) {
+                     res.status(200).json({
+                         status: 'Email is already registered'
+                     });
+                 // if user hasn't registered locally, do so
+                 } else {
+                     //hash the password
+                     bcrypt.genSalt(10, function(err, salt){
+                         bcrypt.hash(req.body.password, salt, function(err, hash){
+                             if(err){
+                                 console.log(err);
+                             }
+                             foundObject.username = req.body.username;
+                             foundObject.password = hash;
+                             foundObject.save()
+                                 .then(() => {
+                                     res.status(200).json({
+                                         status: 'Thank you for registering - Please log in'
+                                     });
+                                 });
+                         });
+                     });
+                 }
+               } else { 
+                 res.status(200).json({
+                     status: 'Email is already registered'
+                 });
+               }
            }
            else{
 
@@ -159,7 +187,7 @@ const registerNewUser = function(req, res){
                        newUser.save()
                            .then(() => {
                                res.status(201).json({
-                                   status: 'Thank you for registering - Please confirm your email address.',
+                                   status: 'Thank you for registering - Please confirm your email address.'
                                });
                            });
                    });

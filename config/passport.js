@@ -37,24 +37,39 @@ passport.use(strategy);
 const fbOptions = {
 	clientID: process.env.FACEBOOK_ID,
 	clientSecret: process.env.FACEBOOK_SECRET,
-	callbackURL: "http://localhost:5000/api/users/oauth/facebook/callback"
+	callbackURL: "http://localhost:5000/api/users/oauth/facebook/callback",
+	profileFields: ['id', 'displayName', 'name', 'email']
 };
 
 // how the passport middleware is going to authorize a request with facebook credentials	
 const facebookStrategy = new FacebookTokenStrategy(fbOptions, 
 	(accessToken, refreshToken, profile, done) => {
-		User.findOne({ facebookID: profile.id })
+		// attempting to find if email exists in database
+		User.findOne({ email: profile.emails[0].value })
 			.then((user) => {
-				// if facebook user exists in db, return back user details
 				if (user) {
-					return done(null, user);
+					// if facebook user exists, return back user details
+					if (user.facebookID) {
+						return done(null, user);	
+					// else, append facebook ID to already existing user details
+					} else {
+						user.facebookID = profile.id;
 
+						user.save()
+							.then(() => {
+								return done(null, user);
+							})
+							.catch(err => {
+								return done(err, false);
+							});
+					}
 				// if facebook user doesn't exist, create in db and return user details
 				} else {
 					const newUser = new User({
 						username: profile.displayName,
 						email: profile.emails[0].value,
-						facebookID: profile.id
+						facebookID: profile.id,
+						confirm: true
 					});
 
 					newUser.save()
@@ -81,18 +96,32 @@ const googleOptions = {
 
 const googleStrategy = new GoogleTokenStrategy(googleOptions, 
 	(accessToken, refreshToken, profile, done) => {
-		User.findOne({ googleID: profile.id })	
+		// attempting to find email in database
+		User.findOne({ email: profile.emails[0].value })	
 			.then((user) => {
-				// if google user exists in db, return back user details
 				if (user) {
-					return done(null, user);
+					// if google ID is already present in user details, return user details back
+					if (user.googleID) {
+						return done(null, user);	
+					// else, append google ID into existing user details
+					} else {
+						user.googleID = profile.id;
 
+						user.save()
+							.then(() => {
+								return done(null, user);
+							})
+							.catch(err => {
+								return done(err, false);
+							});
+					}
 				// if google user doesn't exist, create in db and return user details
 				} else {
 					const newUser = new User({
 						username: profile.displayName,
 						email: profile.emails[0].value,
-						googleID: profile.id
+						googleID: profile.id,
+						confirm: true
 					});
 
 					newUser.save()
