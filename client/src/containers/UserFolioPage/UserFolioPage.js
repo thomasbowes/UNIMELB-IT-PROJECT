@@ -80,23 +80,6 @@ class UserFolioPage extends Component {
                         </div>
                     </div>
                 </div>
-    
-                <div className="test">
-                    <PdfPreview file={eggPdf} clicked={this.showPdfToggle}/>
-                </div>
-    
-
-                {this.state.showPdf? <BackDrop clicked={this.showPdfToggle} show={this.state.showPdf}/>:null}
-                {this.state.showPdf? <PdfViewer file={eggPdf} />:null}
-                
-    
-                
-
-                <h1>My image folio</h1>
-                <ImageGallery items={images} 
-                showThumbnails={false}
-                autoPlay={true}
-                />
                 <ProfileBlockWithImage image={google2} text={text} title="Founded Eooggle" />
                 <ProfileBlockNoImage text={text} title="Founded Eooggle" />
                 <ProfileBlockTwoProject texts={[text, text]} titles={["Founded Eooggle", "Founded Eggipedia"]} />
@@ -105,6 +88,19 @@ class UserFolioPage extends Component {
                         descriptions={[text, text, text]} 
                         images={[google1, google1, google2]}
                         durations={["2022-2024", "2024-2027", "2027-2???"]} />
+                
+                <div className="test">
+                    <PdfPreview file={eggPdf} clicked={this.showPdfToggle}/>
+                </div>
+    
+                {this.state.showPdf? <BackDrop clicked={this.showPdfToggle} show={this.state.showPdf}/>:null}
+                {this.state.showPdf? <PdfViewer file={eggPdf} />:null}
+                
+                <h1>My image folio</h1>
+                <ImageGallery items={images} 
+                    showThumbnails={false}
+                    autoPlay={true}
+                />
                 
                 <FilesUpload />
             </div>
