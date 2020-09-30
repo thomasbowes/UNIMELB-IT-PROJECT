@@ -164,7 +164,8 @@ const sendEmail =  function(userEmail, userId) {
         from: 'folio.exchange.team@gmail.com',
         to: userEmail,
         subject: 'Folio.Exchange - confirmation email',
-        text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
+        // text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
+        text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "https://folioexchangetest.herokuapp.com/home/api/users/confirmation/" + userId + " Heroku: " + userId
     };
 
     // send mail with defined transport object
