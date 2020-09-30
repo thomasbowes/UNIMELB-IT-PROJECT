@@ -70,7 +70,6 @@ class App extends Component {
           <Route path='/userfolio' component={UserFolioPage} />
           <Route path='/search' component={SearchPage} />
           <Redirect from='/' exact to='/home' />
-          <Redirect from='/api' to='/home' />
           <Route render={() => <h1>URL Not found</h1>}/>
         </Switch>
 
