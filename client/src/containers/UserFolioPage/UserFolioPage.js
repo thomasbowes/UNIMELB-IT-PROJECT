@@ -3,8 +3,9 @@ import FilesUpload from '../../components/FilesUpload/FilesUpload';
 import eggImage from '../../assets/ProfilePageDocuments/egg.jpg'
 import './UserFolioPage.css'
 import eggPdf from '../../assets/ProfilePageDocuments/eggPdf.pdf';
-import PdfViwer from '../../components/Viewer/PdfViewer/PdfViewer';
+import PdfViewer from '../../components/Viewer/PdfViewer/PdfViewer';
 import PdfPreview from '../../components/Viewer/PdfPreview/PdfPreview';
+import BackDrop from '../../components/UI/BackDrop/BackDrop'
 
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -26,6 +27,13 @@ import { text } from 'body-parser';
 
 
 class UserFolioPage extends Component {
+    state = {showPdf: false}
+
+    showPdfToggle = () => {
+        const newShowPdf = !this.state.showPdf;
+        this.setState({showPdf: newShowPdf})
+    }
+
     render() {
         const images = [
             {
@@ -75,12 +83,13 @@ class UserFolioPage extends Component {
                 </div>
     
                 <div className="test">
-                    <PdfPreview file={eggPdf} />
+                    <PdfPreview file={eggPdf} clicked={this.showPdfToggle}/>
                 </div>
     
 
-
-                <PdfViwer file={eggPdf} />
+                {this.state.showPdf? <BackDrop clicked={this.showPdfToggle} show={this.state.showPdf}/>:null}
+                {this.state.showPdf? <PdfViewer file={eggPdf} />:null}
+                
     
                 
 

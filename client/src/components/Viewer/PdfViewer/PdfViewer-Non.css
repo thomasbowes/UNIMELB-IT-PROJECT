@@ -1,0 +1,11 @@
+.PdfViewer {
+    /* display: flex; */
+    display: none;
+
+}
+
+
+.PageChanger {
+    display: flex;
+}
+

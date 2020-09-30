@@ -5,7 +5,7 @@ import './PdfPreview.css'
 import { Document, Page, pdfjs } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const PdfViewer = (props) => {
+const PdfPreview = (props) => {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
 
@@ -14,7 +14,7 @@ const PdfViewer = (props) => {
     }
 
     return (
-            <div className="PdfPreview">
+            <div className="PdfPreview" onClick={props.clicked}>
                 <a href="#">
                     <Document className="Pdf"
                         file={props.file}
@@ -28,4 +28,4 @@ const PdfViewer = (props) => {
     );
 }
 
-export default PdfViewer;
+export default PdfPreview;
