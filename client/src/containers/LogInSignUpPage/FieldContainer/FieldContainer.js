@@ -9,7 +9,10 @@ class FieldContainer extends Component {
                 <input className="field-container__input-field" 
                     type={this.props.inputType} 
                     placeholder={this.props.placeholder} 
-                    name={this.props.placeholder} />
+                    name={this.props.placeholder}
+                    inputValue={this.props.inputValue}
+                    onChange={this.props.recordInputValHandler}
+                />
             </div>
         );
     }
