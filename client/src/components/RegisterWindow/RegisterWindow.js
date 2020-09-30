@@ -7,6 +7,7 @@ class LoginWindow extends Component {
         username: '',
         email: '',
         password: '',
+        emailCheck: false,
         message: ''
     }
 
