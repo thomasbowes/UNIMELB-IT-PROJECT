@@ -11,6 +11,9 @@ const fileUpload = require('express-fileupload');
  * lead to a dependency nightmare. Use var User = mongoose.model('user') instead of require." */
 const User = require('./models/Users');
 
+// pass passport variable and insert into configuration function 
+const passportConf = require('./config/passport');
+
 const userRoute = require('./routes/api/users');
 const portfolioRoute = require('./routes/api/portfolio');
 

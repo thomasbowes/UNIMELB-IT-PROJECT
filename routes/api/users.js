@@ -1,38 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
-// pass passport variable and insert into configuration function 
-const passportConf = require('../../config/passport');
+const passport = require('passport');	
 
 const usersController = require('../../controllers/usersController');
-
-// a shorthand middleware used to authenticate a given JWT
-const authenticate = (route, stratType) => {
-	router.use(route, (req, res, next) => {
-		// custom callback - needed to send error in JSON format
-		passport.authenticate(stratType, (err, user, info) => {	
-			// if some error has been encountered while verifying JWT	
-			if (err) {
-				return res.status(401).json({
-					message: "Authentication unsuccessful",
-					status: false,
-					error: err
-				});
-			}
-
-			// if JWT isn't valid, return back error
-			if (!user) {
-				return res.status(401).json({
-					message: "Token provided is invalid",
-					status: false
-				});
-			}
-
-			// needed in order to turn session off (if not inserted, session is established)
-			req.logIn(user, { session: false }, next);
-		}) (req, res, next);
-	});
-};
+const authMiddleware = require('../../middleware/authorization');
 
 // @route GET api/items
 // @desc Get All Items
@@ -264,7 +235,8 @@ router.route('/oauth/google/callback')
  *     "message": "Authentication unsuccessful"
  * }
  */
-router.route('/authenticate', authenticate('/authenticate', 'jwt'))
+router.use('/authenticate', authMiddleware.authenticateJWT)
+router.route('/authenticate')
 	.get(usersController.testUser);
 
 /**
