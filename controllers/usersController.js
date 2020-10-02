@@ -29,7 +29,7 @@ const signToken = (user) => {
 const checkBody = (req, res, next) => {
   
   // Check the required fields are not missing from input
-  if(!req.body.username || !req.body.email || !req.body.password){
+  if(!req.body.lastname || !req.body.firstname || !req.body.email || !req.body.password){
     return res.status(400).json({
         status: "Missing username, email, or password"
     });                  
@@ -123,7 +123,8 @@ const registerNewUser = function(req, res){
                //create new user
                let newUser = new User({
                    email:req.body.email,
-                   username:req.body.username,
+                   firstname:req.body.firstname,
+                   lastname:req.body.lastname,
                    password:req.body.password
                });
 
