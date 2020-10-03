@@ -1,6 +1,7 @@
 const bcrypt  = require('bcryptjs');
 const nodemailer = require("nodemailer");
 const validator = require('validator');
+const mongoose = require('mongoose');
 
 // needed to generate and sign token 
 const jwt = require('jsonwebtoken');
@@ -11,12 +12,25 @@ const User = require('mongoose').model('User');
 const signToken = (user) => {
   const token = jwt.sign({
       userId: user._id,
-      email: user.email,
       username: user.username,
       isAdmin: user.isAdmin,
       iat: Date.now()
     },  
     process.env.JWT_KEY, 
+    {
+      // IMPORTANT
+      expiresIn: "15m"
+    }
+  );
+  return token;
+};
+
+const signRefreshToken = (user) => {
+  const token = jwt.sign({
+      userId: user._id,
+      iat: Date.now()
+    },  
+    process.env.REFRESH_JWT_KEY, 
     {
       // IMPORTANT
       expiresIn: "1d"
@@ -62,12 +76,11 @@ const getAllUser = (req, res) => {
 /* Logins in user to website assuming that correct email and password is given */
 const loginUser = (req, res) => {
   User.findOne({ email: req.body.email })
-    .exec()
     .then(user => {
       // in the case that empty array is received (no user exists)
       if (!user) {
         return res.status(401).json({
-          message: 'Email or Password is incorrect.'
+          message: 'Email or Password is incorrect'
         })
       }
       /* comparing passwords between database and given request 
@@ -75,26 +88,32 @@ const loginUser = (req, res) => {
       bcrypt.compare(req.body.password, user.password, (err, response) => {
         if (err) {
           return res.status(401).json({
-            message: 'Email or Password is incorrect.'
+            message: 'Email or Password is incorrect'
           })
         }
         if (response) {
-          // generation and signature of token - EXPIRES IN 1 HOUR 
-          // FAIR WARNING - TOKEN IS ENCODED, NOT ENCRYPTED!!!!!!!
-          const token = signToken(user);
-          return res.status(200).json({
-            message: 'Login successful',
-            userAuthToken: {
-              userID: user._id,
-              token: "Bearer " + token,
-              email: user.email,
-              username: user.username
-            }
-          });
+          if (user.confirm) {
+            const token = signToken(user);
+            const refreshToken = signRefreshToken(user);
+            return res.status(200).json({
+              message: 'Login successful',
+              userAuthToken: {
+                userID: user._id,
+                email: user.email,
+                username: user.username,
+                token: token,
+                refresh_token: refreshToken
+              }
+            });
+          } else {
+            return res.status(401).json({
+              message: "Confirm your email"
+            });
+          }
         }
         return res.status(401).json({
-          message: 'Email or Password is incorrect.'
-        })
+          message: 'Email or Password is incorrect'
+        });
       });
     })
     .catch(err => {
@@ -114,9 +133,37 @@ const registerNewUser = function(req, res){
     User.findOne({email: email})
         .then(foundObject => {
            if(foundObject){
-               res.status(200).json({
-                   status: 'Email is already registered',
-               });
+               // checking if user details contain facebook or google id
+               if (foundObject.facebookID || foundObject.googleID) {
+                 // if user has already registered locally, reject request
+                 if (foundObject.password) {
+                     res.status(200).json({
+                         status: 'Email is already registered'
+                     });
+                 // if user hasn't registered locally, do so
+                 } else {
+                     //hash the password
+                     bcrypt.genSalt(10, function(err, salt){
+                         bcrypt.hash(req.body.password, salt, function(err, hash){
+                             if(err){
+                                 console.log(err);
+                             }
+                             foundObject.username = req.body.username;
+                             foundObject.password = hash;
+                             foundObject.save()
+                                 .then(() => {
+                                     res.status(200).json({
+                                         status: 'Thank you for registering - Please log in'
+                                     });
+                                 });
+                         });
+                     });
+                 }
+               } else { 
+                 res.status(200).json({
+                     status: 'Email is already registered'
+                 });
+               }
            }
            else{
 
@@ -141,7 +188,7 @@ const registerNewUser = function(req, res){
                        newUser.save()
                            .then(() => {
                                res.status(201).json({
-                                   status: 'Thank you for registering - Please confirm your email address.',
+                                   status: 'Thank you for registering - Please confirm your email address.'
                                });
                            });
                    });
@@ -205,35 +252,75 @@ const userEmailConfirmation = function(req, res){
     });
 };
 
-// if facebook credentials are correct, return back a JWT
-const facebookOAuth = (req, res) => {
-  if (req.user.err) {
-    res.status(401).json({
-      message: "Authentication failed",
-      error: req.user.err
+// to test if access token is valid
+const testUser = (req, res) => {
+  res.status(200).json({
+    message: "Token is valid",
+    status: true
+  });
+};
+
+// to refresh both access token and refresh token
+const refreshTokens = (req, res) => {
+  if (req.body.refresh_token) {
+    // verify if refresh token given is still valid
+    jwt.verify(req.body.refresh_token, process.env.REFRESH_JWT_KEY, (err, decoded) => {
+      if (err) {
+        res.status(401).json({
+          message: "Token is invalid",
+          status: false
+        });
+      } else {
+        // optimised code, don't need to search database EVERYTIME
+
+        const user = {
+          _id: decoded.userId,
+          username: decoded.username,
+          isAdmin: decoded.isAdmin,
+        };
+
+        const token = signToken(user);
+        const refreshToken = signRefreshToken(user);
+        res.status(201).json({
+          message: "Successfully created tokens",
+          token: token,
+          refresh_token: refreshToken,
+          status: true
+        });
+
+        // User.findOne({_id: decoded.userId})
+        //   .then(user => {
+        //     const token = signToken(user);
+        //     const refreshToken = signRefreshToken(user);
+        //     res.status(201).json({
+        //       message: "Successfully created tokens",
+        //       token: token,
+        //       refresh_token: refreshToken,
+        //       status: true
+        //     });
+        //   })
+        //   .catch(err => {
+        //     res.status(500).json({
+        //       message: "Database error",
+        //       status: false,
+        //       error: err
+        //     });
+        //   });
+      }
     });
   } else {
-    const token = signToken(req.user);
-    res.status(200).json({
-      message: 'Authentication Successful',
-      // needed to find token (though there are other ways)
-      token: "Bearer " + token
+    res.status(401).json({
+      message: "Token not provided",
+      status: false
     });
   }
 };
 
-// THIS IS FOR TESTING PURPOSE (to test if token can be authorized)
-const testUser = (req, res) => {
-  res.status(200).json({
-    success: true,
-    msg: "Authorization successful"
-  });
-};
-
+module.exports = { signToken, signRefreshToken };
 module.exports.registerNewUser = registerNewUser;
 module.exports.loginUser = loginUser;
 module.exports.getAllUser = getAllUser;
 module.exports.userEmailConfirmation = userEmailConfirmation;
-module.exports.facebookOAuth = facebookOAuth;
 module.exports.testUser = testUser;
 module.exports.checkBody = checkBody;
+module.exports.refreshTokens = refreshTokens;

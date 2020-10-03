@@ -2,25 +2,72 @@
 exports.tests = [
     {
         username: 'tester1',
-        password: 'lkjfklajfa98awjfk',
+        password: '$2a$10$BUUI/8btB/pVQHPSZpey7O4QMdyQYl//M1nWKO6hMDXWTtu3KNmoO',
         email: 'tester1@mail.com',
         confirm: true,
-        isAdmin: false
+        isAdmin: false,
+        googleID: "93249828498190"
     },
     {
         username: 'tester2',
-        password: 'laksdfjklhhwhfuwhfhwuifh',
+        password: '$2a$10$BUUI/8btB/pVQHPSZpey7O4QMdyQYl//M1nWKO6hMDXWTtu3KNmoO',
         email: 'tester2@mail.com',
         confirm: false,
         isAdmin: false
+    },
+    {
+        username: 'tester3',
+        email: 'tester4@mail.com',
+        confirm: true,
+        isAdmin: false,
+        facebookID: "918749279988"
     }
 ]
 
+exports.localUserRegister = {
+    username: 'tester3 - local',
+    password: 'a',
+    email: 'tester4@mail.com'
+};
+
+exports.localInvalidUserRegister = {
+    email: 'tester1@mail.com',
+    username: 'tester1 - fail',
+    password: 'ab'
+};
+
+exports.authBearerNotProvided = "foaiwefhwfhiofhufhahfa91898";
+
+exports.authInvalidToken = "Bearer flaesiofhoiahao9285982ihaiof";
+
+exports.invalidRefreshToken = {
+    refresh_token: "flahfiauhuhfuha858772895iaahfih"
+};
+
+exports.loginInvalidEmail = {
+    email: "aight@check.com",
+    password: "123"
+};
+
+exports.loginInvalidPassword = {
+    email: "tester1@mail.com",
+    password: "123"
+};
+
+exports.loginEmailNotConfirm = {
+    email: "tester2@mail.com",
+    password: "a"
+};
+
+exports.loginOkay = {
+    email: 'tester1@mail.com',
+    password: 'a'
+};
 
 // Inputs for Register users functionality
 exports.newUser = {
     username: 'TinTin',
-    email: 'haoxinli89@gmail.com',
+    email: 'tester3@mail.com',
     password: 'tesing123',
     confirm: false,
     isAdmin: false
@@ -28,7 +75,7 @@ exports.newUser = {
 
 exports.newUserDupEmail = {
     username: 'Captain',
-    email: 'haoxinli89@gmail.com',
+    email: 'tester3@mail.com',
     password: 1234,
     confirm: false,
     isAdmin: false
