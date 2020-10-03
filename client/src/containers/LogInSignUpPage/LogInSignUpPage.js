@@ -12,7 +12,6 @@ import personIcon from '../../assets/LoginPage-icons/person.svg';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
 import axios from "axios";
-import {authFail} from "../../store/actions/authActions";
 
 class LogInPage extends Component{
 
@@ -165,12 +164,9 @@ class LogInPage extends Component{
                             <h1>Log In</h1>
                             <p>{this.props.LoginMessage}</p>
 
-                            <p>{this.state.loginEmail.verify.toString()}</p>
-                            <p>{this.state.loginPassword.verify.toString()}</p>
+                            <FieldContainer image={emailIcon} placeholder="Email" inputType={textInput} inputVerify = {this.state.loginEmail.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "loginEmail")} />
 
-                            <FieldContainer image={emailIcon} placeholder="Email" inputType={textInput}  recordInputValHandler = {(event) => this.setStateHandler(event, "loginEmail")} />
-
-                            <FieldContainer image={keyIcon} placeholder="Password" inputType={passwordInput}  recordInputValHandler = {(event) => this.setStateHandler(event, "loginPassword")} />
+                            <FieldContainer image={keyIcon} placeholder="Password" inputType={passwordInput} inputVerify = {this.state.loginPassword.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "loginPassword")} />
             
                             <button type="button" onClick={this.loginSubmitHandler}>Log In</button>
                             <button type="button">Log In with google</button>
@@ -181,21 +177,15 @@ class LogInPage extends Component{
                             <h1>Sign Up</h1>
                             <p>{this.state.registerMessage}</p>
 
-                            <p>{this.state.registerFirstname.verify.toString()}</p>
-                            <p>{this.state.registerLastname.verify.toString()}</p>
-                            <p>{this.state.registerEmail.verify.toString()}</p>
-                            <p>{this.state.registerPassword.verify.toString()}</p>
-                            <p>{this.state.registerPassword2.verify.toString()}</p>
+                            <FieldContainer image={personIcon} placeholder="First Name" inputType={textInput} inputVerify = {this.state.registerFirstname.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "registerFirstname")} />
 
-                            <FieldContainer image={personIcon} placeholder="First Name" inputType={textInput} recordInputValHandler = {(event) => this.setStateHandler(event, "registerFirstname")} />
+                            <FieldContainer image={personIcon} placeholder="Last Name" inputType={textInput} inputVerify = {this.state.registerLastname.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "registerLastname")} />
 
-                            <FieldContainer image={personIcon} placeholder="Last Name" inputType={textInput} recordInputValHandler = {(event) => this.setStateHandler(event, "registerLastname")} />
+                            <FieldContainer image={emailIcon} placeholder="Email" inputType={textInput} inputVerify = {this.state.registerEmail.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "registerEmail")} />
 
-                            <FieldContainer image={emailIcon} placeholder="Email" inputType={textInput} recordInputValHandler = {(event) => this.setStateHandler(event, "registerEmail")} />
+                            <FieldContainer image={keyIcon} placeholder="Password" inputType={passwordInput} inputVerify = {this.state.registerPassword.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "registerPassword")} />
 
-                            <FieldContainer image={keyIcon} placeholder="Password" inputType={passwordInput} recordInputValHandler = {(event) => this.setStateHandler(event, "registerPassword")} />
-
-                            <FieldContainer image={keyIcon} placeholder="Confirm Password" inputType={passwordInput} recordInputValHandler = {(event) => this.setStateHandler(event, "registerPassword2")} />
+                            <FieldContainer image={keyIcon} placeholder="Confirm Password" inputType={passwordInput} inputVerify = {this.state.registerPassword2.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "registerPassword2")} />
 
                             <p>By creating an account you agree to our <a href="#Terms">Terms & Conditions</a> and <a href="#Policy">Privacy Policy</a>.</p>
                             <button type="button" onClick={this.registerSubmitHandler} >Sign up</button>
