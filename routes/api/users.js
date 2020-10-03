@@ -33,7 +33,8 @@ const authMiddleware = require('../../middleware/authorization');
  *	   "isAdmin": false,
  * 	   "_id": "5f644add72d3ff4a0413ff56",
  *	   "email": "itsmemario@gmail.com",
- *	   "username": "a",
+ *	   "firstname": "a",
+ *     "lastname": "b",
  *	   "password": "$2a$10$vyPiyp4YrYxI20.wP4Suc.4dj7okRR5pM1g7s1j1UoTOJS09hWZ8G",
  *	   "date": "2020-09-18T05:51:25.921Z",
  *	   "__v": 0
@@ -43,7 +44,8 @@ const authMiddleware = require('../../middleware/authorization');
  *	   "isAdmin": false,
  *	   "_id": "5f61fafd802dd1455cd488cc",
  *	   "email": "modofa1977@araniera.net",
- *	   "username": "a",
+ *	   "firstname": "a",
+ *     "lastname": "b",
  *	   "password": "$2a$10$BUUI/8btB/pVQHPSZpey7O4QMdyQYl//M1nWKO6hMDXWTtu3KNmoO",
  * 	   "date": "2020-09-16T11:46:05.311Z",
  *	   "__v": 0
@@ -58,13 +60,15 @@ router.route('/alluser')
  * @apiGroup Users
  *
  * @apiParam {String} email User's email, must be unique
- * @apiParam {String} username User's chosen username, not unique
+ * @apiParam {String} firstname User's firstname, not unique
+ * @apiParam {String} lastname User's lastname, not unique
  * @apiParam {String} password User's chosen password, not unique
  *
  * @apiParamExample Example Body: 
  * {
  *     "email": "bobdillon@gmail.com",
- *     "username": "Bobby123",
+ *     "firstname": "Bobby",
+ *     "password": "123",
  *	   "password": "Bobby123"
  * }
  *
@@ -211,11 +215,11 @@ router.route('/oauth/google/callback')
 		const refreshToken = usersController.signRefreshToken(req.user);
 		res.cookie('auth', token);
 		res.cookie('refresh', refreshToken);
-		res.redirect('http://localhost:5000');
+		res.redirect('http://localhost:3000');
 	});
 
 /**
- * @api {get} /authenticate Check if an access token is still valid
+ * @api {get} /authenticate Check if an access token is still valid and return its payload
  * @apiName AuthenticateToken
  * @apiGroup Users
  *
@@ -224,7 +228,14 @@ router.route('/oauth/google/callback')
  * @apiSuccessExample Successful Response:
  * HTTP/1.1 200
  * {
- *     "message": "Token is valid"
+ *     "userInfo": {
+ *	       "_id": "jafoiawf982ioqifhiqhf",
+ *         "email": "tester1@mail.com",
+ *         "firstname": "tester",
+ *         "lastname": "testing",
+ *         "isAdmin": "true"
+ *     }, 
+ *     "status: true
  * }
  * 
  * @apiError InvalidToken token is not valid
@@ -232,7 +243,8 @@ router.route('/oauth/google/callback')
  * @apiErrorExample Error-Response: 
  * HTTP/1.1 401 Unauthorized
  * {
- *     "message": "Authentication unsuccessful"
+ *     "message": "Token provided is invalid",
+ *     "status": false 
  * }
  */
 router.use('/authenticate', authMiddleware.authenticateJWT)

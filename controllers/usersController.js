@@ -12,7 +12,9 @@ const User = require('mongoose').model('User');
 const signToken = (user) => {
   const token = jwt.sign({
       userId: user._id,
-      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
       isAdmin: user.isAdmin,
       iat: Date.now()
     },  
@@ -28,6 +30,10 @@ const signToken = (user) => {
 const signRefreshToken = (user) => {
   const token = jwt.sign({
       userId: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      isAdmin: user.isAdmin,
       iat: Date.now()
     },  
     process.env.REFRESH_JWT_KEY, 
@@ -98,9 +104,6 @@ const loginUser = (req, res) => {
             return res.status(200).json({
               message: 'Login successful',
               userAuthToken: {
-                userID: user._id,
-                email: user.email,
-                username: user.username,
                 token: token,
                 refresh_token: refreshToken
               }
@@ -148,7 +151,8 @@ const registerNewUser = function(req, res){
                              if(err){
                                  console.log(err);
                              }
-                             foundObject.username = req.body.username;
+                             foundObject.firstname = req.body.firstname;
+                             foundObject.lastname = req.body.lastname;
                              foundObject.password = hash;
                              foundObject.save()
                                  .then(() => {
@@ -253,10 +257,10 @@ const userEmailConfirmation = function(req, res){
     });
 };
 
-// to test if access token is valid
+// to test if access token is valid and return payload if it is
 const testUser = (req, res) => {
   res.status(200).json({
-    message: "Token is valid",
+    userInfo: req.user,
     status: true
   });
 };
@@ -276,8 +280,10 @@ const refreshTokens = (req, res) => {
 
         const user = {
           _id: decoded.userId,
-          username: decoded.username,
-          isAdmin: decoded.isAdmin,
+          firstname: decoded.firstname,
+          lastname: decoded.lastname,
+          email: decoded.email,
+          isAdmin: decoded.isAdmin
         };
 
         const token = signToken(user);

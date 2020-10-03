@@ -129,10 +129,6 @@ describe('App test', () => {
 				.get('/api/users/authenticate')
 				.set("Authorization", "Bearer " + access_token)
 				.expect('Content-Type', /json/)
-				.expect({
-					message: "Token is valid",
-					status: true
-				})
 				.expect(200, done);
 		});
 	});

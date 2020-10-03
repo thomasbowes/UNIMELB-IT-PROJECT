@@ -22,7 +22,9 @@ const strategy = new JwtStrategy(options, (payload, done) => {
 
 	const user = {
 		_id: payload.userId,
-		username: payload.username,
+		firstname: payload.firstname,
+		lastname: payload.lastname,
+		email: payload.email,
 		isAdmin: payload.isAdmin
 	};
 
