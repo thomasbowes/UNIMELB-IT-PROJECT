@@ -45,7 +45,7 @@ const checkBody = (req, res, next) => {
   // Check the required fields are not missing from input
   if(!req.body.lastname || !req.body.firstname || !req.body.email || !req.body.password){
     return res.status(400).json({
-        status: "Missing username, email, or password"
+        status: "Missing firstname, lastname, email, or password"
     });                  
   }
 

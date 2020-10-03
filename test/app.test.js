@@ -185,16 +185,39 @@ describe('App test', () => {
 				.expect(200, done);
 		});
 
-		it("Register new user without username", function(done) {
+		it("Register new user without lastname and firstname", function(done) {
 			request(app)
 				.post('/api/users/register')
-				.send(testInput.newUserNoName)
+				.send(testInput.newUserNoFullName)
 				.expect('Content-Type', /json/)
 				.expect({
-					status: "Missing username, email, or password"
+					status: "Missing firstname, lastname, email, or password"
 				})
 				.expect(400, done)
 		});
+
+		it("Register new user without firstname", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.newUserNoFirstname)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing firstname, lastname, email, or password"
+				})
+				.expect(400, done)
+		});
+
+		it("Register new user without lastname", function(done) {
+			request(app)
+				.post('/api/users/register')
+				.send(testInput.newUserNoLastname)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing firstname, lastname, email, or password"
+				})
+				.expect(400, done)
+		});
+
 
 		it("Register new user without email", function(done) {
 			request(app)
@@ -202,7 +225,7 @@ describe('App test', () => {
 				.send(testInput.newUserNoEmail)
 				.expect('Content-Type', /json/)
 				.expect({
-					status: "Missing username, email, or password"
+					status: "Missing firstname, lastname, email, or password"
 				})
 				.expect(400, done)
 		});
@@ -213,7 +236,7 @@ describe('App test', () => {
 				.send(testInput.newUserNoPassword)
 				.expect('Content-Type', /json/)
 				.expect({
-					status: "Missing username, email, or password"
+					status: "Missing firstname, lastname, email, or password"
 				})
 				.expect(400, done)
 		});

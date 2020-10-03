@@ -1,7 +1,8 @@
 // Inputs for Getting all existing users
 exports.tests = [
     {
-        username: 'tester1',
+        firstname: 'tester1',
+        lastname: 'One',
         password: '$2a$10$BUUI/8btB/pVQHPSZpey7O4QMdyQYl//M1nWKO6hMDXWTtu3KNmoO',
         email: 'tester1@mail.com',
         confirm: true,
@@ -9,14 +10,16 @@ exports.tests = [
         googleID: "93249828498190"
     },
     {
-        username: 'tester2',
+        firstname: 'tester2',
+        lastname: 'Two',
         password: '$2a$10$BUUI/8btB/pVQHPSZpey7O4QMdyQYl//M1nWKO6hMDXWTtu3KNmoO',
         email: 'tester2@mail.com',
         confirm: false,
         isAdmin: false
     },
     {
-        username: 'tester3',
+        firstname: 'tester3',
+        lastname: 'Three',
         email: 'tester4@mail.com',
         confirm: true,
         isAdmin: false,
@@ -25,14 +28,16 @@ exports.tests = [
 ]
 
 exports.localUserRegister = {
-    username: 'tester3 - local',
+    firstname: 'tester3 - local',
+    lastname: 'Random',
     password: 'a',
     email: 'tester4@mail.com'
 };
 
 exports.localInvalidUserRegister = {
     email: 'tester1@mail.com',
-    username: 'tester1 - fail',
+    firstname: 'tester1 - fail',
+    lastname: 'Random',
     password: 'ab'
 };
 
@@ -66,7 +71,8 @@ exports.loginOkay = {
 
 // Inputs for Register users functionality
 exports.newUser = {
-    username: 'TinTin',
+    firstname: 'TinTin',
+    lastname: 'Random',
     email: 'tester3@mail.com',
     password: 'tesing123',
     confirm: false,
@@ -74,30 +80,46 @@ exports.newUser = {
 };
 
 exports.newUserDupEmail = {
-    username: 'Captain',
+    firstname: 'Captain',
+    lastname: 'Random',
     email: 'tester3@mail.com',
     password: 1234,
     confirm: false,
     isAdmin: false
 }
 
-exports.newUserNoName = {
+exports.newUserNoFullName = {
+    email: 'haoxinl1@student.unimelb.edu.au',
+    password: 1234
+}
+
+exports.newUserNoFirstname = {
+    lastname: 'Haha',
+    email: 'haoxinl1@student.unimelb.edu.au',
+    password: 1234
+}
+
+exports.newUserNoLastname = {
+    firstname: 'haoxin',
     email: 'haoxinl1@student.unimelb.edu.au',
     password: 1234
 }
 
 exports.newUserNoEmail = {
-    username: 'haoxin',
+    firstname: 'haoxin',
+    lastname: 'Lee',
     password: 123
 }
 
 exports.newUserNoPassword = {
-    username: 'haoxinLi',
+    firstname: 'haoxin',
+    lastname: 'Li',
     email: 'haoxinl1@student.unimelb.edu.au'
 }
 
 exports.newUserInvalidEmail = {
-    username: 'hao',
+    firstname: 'hao',
+    lastname: 'Le',
     email: 'haoxinl1student.unimelb.edu.au',
     password: 123
 }
