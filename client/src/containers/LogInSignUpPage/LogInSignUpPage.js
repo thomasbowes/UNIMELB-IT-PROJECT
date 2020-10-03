@@ -87,7 +87,7 @@ class LogInPage extends Component{
             password: this.state.registerPassword.input
         };
 
-        axios.post('http://localhost:5000/api/users/register', data)
+        axios.post('/api/users/register', data)
             .then(response => {
                 this.setState({registerMessage: response.data.status});
             })
