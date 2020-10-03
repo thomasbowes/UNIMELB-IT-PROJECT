@@ -1,6 +1,7 @@
 //return actionTypes for redux
 
 import axios from 'axios';
+import cookies from 'js-cookie';
 import * as actionTypes from './actionTypes';
 
 
@@ -24,6 +25,43 @@ export const authSuccess = (userAuthToken, message) => {
     };
 };
 
+
+// do this at the start of the web page if SSO cookies are found
+const authSSOFound = (userAuthCookie, userRefreshCookie) => {
+
+    return dispatch => {
+
+        //remove the auth cookie form browser
+        cookies.remove('auth');
+        cookies.remove('refresh');
+
+        const url = 'http://localhost:5000/api/users/authenticate'
+
+        //console.log(userAuthCookie);
+
+        axios.get(url, {
+            headers: {
+                'Authorization': "Bearer " + userAuthCookie
+            }
+        })
+            .then(response => {
+                console.log(response);
+                const authToken = {
+                    ...response.data.userInfo,
+                    token : userAuthCookie,
+                    refresh_token: userRefreshCookie
+                }
+
+                dispatch(authSuccess(authToken, response.data.message));
+            })
+            .catch(error => {
+                console.log(error.response.data.message);
+                dispatch(authFail(error.response.data.message));
+            });
+    };
+};
+
+
 // auth fail
 export const authFail = (error) => {
     return {
@@ -41,7 +79,7 @@ export const auth = (email, password) => {
             password: password
         };
 
-        const url = '/api/users/login'
+        const url = 'http://localhost:5000/api/users/login'
 
         axios.post(url, data)
             .then(response => {
@@ -70,13 +108,18 @@ export const authCheckState = () => {
         //get the token from local storage
         const userAuthToken = localStorage.getItem('userAuthToken');
 
-        if(!userAuthToken) {
-            dispatch(authLogout());
-        }
-        else{
+        const userAuthCookie = cookies.get('auth');
+        const userRefreshCookie = cookies.get('refresh');
+
+
+        if(userAuthCookie && userRefreshCookie){
+            dispatch(authSSOFound(userAuthCookie, userRefreshCookie));
+        }else if(userAuthToken){
             //JSON.parse(userAuthToken): since local storage does not support OBJECT,
             // so transform string to object
             dispatch(authSuccess(JSON.parse(userAuthToken), ''));
+        }else{
+            dispatch(authLogout());
         }
     };
 };

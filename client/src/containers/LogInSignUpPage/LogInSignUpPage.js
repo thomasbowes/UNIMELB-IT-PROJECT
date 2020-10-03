@@ -87,7 +87,7 @@ class LogInPage extends Component{
             password: this.state.registerPassword.input
         };
 
-        axios.post('/api/users/register', data)
+        axios.post('http://localhost:5000/api/users/register', data)
             .then(response => {
                 this.setState({registerMessage: response.data.status});
             })
@@ -142,13 +142,13 @@ class LogInPage extends Component{
         let newState = {...this.state[property]};
         newState.input = event.target.value;
 
-        if(newState.type == 'email') this.verifyEmailHandler(newState);
-        else if(newState.type == 'password') this.verifyPasswordHandler(newState);
-        else if(newState.type == 'confirmPassword') this.verifyConfirmPasswordHandler(newState);
+        if(newState.type === 'email') this.verifyEmailHandler(newState);
+        else if(newState.type === 'password') this.verifyPasswordHandler(newState);
+        else if(newState.type === 'confirmPassword') this.verifyConfirmPasswordHandler(newState);
         else this.verifyStringHandler(newState);
         this.setState({[property]: newState});
     }
-
+    //save for SSO link target="_blank" rel="noopener noreferrer"
     render() {
         const textInput = "text";
         const passwordInput = "password";
@@ -170,8 +170,16 @@ class LogInPage extends Component{
                             <FieldContainer image={keyIcon} placeholder="Password" inputType={passwordInput} inputVerify = {this.state.loginPassword.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "loginPassword")} />
             
                             <button type="button" onClick={this.loginSubmitHandler}>Log In</button>
-                            <button type="button">Log In with google</button>
-                            <button type="button">Log Inwith facebook</button>
+
+
+                            <a href="http://localhost:5000/api/users/oauth/google">
+                                <button type="button" >Log In with google</button>
+                            </a>
+
+                            <a href="http://localhost:5000/api/users/oauth/facebook">
+                                <button type="button">Log Inwith facebook</button>
+                            </a>
+
                         </div>
                         <div className="vertical-line"></div>
                         <div className="login-signup__form">
@@ -190,11 +198,7 @@ class LogInPage extends Component{
 
                             <p>By creating an account you agree to our <a href="#Terms">Terms & Conditions</a> and <a href="#Policy">Privacy Policy</a>.</p>
                             <button type="button" onClick={this.registerSubmitHandler} >Sign up</button>
-                            <button type="button" >Sign up with google</button>
 
-                            <a target="_blank" href="http://localhost:5000/api/users/oauth/facebook">
-                                <button type="button"  >Sign up with facebook</button>
-                            </a>
                         </div>
                     </div>   
                 </div>

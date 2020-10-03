@@ -56,7 +56,7 @@ class FilesUpload extends Component {
                 //config the http request header with content-type and Authorization header
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': authToken
+                    'Authorization': "Bearer " + authToken
                 },
                 //store progression percentage to state //for future use
                 onUploadProgress: progressEvent => {
