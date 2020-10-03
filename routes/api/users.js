@@ -167,7 +167,7 @@ router.route('/oauth/facebook/callback')
 		const refreshToken = usersController.signRefreshToken(req.user);
 		res.cookie('auth', token);
 		res.cookie('refresh', refreshToken);
-		res.redirect('http://localhost:5000');
+		res.redirect('http://localhost:3000');
 	});
 
 /**

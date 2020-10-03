@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import validator from 'validator';
 import './LogInSignUpPage.css'
+import {Link} from "react-router-dom"
 import FieldContainer from './FieldContainer/FieldContainer'
 import crossIcon from '../../assets/LoginPage-icons/cross.svg';
 import emailIcon from '../../assets/LoginPage-icons/email.svg';
@@ -65,6 +66,8 @@ class LogInPage extends Component{
 
 
     registerSubmitHandler = (event) =>{
+
+        event.preventDefault();
 
         if( !this.verifyState(this.state.registerFirstname) ||
             !this.verifyState(this.state.registerLastname) ||
@@ -146,8 +149,6 @@ class LogInPage extends Component{
         this.setState({[property]: newState});
     }
 
-
-
     render() {
         const textInput = "text";
         const passwordInput = "password";
@@ -189,8 +190,11 @@ class LogInPage extends Component{
 
                             <p>By creating an account you agree to our <a href="#Terms">Terms & Conditions</a> and <a href="#Policy">Privacy Policy</a>.</p>
                             <button type="button" onClick={this.registerSubmitHandler} >Sign up</button>
-                            <button type="button">Sign up with google</button>
-                            <button type="button">Sign up with facebook</button>
+                            <button type="button" >Sign up with google</button>
+
+                            <a target="_blank" href="http://localhost:5000/api/users/oauth/facebook">
+                                <button type="button"  >Sign up with facebook</button>
+                            </a>
                         </div>
                     </div>   
                 </div>
