@@ -101,11 +101,20 @@ const facebookStrategy = new FacebookTokenStrategy(fbOptions,
 
 passport.use('facebook', facebookStrategy);
 
+let googleCallbackURL;
+
+if(process.env.NODE_ENV === 'development'){
+	googleCallbackURL = "http://localhost:5000/api/users/oauth/google/callback";
+}
+else if (process.env.NODE_ENV === 'production') {
+	googleCallbackURL = "https://folioexchangetest.herokuapp.com/api/users/oauth/google/callback";
+}
+
 const googleOptions = {
 	clientID: process.env.GOOGLE_ID,
 	clientSecret: process.env.GOOGLE_SECRET,
 	//callbackURL: "http://localhost:5000/api/users/oauth/google/callback"
-	callbackURL: "/api/users/oauth/google/callback"
+	callbackURL: googleCallbackURL
 }
 
 const googleStrategy = new GoogleTokenStrategy(googleOptions, 
