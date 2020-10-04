@@ -246,6 +246,7 @@ const sendEmail =  function(userEmail, userId) {
 const userEmailConfirmation = function(req, res){
     const userId = req.params.userId;
 
+    /*
     if(userId.length != 24)
     {
         console.log('We could not find the verify link, please make sure it is correct');
@@ -256,9 +257,22 @@ const userEmailConfirmation = function(req, res){
         }
         return;
     }
+    */
 
     User.findOne({_id: userId})
         .then(foundObject => {
+
+            foundObject.confirm = true;
+            foundObject.save();
+            console.log('Thank you, your email address has been verified. You can login now!');
+            if(isDevelopment() === true){
+                console.log('isDevelopment is true');
+                res.redirect('http://localhost:3000/')
+            } else {
+                res.redirect('https://folioexchangetest.herokuapp.com/home');
+            }
+
+            /*
 
             if(!foundObject){
                 console.log('We could not find the verify link, please make sure it is correct');
@@ -277,8 +291,9 @@ const userEmailConfirmation = function(req, res){
                     res.redirect('http://localhost:3000/')
                 } else {
                     res.redirect('https://folioexchangetest.herokuapp.com/home');
-              }
+                }
             }
+             */
     });
 };
 
