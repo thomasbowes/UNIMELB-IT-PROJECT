@@ -8,6 +8,16 @@ const jwt = require('jsonwebtoken');
 
 const User = require('mongoose').model('User');
 
+// Test which environment is the app running in for mailOptions and userEmailConfirmation
+const isDevelopment = function() {
+  if(process.env.NODE_ENV === 'development'){
+    return true;
+  }
+  else if (process.env.NODE_ENV === 'production'){
+    return false;
+  }
+};
+
 // if auth is successful, create a token
 const signToken = (user) => {
   const token = jwt.sign({
@@ -212,17 +222,6 @@ const sendEmail =  function(userEmail, userId) {
         }
     });
 
-    // Test which environment is the app running in for mailOptions and userEmailConfirmation
-    const isDevelopment = function() {
-      if(process.env.NODE_ENV === 'development'){
-        return true;
-      }
-      else if (process.env.NODE_ENV === 'production'){
-        return false;
-      }
-    };
-
-    
     const mailOptions = {
         from: 'folio.exchange.team@gmail.com',
         to: userEmail,
@@ -273,7 +272,8 @@ const userEmailConfirmation = function(req, res){
                 foundObject.confirm = true;
                 foundObject.save();
                 console.log('Thank you, your email address has been verified. You can login now!');
-                if((isDevelopment()) === true){
+                if(isDevelopment() === true){
+                    console.log('isDevelopment is true');
                     res.redirect('http://localhost:3000/')
                 } else {
                     res.redirect('https://folioexchangetest.herokuapp.com/home');

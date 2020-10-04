@@ -176,7 +176,7 @@ class LogInPage extends Component{
                                 <button type="button" >Log In with google</button>
                             </a>
 
-                            <a href="http://localhost:5000/api/users/oauth/facebook">
+                            <a href="https://folioexchangetest.herokuapp.com/api/users/oauth/facebook">
                                 <button type="button">Log Inwith facebook</button>
                             </a>
 

@@ -171,7 +171,11 @@ router.route('/oauth/facebook/callback')
 		const refreshToken = usersController.signRefreshToken(req.user);
 		res.cookie('auth', token);
 		res.cookie('refresh', refreshToken);
-		res.redirect('http://localhost:3000');
+		if(process.env.NODE_ENV === 'development'){
+			res.redirect('http://localhost:3000');
+		}
+		else if (process.env.NODE_ENV === 'production')
+		res.redirect('https://folioexchangetest.herokuapp.com/home');
 	});
 
 /**
@@ -215,7 +219,11 @@ router.route('/oauth/google/callback')
 		const refreshToken = usersController.signRefreshToken(req.user);
 		res.cookie('auth', token);
 		res.cookie('refresh', refreshToken);
-		res.redirect('http://localhost:3000');
+		if(process.env.NODE_ENV === 'development'){
+			res.redirect('http://localhost:3000');
+		}
+		else if (process.env.NODE_ENV === 'production')
+		res.redirect('https://folioexchangetest.herokuapp.com/home');
 	});
 
 /**
