@@ -227,7 +227,7 @@ const sendEmail =  function(userEmail, userId) {
         from: 'folio.exchange.team@gmail.com',
         to: userEmail,
         subject: 'Folio.Exchange - confirmation email',
-        text: isDevelopment ?  ("Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId)
+        text: isDevelopment() ?  ("Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId)
                             : "Thank you for registering with folio.exchange, Here is your conformation link:" + "Heroku: https://folioexchangetest.herokuapp.com/home/api/users/confirmation/" + userId
         // text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
         //text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "https://folioexchangetest.herokuapp.com/home/api/users/confirmation/" + userId + " Heroku: " + userId
@@ -250,7 +250,7 @@ const userEmailConfirmation = function(req, res){
     if(userId.length != 24)
     {
         console.log('We could not find the verify link, please make sure it is correct');
-        if(isDevelopment === true){
+        if(isDevelopment() === true){
             res.redirect('http://localhost:3000/')
         } else {
             res.redirect('https://folioexchangetest.herokuapp.com/home');
@@ -263,7 +263,7 @@ const userEmailConfirmation = function(req, res){
 
             if(!foundObject){
                 console.log('We could not find the verify link, please make sure it is correct');
-                if(isDevelopment === true){
+                if(isDevelopment() === true){
                     res.redirect('http://localhost:3000/')
                 } else {
                     res.redirect('https://folioexchangetest.herokuapp.com/home');
@@ -273,7 +273,7 @@ const userEmailConfirmation = function(req, res){
                 foundObject.confirm = true;
                 foundObject.save();
                 console.log('Thank you, your email address has been verified. You can login now!');
-                if(isDevelopment === true){
+                if((isDevelopment()) === true){
                     res.redirect('http://localhost:3000/')
                 } else {
                     res.redirect('https://folioexchangetest.herokuapp.com/home');
