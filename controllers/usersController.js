@@ -212,12 +212,25 @@ const sendEmail =  function(userEmail, userId) {
         }
     });
 
+    // Test which environment is the app running in for mailOptions and userEmailConfirmation
+    const isDevelopment = function() {
+      if(process.env.NODE_ENV === 'development'){
+        return true;
+      }
+      else if (process.env.NODE_ENV === 'production'){
+        return false;
+      }
+    };
+
+    
     const mailOptions = {
         from: 'folio.exchange.team@gmail.com',
         to: userEmail,
         subject: 'Folio.Exchange - confirmation email',
+        text: isDevelopment ?  ("Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId)
+                            : "Thank you for registering with folio.exchange, Here is your conformation link:" + "Heroku: https://folioexchangetest.herokuapp.com/home/api/users/confirmation/" + userId
         // text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
-        text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "https://folioexchangetest.herokuapp.com/home/api/users/confirmation/" + userId + " Heroku: " + userId
+        //text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "https://folioexchangetest.herokuapp.com/home/api/users/confirmation/" + userId + " Heroku: " + userId
     };
 
     // send mail with defined transport object
@@ -237,7 +250,11 @@ const userEmailConfirmation = function(req, res){
     if(userId.length != 24)
     {
         console.log('We could not find the verify link, please make sure it is correct');
-        res.redirect('https://folioexchangetest.herokuapp.com/home');
+        if(isDevelopment === true){
+            res.redirect('http://localhost:3000/')
+        } else {
+            res.redirect('https://folioexchangetest.herokuapp.com/home');
+        }
         return;
     }
 
@@ -246,13 +263,21 @@ const userEmailConfirmation = function(req, res){
 
             if(!foundObject){
                 console.log('We could not find the verify link, please make sure it is correct');
-                res.redirect('https://folioexchangetest.herokuapp.com/home');
+                if(isDevelopment === true){
+                    res.redirect('http://localhost:3000/')
+                } else {
+                    res.redirect('https://folioexchangetest.herokuapp.com/home');
+                }
             }
             else{
                 foundObject.confirm = true;
                 foundObject.save();
                 console.log('Thank you, your email address has been verified. You can login now!');
-                res.redirect('https://folioexchangetest.herokuapp.com/home');
+                if(isDevelopment === true){
+                    res.redirect('http://localhost:3000/')
+                } else {
+                    res.redirect('https://folioexchangetest.herokuapp.com/home');
+              }
             }
     });
 };
