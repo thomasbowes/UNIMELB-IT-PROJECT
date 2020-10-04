@@ -175,7 +175,7 @@ router.route('/oauth/facebook/callback')
 			res.redirect('http://localhost:3000');
 		}
 		else if (process.env.NODE_ENV === 'production')
-		res.redirect('https://folioexchangetest.herokuapp.com/home');
+		res.redirect('https://folioexchangetest.herokuapp.com');
 	});
 
 /**
@@ -223,7 +223,7 @@ router.route('/oauth/google/callback')
 			res.redirect('http://localhost:3000');
 		}
 		else if (process.env.NODE_ENV === 'production')
-		res.redirect('https://folioexchangetest.herokuapp.com/home');
+		res.redirect('https://folioexchangetest.herokuapp.com');
 	});
 
 /**
