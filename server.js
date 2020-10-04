@@ -15,6 +15,9 @@ mongoose.connect( DB, {useNewUrlParser: true, useUnifiedTopology: true})
 
 const app = require('./app');
 
+//Experiment
+console.log(process.env.NODE_ENV);
+
 const port = process.env.PORT || 5000
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
