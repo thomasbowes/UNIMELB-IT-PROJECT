@@ -46,11 +46,20 @@ const strategy = new JwtStrategy(options, (payload, done) => {
 
 passport.use(strategy);
 
+let fbCallbackURL;
+
+if(process.env.NODE_ENV === 'development'){
+	fbCallbackURL = "http://localhost:5000/api/users/oauth/facebook/callback";
+}
+else if (process.env.NODE_ENV === 'production') {
+	fbCallbackURL = "https://folioexchangetest.herokuapp.com/api/users/oauth/facebook/callback";
+}
+
 const fbOptions = {
 	clientID: process.env.FACEBOOK_ID,
 	clientSecret: process.env.FACEBOOK_SECRET,
 	//callbackURL: "http://localhost:5000/api/users/oauth/facebook/callback",
-	callbackURL: "/api/users/oauth/facebook/callback",
+	callbackURL: fbCallbackURL,
 	profileFields: ['id', 'displayName', 'name', 'email']
 };
 
@@ -79,7 +88,8 @@ const facebookStrategy = new FacebookTokenStrategy(fbOptions,
 				// if facebook user doesn't exist, create in db and return user details
 				} else {
 					const newUser = new User({
-						username: profile.displayName,
+						firstname: profile.name.givenName,
+						lastname: profile.name.familyName,
 						email: profile.emails[0].value,
 						facebookID: profile.id,
 						confirm: true
@@ -141,7 +151,8 @@ const googleStrategy = new GoogleTokenStrategy(googleOptions,
 				// if google user doesn't exist, create in db and return user details
 				} else {
 					const newUser = new User({
-						username: profile.displayName,
+						firstname: profile.name.givenName,
+						lastname: profile.name.familyName,
 						email: profile.emails[0].value,
 						googleID: profile.id,
 						confirm: true
