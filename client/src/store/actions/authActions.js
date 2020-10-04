@@ -35,7 +35,8 @@ const authSSOFound = (userAuthCookie, userRefreshCookie) => {
         cookies.remove('auth');
         cookies.remove('refresh');
 
-        const url = 'http://localhost:5000/api/users/authenticate'
+        //const url = 'http://localhost:5000/api/users/authenticate';
+        const url = '/api/users/authenticate';
 
         //console.log(userAuthCookie);
 
@@ -79,7 +80,8 @@ export const auth = (email, password) => {
             password: password
         };
 
-        const url = 'http://localhost:5000/api/users/login'
+        //const url = 'http://localhost:5000/api/users/login';
+        const url = '/api/users/login';
 
         axios.post(url, data)
             .then(response => {

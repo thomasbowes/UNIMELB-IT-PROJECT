@@ -87,7 +87,7 @@ class LogInPage extends Component{
             password: this.state.registerPassword.input
         };
 
-        axios.post('http://localhost:5000/api/users/register', data)
+        axios.post('/api/users/register', data)
             .then(response => {
                 this.setState({registerMessage: response.data.status});
             })
@@ -172,11 +172,11 @@ class LogInPage extends Component{
                             <button type="button" onClick={this.loginSubmitHandler}>Log In</button>
 
 
-                            <a href="http://localhost:5000/api/users/oauth/google">
+                            <a href="/api/users/oauth/google">
                                 <button type="button" >Log In with google</button>
                             </a>
 
-                            <a href="http://localhost:5000/api/users/oauth/facebook">
+                            <a href="/api/users/oauth/facebook">
                                 <button type="button">Log Inwith facebook</button>
                             </a>
 

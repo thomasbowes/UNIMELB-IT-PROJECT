@@ -8,6 +8,16 @@ const jwt = require('jsonwebtoken');
 
 const User = require('mongoose').model('User');
 
+// Test which environment is the app running in for mailOptions and userEmailConfirmation
+const isDevelopment = function() {
+  if(process.env.NODE_ENV === 'development'){
+    return true;
+  }
+  else if (process.env.NODE_ENV === 'production'){
+    return false;
+  }
+};
+
 // if auth is successful, create a token
 const signToken = (user) => {
   const token = jwt.sign({
@@ -216,8 +226,10 @@ const sendEmail =  function(userEmail, userId) {
         from: 'folio.exchange.team@gmail.com',
         to: userEmail,
         subject: 'Folio.Exchange - confirmation email',
+        text: isDevelopment() ?  ("Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId)
+                            : "Thank you for registering with folio.exchange, Here is your conformation link:" + "Heroku: https://folioexchangetest.herokuapp.com/api/users/confirmation/" + userId
         // text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
-        text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "https://folioexchangetest.herokuapp.com/home/api/users/confirmation/" + userId + " Heroku: " + userId
+        //text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "https://folioexchangetest.herokuapp.com/api/users/confirmation/" + userId + " Heroku: " + userId
     };
 
     // send mail with defined transport object
@@ -233,27 +245,53 @@ const sendEmail =  function(userEmail, userId) {
 //confirm the email address
 const userEmailConfirmation = function(req, res){
     const userId = req.params.userId;
-
+    
     if(userId.length != 24)
     {
         console.log('We could not find the verify link, please make sure it is correct');
-        res.redirect('https://folioexchangetest.herokuapp.com/home');
+        if(isDevelopment() === true){
+            res.redirect('http://localhost:3000/')
+        } else {
+            res.redirect('https://folioexchangetest.herokuapp.com');
+        }
         return;
     }
+    
 
     User.findOne({_id: userId})
         .then(foundObject => {
 
+            foundObject.confirm = true;
+            foundObject.save();
+            console.log('Thank you, your email address has been verified. You can login now!');
+            if(isDevelopment() === true){
+                console.log('isDevelopment is true');
+                res.redirect('http://localhost:3000/')
+            } else {
+                res.redirect('https://folioexchangetest.herokuapp.com/');
+            }
+
+
             if(!foundObject){
                 console.log('We could not find the verify link, please make sure it is correct');
-                res.redirect('https://folioexchangetest.herokuapp.com/home');
+                if(isDevelopment() === true){
+                    res.redirect('http://localhost:3000/')
+                } else {
+                    res.redirect('https://folioexchangetest.herokuapp.com');
+                }
             }
             else{
                 foundObject.confirm = true;
                 foundObject.save();
                 console.log('Thank you, your email address has been verified. You can login now!');
-                res.redirect('https://folioexchangetest.herokuapp.com/home');
+                if(isDevelopment() === true){
+                    console.log('isDevelopment is true');
+                    res.redirect('http://localhost:3000/')
+                } else {
+                    res.redirect('https://folioexchangetest.herokuapp.com');
+              }
             }
+            
     });
 };
 
