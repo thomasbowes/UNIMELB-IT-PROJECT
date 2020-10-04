@@ -2,7 +2,8 @@ const User = require('mongoose').model('User');
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const FacebookTokenStrategy = require('passport-facebook-token');
+const FacebookTokenStrategy = require('passport-facebook');
+const GoogleTokenStrategy = require('passport-google-oauth20');
 
 require('dotenv').config();
 
@@ -17,42 +18,72 @@ const options = {
 
 // how the passport middleware is going to authorize a given request
 const strategy = new JwtStrategy(options, (payload, done) => {
-	User.findOne({ _id: payload.userId })
-		.then((user) => {
-			// if user exists in db
-			if (user) {
-				// refers to success method, will go through other middleware
-				return done(null, user);
-			} else {
-			// if user doesn't exist
-				return done(null, false);
-			}
-		})
-		.catch((err) => done(err, null));
+	// optimised code, don't need to search database EVERYTIME
+
+	const user = {
+		_id: payload.userId,
+		firstname: payload.firstname,
+		lastname: payload.lastname,
+		email: payload.email,
+		isAdmin: payload.isAdmin
+	};
+
+	return done(null, user);
+
+	// User.findOne({ _id: payload.userId })
+	// 	.then((user) => {
+	// 		// if user exists in db
+	// 		if (user) {
+	// 			// refers to success method, will go through other middleware
+	// 			return done(null, user);
+	// 		} else {
+	// 		// if user doesn't exist
+	// 			return done(null, false);
+	// 		}
+	// 	})
+	// 	.catch((err) => done(err, null));
 });
 
 passport.use(strategy);
 
 const fbOptions = {
 	clientID: process.env.FACEBOOK_ID,
-	clientSecret: process.env.FACEBOOK_SECRET
+	clientSecret: process.env.FACEBOOK_SECRET,
+	//callbackURL: "http://localhost:5000/api/users/oauth/facebook/callback",
+	callbackURL: "/api/users/oauth/facebook/callback",
+	profileFields: ['id', 'displayName', 'name', 'email']
 };
 
 // how the passport middleware is going to authorize a request with facebook credentials	
 const facebookStrategy = new FacebookTokenStrategy(fbOptions, 
 	(accessToken, refreshToken, profile, done) => {
-		User.findOne({ facebookID: profile.id })
+		// attempting to find if email exists in database
+		User.findOne({ email: profile.emails[0].value })
 			.then((user) => {
-				// if facebook user exists in db, return back user details
 				if (user) {
-					return done(null, user);
+					// if facebook user exists, return back user details
+					if (user.facebookID) {
+						return done(null, user);	
+					// else, append facebook ID to already existing user details
+					} else {
+						user.facebookID = profile.id;
 
+						user.save()
+							.then(() => {
+								return done(null, user);
+							})
+							.catch(err => {
+								return done(err, false);
+							});
+					}
 				// if facebook user doesn't exist, create in db and return user details
 				} else {
 					const newUser = new User({
-						username: profile.displayName,
+						firstname: profile.name.givenName,
+						lastname: profile.name.familyName,
 						email: profile.emails[0].value,
-						facebookID: profile.id
+						facebookID: profile.id,
+						confirm: true
 					});
 
 					newUser.save()
@@ -60,13 +91,68 @@ const facebookStrategy = new FacebookTokenStrategy(fbOptions,
 							return done(null, newUser);
 						})
 						.catch((err) => {
-							return done(err, null);
+							return done(err, false);
 						});
 				}
 			})
 			.catch((err) => {
-				done(err, null);
+				done(err, false);
 			});
-	});
+});
 
-passport.use('facebookToken', facebookStrategy);
+passport.use('facebook', facebookStrategy);
+
+const googleOptions = {
+	clientID: process.env.GOOGLE_ID,
+	clientSecret: process.env.GOOGLE_SECRET,
+	//callbackURL: "http://localhost:5000/api/users/oauth/google/callback"
+	callbackURL: "/api/users/oauth/google/callback"
+}
+
+const googleStrategy = new GoogleTokenStrategy(googleOptions, 
+	(accessToken, refreshToken, profile, done) => {
+		console.log(profile);
+		// attempting to find email in database
+		User.findOne({ email: profile.emails[0].value })	
+			.then((user) => {
+				if (user) {
+					// if google ID is already present in user details, return user details back
+					if (user.googleID) {
+						return done(null, user);	
+					// else, append google ID into existing user details
+					} else {
+						user.googleID = profile.id;
+
+						user.save()
+							.then(() => {
+								return done(null, user);
+							})
+							.catch(err => {
+								return done(err, false);
+							});
+					}
+				// if google user doesn't exist, create in db and return user details
+				} else {
+					const newUser = new User({
+						firstname: profile.name.givenName,
+						lastname: profile.name.familyName,
+						email: profile.emails[0].value,
+						googleID: profile.id,
+						confirm: true
+					});
+
+					newUser.save()
+						.then(() => {
+							return done(null, newUser);
+						})
+						.catch((err) => {
+							return done(err, false);
+						});
+				}
+			})
+			.catch((err) => {
+				done(err, false);
+			});
+});
+
+passport.use('google', googleStrategy);

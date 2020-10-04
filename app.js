@@ -12,6 +12,9 @@ const path = require('path');
  * lead to a dependency nightmare. Use var User = mongoose.model('user') instead of require." */
 const User = require('./models/Users');
 
+// pass passport variable and insert into configuration function 
+const passportConf = require('./config/passport');
+
 const userRoute = require('./routes/api/users');
 const portfolioRoute = require('./routes/api/portfolio');
 
@@ -25,7 +28,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Use Routes. Whenever the specified route is required, enter userRoute to handle it
 app.use('/api/users', userRoute);
 app.use('/api/portfolio', portfolioRoute);
-
 
 // Serve Static assets (massive build file) if we are in production
 if (process.env.NODE_ENV === 'production'){
@@ -43,7 +45,5 @@ app.use((req, res, next) => {
     res.status(404).json({ error: "Page not found "}); 
 });
 */
-
-
 
 module.exports = app;
