@@ -49,7 +49,8 @@ passport.use(strategy);
 const fbOptions = {
 	clientID: process.env.FACEBOOK_ID,
 	clientSecret: process.env.FACEBOOK_SECRET,
-	callbackURL: "http://localhost:5000/api/users/oauth/facebook/callback",
+	//callbackURL: "http://localhost:5000/api/users/oauth/facebook/callback",
+	callbackURL: "/api/users/oauth/facebook/callback",
 	profileFields: ['id', 'displayName', 'name', 'email']
 };
 
@@ -103,7 +104,8 @@ passport.use('facebook', facebookStrategy);
 const googleOptions = {
 	clientID: process.env.GOOGLE_ID,
 	clientSecret: process.env.GOOGLE_SECRET,
-	callbackURL: "http://localhost:5000/api/users/oauth/google/callback"
+	//callbackURL: "http://localhost:5000/api/users/oauth/google/callback"
+	callbackURL: "/api/users/oauth/google/callback"
 }
 
 const googleStrategy = new GoogleTokenStrategy(googleOptions, 
