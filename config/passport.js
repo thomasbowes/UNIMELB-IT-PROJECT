@@ -78,7 +78,8 @@ const facebookStrategy = new FacebookTokenStrategy(fbOptions,
 				// if facebook user doesn't exist, create in db and return user details
 				} else {
 					const newUser = new User({
-						username: profile.displayName,
+						firstname: profile.name.givenName,
+						lastname: profile.name.familyName,
 						email: profile.emails[0].value,
 						facebookID: profile.id,
 						confirm: true
@@ -108,6 +109,7 @@ const googleOptions = {
 
 const googleStrategy = new GoogleTokenStrategy(googleOptions, 
 	(accessToken, refreshToken, profile, done) => {
+		console.log(profile);
 		// attempting to find email in database
 		User.findOne({ email: profile.emails[0].value })	
 			.then((user) => {
@@ -130,7 +132,8 @@ const googleStrategy = new GoogleTokenStrategy(googleOptions,
 				// if google user doesn't exist, create in db and return user details
 				} else {
 					const newUser = new User({
-						username: profile.displayName,
+						firstname: profile.name.givenName,
+						lastname: profile.name.familyName,
 						email: profile.emails[0].value,
 						googleID: profile.id,
 						confirm: true
