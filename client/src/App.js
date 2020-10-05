@@ -8,6 +8,7 @@ import AboutPage from './containers/AboutPage/AboutPage'
 import LogInSignUpPage from './containers/LogInSignUpPage/LogInSignUpPage'
 import UserFolioPage from './containers/UserFolioPage/UserFolioPage';
 import SearchPage from './containers/SearchPage/SearchPage'
+import RegisterNotificationPage from './containers/RegisterNotificationPage/RegisterNotificationPage'
 
 import Footer from './components/Footer/Footer';
 import './App.css'
@@ -62,9 +63,10 @@ class App extends Component {
         {this.state.showLoginSignUpPage? <LogInSignUpPage clickCross={this.clickBackDrop}/>: null }
 
         <Switch>
-          <Route path='/home' 
+          <Route path='/home' exact
             render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler} loggedIn={this.state.loggedIn}/>
           }/>
+          <Route path='/home/notification/welcome' exact component={RegisterNotificationPage} />
           <Route path='/about' component={AboutPage} />
           <Route path='/signup' exact component={LogInSignUpPage} />
           <Route path='/userfolio' component={UserFolioPage} />
