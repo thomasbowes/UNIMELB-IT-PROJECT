@@ -7,7 +7,7 @@ import Aux from '../../../../hoc/Auxiliary/Auxiliary'
 class NavBarItems extends Component {
 
     state = {
-        loggedIn: false
+        loggedIn: true
     }
 
     logInSignUpButtons = ( 
