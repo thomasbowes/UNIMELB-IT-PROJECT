@@ -255,9 +255,9 @@ const userEmailConfirmation = function(req, res){
     {
         console.log('We could not find the verify link, please make sure it is correct');
         if(isDevelopment() === true){
-            res.redirect('http://localhost:3000/')
+            res.redirect('http://localhost:3000/not_found')
         } else {
-            res.redirect('https://folio-exchange.herokuapp.com');
+            res.redirect('https://folio-exchange.herokuapp.com/not_found');
         }
         return;
     }
@@ -268,9 +268,9 @@ const userEmailConfirmation = function(req, res){
             if(!foundObject){
                 console.log('We could not find the verify link, please make sure it is correct');
                 if(isDevelopment() === true){
-                    res.redirect('http://localhost:3000/')
+                    res.redirect('http://localhost:3000/not_found')
                 } else {
-                    res.redirect('https://folio-exchange.herokuapp.com/');
+                    res.redirect('https://folio-exchange.herokuapp.com/not_found');
                 }
             }
             else{
@@ -279,9 +279,9 @@ const userEmailConfirmation = function(req, res){
                 console.log('Thank you, your email address has been verified. You can login now!');
                 if(isDevelopment() === true){
                     console.log('isDevelopment is true');
-                    res.redirect('http://localhost:3000/')
+                    res.redirect('http://localhost:3000/home/notification/welcome')
                 } else {
-                    res.redirect('https://folio-exchange.herokuapp.com/');
+                    res.redirect('https://folio-exchange.herokuapp.com/home/notification/welcome');
               }
             }
             
@@ -289,9 +289,9 @@ const userEmailConfirmation = function(req, res){
         .catch(error => {
             console.log('We could not find the verify link, please make sure it is correct');
             if(isDevelopment() === true){
-                res.redirect('http://localhost:3000/')
+                res.redirect('http://localhost:3000/not_found')
             } else {
-                res.redirect('https://folio-exchange.herokuapp.com/');
+                res.redirect('https://folio-exchange.herokuapp.com/not_found');
             }
         });
 };
