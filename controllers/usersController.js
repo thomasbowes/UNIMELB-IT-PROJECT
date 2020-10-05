@@ -114,8 +114,13 @@ const loginUser = (req, res) => {
             return res.status(200).json({
               message: 'Login successful',
               userAuthToken: {
+                email: user.email,
+                firstname: user.firstname,
+                isAdmin: user.isAdmin,
+                lastname: user.lastname,
                 token: token,
-                refresh_token: refreshToken
+                refresh_token: refreshToken,
+                _id: user._id
               }
             });
           } else {
@@ -256,21 +261,9 @@ const userEmailConfirmation = function(req, res){
         }
         return;
     }
-    
 
     User.findOne({_id: userId})
         .then(foundObject => {
-
-            foundObject.confirm = true;
-            foundObject.save();
-            console.log('Thank you, your email address has been verified. You can login now!');
-            if(isDevelopment() === true){
-                console.log('isDevelopment is true');
-                res.redirect('http://localhost:3000/')
-            } else {
-                res.redirect('https://folio-exchange.herokuapp.com/');
-            }
-
 
             if(!foundObject){
                 console.log('We could not find the verify link, please make sure it is correct');
@@ -292,7 +285,15 @@ const userEmailConfirmation = function(req, res){
               }
             }
             
-    });
+        })
+        .catch(error => {
+            console.log('We could not find the verify link, please make sure it is correct');
+            if(isDevelopment() === true){
+                res.redirect('http://localhost:3000/')
+            } else {
+                res.redirect('https://folio-exchange.herokuapp.com/');
+            }
+        });
 };
 
 // to test if access token is valid and return payload if it is
