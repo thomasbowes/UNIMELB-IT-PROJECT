@@ -7,6 +7,9 @@ import share from "../../assets/shapes/share.svg"
 import computer from "../../assets/shapes/computer.svg"
 import arrow from "../../assets/shapes/arrow.svg"
 
+import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
+
 class HomePage extends Component {
     render() {
         return (
@@ -18,7 +21,7 @@ class HomePage extends Component {
                         <h1>Reach for the stars!</h1>
                         <h2>Sign up to folio.exchange and shine like a star</h2>
                         <div id="slogan__cta-buttons">
-                            {!this.props.loggedIn? <button className="cta-button" onClick={this.props.loginSignUpclicked}>SIGN UP</button> : null }
+                            {this.props.userAuthToken !== null? <button className="cta-button" onClick={this.props.loginSignUpclicked}>SIGN UP</button> : null }
                             <a href="#feature-list">
                                 <button className="cta-button">LEARN MORE</button>
                             </a>
@@ -103,4 +106,24 @@ class HomePage extends Component {
     }
 }
 
-export default HomePage;
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        LoginMessage: state.auth.message,
+        userAuthToken: state.auth.userAuthToken
+    };
+};
+
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (email, password) => dispatch( actionCreators.auth(email, password)),
+        onLogout: () => dispatch(actionCreators.authLogout())
+
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

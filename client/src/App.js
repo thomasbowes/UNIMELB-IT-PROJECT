@@ -22,7 +22,6 @@ class App extends Component {
     showBackDrop: false,
     showSideDrawer: false,
     showLoginSignUpPage: false,
-    loggedIn: false
   }
 
   showSideDrawerHandler = () => {
@@ -64,7 +63,7 @@ class App extends Component {
 
         <Switch>
           <Route path='/home' exact
-            render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler} loggedIn={this.state.loggedIn}/>
+            render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
           }/>
           <Route path='/home/notification/welcome' exact component={RegisterNotificationPage} />
           <Route path='/about' component={AboutPage} />
