@@ -46,11 +46,20 @@ const strategy = new JwtStrategy(options, (payload, done) => {
 
 passport.use(strategy);
 
+let fbCallbackURL;
+
+if(process.env.NODE_ENV === 'development'){
+	fbCallbackURL = "http://localhost:5000/api/users/oauth/facebook/callback";
+}
+else if (process.env.NODE_ENV === 'production') {
+	fbCallbackURL = "https://folio-exchange.herokuapp.com/api/users/oauth/facebook/callback";
+}
+
 const fbOptions = {
 	clientID: process.env.FACEBOOK_ID,
 	clientSecret: process.env.FACEBOOK_SECRET,
 	//callbackURL: "http://localhost:5000/api/users/oauth/facebook/callback",
-	callbackURL: "/api/users/oauth/facebook/callback",
+	callbackURL: fbCallbackURL,
 	profileFields: ['id', 'displayName', 'name', 'email']
 };
 
@@ -102,11 +111,20 @@ const facebookStrategy = new FacebookTokenStrategy(fbOptions,
 
 passport.use('facebook', facebookStrategy);
 
+let googleCallbackURL;
+
+if(process.env.NODE_ENV === 'development'){
+	googleCallbackURL = "http://localhost:5000/api/users/oauth/google/callback";
+}
+else if (process.env.NODE_ENV === 'production') {
+	googleCallbackURL = "https://folio-exchange.herokuapp.com/api/users/oauth/google/callback";
+}
+
 const googleOptions = {
 	clientID: process.env.GOOGLE_ID,
 	clientSecret: process.env.GOOGLE_SECRET,
 	//callbackURL: "http://localhost:5000/api/users/oauth/google/callback"
-	callbackURL: "/api/users/oauth/google/callback"
+	callbackURL: googleCallbackURL
 }
 
 const googleStrategy = new GoogleTokenStrategy(googleOptions, 

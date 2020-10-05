@@ -227,7 +227,7 @@ const sendEmail =  function(userEmail, userId) {
         to: userEmail,
         subject: 'Folio.Exchange - confirmation email',
         text: isDevelopment() ?  ("Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId)
-                            : "Thank you for registering with folio.exchange, Here is your conformation link:" + "Heroku: https://folioexchangetest.herokuapp.com/api/users/confirmation/" + userId
+                            : "Thank you for registering with folio.exchange, Here is your conformation link:" + "Heroku: https://folio-exchange.herokuapp.com/api/users/confirmation/" + userId
         // text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
         //text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "https://folioexchangetest.herokuapp.com/api/users/confirmation/" + userId + " Heroku: " + userId
     };
@@ -252,7 +252,7 @@ const userEmailConfirmation = function(req, res){
         if(isDevelopment() === true){
             res.redirect('http://localhost:3000/')
         } else {
-            res.redirect('https://folioexchangetest.herokuapp.com');
+            res.redirect('https://folio-exchange.herokuapp.com');
         }
         return;
     }
@@ -268,7 +268,7 @@ const userEmailConfirmation = function(req, res){
                 console.log('isDevelopment is true');
                 res.redirect('http://localhost:3000/')
             } else {
-                res.redirect('https://folioexchangetest.herokuapp.com/');
+                res.redirect('https://folio-exchange.herokuapp.com/');
             }
 
 
@@ -277,7 +277,7 @@ const userEmailConfirmation = function(req, res){
                 if(isDevelopment() === true){
                     res.redirect('http://localhost:3000/')
                 } else {
-                    res.redirect('https://folioexchangetest.herokuapp.com');
+                    res.redirect('https://folio-exchange.herokuapp.com/');
                 }
             }
             else{
@@ -288,7 +288,7 @@ const userEmailConfirmation = function(req, res){
                     console.log('isDevelopment is true');
                     res.redirect('http://localhost:3000/')
                 } else {
-                    res.redirect('https://folioexchangetest.herokuapp.com');
+                    res.redirect('https://folio-exchange.herokuapp.com/');
               }
             }
             
