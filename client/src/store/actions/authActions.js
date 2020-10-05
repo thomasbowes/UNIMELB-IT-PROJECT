@@ -126,3 +126,24 @@ export const authCheckState = () => {
     };
 };
 
+//temp function
+export const authTokenVerify = (userAuthToken) => {
+    if(!userAuthToken){
+        return false;
+    }
+
+    const url = 'http://localhost:5000/api/users/authenticate';
+
+    axios.get(url, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': "Bearer " + userAuthToken.token
+        }})
+        .then( (res) => {
+                return true;
+            })
+        .catch( (error) => {
+            return false;
+        })
+}
+
