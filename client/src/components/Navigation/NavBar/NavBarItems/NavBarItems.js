@@ -9,10 +9,6 @@ import * as actionCreators from '../../../../store/actions/index';
 
 class NavBarItems extends Component {
 
-    // state = {
-    //     loggedIn: true
-    // }
-
     logInSignUpButtons = ( 
         <li className="main-nav__item main-nav__item--cta">
             <NavLink to= '#loginSignIn' exact onClick={() => {this.props.click(); this.props.loginSignUpclicked()}}>Login/SignUp</NavLink>
@@ -37,19 +33,10 @@ class NavBarItems extends Component {
         }
     }
 
-    // logoutHandler = () => {
-    //     this.setState({loggedIn: false});
-    // }
-
     render(){
 
         return (
             <ul className="NavBarItems">
-                {/* <a href="#Home">Home</a>
-                <a href="#BrowseEportfolior">BrowseEportfolio</a>
-                <a href="#MyPage">MyPage</a>
-                <a href="#About">About</a>
-                <a href="#Settings">Settings</a> */}
 
                 <div className="search-bar">
                     <input type="text" placeholder="Search..." onKeyPress={this.handleKeyPress}/>
