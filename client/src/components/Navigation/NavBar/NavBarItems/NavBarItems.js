@@ -72,4 +72,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBarItems);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBarItems));
