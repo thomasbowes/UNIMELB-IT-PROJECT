@@ -211,7 +211,8 @@ class LogInPage extends Component{
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        LoginMessage: state.auth.message
+        LoginMessage: state.auth.message,
+        userAuthToken: state.auth.userAuthToken
     };
 };
 
