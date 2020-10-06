@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');	
+const passport = require('passport');
+const dotenv = require('dotenv');
+
+// Point to the file storing environment variables, in order to use them in the nodejs app
+dotenv.config({ path: './.env' });	
 
 const usersController = require('../../controllers/usersController');
 const authMiddleware = require('../../middleware/authorization');
@@ -174,8 +178,11 @@ router.route('/oauth/facebook/callback')
 		if(process.env.NODE_ENV === 'development'){
 			res.redirect('http://localhost:3000');
 		}
-		else if (process.env.NODE_ENV === 'production')
-		res.redirect('https://folio-exchange.herokuapp.com/');
+		else if (process.env.NODE_ENV === 'production'){
+			//res.redirect('https://folio-exchange.herokuapp.com/');
+			res.redirect(process.env.DOMAIN);
+		}
+		
 	});
 
 /**
@@ -222,8 +229,11 @@ router.route('/oauth/google/callback')
 		if(process.env.NODE_ENV === 'development'){
 			res.redirect('http://localhost:3000');
 		}
-		else if (process.env.NODE_ENV === 'production')
-		res.redirect('https://folio-exchange.herokuapp.com/');
+		else if (process.env.NODE_ENV === 'production'){
+			//res.redirect('https://folio-exchange.herokuapp.com/');
+			res.redirect(process.env.DOMAIN);
+		}
+		
 	});
 
 /**
