@@ -1,0 +1,14 @@
+The apidocs module allows us to generate documentation that is viewable on a browser
+
+How to generate API Docs:
+
+Foremost, you must globally download the apidoc module:
+   npm install apidoc -g
+
+Then to generate the documents:
+   npm run docs
+
+If you want to view the documentation from a browser (recommended, is pretty), then:
+	go to the /docs folder and click on index.html
+
+If you guys want, we can setup a route to our documentation, allowing others to see the documentation when server starts

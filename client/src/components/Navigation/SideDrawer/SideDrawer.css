@@ -1,0 +1,46 @@
+.SideDrawer {
+    position: fixed;
+    width: 280px;
+    max-width: 70%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 200;
+    background: linear-gradient(165deg,#003A58 , rgba(8, 103, 150, 1)) 40%;
+    padding: 32px 16px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease-out;
+}
+
+
+.SideDrawer img {
+    align-content: center;
+    max-width: 90%;
+    height: 2.75rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.SideDrawer .NavBarItems {
+    display: block;
+}
+
+
+.Open {
+    transform: translateX(0);
+
+}
+
+.Close {
+    transform: translateX(-100%);
+}
+
+@media (min-width: 40rem){
+    .SideDrawer {
+        display: none;
+    }
+    .SideDrawer img {
+        display: none;
+    }
+}

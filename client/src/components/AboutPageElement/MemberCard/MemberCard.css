@@ -1,0 +1,36 @@
+.Card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 20rem;
+    height: 29rem;
+    margin: 2rem;
+    text-align: center;
+    font-size: 2rem;
+    background-color: white;
+    display: inline-block;
+
+}
+
+.Card:hover  {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.Card .title {
+    color: #003A58;
+    font-size: 2rem;
+    margin: 0.5rem 0;
+}
+
+.Card p {
+    color: #141414;
+    font-family: sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+
+/* for mobile */
+@media (max-width: 40rem) {
+    .Card {
+        margin: 2rem 0;
+    }
+}

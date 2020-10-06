@@ -1,0 +1,126 @@
+body {
+    margin: 0;
+
+    background-color: lightblue;
+    margin-top: 2.75rem;
+}
+
+.NavBar {
+    background: linear-gradient(165deg,#003A58 , rgba(8, 103, 150, 1)) 40%;
+    padding: 1rem;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    height: 2.75rem;
+    z-index: 100;
+    align-items: center;
+}
+
+
+.nav-bar__container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+    align-items: center;
+    height: 100%;
+}
+
+/* .NavBar a {
+    float: left;
+    color:#5c5c5c;
+    background-color: #b3b3b3;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+} */
+
+.NavBar img {
+    align-content: center;
+    height: 2.65rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.1rem;
+}
+/* 
+.NavBar a:hover{
+    background-color: #3ad6a7;
+    color: #454545;
+} */
+.NavBar button {
+    color: #333333
+}
+
+
+.main-nav {
+    display: flex;
+}
+
+
+.main-nav__logo-hamburger {
+    display: flex;
+}
+
+.main-nav__logo-hamburger img {
+    display: flex;
+}
+
+.main-header__spacer {
+    padding: 0 1rem 0 0;
+    height: 2.75rem;
+    width: 2.75rem;
+    display: none;
+}
+
+.main-header__brand {
+    width: auto;
+    height: 100%;
+}
+
+
+
+
+
+
+/* @media (max-width: 499px) {
+    .NavBar a {
+        display: none;
+    }
+    .NavBar img {
+        width: 200px;
+        height: auto;
+        max-width: none;
+    }
+} */
+
+/* for really wide screens */
+@media (min-width: 120rem) {
+    .nav-bar__container {
+        width: 118rem;
+        margin: 0 auto;
+    }
+
+    .NavBar {
+        padding: 0;
+    }
+}
+
+/* for mobile */
+@media (max-width: 40rem) {
+    /* .nav-bar__container {
+        display: none;
+    } */
+
+    .main-nav__logo-hamburger {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .main-header__spacer {
+        display: inline;
+    }
+}

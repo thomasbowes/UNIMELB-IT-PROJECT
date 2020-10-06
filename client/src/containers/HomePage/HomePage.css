@@ -1,0 +1,268 @@
+main {
+    font-family: "kumbh sans", sans-serif;
+    background-color: #BABABA;
+}
+
+.product-promo {
+    background: url("../../assets/images/aurora.jpg") center/cover no-repeat border-box,
+    #ff1b68;
+    height: calc(100vh - 2.5rem);
+    margin-top: 0;
+}
+
+.product-promo__slogan {
+    position: absolute;
+    bottom: 60%;
+    left: 3%;
+}
+
+.product-promo__slogan h1 {
+    margin: 0;
+    margin-bottom: 1rem;
+    color: rgb(224, 224, 224);
+    font-size: 2.5rem;
+    font-family: "kumbh sans", sans-serif;
+}
+
+.product-promo__slogan h2 {
+    margin: 0;
+    color: rgb(224, 224, 224);
+    font-size: 1.8rem;
+    font-family: "kumbh sans", sans-serif;
+    font-weight: 100;
+}
+
+.cta-button {
+	background-color:#00AEEF;
+	border-radius:0.5rem;
+	border:1px solid #003B59;
+	display:inline-block;
+	cursor:pointer;
+	color: white;
+	font-family: inherit;
+    font-size:1rem;
+    font-weight: 800;
+	padding:1rem 2rem;
+	text-decoration:none;
+    margin-right: 1rem;
+    margin-top: 1rem;
+}
+
+.cta-button:hover {
+	background-color:#003B59;
+}
+
+.cta-button:active {
+	position:relative;
+	top:1px;
+}
+
+@keyframes updown {
+    0% {
+        transform: translate(50%, -15%);
+    }
+  
+    10% {
+        transform: translate(50%, 15%);
+    }
+  
+    25% {
+        transform: translate(50%, -15%);
+    }
+    100% {
+        transform: translate(50%, -15%);
+    }
+  }
+
+#arrow {
+    display: inline-block;
+    width: 4rem;
+    height: 4rem;
+    position: absolute;
+    bottom: 4%;
+    right: 50%;
+    transform: translate(50%, 30%);
+    animation: updown 4s ease infinite;
+}
+
+.feature-list {
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    max-width: 100rem;
+    margin: 5rem auto;
+}
+
+.feature {
+    background: white;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    height: 23rem;
+    max-width: 25rem;
+    min-width: 13rem;
+    margin: 1rem;
+    padding: 3rem 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.feature:hover  {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.feature__image {
+    background-color: #EDEDED;
+    width: 8rem;
+    height: 8rem;
+    border: 3px solid #172A31;
+    border-radius: 50%;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+.feature__image img {
+    height: 100%;
+}
+
+.feature__title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 0;
+}
+
+.feature__detail {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+.example-snippet {
+    background-image: url("../../assets/images/example-screenshot.PNG");
+    background-repeat: no-repeat;
+    background-size: 100%, auto;
+    width: 100%;
+    padding-top: 38%;
+    margin: 0 auto;
+}
+
+.example-snippet button {
+    position: relative;
+    bottom: 0;
+    left: 65%;
+}
+
+.divider {
+    width: 100%;
+    margin: 0;
+    height: 7em;
+    padding: 0;
+    z-index: 2;
+}
+
+#svg {
+    width: 100%;
+    height: 7rem;
+}
+
+.faq {
+    color: #e0e0e0;
+    margin: 0;
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+    background: linear-gradient(165deg,#003A58 49%, rgba(4, 68, 100, 0.8));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;    
+}
+
+.faq h1 {
+    text-align: center;
+}
+
+.faq__questions {
+    text-align: left;
+    width: 80%;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.faq__question {
+    margin:0;
+    margin-bottom: 0.5rem;
+}
+.faq__answer {
+    margin: 0;
+}
+
+/* for really wide screens */
+@media (min-width: 120rem) {
+    .product-promo__slogan {
+        position: absolute;
+        bottom: 70%;
+        left: 20%;
+    }
+}
+
+/* for medium screens */
+@media (max-width: 68rem) {
+    .example-snippet {
+        padding-top: 32%;
+    }
+}
+
+/* for mobile */
+@media (max-width: 40rem) {
+
+    .product-promo__slogan {
+        bottom: 50%;
+        left: 3%;
+    }
+
+    .feature-list {
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        align-items: center;
+        padding: 0 2rem;
+        box-sizing: border-box;
+    }
+
+    .feature {
+        
+        width: 90%;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        max-width: 40rem;
+        min-width: 13rem;
+        
+        
+    }
+
+    .example-snippet {
+        text-align: center;
+    }
+
+    .example-snippet button {
+        position: relative;
+        top: 5.5rem;
+        left: 0;
+        margin: 1rem
+    }
+
+    .example-snippet button:active {
+        position:relative;
+        top: 5.56rem;
+    }
+
+    .divider {
+        margin-top: 4rem;
+    }
+
+}

@@ -1,0 +1,130 @@
+body {
+    background-color: gray;
+    margin: 0;
+}
+
+a {
+    color: rgba(8, 103, 150, 0.8);
+    text-decoration: none;    
+}
+
+a:hover {
+    color: rgba(8, 103, 150, 1);
+    text-decoration: underline;
+}
+
+.LoginSignupPage {
+    font-family: "kumbh sans", sans-serif;
+    color: black;
+}
+
+.modal {
+    background: white;
+    width: 60%;
+    border-radius: 8px;
+    margin: auto;
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    display: absolute;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 3rem;
+}
+
+.modal__color-bar {
+    border-radius: 8px 8px 0 0;
+    height: 0.8rem;;
+    width: 100%;
+    margin: 0;
+    background: linear-gradient(165deg,#003A58 , rgba(8, 103, 150, 1)) 40%;
+    margin-bottom: 2rem;
+}
+
+.login-signup {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.login-signup__close {
+    position: absolute;
+    right: 4%;
+    top: 1rem;
+    height: 2rem;
+}
+
+
+.login-signup__form {
+    margin: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
+.vertical-line {
+    border-left: 3px solid rgba(0, 0, 0, 0.3);
+    border-radius: 20%;
+    height: 30rem;
+    margin-top: 6rem;
+  }
+
+.login-signup__form button {
+    background-color: rgba(8, 103, 150, 1);
+    color: white;
+    padding: 1rem;
+    border: none;
+    cursor: pointer;
+    opacity: 0.9;
+    margin-top: 1rem;
+    outline: none;
+}
+
+.login-signup__form button:hover {
+    opacity: 1;
+    outline: none;
+}
+
+
+/* for really wide screens */
+@media (min-width: 120rem) {
+
+}
+
+/* for mobile */
+@media (max-width: 40rem) {
+    .modal {
+        overflow-x: hidden;
+        max-height: calc(100vh);
+        overflow-y: auto;
+        width: 100%;
+        height: auto;
+    }
+
+    .login-signup {
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+    }
+
+    /*Fixes bottom margin on mobile view*/
+    .login-signup > :last-child {
+        margin-bottom: 3em;
+    }
+
+    .vertical-line {
+        display: none;
+    }
+
+    .login-signup__form {
+        margin: 1rem 2rem;
+        display: flex;
+        flex-direction: column;
+        width: 75%;
+        padding: 0 3rem;
+    }
+
+
+}
