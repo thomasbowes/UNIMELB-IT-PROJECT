@@ -52,7 +52,8 @@ if(process.env.NODE_ENV === 'development'){
 	fbCallbackURL = "http://localhost:5000/api/users/oauth/facebook/callback";
 }
 else if (process.env.NODE_ENV === 'production') {
-	fbCallbackURL = "https://folio-exchange.herokuapp.com/api/users/oauth/facebook/callback";
+	//fbCallbackURL = "https://folio-exchange.herokuapp.com/api/users/oauth/facebook/callback";
+	fbCallbackURL = process.env.DOMAIN + "/api/users/oauth/facebook/callback";
 }
 
 const fbOptions = {
@@ -117,7 +118,8 @@ if(process.env.NODE_ENV === 'development'){
 	googleCallbackURL = "http://localhost:5000/api/users/oauth/google/callback";
 }
 else if (process.env.NODE_ENV === 'production') {
-	googleCallbackURL = "https://folio-exchange.herokuapp.com/api/users/oauth/google/callback";
+	//googleCallbackURL = "https://folio-exchange.herokuapp.com/api/users/oauth/google/callback";
+	googleCallbackURL = process.env.DOMAIN + "/api/users/oauth/google/callback";
 }
 
 const googleOptions = {

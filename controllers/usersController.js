@@ -2,6 +2,10 @@ const bcrypt  = require('bcryptjs');
 const nodemailer = require("nodemailer");
 const validator = require('validator');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+// Point to the file storing environment variables, in order to use them in the nodejs app
+dotenv.config({ path: './.env' });
 
 // needed to generate and sign token 
 const jwt = require('jsonwebtoken');
@@ -232,7 +236,7 @@ const sendEmail =  function(userEmail, userId) {
         to: userEmail,
         subject: 'Folio.Exchange - confirmation email',
         text: isDevelopment() ?  ("Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId)
-                            : "Thank you for registering with folio.exchange, Here is your conformation link:" + "Heroku: https://folio-exchange.herokuapp.com/api/users/confirmation/" + userId
+                            : "Thank you for registering with folio.exchange, Here is your conformation link:" + "Heroku:" + process.env.DOMAIN + "/api/users/confirmation/" + userId
         // text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
         //text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "https://folioexchangetest.herokuapp.com/api/users/confirmation/" + userId + " Heroku: " + userId
     };
@@ -257,7 +261,8 @@ const userEmailConfirmation = function(req, res){
         if(isDevelopment() === true){
             res.redirect('http://localhost:3000/not_found')
         } else {
-            res.redirect('https://folio-exchange.herokuapp.com/not_found');
+            //res.redirect('https://folio-exchange.herokuapp.com/not_found');
+            res.redirect(process.env.DOMAIN + '/not_found');
         }
         return;
     }
@@ -270,7 +275,8 @@ const userEmailConfirmation = function(req, res){
                 if(isDevelopment() === true){
                     res.redirect('http://localhost:3000/not_found')
                 } else {
-                    res.redirect('https://folio-exchange.herokuapp.com/not_found');
+                    //res.redirect('https://folio-exchange.herokuapp.com/not_found');
+                    res.redirect(process.env.DOMAIN + '/not_found');
                 }
             }
             else{
@@ -281,7 +287,8 @@ const userEmailConfirmation = function(req, res){
                     console.log('isDevelopment is true');
                     res.redirect('http://localhost:3000/home/notification/welcome')
                 } else {
-                    res.redirect('https://folio-exchange.herokuapp.com/home/notification/welcome');
+                    //res.redirect('https://folio-exchange.herokuapp.com/home/notification/welcome');
+                    res.redirect(process.env.DOMAIN + '/home/notification/welcome');                    
               }
             }
             
@@ -291,7 +298,8 @@ const userEmailConfirmation = function(req, res){
             if(isDevelopment() === true){
                 res.redirect('http://localhost:3000/not_found')
             } else {
-                res.redirect('https://folio-exchange.herokuapp.com/not_found');
+                //res.redirect('https://folio-exchange.herokuapp.com/not_found');
+                res.redirect(process.env.DOMAIN + '/not_found');
             }
         });
 };
