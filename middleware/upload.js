@@ -2,11 +2,36 @@ const { cloudinary } = require('../config/cloudinary');
 const streamifier = require('streamifier');
 const UPLOAD_SIZE_LIMIT = 10000000;
 
+const uploadFileVerify = (req, res, next) =>{
+    const user_id = req.body.user_id;
+    const project_id = req.body.project_id;
+    const itemBlock_id = req.body.itemBlock_id;
+
+    if(user_id === '123' || project_id === 'null' || itemBlock_id === 'null'){
+        res.status(400).json({
+            status: 'missing information, unable to process, please refresh the web page and try again',
+        });
+        return;
+    }
+    else{
+        next();
+    }
+}
+
+//status: 'missing information, unable to process, please refresh the web page and try again',
+//    message: null,
+
+
+
+
+
+
+
 
 // a middleware used to upload file to Cloudinary and return the file info
 const uploadFileToCloudinary = (req, res, next) => {
 
-    //console.log(req.files.file);
+    //console.log(req.body);
 
     //check size of the file
     if(req.files.file.size > UPLOAD_SIZE_LIMIT)
@@ -75,4 +100,4 @@ const uploadFromBuffer = (files) => {
     });
 };
 
-module.exports = {uploadFileToCloudinary};
+module.exports = {uploadFileToCloudinary, uploadFileVerify};

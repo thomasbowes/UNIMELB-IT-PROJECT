@@ -8,8 +8,6 @@ import 'react-dropzone-uploader/dist/styles.css'
 //disabled Boolean
 
 
-
-
 //import relevent redux things
 import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
@@ -23,8 +21,12 @@ class FilesUpload extends Component {
 
     getUploadParams = ({ file, meta }) => {
 
-        const body = new FormData()
-        body.append('file', file)
+        const body = new FormData();
+        body.append('file', file);
+        body.append('user_id', '123');
+        body.append('project_id', '123');
+        body.append('itemBlock_id', '123');
+        body.append('type', '123');
 
         let authToken;
         if (!this.props.userAuthToken) authToken = '';
@@ -38,14 +40,44 @@ class FilesUpload extends Component {
         }
     }
 
-    handleChangeStatus = ({ meta }, status) => {
-        console.log(status, meta)
-    }
-
     handleSubmit = (files, allFiles) => {
         console.log(files.map(f => f.meta))
         allFiles.forEach(f => f.remove())
     }
+
+    handleChangeStatus1 = ({ meta, file, xhr}, status) => {
+        if (status === 'error_upload'){
+            this.setState({message: 'upload fail, unauthorized, please login and try again'});
+        }
+    };
+
+     handleChangeStatus = ({ xhr }, status) => {
+        if (status === 'error_upload') {
+            if (xhr) {
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4) {
+                        console.log(xhr.response);
+                        //const result = JSON.parse(xhr.response);
+                        //console.log(result);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     render() {
         return (
@@ -53,7 +85,7 @@ class FilesUpload extends Component {
                 getUploadParams={this.getUploadParams}
                 onChangeStatus={this.handleChangeStatus}
                 onSubmit={this.handleSubmit}
-                maxFiles = {1}
+                maxFiles = {5}
                 disabled = {false}
                 submitButtonContent = "Close"
                 maxSizeBytes = {10000000}

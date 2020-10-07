@@ -9,7 +9,8 @@ const uploadMiddleware = require('../../middleware/upload');
 const portfolioController = require('../../controllers/portfolioController');
 
 router.use('/upload', passport.authenticate('jwt', { session: false } ));
-router.use('/upload', uploadMiddleware.uploadFileToCloudinary)
+router.use('/upload', uploadMiddleware.uploadFileVerify);
+router.use('/upload', uploadMiddleware.uploadFileToCloudinary);
 router.route('/upload')
     .post((req, res) => {
         console.log(req.upload_file)
