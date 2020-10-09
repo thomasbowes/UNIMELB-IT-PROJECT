@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import Dropzone from 'react-dropzone-uploader'
+import Dropzone, { IDropzoneProps, ILayoutProps } from 'react-dropzone-uploader'
 import 'react-dropzone-uploader/dist/styles.css'
 
 //input accept type: ex: "image/*,audio/*,video/*"
@@ -45,59 +45,74 @@ class FilesUpload extends Component {
         allFiles.forEach(f => f.remove())
     }
 
-    handleChangeStatus1 = ({ meta, file, xhr}, status) => {
-        if (status === 'error_upload'){
-            this.setState({message: 'upload fail, unauthorized, please login and try again'});
+     handleChangeStatus = ({ meta, xhr }, status) => {
+        if(status === 'preparing'){
+            this.setState({message: ''});
         }
-    };
-
-     handleChangeStatus = ({ xhr }, status) => {
         if (status === 'error_upload') {
             if (xhr) {
                 xhr.onreadystatechange = () => {
                     if (xhr.readyState === 4) {
-                        console.log(xhr.response);
-                        //const result = JSON.parse(xhr.response);
-                        //console.log(result);
+                        let resObj = JSON.parse(xhr.response);
+                        this.setState({message: resObj.message});
                     }
                 }
             }
         }
+        else if(status === 'done')
+        {
+            if (xhr.readyState === 4) {
+                //console.log(xhr.response);
+            }
+        }
+
     }
 
+    preview = ({ meta, fileWithMeta, xhr }) => {
+        let resObj = '';
+        if (xhr) {
+            if (xhr) {
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4) {
+                        resObj = JSON.parse(xhr.response);
+                    }
+                }
+            }
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
+        const { name, percent, status } = meta
+        return (
+            <div>
+              <span style={{ alignSelf: 'flex-start', margin: '10px 3%', fontFamily: 'Helvetica' }}>
+                {name}, {Math.round(percent)}%, {resObj}, <button type="button" onClick={() => fileWithMeta.remove()}>X</button>
+              </span>
+            </div>
+        )
+    }
 
     render() {
         return (
-            <Dropzone
-                getUploadParams={this.getUploadParams}
-                onChangeStatus={this.handleChangeStatus}
-                onSubmit={this.handleSubmit}
-                maxFiles = {5}
-                disabled = {false}
-                submitButtonContent = "Close"
-                maxSizeBytes = {10000000}
-                canCancel={false}
-                accept="image/*,audio/*,video/*"
-                inputContent={(files, extra) => (extra.reject ? 'Image, audio and video files only' : 'Drag Files')}
-                styles={{
-                    dropzoneReject: { borderColor: 'red', backgroundColor: '#DAA' },
-                    dropzone: { width: 500, height: 200 },
-                    inputLabel: (files, extra) => (extra.reject ? { color: 'red' } : {}),
-                }}
-            />
+            <React.Fragment>
+                <p>{this.state.message}</p>
+                <Dropzone
+                    getUploadParams={this.getUploadParams}
+                    onChangeStatus={this.handleChangeStatus}
+                    onSubmit={this.handleSubmit}
+                    maxFiles = {5}
+                    submitButtonContent = "finished"
+                    maxSizeBytes = {10000000}
+                    canCancel={false}
+                    accept="image/*,audio/*,video/*"
+                    inputContent={(files, extra) => (extra.reject ? 'Image, audio and video files only' : 'Drag Files')}
+                    disabled={files => files.some(f => ['preparing', 'getting_upload_params', 'uploading'].includes(f.meta.status))}
+                    inputWithFilesContent={files => `${5 - files.length} more files allowed`}
+                    styles={{
+                        dropzoneReject: { borderColor: 'red', backgroundColor: '#DAA' },
+                        dropzone: { width: 800, height: 500 },
+                        inputLabel: (files, extra) => (extra.reject ? { color: 'red' } : {}),
+                    }}
+                />
+            </React.Fragment>
         )
     }
 }
@@ -108,7 +123,6 @@ const mapStateToProps = state => {
         userAuthToken: state.auth.userAuthToken
     };
 };
-
 
 //bring in redux actions
 const mapDispatchToProps = dispatch => {

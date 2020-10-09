@@ -7,15 +7,19 @@ const uploadFileVerify = (req, res, next) =>{
     const project_id = req.body.project_id;
     const itemBlock_id = req.body.itemBlock_id;
 
-    if(user_id === '123' || project_id === 'null' || itemBlock_id === 'null'){
+    if(user_id === 'null' || project_id === 'null' || itemBlock_id === 'null'){
         res.status(400).json({
-            status: 'missing information, unable to process, please refresh the web page and try again',
+            message: 'missing information, unable to process, please refresh the web page and try again',
+            status: false
         });
         return;
     }
-    else{
-        next();
-    }
+
+
+
+
+
+    next();
 }
 
 //status: 'missing information, unable to process, please refresh the web page and try again',
