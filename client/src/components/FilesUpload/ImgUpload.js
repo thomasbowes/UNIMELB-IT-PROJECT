@@ -17,10 +17,10 @@ class FilesUpload extends Component {
     state = {
         file: null,
         message: '',
+        files: null
     }
 
-    getUploadParams = ({ file, meta }) => {
-
+    getUploadParams = ({ file }) => {
         const body = new FormData();
         body.append('file', file);
         body.append('user_id', '123');
@@ -39,15 +39,14 @@ class FilesUpload extends Component {
         }
     }
 
-    handleSubmit = (files, allFiles) => {
-        console.log(files.map(f => f.meta))
-        allFiles.forEach(f => f.remove())
-    }
 
-     handleChangeStatus = ({ meta, xhr }, status) => {
+    handleChangeStatus = ({ meta, xhr }, status, files) => {
+
         if(status === 'preparing'){
             this.setState({message: ''});
+            this.setState({files: files});
         }
+
         if (status === 'error_upload') {
             if (xhr) {
                 xhr.onreadystatechange = () => {
@@ -67,27 +66,13 @@ class FilesUpload extends Component {
 
     }
 
-    preview = ({ meta, fileWithMeta, xhr }) => {
-        let resObj = '';
-        if (xhr) {
-            if (xhr) {
-                xhr.onreadystatechange = () => {
-                    if (xhr.readyState === 4) {
-                        resObj = JSON.parse(xhr.response);
-                    }
-                }
-            }
-        }
+    onFormSubmit = () => {
 
-        const { name, percent, status } = meta
-        return (
-            <div>
-              <span style={{ alignSelf: 'flex-start', margin: '10px 3%', fontFamily: 'Helvetica' }}>
-                {name}, {Math.round(percent)}%, {resObj}, <button type="button" onClick={() => fileWithMeta.remove()}>X</button>
-              </span>
-            </div>
-        )
+        //if(!this.state.file) return;
+        this.state.files.map(f => f.restart());
     }
+
+
 
     render() {
         return (
@@ -97,20 +82,22 @@ class FilesUpload extends Component {
                     getUploadParams={this.getUploadParams}
                     onChangeStatus={this.handleChangeStatus}
                     onSubmit={this.handleSubmit}
-                    maxFiles = {5}
+                    maxFiles = {1}
                     submitButtonContent = "finished"
+                    SubmitButtonComponent = {null}
+                    autoUpload = {false}
                     maxSizeBytes = {10000000}
                     canCancel={false}
-                    accept="image/*,audio/*,video/*"
+                    canRestart = {false}
+                    accept="image/*"
                     inputContent={(files, extra) => (extra.reject ? 'Image, audio and video files only' : 'Drag Files')}
-                    disabled={files => files.some(f => ['preparing', 'getting_upload_params', 'uploading'].includes(f.meta.status))}
-                    inputWithFilesContent={files => `${5 - files.length} more files allowed`}
                     styles={{
                         dropzoneReject: { borderColor: 'red', backgroundColor: '#DAA' },
                         dropzone: { width: 800, height: 500 },
                         inputLabel: (files, extra) => (extra.reject ? { color: 'red' } : {}),
                     }}
                 />
+                <button type="button" onClick={this.onFormSubmit}>Submit</button>
             </React.Fragment>
         )
     }
