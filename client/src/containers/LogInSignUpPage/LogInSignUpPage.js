@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import validator from 'validator';
 import './LogInSignUpPage.css'
-import {Link} from "react-router-dom"
 import FieldContainer from './FieldContainer/FieldContainer'
 import crossIcon from '../../assets/LoginPage-icons/cross.svg';
 import emailIcon from '../../assets/LoginPage-icons/email.svg';
