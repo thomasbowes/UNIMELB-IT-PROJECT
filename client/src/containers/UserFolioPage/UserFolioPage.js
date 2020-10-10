@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import FilesUpload from '../../components/FilesUpload/FilesUpload';
+import ImgUpload from '../../components/FilesUpload/ImgUpload';
 import eggImage from '../../assets/ProfilePageDocuments/egg.jpg'
 import './UserFolioPage.css'
 import eggPdf from '../../assets/ProfilePageDocuments/eggPdf.pdf';
@@ -103,6 +104,8 @@ class UserFolioPage extends Component {
                 
                 
                 <FilesUpload />
+                <p> img upload</p>
+                <ImgUpload />
             </div>
     
         );

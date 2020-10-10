@@ -4,10 +4,9 @@ const UPLOAD_SIZE_LIMIT = 10000000;
 
 const uploadFileVerify = (req, res, next) =>{
     const user_id = req.body.user_id;
-    const project_id = req.body.project_id;
     const itemBlock_id = req.body.itemBlock_id;
 
-    if(user_id === 'null' || project_id === 'null' || itemBlock_id === 'null'){
+    if(user_id === 'null' || itemBlock_id === 'null'){
         res.status(400).json({
             message: 'missing information, unable to process, please refresh the web page and try again',
             status: false
