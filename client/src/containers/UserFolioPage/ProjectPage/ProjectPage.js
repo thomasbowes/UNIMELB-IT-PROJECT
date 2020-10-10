@@ -50,7 +50,7 @@ class ProjectPage extends Component {
         return (
             <div className="ProjectPage">
 
-                <h1>Items in my project</h1>
+                <h1>Items in my projeggct</h1>
 
                 <div className="ImageGallery">   
                     <ImageGallery items={images} 
