@@ -9,6 +9,7 @@ import LogInSignUpPage from './containers/LogInSignUpPage/LogInSignUpPage'
 import UserFolioPage from './containers/UserFolioPage/UserFolioPage';
 import SearchPage from './containers/SearchPage/SearchPage'
 import RegisterNotificationPage from './containers/RegisterNotificationPage/RegisterNotificationPage'
+import ProjectPage from './containers/UserFolioPage/ProjectPage/ProjectPage'
 
 import Footer from './components/Footer/Footer';
 import './App.css'
@@ -68,7 +69,8 @@ class App extends Component {
           <Route path='/home/notification/welcome' exact component={RegisterNotificationPage} />
           <Route path='/about' component={AboutPage} />
           <Route path='/signup' exact component={LogInSignUpPage} />
-          <Route path='/userfolio' component={UserFolioPage} />
+          <Route path='/userfolio' exact component={UserFolioPage} />
+          <Route path='/userfolio/projects' component={ProjectPage} />
           <Route path='/search' component={SearchPage} />
           <Redirect from='/' exact to='/home' />
           <Route render={() => <h1>URL Not found</h1>}/>

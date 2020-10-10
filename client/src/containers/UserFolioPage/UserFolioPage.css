@@ -60,21 +60,7 @@
     height: auto;
 }
 
-.ImageGallery {
-    width: 90%;
-    max-width: 108rem;
-    margin: 0 auto;
-}
 
-.image-gallery-slide {
-    background-color: grey;
-}
-
-.image-gallery-slide img {
-    width: 100%;
-    height: 300px;
-
-}
 @media (max-width: 40rem) {
     /* .User{
         display: block;
