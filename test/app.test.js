@@ -153,6 +153,33 @@ describe('App test', () => {
 				})
 				.expect(201, done);
 		});
+
+		it("Create item block with incorrect details", function(done) {
+			const incorrectItemDetails = testInput.incorrectItemDetails;
+			incorrectItemDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/itemblocks/create')
+				.set("Authorization", "Bearer " + access_token)
+				.send(incorrectItemDetails)
+				.expect('Content-Type', /json/)
+				.expect(500, done);
+		});
+
+		it("Create item block with missing details", function(done) {
+			const missingItemDetails = testInput.missingItemDetails;
+			missingItemDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/itemblocks/create')
+				.set("Authorization", "Bearer " + access_token)
+				.send(missingItemDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing either user id, type of item block, or its title"
+				})
+				.expect(401, done);
+		});
 	});
 
 	describe("Retrieve new access token", function() {

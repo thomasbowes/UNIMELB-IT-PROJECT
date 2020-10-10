@@ -31,13 +31,13 @@ exports.userTests = [
 
 exports.itemTests = [
     {
-        user_id: mongoose.Types.ObjectId('klajfoijoi982389489u'),
+        user_id: mongoose.Types.ObjectId('1021b706175df1546e3acb09'),
         type: 'Project',
         title: 'Test 1',
         description: 'Test Body'
     },
     {
-        user_id: mongoose.Types.ObjectId('98f893u45haihauihiu'),
+        user_id: mongoose.Types.ObjectId('f3d6c9d62d60d057f06440f3'),
         type: 'Education',
         title: 'Test 2',
         description: 'Test Body 2'
@@ -48,6 +48,17 @@ exports.correctItemDetails = {
     title: "Test 3",
     type: "Project"
 };
+
+exports.incorrectItemDetails = {
+    title: "Test 4",
+    // incorrect spelling of type
+    type: "Prject"
+}
+
+exports.missingItemDetails = {
+    // missing type of item block
+    title: "Test 5"
+}
 
 exports.localUserRegister = {
     firstname: 'tester3 - local',
