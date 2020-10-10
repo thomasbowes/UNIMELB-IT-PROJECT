@@ -32,7 +32,7 @@ class FilesUpload extends Component {
         else authToken = this.props.userAuthToken.token;
 
         return {
-            url: 'http://localhost:5000/api/portfolio/upload', body,
+            url: '/api/portfolio/upload', body,
             headers: {
                 'Authorization': "Bearer " + authToken
             }
