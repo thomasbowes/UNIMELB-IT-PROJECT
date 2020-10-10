@@ -27,4 +27,20 @@ const authenticateJWT = (req, res, next) => {
 	}) (req, res, next);
 };
 
-module.exports = { authenticateJWT };
+// a middleware to check if current user is allowed to post/edit/delete a portfolio
+const authenticateUser = (req, res, next) => {
+	// extract current user id from decoded JWT
+	const currUser = req.user._id;
+	// user id of post that needs to be changed (must be provided by frontend)
+	const userOfPost = req.body.user_id; 
+
+	if (currUser === userOfPost) {
+		next();
+	} else {
+		return res.status(401).json({
+			message: "Request is invalid for current user"
+		});
+	}
+};
+
+module.exports = { authenticateJWT, authenticateUser };
