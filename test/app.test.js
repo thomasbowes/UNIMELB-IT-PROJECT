@@ -13,6 +13,7 @@ const db = require('../config/keys').testMongoURI;
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const User = mongoose.model('User');
+const ItemBlock = mongoose.model('ItemBlock');
 const testInput = require('./testInput');
 
 // testing our whole application 
@@ -20,6 +21,7 @@ describe('App test', () => {
 	let server;
 	let access_token;
 	let refresh_token;
+	let user_id;
 
 	// setting things up before testing (inputting test examples)
 	before(async function () {
@@ -28,7 +30,8 @@ describe('App test', () => {
 		server = app.listen(5001);
 
 		// inserting all tests into mock database
-		await User.insertMany(testInput.tests);
+		await User.insertMany(testInput.userTests);
+		await ItemBlock.insertMany(testInput.itemTests);
 	});
 
 	// after finishing tests, delete all records in mock db and closing server
@@ -36,6 +39,7 @@ describe('App test', () => {
 	after(async function() {
 		this.timeout(15000);
 		await User.deleteMany({});
+		await ItemBlock.deleteMany({});
 		await mongoose.connection.close();
 		await server.close();
 	});
@@ -93,6 +97,7 @@ describe('App test', () => {
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
+					user_id = res.body.userAuthToken._id;
 					access_token = res.body.userAuthToken.token;
 					refresh_token = res.body.userAuthToken.refresh_token;
 					done();
@@ -130,6 +135,23 @@ describe('App test', () => {
 				.set("Authorization", "Bearer " + access_token)
 				.expect('Content-Type', /json/)
 				.expect(200, done);
+		});
+	});
+
+	describe("Testing /api/itemblocks/create route", () => {
+		it("Create item block with correct details", function(done) {
+			const correctItemDetails = testInput.correctItemDetails;
+			correctItemDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/itemblocks/create')
+				.set("Authorization", "Bearer " + access_token)
+				.send(correctItemDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Item block has been successfully created"
+				})
+				.expect(201, done);
 		});
 	});
 

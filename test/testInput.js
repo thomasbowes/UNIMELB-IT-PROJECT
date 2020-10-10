@@ -1,5 +1,7 @@
+const mongoose = require('mongoose');
+
 // Inputs for Getting all existing users
-exports.tests = [
+exports.userTests = [
     {
         firstname: 'tester1',
         lastname: 'One',
@@ -26,6 +28,26 @@ exports.tests = [
         facebookID: "918749279988"
     }
 ]
+
+exports.itemTests = [
+    {
+        user_id: mongoose.Types.ObjectId('klajfoijoi982389489u'),
+        type: 'Project',
+        title: 'Test 1',
+        description: 'Test Body'
+    },
+    {
+        user_id: mongoose.Types.ObjectId('98f893u45haihauihiu'),
+        type: 'Education',
+        title: 'Test 2',
+        description: 'Test Body 2'
+    }
+]
+
+exports.correctItemDetails = {
+    title: "Test 3",
+    type: "Project"
+};
 
 exports.localUserRegister = {
     firstname: 'tester3 - local',
