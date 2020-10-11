@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './ProfileBlockWithImage.css'
+import {Link} from 'react-router-dom'
 
 class ProfileBlockWithImage extends Component {
     render () {
@@ -21,7 +22,7 @@ class ProfileBlockWithImage extends Component {
                         {this.props.text}    
                     </div>
                     <div className="overview__see-more">
-                        <a href="#see-more">See more</a>
+                        <Link to="/userfolio/projects">See more</Link>
                     </div>
                 </div>
             </section>
