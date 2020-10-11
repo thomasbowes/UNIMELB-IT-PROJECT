@@ -32,7 +32,17 @@ const authMiddleware = require('../../middleware/authorization');
  * @apiSuccessExample Successful Response:
  * HTTP/1.1 201 OK
  * {
- *     "status": "Item block has been successfully created"
+ *     "status": "Item block has been successfully created",
+ *     "item": {
+ *	        "urlThumbnail": "Thumbnail",
+ *	        "_id": "5f826c26fa1ff03fc7998402",
+ *	        "user_id": "5f7a7f7240e08a0017990a5e",
+ *	        "type": "Project",
+ *	        "title": "Testing Once",
+ *	        "description": "",
+ *	        "date": "2020-10-11T02:21:26.649Z",
+ *	        "__v": 0
+ *   	}
  * }
  *
  * @apiError RequiredDetailsMissing Required parameters not provided

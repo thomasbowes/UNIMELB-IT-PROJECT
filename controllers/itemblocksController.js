@@ -38,7 +38,8 @@ const createItem = (req, res, next) => {
 		.save()
 		.then(() => {
 			res.status(201).json({
-				status: "Item block has been successfully created"
+				status: "Item block has been successfully created",
+				item: newItem
 			});
 		})
 		.catch(error => {

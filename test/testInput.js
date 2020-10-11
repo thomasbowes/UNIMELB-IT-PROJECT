@@ -60,6 +60,21 @@ exports.missingItemDetails = {
     title: "Test 5"
 }
 
+exports.rightUpdItemDetails = {
+    change: {
+        title: "Test 4",
+        type: "Education"
+    }
+};
+
+exports.wrongUpdItemDetails = {
+    change: {
+        title: "Test 4",
+        // incorrect spelling of "Education"
+        type: "Educatio"
+    }
+};
+
 exports.localUserRegister = {
     firstname: 'tester3 - local',
     lastname: 'Random',

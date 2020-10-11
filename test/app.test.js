@@ -10,6 +10,7 @@ const app = require('../app');
 const db = require('../config/keys').testMongoURI;
 
 // connecting to mock database...
+mongoose.set('useFindAndModify', false);
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const User = mongoose.model('User');
@@ -22,6 +23,7 @@ describe('App test', () => {
 	let access_token;
 	let refresh_token;
 	let user_id;
+	let item_id;
 
 	// setting things up before testing (inputting test examples)
 	before(async function () {
@@ -148,10 +150,11 @@ describe('App test', () => {
 				.set("Authorization", "Bearer " + access_token)
 				.send(correctItemDetails)
 				.expect('Content-Type', /json/)
-				.expect({
-					status: "Item block has been successfully created"
-				})
-				.expect(201, done);
+				.expect(201)
+				.end((err, res) => {
+					item_id = res.body.item._id;
+					done();
+				});	
 		});
 
 		it("Create item block with incorrect details", function(done) {
@@ -179,6 +182,102 @@ describe('App test', () => {
 					status: "Missing either user id, type of item block, or its title"
 				})
 				.expect(401, done);
+		});
+	});
+
+	describe("Testing /api/itemblocks/update route", () => {
+		it("Update item block with correct details", function(done) {
+			const rightUpdItemDetails = testInput.rightUpdItemDetails;
+			rightUpdItemDetails.user_id = user_id;
+			rightUpdItemDetails.item_id = item_id;
+
+			request(app)
+				.post('/api/itemblocks/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(rightUpdItemDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Item block has been successfully updated"
+				})
+				.expect(200, done);
+		});
+
+		it("Update item block with incorrect details", function(done) {
+			const wrongUpdItemDetails = testInput.wrongUpdItemDetails;
+			wrongUpdItemDetails.user_id = user_id;
+			wrongUpdItemDetails.item_id = item_id;
+
+			request(app)
+				.post('/api/itemblocks/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(wrongUpdItemDetails)
+				.expect('Content-Type', /json/)
+				// incorrect details are ignored when updating item blocks
+				.expect(200, done);
+		});
+
+		it("Update item block with missing details", function(done) {
+			const missUpdItemDetails = {};
+			// forgot item_id and change 
+			missUpdItemDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/itemblocks/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(missUpdItemDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing either user id, item id, or the body of change"
+				})
+				.expect(401, done);
+		});		
+	});
+
+	describe("Testing /api/itemblocks/delete route", () => {
+		it("Delete item block with missing details", function(done) {
+			const missingDeleteItemDetails = {};
+			// forgot item_id
+			missingDeleteItemDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/itemblocks/delete')
+				.set("Authorization", "Bearer " + access_token)
+				.send(missingDeleteItemDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing either user id or item id"
+				})
+				.expect(401, done);
+		});
+
+		it("Delete item block with incorrect details", function(done) {
+			const incorrectDeleteItemDetails = {};
+			incorrectDeleteItemDetails.item_id = mongoose.Types.ObjectId('1121b706175df1546e3acb09');
+			incorrectDeleteItemDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/itemblocks/delete')
+				.set("Authorization", "Bearer " + access_token)
+				.send(incorrectDeleteItemDetails)
+				.expect('Content-Type', /json/)
+				// even though item block doesn't exist, database operation still returns something
+				.expect(200, done);
+		});
+
+		it("Delete item block with correct details", function(done) {
+			const correctDeleteItemDetails = {};
+			correctDeleteItemDetails.user_id = user_id;
+			correctDeleteItemDetails.item_id = item_id;
+
+			request(app)
+				.post('/api/itemblocks/delete')
+				.set("Authorization", "Bearer " + access_token)
+				.send(correctDeleteItemDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Item block has been successfully deleted"
+				})
+				.expect(200, done);
 		});
 	});
 
