@@ -34,7 +34,8 @@ const authenticateUser = (req, res, next) => {
 	// user id of post that needs to be changed (must be provided by frontend)
 	const userOfPost = req.body.user_id; 
 
-	if (currUser === userOfPost) {
+	// if user is either same user or if user is admin
+	if (currUser === userOfPost || req.user.isAdmin) {
 		next();
 	} else {
 		return res.status(401).json({

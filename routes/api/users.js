@@ -183,7 +183,8 @@ router.route('/oauth/google/callback')
  * @apiName AuthenticateToken
  * @apiGroup Users
  *
- * @apiSuccess {String} message token is valid
+ * @apiSuccess {Object} userInfo info provided in token
+ * @apiSuccess {String} status token is valid
  * 
  * @apiSuccessExample Successful Response:
  * HTTP/1.1 200
@@ -207,7 +208,7 @@ router.route('/oauth/google/callback')
  *     "status": false 
  * }
  */
-router.use('/authenticate', authMiddleware.authenticateJWT)
+router.use('/authenticate', authMiddleware.authenticateJWT);
 router.route('/authenticate')
 	.get(usersController.testUser);
 

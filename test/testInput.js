@@ -1,5 +1,7 @@
+const mongoose = require('mongoose');
+
 // Inputs for Getting all existing users
-exports.tests = [
+exports.userTests = [
     {
         firstname: 'tester1',
         lastname: 'One',
@@ -26,6 +28,52 @@ exports.tests = [
         facebookID: "918749279988"
     }
 ]
+
+exports.itemTests = [
+    {
+        user_id: mongoose.Types.ObjectId('1021b706175df1546e3acb09'),
+        type: 'Project',
+        title: 'Test 1',
+        description: 'Test Body'
+    },
+    {
+        user_id: mongoose.Types.ObjectId('f3d6c9d62d60d057f06440f3'),
+        type: 'Education',
+        title: 'Test 2',
+        description: 'Test Body 2'
+    }
+]
+
+exports.correctItemDetails = {
+    title: "Test 3",
+    type: "Project"
+};
+
+exports.incorrectItemDetails = {
+    title: "Test 4",
+    // incorrect spelling of type
+    type: "Prject"
+}
+
+exports.missingItemDetails = {
+    // missing type of item block
+    title: "Test 5"
+}
+
+exports.rightUpdItemDetails = {
+    change: {
+        title: "Test 4",
+        type: "Education"
+    }
+};
+
+exports.wrongUpdItemDetails = {
+    change: {
+        title: "Test 4",
+        // incorrect spelling of "Education"
+        type: "Educatio"
+    }
+};
 
 exports.localUserRegister = {
     firstname: 'tester3 - local',
