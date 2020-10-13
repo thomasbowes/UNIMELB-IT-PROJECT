@@ -2,8 +2,11 @@ import React, {Component} from 'react';
 import './UserProfile.css';
 
 import eggImage from '../../../assets/ProfilePageDocuments/egg.jpg'
+import EditInfoForm from '../EditInfoForm/EditInfoForm';
+
 
 class UserProfile extends Component{
+
 
     render(){
         let name = "Mr. Eggy Egglington";
@@ -19,6 +22,8 @@ class UserProfile extends Component{
                 <div className="UserInfoHolder">
                     <div className="UserInfo">
                         <h1>{name}</h1>
+                        <button>edit</button>
+                        <EditInfoForm />
                     </div>
                     <div className="UserInfo">
                         <h2>{highLevelDes}</h2> 
