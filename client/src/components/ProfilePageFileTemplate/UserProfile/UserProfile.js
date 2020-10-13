@@ -7,12 +7,21 @@ import EditInfoForm from '../EditInfoForm/EditInfoForm';
 
 class UserProfile extends Component{
 
+    state = {
+        name : "Mr. Eggy Egglington",
+        highLevelDes : "An eggcellent student at Eggy Institute of Technology",
+        description : "A dedicated eggspert in the field of eggnomics, pushing egg-legislation to be beneficial for your average egg. With my extensive egg-u-cation i bring a dynamic off eggspertise to wherever i work.",
+        
+        nameEditing: false
+        
+    }
+
+    changeName = (newName) =>{
+        this.setState({name: newName, nameEditing: false})
+    }
+    
 
     render(){
-        let name = "Mr. Eggy Egglington";
-        let highLevelDes = "An eggcellent student at Eggy Institute of Technology";
-        let description = "A dedicated eggspert in the field of eggnomics, pushing egg-legislation to be beneficial for your average egg. With my extensive egg-u-cation i bring a dynamic off eggspertise to wherever i work."
-        
         return (
             <div className="User-info">
                 <div className="UserPictureHolder">
@@ -21,15 +30,15 @@ class UserProfile extends Component{
 
                 <div className="UserInfoHolder">
                     <div className="UserInfo">
-                        <h1>{name}</h1>
-                        <button>edit</button>
-                        <EditInfoForm />
+                        <h1>{this.state.name}</h1>
+                        <button onClick={() => this.setState({nameEditing: true}) } >edit</button>
+                        {this.state.nameEditing? <EditInfoForm saveChange={this.changeName} />: null}
                     </div>
                     <div className="UserInfo">
-                        <h2>{highLevelDes}</h2> 
+                        <h2>{this.state.highLevelDes}</h2> 
                     </div>
                     <div className="Objective">
-                        <p>{description}</p> 
+                        <p>{this.state.description}</p> 
                     </div>
                 </div>
             </div>

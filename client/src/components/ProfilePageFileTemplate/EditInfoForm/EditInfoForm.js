@@ -13,7 +13,7 @@ class EditInfoForm extends Component{
         return(
             <form>
                 <input type="text" onChange={this.inputChangeHandler} />
-                <button>save</button>
+                <button onClick={() => this.props.saveChange(this.state.input)}>save</button>
             </form>
         );
     }
