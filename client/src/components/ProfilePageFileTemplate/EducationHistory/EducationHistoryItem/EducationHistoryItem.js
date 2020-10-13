@@ -34,18 +34,18 @@ class EducationalHistoryItem extends Component {
                             <a href="#title">
                                 <h1>{this.props.school}</h1>
                             </a>
-                            {this.state.itemEditable? <button onClick={() => this.setState({schoolEditable: true})}>Edit School</button>:null}
-                            {this.state.itemEditable && this.state.schoolEditable ? <EditInfoForm />:null}
+                            {this.props.editable && this.state.itemEditable? <button onClick={() => this.setState({schoolEditable: true})}>Edit School</button>:null}
+                            {this.props.editable && this.state.itemEditable && this.state.schoolEditable ? <EditInfoForm />:null}
 
                             <h1>{this.props.duration}</h1>
-                            {this.state.itemEditable? <button onClick={() => this.setState({durationEditable: true})}>Edit Duration</button>:null}
-                            {this.state.itemEditable && this.state.durationEditable ? <EditInfoForm />:null}
+                            {this.props.editable && this.state.itemEditable? <button onClick={() => this.setState({durationEditable: true})}>Edit Duration</button>:null}
+                            {this.props.editable && this.state.itemEditable && this.state.durationEditable ? <EditInfoForm />:null}
                         </div>
 
                         <div className="overview__description">
                             {this.props.description}
-                            {this.state.itemEditable? <button onClick={() => this.setState({descriptionEditable: true})}>Edit Description</button>:null}
-                            {this.state.itemEditable && this.state.descriptionEditable ? <EditInfoForm />:null}
+                            {this.props.editable && this.state.itemEditable? <button onClick={() => this.setState({descriptionEditable: true})}>Edit Description</button>:null}
+                            {this.props.editable && this.state.itemEditable && this.state.descriptionEditable ? <EditInfoForm />:null}
                         </div>
                     </div>
                 </div>

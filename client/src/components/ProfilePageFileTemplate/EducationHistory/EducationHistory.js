@@ -30,7 +30,7 @@ class EducationHistory extends Component {
             <section className="education-history">
                 <h1 id="heading">Education History</h1>
                 <p>editable:{this.state.editable.toString()}</p>
-                {this.state.editable? <button onClick={this.editableHandler}>Save</button> 
+                {this.state.editable? <button onClick={this.editableHandler}>Done</button> 
                                     : <button onClick={this.editableHandler}>Edit</button>}
                 <div className="education-history-items">
 
