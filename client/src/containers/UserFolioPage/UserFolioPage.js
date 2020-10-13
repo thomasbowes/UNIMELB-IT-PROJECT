@@ -27,13 +27,13 @@ class UserFolioPage extends Component {
 
                 <EducationHistory
                         schools={["Eggy Junior High", "University of Eggplication", "Institute of Making Benedict Egg"]} 
-                        descriptions={[text, text, text]} 
+                        descriptions={[text+text, text, text]} 
                         images={[google1, google1, google2]}
                         durations={["2022-2024", "2024-2027", "2027-2???"]} />
 
                 <h2>My projeggcts</h2>
 
-                <ProfileBlockWithImage image={google2} text={text} title="Founded Eooggle" />
+                <ProfileBlockWithImage image={google2} text={text+text+text} title="Founded Eooggle" />
                 <ProfileBlockNoImage text={text} title="Founded Eooggle" />
                 <ProfileBlockTwoProject texts={[text, text]} titles={["Founded Eooggle", "Founded Eggipedia"]} />
                 
