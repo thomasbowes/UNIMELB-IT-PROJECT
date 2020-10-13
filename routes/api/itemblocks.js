@@ -28,6 +28,7 @@ const authMiddleware = require('../../middleware/authorization');
  * }
  *
  * @apiSuccess {String} status Item block creation result
+ * @apiSuccess {Object} item The created item block
  *
  * @apiSuccessExample Successful Response:
  * HTTP/1.1 201 OK
@@ -36,9 +37,9 @@ const authMiddleware = require('../../middleware/authorization');
  *     "item": {
  *	        "urlThumbnail": "Thumbnail",
  *	        "_id": "5f826c26fa1ff03fc7998402",
- *	        "user_id": "5f7a7f7240e08a0017990a5e",
+ *	        "user_id": "ajfiajijf892jfaiojio",
  *	        "type": "Project",
- *	        "title": "Testing Once",
+ *	        "title": "Test",
  *	        "description": "",
  *	        "date": "2020-10-11T02:21:26.649Z",
  *	        "__v": 0
@@ -111,7 +112,7 @@ router.route('/update')
  * @apiParamExample Example Body: 
  * {
  *     "user_id": "ajfiajijf892jfaiojio",
- *     "item_id": "lkjalksfi98789348915987897",
+ *     "item_id": "lkjalksfi98789348915987897"
  * }
  *
  * @apiSuccess {String} status Item block deletion result
@@ -148,7 +149,7 @@ router.route('/delete')
  *     "item_id": "5f81bdf6db99e33e48002c54"
  * }
  *
- * @apiSuccess {String} status Item block deletion result
+ * @apiSuccess {String} status Item block search result
  * @apiSuccess {Object} itemblock item block
  *
  * @apiSuccessExample Successful Response:
@@ -191,7 +192,7 @@ router.route('/see')
  *     "user_id": "5f7a7f7240e08a0017990a5e"
  * }
  *
- * @apiSuccess {String} status Item block deletion result
+ * @apiSuccess {String} status Item block search result
  * @apiSuccess {Object} itemblocks list of item blocks
  *
  * @apiSuccessExample Successful Response:
