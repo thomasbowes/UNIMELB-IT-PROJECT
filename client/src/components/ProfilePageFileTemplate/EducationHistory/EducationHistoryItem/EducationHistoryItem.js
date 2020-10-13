@@ -14,7 +14,10 @@ class EducationalHistoryItem extends Component {
     }
 
     itemEditableHandler = () => {
-        this.setState({itemEditable: !this.state.itemEditable})
+        this.setState({itemEditable: !this.state.itemEditable, 
+                        schoolEditable: false,
+                        durationEditable: false,
+                        descriptionEditable: false})
     }
 
     render(){
