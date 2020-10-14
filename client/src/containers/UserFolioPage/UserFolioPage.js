@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import './UserFolioPage.css'
 
 import ProfileBlockWithImage from '../../components/ProfilePageFileTemplate/ProjectBlockWithImage/ProfileBlockWithImage';
-import ProfileBlockNoImage from '../../components/ProfilePageFileTemplate/ProfileBlockNoImage/ProfileBlockNoImage';
-import ProfileBlockTwoProject from '../../components/ProfilePageFileTemplate/ProfileBlockTwoProject/ProfileBlockTwoProject';
 import EducationHistory from '../../components/ProfilePageFileTemplate/EducationHistory/EducationHistory';
 
 import google1 from '../../assets/ProfilePageDocuments/google.png';
@@ -26,6 +24,33 @@ class UserFolioPage extends Component {
         },
     }
 
+    changeHisItemHandler = (itemType, id, input) => {
+        const newEduHis = {...this.state.educationHistory}
+        switch (itemType) {
+            case "school":
+                const newSchools = [...this.state.educationHistory.schools]
+                newSchools[id] = input
+                newEduHis.schools = newSchools
+                this.setState({educationHistory:newEduHis})
+                console.log("newState: " + this.state.toString())
+                break;
+            case "duration":
+                const newDurations = [...this.state.educationHistory.durations]
+                newDurations[id] = input
+                newEduHis.durations = newDurations
+                this.setState({educationHistory:newEduHis})
+                break;
+            case "description":
+                const newDes = [...this.state.educationHistory.descriptions]
+                newDes[id] = input
+                newEduHis.descriptions = newDes
+                this.setState({educationHistory:newEduHis})
+                break;
+            default:
+                return;
+        }
+    }
+
     render() {
           return (
             <div className="UserFolioPage">
@@ -39,7 +64,8 @@ class UserFolioPage extends Component {
                         schools={this.state.educationHistory.schools}
                         descriptions={this.state.educationHistory.descriptions}
                         images={this.state.educationHistory.images}
-                        durations={this.state.educationHistory.durations} />
+                        durations={this.state.educationHistory.durations} 
+                        changeItemHandler = {this.changeHisItemHandler}/>
 
                 <h2>My projeggcts</h2>
 

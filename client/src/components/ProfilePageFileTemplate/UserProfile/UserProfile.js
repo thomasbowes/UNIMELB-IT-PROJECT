@@ -36,6 +36,7 @@ class UserProfile extends Component{
         const oldEditable = this.state.editable
         this.setState({editable: !oldEditable, nameEditing: false, highLevelDesEditing: false, descriptionEditing: false})
     }
+
     
 
     render(){

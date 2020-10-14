@@ -36,6 +36,21 @@ class EducationalHistoryItem extends Component {
         return this.checkItemEditable() && this.state.descriptionEditable;
     }
 
+    changeSchoolHandler = (input) => {
+        this.props.changeItemHandler("school", this.props.id, input);
+        this.setState({schoolEditable: false});
+    }
+
+    changeDurationHandler = (input) => {
+        this.props.changeItemHandler("duration", this.props.id, input);
+        this.setState({durationEditable: false});
+    }
+
+    changeDesHandler = (input) => {
+        this.props.changeItemHandler("description", this.props.id, input);
+        this.setState({descriptionEditable: false});
+    }
+
     render(){
         return (
             <Aux>
@@ -54,17 +69,17 @@ class EducationalHistoryItem extends Component {
                                 <h1>{this.props.school}</h1>
                             </a>
                             {this.checkItemEditable() ? <button onClick={() => this.setState({schoolEditable: !this.state.schoolEditable})}>Edit School</button>:null}
-                            {this.checkSchoolEditable() ? <EditInfoForm />:null}
+                            {this.checkSchoolEditable() ? <EditInfoForm saveChange={this.changeSchoolHandler} oldValue={this.props.school}/>:null}
 
                             <h1>{this.props.duration}</h1>
                             {this.checkItemEditable()? <button onClick={() => this.setState({durationEditable: !this.state.durationEditable})}>Edit Duration</button>:null}
-                            {this.checkDurationEditable()? <EditInfoForm />:null}
+                            {this.checkDurationEditable()? <EditInfoForm saveChange={this.changeDurationHandler} oldValue={this.props.duration}/>:null}
                         </div>
 
                         <div className="overview__description">
                             {this.props.description}
                             {this.checkItemEditable()? <button onClick={() => this.setState({descriptionEditable: !this.state.descriptionEditable})}>Edit Description</button>:null}
-                            {this.checkDesEditable() ? <EditInfoForm />:null}
+                            {this.checkDesEditable() ? <EditInfoForm saveChange={this.changeDesHandler} oldValue={this.props.description}/>:null}
                         </div>
                     </div>
                 </div>
