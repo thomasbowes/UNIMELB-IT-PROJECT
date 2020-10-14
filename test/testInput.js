@@ -29,6 +29,13 @@ exports.userTests = [
     }
 ]
 
+exports.rightUpdateUserDetails = {
+    contents: {
+        firstname: "Test Change",
+        lastname: "Test Change"
+    }
+};
+
 exports.itemTests = [
     {
         user_id: mongoose.Types.ObjectId('1021b706175df1546e3acb09'),

@@ -250,6 +250,40 @@ router.route('/authenticate')
 router.route('/refresh')
 	.post(usersController.refreshTokens);
 
+/**
+ * @api {post} /update Update user details
+ * @apiName UpdateUser
+ * @apiGroup Users
+ *
+ * @apiParam {String} user_id ID of user you're trying to change
+ * @apiParam {Object} contents The attributes you're trying to change 
+ *
+ * @apiParamExample Example Body:
+ * {
+ *     "user_id": "EAljafjaojoiaewfhiafhfajKLFJhhaflj80xWGqWSPiVXSzCRMl",
+ *     "contents": {
+ *         "firstname": "Test",
+ *         "lastname": "Test",
+ *         "password": "Test"	
+ *     }
+ * }
+ *
+ * @apiSuccess {String} status User update result
+ * 
+ * @apiSuccessExample Successful Response:
+ * HTTP/1.1 200
+ * {
+ *     "status": "User details have been successfully updated"
+ * }
+ * 
+ * @apiError RequiredParamtersMissing Required parameters missing from POST request
+ * 
+ * @apiErrorExample Error-Response: 
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *     "status": "Include body of change"
+ * }
+ */
 router.use('/update', authMiddleware.authenticateJWT);
 router.use('/update', authMiddleware.authenticateUser);
 router.route('/update')

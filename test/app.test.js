@@ -419,6 +419,38 @@ describe('App test', () => {
 		});
 	});
 
+	describe("Testing /api/users/update endpoint", function() {
+		it("Correct details provided", function(done) {
+			const correctUserDetails = testInput.rightUpdateUserDetails;
+			correctUserDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/users/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(correctUserDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "User details have been successfully updated"
+				})
+				.expect(200, done);
+		});
+
+		it("Missing body provided", function(done) {
+			const missingUserDetails = {};
+			missingUserDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/users/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(missingUserDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Include body of change"
+				})
+				.expect(401, done);
+		});
+	});
+
 	describe("Retrieve new access token", function() {
 		it("Invalid refresh token is provided", function(done) {
 			request(app)
