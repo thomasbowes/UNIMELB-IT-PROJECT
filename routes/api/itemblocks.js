@@ -15,16 +15,15 @@ const authMiddleware = require('../../middleware/authorization');
  * @apiGroup ItemBlocks
  *
  * @apiParam {String} user_id User's id (to be associated with item block), REQUIRED
- * @apiParam {String} type type of item block, REQUIRED
- * @apiParam {String} title title of an item block, REQUIRED
- * @apiParam {String} description description for an item block, NOT REQUIRED
- * @apiParam {String} urlThumbnail Cloudinary URL that contains thumbnail pic, NOT REQUIRED
+ * @apiParam {Object} contents Object that includes attributes that are added when creating profile block, REQUIRED
  *
  * @apiParamExample Example Body: 
  * {
  *     "user_id": "ajfiajijf892jfaiojio",
- *     "type": "Project",
- *     "title": "Test"
+ *     "contents": {
+ *         "type": "Project",
+ *         "title": "Test"
+ *     }
  * }
  *
  * @apiSuccess {String} status Item block creation result
@@ -67,13 +66,13 @@ router.route('/create')
  *
  * @apiParam {String} user_id User's id (to be associated with item block), REQUIRED
  * @apiParam {String} item_id ID of an item block you're trying to update, REQUIRED
- * @apiParam {Object} change Object that includes attributes of an item block you're trying to change, REQUIRED
+ * @apiParam {Object} contents Object that includes attributes of an item block you're trying to change, REQUIRED
  *
  * @apiParamExample Example Body: 
  * {
  *     "user_id": "ajfiajijf892jfaiojio",
  *     "item_id": "lkjalksfi98789348915987897",
- *     "change": {
+ *     "contents": {
  *	       "title": "Test Update",
  *         "description": "Test Update"
  *     }

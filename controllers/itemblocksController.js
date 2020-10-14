@@ -9,9 +9,9 @@ const ItemBlock = require('mongoose').model('ItemBlock');
 // Middleware passed to make sure that required contents of create request is present
 const checkCreateBody = (req, res, next) => {
 	// check if required fields for creating itemblock are present
-	if (!req.body.user_id || !req.body.type || !req.body.title) {
+	if (!req.body.user_id || !req.body.contents || !req.body.contents.type || !req.body.contents.title) {
 		return res.status(401).json({
-			status: "Missing either user id, type of item block, or its title"
+			status: "Missing either user id, type of item block, its title or the contents body"
 		});
 	}
 
@@ -20,19 +20,14 @@ const checkCreateBody = (req, res, next) => {
 
 // function for creating a new item block
 const createItem = (req, res, next) => {
-	// in the case if description body is not present
-	if (!req.body.description) {
-		req.body.description = "";
-	}
+	// add user id attribute to content object (intention is to separate user id from contents
+	// initally; this for the sole purpose for my auth middleware to work (if further explanation
+	// is needed, contact me))
+	req.body.contents.user_id = req.body.user_id;
 
-	const newItem = new ItemBlock({
-		user_id: req.body.user_id,
-		type: req.body.type,
-		title: req.body.title,
-		description: req.body.description
-		// not sure if this should be added
-		// urlThumbnail: req.body.urlThumbnail
-	});
+	// attributes of new profile object must be stored in "req.body.contents" in order to
+	// save this new profile block in the database
+	const newItem = new ItemBlock(req.body.contents);
 
 	newItem
 		.save()
@@ -53,7 +48,7 @@ const createItem = (req, res, next) => {
 // Middleware passed to make sure that required contents of update request is present
 const checkUpdateBody = (req, res, next) => {
 	// check if required fields for updating itemblock are present
-	if (!req.body.user_id || !req.body.item_id || !req.body.change) {
+	if (!req.body.user_id || !req.body.item_id || !req.body.contents) {
 		return res.status(401).json({
 			status: "Missing either user id, item id, or the body of change"
 		});
@@ -70,7 +65,7 @@ const updateItem = (req, res, next) => {
 
 	ItemBlock
 		// req.body.change is an object that contains the fields we want to change in an item block
-		.findOneAndUpdate(query, req.body.change, {upsert: true})
+		.findOneAndUpdate(query, req.body.contents, {upsert: true})
 		.then(item => {
 			res.status(200).json({
 				status: "Item block has been successfully updated"

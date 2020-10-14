@@ -183,7 +183,7 @@ describe('App test', () => {
 				.send(missingItemDetails)
 				.expect('Content-Type', /json/)
 				.expect({
-					status: "Missing either user id, type of item block, or its title"
+					status: "Missing either user id, type of item block, its title or the contents body"
 				})
 				.expect(401, done);
 		});
@@ -222,7 +222,7 @@ describe('App test', () => {
 
 		it("Update item block with missing details", function(done) {
 			const missUpdItemDetails = {};
-			// forgot item_id and change 
+			// forgot item_id and contents 
 			missUpdItemDetails.user_id = user_id;
 
 			request(app)
