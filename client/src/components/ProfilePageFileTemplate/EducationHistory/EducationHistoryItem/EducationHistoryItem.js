@@ -20,6 +20,22 @@ class EducationalHistoryItem extends Component {
                         descriptionEditable: false})
     }
 
+    checkItemEditable = () => {
+        return this.props.editable && this.state.itemEditable;
+    }
+
+    checkSchoolEditable = () => {
+        return this.checkItemEditable() && this.state.schoolEditable;
+    }
+
+    checkDurationEditable = () => {
+        return this.checkItemEditable() && this.state.durationEditable;
+    }
+
+    checkDesEditable = () => {
+        return this.checkItemEditable() && this.state.descriptionEditable;
+    }
+
     render(){
         return (
             <Aux>
@@ -37,18 +53,18 @@ class EducationalHistoryItem extends Component {
                             <a href="#title">
                                 <h1>{this.props.school}</h1>
                             </a>
-                            {this.props.editable && this.state.itemEditable? <button onClick={() => this.setState({schoolEditable: true})}>Edit School</button>:null}
-                            {this.props.editable && this.state.itemEditable && this.state.schoolEditable ? <EditInfoForm />:null}
+                            {this.checkItemEditable() ? <button onClick={() => this.setState({schoolEditable: !this.state.schoolEditable})}>Edit School</button>:null}
+                            {this.checkSchoolEditable() ? <EditInfoForm />:null}
 
                             <h1>{this.props.duration}</h1>
-                            {this.props.editable && this.state.itemEditable? <button onClick={() => this.setState({durationEditable: true})}>Edit Duration</button>:null}
-                            {this.props.editable && this.state.itemEditable && this.state.durationEditable ? <EditInfoForm />:null}
+                            {this.checkItemEditable()? <button onClick={() => this.setState({durationEditable: !this.state.durationEditable})}>Edit Duration</button>:null}
+                            {this.checkDurationEditable()? <EditInfoForm />:null}
                         </div>
 
                         <div className="overview__description">
                             {this.props.description}
-                            {this.props.editable && this.state.itemEditable? <button onClick={() => this.setState({descriptionEditable: true})}>Edit Description</button>:null}
-                            {this.props.editable && this.state.itemEditable && this.state.descriptionEditable ? <EditInfoForm />:null}
+                            {this.checkItemEditable()? <button onClick={() => this.setState({descriptionEditable: !this.state.descriptionEditable})}>Edit Description</button>:null}
+                            {this.checkDesEditable() ? <EditInfoForm />:null}
                         </div>
                     </div>
                 </div>

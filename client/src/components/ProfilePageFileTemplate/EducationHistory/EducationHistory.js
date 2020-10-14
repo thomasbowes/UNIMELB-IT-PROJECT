@@ -23,7 +23,7 @@ class EducationHistory extends Component {
                     image={this.props.images[index]}
                     duration={this.props.durations[index]}
                     editable={this.state.editable}
-                    key={id}/>
+                    key={index}/>
         })
 
         return(
