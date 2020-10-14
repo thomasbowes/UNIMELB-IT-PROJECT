@@ -250,4 +250,9 @@ router.route('/authenticate')
 router.route('/refresh')
 	.post(usersController.refreshTokens);
 
+router.use('/update', authMiddleware.authenticateJWT);
+router.use('/update', authMiddleware.authenticateUser);
+router.route('/update')
+	.post(usersController.changeDetails);
+
 module.exports = router;

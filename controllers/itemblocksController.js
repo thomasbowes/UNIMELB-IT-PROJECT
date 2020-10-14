@@ -64,7 +64,7 @@ const updateItem = (req, res, next) => {
 	const query = { _id: itemid };
 
 	ItemBlock
-		// req.body.change is an object that contains the fields we want to change in an item block
+		// req.body.contents is an object that contains the fields we want to change in an item block
 		.findOneAndUpdate(query, req.body.contents, {upsert: true})
 		.then(item => {
 			res.status(200).json({

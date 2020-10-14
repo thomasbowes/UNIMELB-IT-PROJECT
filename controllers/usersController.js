@@ -370,6 +370,40 @@ const refreshTokens = (req, res) => {
   }
 };
 
+// function dedicated to changing permissible user details (first, last name and password)
+const changeDetails = (req, res) => {
+  const userid = req.body.user_id;
+  const query = { _id: userid };  
+
+  if (!req.body.contents) {
+    return res.status(401).json({
+      status: "Include body of change"
+    });
+  }
+
+  // if password is included, make sure to encode it 
+  if (req.body.contents.password != undefined) {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.contents.password, salt);
+    req.body.contents.password = hash;
+  }
+
+  User
+    // req.body.contents is an object that contains the fields we want to change in an item block
+    .findOneAndUpdate(query, req.body.contents, {upsert: true})
+    .then(item => {
+      res.status(200).json({
+        status: "User details have been successfully updated"
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        status: "An error has occurred trying to update user details",
+        err: error
+      });
+    })
+};
+
 module.exports = { signToken, signRefreshToken };
 module.exports.registerNewUser = registerNewUser;
 module.exports.loginUser = loginUser;
@@ -378,3 +412,4 @@ module.exports.userEmailConfirmation = userEmailConfirmation;
 module.exports.testUser = testUser;
 module.exports.checkBody = checkBody;
 module.exports.refreshTokens = refreshTokens;
+module.exports.changeDetails = changeDetails;
