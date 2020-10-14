@@ -19,13 +19,14 @@ class FilesUpload extends Component {
         message: '',
     }
 
+    //prepare for upload
     getUploadParams = ({ file, meta }) => {
 
         const body = new FormData();
         body.append('file', file);
-        body.append('user_id', '123');
-        body.append('itemBlock_id', '123');
-        body.append('type', '123');
+        body.append('user_id', this.props.user_id);
+        body.append('itemBlock_id', this.props.itemBlock_id);
+        body.append('type', this.props.type);
 
         let authToken;
         if (!this.props.userAuthToken) authToken = '';
@@ -39,11 +40,13 @@ class FilesUpload extends Component {
         }
     }
 
+    //handle submit button: delete all the contents inside the drop zone
     handleSubmit = (files, allFiles) => {
-        console.log(files.map(f => f.meta))
+        //console.log(files.map(f => f.meta))
         allFiles.forEach(f => f.remove())
     }
 
+     //handle error status: mainly print out message
      handleChangeStatus = ({ meta, xhr }, status) => {
         if(status === 'preparing'){
             this.setState({message: ''});
@@ -67,28 +70,6 @@ class FilesUpload extends Component {
 
     }
 
-    preview = ({ meta, fileWithMeta, xhr }) => {
-        let resObj = '';
-        if (xhr) {
-            if (xhr) {
-                xhr.onreadystatechange = () => {
-                    if (xhr.readyState === 4) {
-                        resObj = JSON.parse(xhr.response);
-                    }
-                }
-            }
-        }
-
-        const { name, percent, status } = meta
-        return (
-            <div>
-              <span style={{ alignSelf: 'flex-start', margin: '10px 3%', fontFamily: 'Helvetica' }}>
-                {name}, {Math.round(percent)}%, {resObj}, <button type="button" onClick={() => fileWithMeta.remove()}>X</button>
-              </span>
-            </div>
-        )
-    }
-
     render() {
         return (
             <React.Fragment>
@@ -101,7 +82,7 @@ class FilesUpload extends Component {
                     submitButtonContent = "finished"
                     maxSizeBytes = {10000000}
                     canCancel={false}
-                    accept="image/*,audio/*,video/*"
+                    //accept="image/*,audio/*,video/*"
                     inputContent={(files, extra) => (extra.reject ? 'Image, audio and video files only' : 'Drag Files')}
                     disabled={files => files.some(f => ['preparing', 'getting_upload_params', 'uploading'].includes(f.meta.status))}
                     inputWithFilesContent={files => `${5 - files.length} more files allowed`}

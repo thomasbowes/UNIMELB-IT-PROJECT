@@ -2,11 +2,21 @@ const { cloudinary } = require('../config/cloudinary');
 const streamifier = require('streamifier');
 const UPLOAD_SIZE_LIMIT = 10000000;
 
+//to distinguish between different type of upload
+const ITEMBLOCK = 'ItemBlock';
+const FILE = 'File';
+const USER = 'User';
+
 const uploadFileVerify = (req, res, next) =>{
+
+    //get all the info form frontend
     const user_id = req.body.user_id;
     const itemBlock_id = req.body.itemBlock_id;
+    const type = req.body.type;
 
-    if(user_id === 'null' || itemBlock_id === 'null'){
+
+    // type not found return
+    if(type === 'undefined'){
         res.status(400).json({
             message: 'missing information, unable to process, please refresh the web page and try again',
             status: false
@@ -14,20 +24,42 @@ const uploadFileVerify = (req, res, next) =>{
         return;
     }
 
+    //check if type === File
+    if(type === FILE){
+        if(user_id === 'undefined' || itemBlock_id === 'undefined' ){
+            res.status(400).json({
+                message: 'missing information, unable to process, please refresh the web page and try again',
+                status: false
+            });
+            return;
+        }
+    }
 
+    //check if type === ItemBlock
+    if(type === ITEMBLOCK){
+        if(user_id === 'undefined'){
+            res.status(400).json({
+                message: 'missing information, unable to process, please refresh the web page and try again',
+                status: false
+            });
+            return;
+        }
+    }
 
+    //check if type === User
+    if(type === USER){
+        if(user_id === 'undefined'){
+            res.status(400).json({
+                message: 'missing information, unable to process, please refresh the web page and try again',
+                status: false
+            });
+            return;
+        }
+    }
 
-
+    //all pass
     next();
 }
-
-//status: 'missing information, unable to process, please refresh the web page and try again',
-//    message: null,
-
-
-
-
-
 
 
 
@@ -52,14 +84,14 @@ const uploadFileToCloudinary = (req, res, next) => {
 
             //console.log(result);
             req.upload_file = {
-                name: req.files.file.name,
+                title: req.files.file.name,
                 size: req.files.file.size,
                 encoding: req.files.file.encoding,
                 mimetype: req.files.file.mimetype,
                 md5: req.files.file.md5,
                 resource_type: result.resource_type,
                 created_at: result.created_at,
-                secure_url: result.secure_url
+                urlCloudinary: result.secure_url
             };
 
             next();
@@ -74,6 +106,7 @@ const uploadFileToCloudinary = (req, res, next) => {
         });
 };
 
+
 //upload function form buffer since the file was from frontend
 const uploadFromBuffer = (files) => {
 
@@ -86,8 +119,10 @@ const uploadFromBuffer = (files) => {
                 folder: "project",
                 //enable to upload any file type by setting type to auto
                 resource_type: "auto",
-                //set public_id to file name enable to stores the original name on Clodinary
-                public_id: files.file.name
+                //set public_id to file name enable to stores the original name + uniqueID on Clodinary
+                use_filename: true,
+                filename: files.file.name,
+                unique_filename: true,
             },
             (error, result) => {
 

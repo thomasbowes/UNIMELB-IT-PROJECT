@@ -1,18 +1,16 @@
 const mongoose = require('mongoose');
 
-// user schema
+// File Schema
 const FileSchema = new mongoose.Schema({
-    user_id: {type: ObjectId, required: true},
-    project_id: {type: ObjectId, require: true},
-    itemBlock_id: {type: ObjectId, require: true},
-    name: {type: String, required: true},
+    user_id: {type: mongoose.Types.ObjectId, required: true},
+    itemBlock_id: {type: mongoose.Types.ObjectId, require: true},
+    title: {type: String, required: true},
     mimetype: {type: String, require: true},
-    size: {type: String, required: true},
-    secure_url: {type: String, required: true},
-    md5: {type: String, required: true},
+    size: {type: Number, required: true},
+    urlCloudinary: {type: String, required: true},
     resource_type: {type: String, required: true},
     date: {type: Date, default: Date.now},
-}, {collection: 'Files'});
+}, {collection: 'files'});
 
 const File = mongoose.model('File', FileSchema);
 
