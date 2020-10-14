@@ -370,6 +370,61 @@ const refreshTokens = (req, res) => {
   }
 };
 
+// Search for users in db based on user input
+const searchUsers = (req, res) => {
+
+  // The user has input something
+  if (req.query.key) {
+    let rexp;
+    let queryPromise;
+    const cleanedStr = req.query.key.trim();
+    
+    // Input is an email address
+    if( validator.isEmail(cleanedStr)){
+      rexp = new RegExp(cleanedStr, 'i');
+      queryPromise = User.find( {email: rexp} ).exec();
+    } 
+    // Else, assume input is a name.
+    else {
+  
+      // A full name has been entered
+      if (cleanedStr.indexOf(' ') !== -1) {
+        const names = cleanedStr.split(' ');
+        queryPromise = User.find( { 
+          firstname: new RegExp(names[0], 'i') ,
+          lastname: new RegExp(names[1], 'i') } )
+          .exec();
+      } 
+      // Either firstname or lastname has been entered
+      else {
+        rexp = new RegExp(cleanedStr, 'i');
+        queryPromise = User.find( { $or: [{ firstname: rexp }, { lastname: rexp }] }).exec();
+      }
+
+    }
+
+    queryPromise.then( doc => {
+      if (doc.length > 0) {
+        res.status(200).json({
+          message: "Matches have been found",
+          data: doc
+        });
+      } else {
+        res.status(404).json({message: 'No matching result'})
+      }
+    })
+    .catch(err => {res.status(500).json({message: 'Something went wrong in searchUser'})});
+  }
+
+  // The user just hit the search button without input
+  else {
+    res.status(400).json({
+      message: "Please input something to search for"
+    });
+  }
+}
+
+
 module.exports = { signToken, signRefreshToken };
 module.exports.registerNewUser = registerNewUser;
 module.exports.loginUser = loginUser;
@@ -378,3 +433,4 @@ module.exports.userEmailConfirmation = userEmailConfirmation;
 module.exports.testUser = testUser;
 module.exports.checkBody = checkBody;
 module.exports.refreshTokens = refreshTokens;
+module.exports.searchUsers = searchUsers;

@@ -418,4 +418,109 @@ describe('App test', () => {
 				.expect(200, done)
 		});
 	});
+
+	// Search for users in database
+	describe("Search users in database", function() {
+		
+		it("Search an existing user by firstname with exact spelling", function(done) {
+			request(app)
+				.get('/api/users/search?key=TinTin')
+				.expect('Content-Type', /json/)
+				.expect( function(res) {
+					if (res.body.data.length !== 1){
+						throw new Error("Not finding the correct number of matches");
+					}
+				})
+				.expect(200, done);
+		});
+
+		it("Search an existing user by firstname case-sensitively", function(done) {
+			request(app)
+				.get('/api/users/search?key=tintin')
+				.expect('Content-Type', /json/)
+				.expect( function(res) {
+					if (res.body.data.length !== 1){
+						throw new Error("Not finding the correct number of matches");
+					}
+				})
+				.expect(200, done);
+		});
+
+		it("Search multiple existing users by lastname", function(done) {
+			request(app)
+				.get('/api/users/search?key=random')
+				.expect('Content-Type', /json/)
+				.expect( function(res) {
+					if (res.body.data.length !== 2){
+						throw new Error("Not finding the correct number of matches");
+					}
+				})
+				.expect(200, done);
+		});
+
+		it("Search existing users by fullname with space in the middle", function(done) {
+			request(app)
+				.get('/api/users/search?key=tintin random')
+				.expect('Content-Type', /json/)
+				.expect( function(res) {
+					if (res.body.data.length !== 1){
+						throw new Error("Not finding the correct number of matches");
+					}
+				})
+				.expect(200, done);
+		});
+
+		it("Search existing users by fullname without space in the middle", function(done) {
+			request(app)
+				.get('/api/users/search?key=tintinrandom')
+				.expect('Content-Type', /json/)
+				.expect( {
+					message: 'No matching result'
+				})
+				.expect(404, done);
+		});
+
+		it("Search existing users with space at the two ends", function(done) {
+			request(app)
+				.get('/api/users/search?key=     tintin random    ')
+				.expect('Content-Type', /json/)
+				.expect( function(res) {
+					if (res.body.data.length !== 1){
+						throw new Error("Not finding the correct number of matches");
+					}
+				})
+				.expect(200, done);
+		});
+
+		it("Search only spaces", function(done) {
+			request(app)
+				.get('/api/users/search?key=        ')
+				.expect('Content-Type', /json/)
+				.expect( {
+					message: "Please input something to search for"
+				})
+				.expect(400, done);
+		});
+
+		it("Search non-existing users", function(done) {
+			request(app)
+				.get('/api/users/search?key=Laker Champ')
+				.expect('Content-Type', /json/)
+				.expect( {
+					message: 'No matching result'
+				})
+				.expect(404, done);
+		});
+
+		it("Search nothing", function(done) {
+			request(app)
+				.get('/api/users/search?key=')
+				.expect('Content-Type', /json/)
+				.expect( {
+					message: "Please input something to search for"
+				})
+				.expect(400, done);
+		});
+
+	});
 });
