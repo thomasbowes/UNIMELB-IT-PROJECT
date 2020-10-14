@@ -250,4 +250,46 @@ router.route('/authenticate')
 router.route('/refresh')
 	.post(usersController.refreshTokens);
 
+/**
+ * @api {get} /search Search for users in database from users input
+ * @apiName SearchUsers
+ * @apiGroup Users
+ *
+ * @apiParam {String} search_key Users' input to search for matching users in database
+ *
+ * @apiParamExample Example Body:
+ * {
+ *     "key": "dummy" 
+ * }
+ *
+ * @apiSuccess {String} message A message to signify that some results are found successfully
+ * @apiSuccess {Object[]} data Users who match the input search key
+ * 
+ * @apiSuccessExample Successful Response:
+ * HTTP/1.1 200
+ * {
+ *      "message": "Matches have been found",
+        "data": "Left out deliberately, as now the results include passwords"
+ * }
+ * 
+ * @apiError UserNotFound No matching results have been found
+ *
+ * @apiErrorExample Error-Response: 
+ * HTTP/1.1 404 Not Found
+ * {
+ *     "message": "No matching result"
+ * }
+ * 
+ * @apiError EmptySearch The input string is empty or whitespaces only
+ * 
+ * @apiErrorExample Error-Response: 
+ * HTTP/1.1 400 Bad Request
+ * {
+ *     "message": "Please input something to search for"
+ * }
+ * 
+ */
+router.route('/search')
+	.get(usersController.searchUsers);
+	
 module.exports = router;
