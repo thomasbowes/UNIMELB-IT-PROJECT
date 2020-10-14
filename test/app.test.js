@@ -15,6 +15,7 @@ mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const User = mongoose.model('User');
 const ItemBlock = mongoose.model('ItemBlock');
+const ProfileBlock = mongoose.model('ProfileBlock');
 const testInput = require('./testInput');
 
 // testing our whole application 
@@ -24,6 +25,7 @@ describe('App test', () => {
 	let refresh_token;
 	let user_id;
 	let item_id;
+	let profile_id;
 
 	// setting things up before testing (inputting test examples)
 	before(async function () {
@@ -34,6 +36,7 @@ describe('App test', () => {
 		// inserting all tests into mock database
 		await User.insertMany(testInput.userTests);
 		await ItemBlock.insertMany(testInput.itemTests);
+		await ProfileBlock.insertMany(testInput.profileTests);
 	});
 
 	// after finishing tests, delete all records in mock db and closing server
@@ -42,6 +45,7 @@ describe('App test', () => {
 		this.timeout(15000);
 		await User.deleteMany({});
 		await ItemBlock.deleteMany({});
+		await ProfileBlock.deleteMany({});
 		await mongoose.connection.close();
 		await server.close();
 	});
@@ -276,6 +280,140 @@ describe('App test', () => {
 				.expect('Content-Type', /json/)
 				.expect({
 					status: "Item block has been successfully deleted"
+				})
+				.expect(200, done);
+		});
+	});
+
+	describe("Testing /api/profileblocks/create route", () => {
+		it("Create profile block with correct details", function(done) {
+			const correctProfileDetails = testInput.correctProfileDetails;
+			correctProfileDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/profileblocks/create')
+				.set("Authorization", "Bearer " + access_token)
+				.send(correctProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect(201)
+				.end((err, res) => {
+					profile_id = res.body.profile._id;
+					done();
+				});	
+		});
+
+		it("Create profile block with missing details", function(done) {
+			// no user id is provided
+			const missingProfileDetails = testInput.missingProfileDetails;
+
+			request(app)
+				.post('/api/profileblocks/create')
+				.set("Authorization", "Bearer " + access_token)
+				.send(missingProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					message: "Request is invalid for current user"
+				})
+				.expect(401, done);
+		});
+	});
+
+	describe("Testing /api/profileblocks/update route", () => {
+		it("Update profile block with correct details", function(done) {
+			const rightUpdProfileDetails = testInput.rightUpdProfileDetails;
+			rightUpdProfileDetails.user_id = user_id;
+			rightUpdProfileDetails.profile_id = profile_id;
+
+			request(app)
+				.post('/api/profileblocks/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(rightUpdProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Profile block has been successfully updated"
+				})
+				.expect(200, done);
+		});
+
+		it("Update profile block with incorrect details", function(done) {
+			const wrongUpdProfileDetails = testInput.wrongUpdProfileDetails;
+			wrongUpdProfileDetails.user_id = user_id;
+			// profile block doesn't exist in test database
+			wrongUpdProfileDetails.profile_id = mongoose.Types.ObjectId('f3d6c9d62d60d057f0644009');
+
+			request(app)
+				.post('/api/profileblocks/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(wrongUpdProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Profile block does not exist in our database"
+				})
+				.expect(200, done);
+		});
+
+		it("Update profile block with missing details", function(done) {
+			const missUpdProfileDetails = {};
+			// forgot profile_id and contents body 
+			missUpdProfileDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/profileblocks/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(missUpdProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing user id, profile id or profile attributes that needs to be changed"
+				})
+				.expect(401, done);
+		});	
+	});
+
+	describe("Testing /api/profileblocks/delete route", () => {
+		it("Delete profile block with missing details", function(done) {
+			const missingDeleteProfileDetails = {};
+			// forgot profile_id
+			missingDeleteProfileDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/profileblocks/delete')
+				.set("Authorization", "Bearer " + access_token)
+				.send(missingDeleteProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing user id or profile id"
+				})
+				.expect(401, done);
+		});
+
+		it("Delete profile block with incorrect details", function(done) {
+			const incorrectDeleteProfileDetails = {};
+			incorrectDeleteProfileDetails.profile_id = mongoose.Types.ObjectId('1121b706175df1546e3acb09');
+			incorrectDeleteProfileDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/profileblocks/delete')
+				.set("Authorization", "Bearer " + access_token)
+				.send(incorrectDeleteProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Profile block does not exist in our database"
+				})
+				.expect(200, done);
+		});
+
+		it("Delete profile block with correct details", function(done) {
+			const correctDeleteProfileDetails = {};
+			correctDeleteProfileDetails.user_id = user_id;
+			correctDeleteProfileDetails.profile_id = profile_id;
+
+			request(app)
+				.post('/api/profileblocks/delete')
+				.set("Authorization", "Bearer " + access_token)
+				.send(correctDeleteProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Profile block has been successfully deleted"
 				})
 				.expect(200, done);
 		});

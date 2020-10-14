@@ -44,6 +44,42 @@ exports.itemTests = [
     }
 ]
 
+exports.profileTests = [
+    {
+        user_id: mongoose.Types.ObjectId('1021b706175df1546e3acb09'),
+        title: 'Test 1',
+        aboutMe: 'Test Body' 
+    }, 
+    {
+        user_id: mongoose.Types.ObjectId('f3d6c9d62d60d057f06440f3'),
+        title: 'Test 2',
+        aboutMe: 'Test Body 2' 
+    }
+]
+
+exports.correctProfileDetails = {
+    title: "Test 3",
+    aboutMe: "Test Body"
+};
+
+exports.missingProfileDetails = {
+    title: "Missing"
+};
+
+exports.rightUpdProfileDetails = {
+    contents: {
+        title: "Test 10",
+        aboutMe: "Test Change"
+    }
+}
+
+exports.wrongUpdProfileDetails = {
+    contents: {
+        title: "Test 10",
+        aboutMe: "Test Change"
+    }
+};
+
 exports.correctItemDetails = {
     title: "Test 3",
     type: "Project"
