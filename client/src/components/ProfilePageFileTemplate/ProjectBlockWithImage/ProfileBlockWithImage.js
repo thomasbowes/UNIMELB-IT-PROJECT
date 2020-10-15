@@ -11,14 +11,14 @@ class ProfileBlockWithImage extends Component {
                         <img src={this.props.image} alt='img'/>
                     </a>
                 </div>
-                <div className="project__overview">
+                <div className="project__overview_withImage">
                     <div className="overview__title">
                         <a href="#title">
                             <h1>{this.props.title}</h1>
                         </a>
                     </div>
 
-                    <div className="overview__description">
+                    <div className="overview__description_withImage">
                         {this.props.text}    
                     </div>
                     <div className="overview__see-more">

@@ -6,7 +6,10 @@
     align-items: center;
 }
 
-
+.horizontal-divider {
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    margin: 1rem;
+}
 
 .education-history__info {
     width: 100%;
@@ -25,7 +28,7 @@
 }
 
 .education-history .overview__description {
-    height: 3.5rem;
+    height: auto;
     font-size: 0.8rem
 
 }
