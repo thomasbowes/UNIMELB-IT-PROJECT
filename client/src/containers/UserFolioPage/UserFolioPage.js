@@ -71,6 +71,23 @@ class UserFolioPage extends Component {
         this.setState({educationHistory: {ids: newIds, schools: newSchools, durations:newDurations, images:newImages, descriptions:newDes}});
     }
 
+    hisAddNewItemHandler = () => {
+        let newSchools = [...this.state.educationHistory.schools];
+        let newDes = [...this.state.educationHistory.descriptions];
+        let newDurations = [...this.state.educationHistory.durations];
+        let newImages = [...this.state.educationHistory.images];
+        let newIds = [...this.state.educationHistory.ids];
+
+        newSchools.push("Default School");
+        newDes.push("Default Description");
+        newDurations.push("Default Durations");
+        newImages.push(google1);
+        newIds.push(newIds.length);
+
+        this.setState({educationHistory: {ids: newIds, schools: newSchools, durations:newDurations, images:newImages, descriptions:newDes}})
+
+    }
+
     render() {
           return (
             <div className="UserFolioPage">
@@ -86,7 +103,8 @@ class UserFolioPage extends Component {
                         images={this.state.educationHistory.images}
                         durations={this.state.educationHistory.durations} 
                         changeItemHandler = {this.changeHisItemHandler}
-                        hisItemRemoveHandler = {this.hisItemRemoveHandler}/>
+                        hisItemRemoveHandler = {this.hisItemRemoveHandler}
+                        hisAddNewItemHandler = {this.hisAddNewItemHandler}/>
 
                 <h2>My projeggcts</h2>
 

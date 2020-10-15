@@ -20,6 +20,10 @@ class EducationHistory extends Component {
         this.props.hisItemRemoveHandler(hisItemIndex);
     }
 
+    addNewItemHander = () => {
+        this.props.hisAddNewItemHandler();
+    }
+
 
     render (){
 
@@ -44,6 +48,7 @@ class EducationHistory extends Component {
                 <div className="education-history-items">
                     {allItemsArray}
                 </div>
+                {this.state.editable? <button onClick={this.addNewItemHander}>Add a new Item</button>:null}
             </section>
 
         );
