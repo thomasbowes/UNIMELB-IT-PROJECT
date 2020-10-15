@@ -16,6 +16,10 @@ class EducationHistory extends Component {
         this.props.changeItemHandler(itemType, id, input);
     }
 
+    hisItemRemoveHandler = (hisItemIndex) => {
+        this.props.hisItemRemoveHandler(hisItemIndex);
+    }
+
 
     render (){
 
@@ -28,7 +32,8 @@ class EducationHistory extends Component {
                     editable={this.state.editable}
                     key={index}
                     id = {index}
-                    changeItemHandler={this.changeItemHandler}/>
+                    changeItemHandler={this.changeItemHandler}
+                    hisItemRemoveHandler = {this.hisItemRemoveHandler}/>
         })
 
         return(

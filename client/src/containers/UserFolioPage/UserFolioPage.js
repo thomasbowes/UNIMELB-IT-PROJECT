@@ -51,6 +51,26 @@ class UserFolioPage extends Component {
         }
     }
 
+    hisItemRemoveHandler = (hisItemIndex) => {
+        let newSchools = [...this.state.educationHistory.schools];
+        let newDes = [...this.state.educationHistory.descriptions];
+        let newDurations = [...this.state.educationHistory.durations];
+        let newImages = [...this.state.educationHistory.images];
+
+        let newIds = [];
+        let i = 0;
+        for (i =0 ; i<newSchools.length-1; i++){
+            newIds.push(i);
+        }
+        
+        newSchools.splice(hisItemIndex, 1);
+        newDes.splice(hisItemIndex, 1);
+        newDurations.splice(hisItemIndex, 1);
+        newImages.splice(hisItemIndex, 1);
+
+        this.setState({educationHistory: {ids: newIds, schools: newSchools, durations:newDurations, images:newImages, descriptions:newDes}});
+    }
+
     render() {
           return (
             <div className="UserFolioPage">
@@ -65,7 +85,8 @@ class UserFolioPage extends Component {
                         descriptions={this.state.educationHistory.descriptions}
                         images={this.state.educationHistory.images}
                         durations={this.state.educationHistory.durations} 
-                        changeItemHandler = {this.changeHisItemHandler}/>
+                        changeItemHandler = {this.changeHisItemHandler}
+                        hisItemRemoveHandler = {this.hisItemRemoveHandler}/>
 
                 <h2>My projeggcts</h2>
 

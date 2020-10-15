@@ -51,6 +51,10 @@ class EducationalHistoryItem extends Component {
         this.setState({descriptionEditable: false});
     }
 
+    itemDeleteHandler = () => {
+        this.props.hisItemRemoveHandler(this.props.id);
+    }
+
     render(){
         return (
             <Aux>
@@ -83,11 +87,16 @@ class EducationalHistoryItem extends Component {
                         </div>
                     </div>
                 </div>
-                {this.props.editable? <button onClick={this.itemEditableHandler}>Edit this item</button>:null}
+                {this.props.editable? 
+                    <Aux>
+                        <button onClick={this.itemEditableHandler}>Edit this item</button> 
+                        <button onClick={this.itemDeleteHandler}>Delete this item</button>
+                    </Aux> 
+                    :null}
                 <div className="horizontal-divider"></div> 
             </Aux>
         );
     }
 }
 
-export default EducationalHistoryItem;
+export default EducationalHistoryItem
