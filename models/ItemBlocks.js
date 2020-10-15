@@ -13,7 +13,8 @@ const ItemBlockSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: {type: String, required: false},
     // replace default value with cloudinary url
-    urlThumbnail: {type: String, default: "Thumbnail"},
+    urlThumbnail: {type: String, required: true, default: "https://res.cloudinary.com/dg3osx8ob/image/upload/v1602739213/defaultItemBlock_drwafh.png"},
+    public_id: {type: String, required: false},
     date: {type: Date, default: Date.now, immutable: true}
 }, {collection: 'itemblocks'});
 
