@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
+const { cloudinary } = require('../config/cloudinary');
 
+//bring in mongoDB collection
 const ItemBlock = require('mongoose').model('ItemBlock');
 const User = require('mongoose').model('User');
 //const File = require('mongoose').model('File');
@@ -25,7 +27,7 @@ const uploadFileToMongoDB = (req, res) =>{
 // function for creating a new file
 const createFiles = (req, res) => {
 
-    const user_id = req.body.user_id;
+    const user_id = req.user._id;
     const itemBlock_id = req.body.itemBlock_id;
 
     const newFile = new File({
@@ -42,13 +44,13 @@ const createFiles = (req, res) => {
         .save()
         .then(() => {
             res.status(201).json({
-                status: "file success uploaded",
+                message: "file success uploaded",
                 item: newFile
             });
         })
         .catch(error => {
             res.status(500).json({
-                status: "An error has occurred, please try again",
+                message: "An error has occurred, could not create newFile object!",
                 err: error
             });
         });
@@ -65,13 +67,13 @@ const uploadItemBlock = (req, res) => {
             items.urlThumbnail = req.upload_file.urlCloudinary;
             items.save();
             res.status(200).json({
-                status: "Item blocks: image added",
+                message: "Item blocks: image added",
                 itemblocks: items
             });
         })
         .catch(error => {
             res.status(500).json({
-                status: "An error has occurred, please try again",
+                message: "An error has occurred, could not find ItemBlock",
                 err: error
             });
         })
@@ -106,8 +108,17 @@ const uploadProfileBlock = (req, res) => {
  */
 const uploadProfileBlock = (req, res) => {
     res.status(500).json({
-        status: "An error has occurred, please try again",
+        message: "An error has occurred, please try again",
     });
 }
+
+
+const deleteFileCloudinary = (public_id) => {
+    cloudinary.v2.uploader.destroy(public_id, function(error,result)
+    {
+        if(error) console.log(error);
+    });
+}
+
 
 module.exports.uploadFileToMongoDB = uploadFileToMongoDB;

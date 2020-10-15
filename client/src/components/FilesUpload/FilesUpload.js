@@ -24,7 +24,6 @@ class FilesUpload extends Component {
 
         const body = new FormData();
         body.append('file', file);
-        body.append('user_id', this.props.user_id);
         body.append('itemBlock_id', this.props.itemBlock_id);
         body.append('type', this.props.type);
 
@@ -78,14 +77,16 @@ class FilesUpload extends Component {
                     getUploadParams={this.getUploadParams}
                     onChangeStatus={this.handleChangeStatus}
                     onSubmit={this.handleSubmit}
-                    maxFiles = {5}
+                    maxFiles = {this.props.maxFiles}
                     submitButtonContent = "finished"
                     maxSizeBytes = {10000000}
                     canCancel={false}
                     //accept="image/*,audio/*,video/*"
-                    inputContent={(files, extra) => (extra.reject ? 'Image, audio and video files only' : 'Drag Files')}
+                    accept={this.props.accept}
+                    inputContent={(files, extra) => (extra.reject ? 'Image, audio and video files only' : 'Files upload: Drag or Click')}
                     disabled={files => files.some(f => ['preparing', 'getting_upload_params', 'uploading'].includes(f.meta.status))}
-                    inputWithFilesContent={files => `${5 - files.length} more files allowed`}
+                    disabled={this.props.disabled}
+                    inputWithFilesContent={files => `${this.props.maxFiles - files.length} more files allowed`}
                     styles={{
                         dropzoneReject: { borderColor: 'red', backgroundColor: '#DAA' },
                         dropzone: { width: 800, height: 500 },

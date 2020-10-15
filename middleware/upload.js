@@ -7,47 +7,92 @@ const ITEMBLOCK = 'ItemBlock';
 const FILE = 'File';
 const USER = 'User';
 
+//bring in mongoDB collections
+const ItemBlock = require('mongoose').model('ItemBlock');
+//const ProfileBlock = require('mongoose').model('ProfileBlock');
+
 const uploadFileVerify = (req, res, next) =>{
 
     //get all the info form frontend
-    const user_id = req.body.user_id;
+    const user_id = req.user._id;
     const itemBlock_id = req.body.itemBlock_id;
     const type = req.body.type;
 
-
-    // type not found return
-    if(type === 'undefined'){
-        res.status(400).json({
-            message: 'missing information, unable to process, please refresh the web page and try again',
-            status: false
-        });
-        return;
-    }
-
     //check if type === File
     if(type === FILE){
-        if(user_id === 'undefined' || itemBlock_id === 'undefined' ){
+        //error when:
+        //user_id or itemBlock_id is absence
+        //user_id in Itemblock != user_id in token or Itemblock is absence
+
+        if(user_id === 'undefined' || itemBlock_id === 'undefined'){
             res.status(400).json({
-                message: 'missing information, unable to process, please refresh the web page and try again',
+                message: 'Error Found: Missing info - fail to create files, please refresh the web page and try again',
                 status: false
             });
-            return;
+        }
+        else{
+            itemBlockVerify(itemBlock_id, user_id)
+                .then(
+                    next
+                )
+                .catch(()=>{
+                    res.status(400).json({
+                        message: 'Error Found - Not authorise',
+                        status: false
+                    });
+                });
         }
     }
-
     //check if type === ItemBlock
-    if(type === ITEMBLOCK){
-        if(user_id === 'undefined'){
+    else if(type === ITEMBLOCK){
+        //error when:
+        //user_id or itemBlock_id is absence
+        //user_id in Itemblock != user_id in token or Itemblock is absence
+
+        if(user_id === 'undefined' || itemBlock_id === 'undefined'){
             res.status(400).json({
-                message: 'missing information, unable to process, please refresh the web page and try again',
+                message: 'Error Found: Missing info - fail to upload thumbnail, please refresh the web page and try again',
                 status: false
             });
-            return;
+        }
+        else{
+            itemBlockVerify(itemBlock_id, user_id)
+                .then(
+                    next
+                )
+                .catch(()=>{
+                    res.status(400).json({
+                        message: 'Error Found - Not authorise',
+                        status: false
+                    });
+                });
         }
     }
-
     //check if type === User
-    if(type === USER){
+    else if(type === USER){
+
+        /*
+        if(user_id === 'undefined'){
+            res.status(400).json({
+                message: 'Error Found - fail to upload image to profile, please refresh the web page and try again',
+                status: false
+            });
+        }
+        else{
+            profileBlockVerify(user_id)
+                .then(
+                    next
+                )
+                .catch(()=>{
+                    res.status(400).json({
+                        message: 'Error Found - Not authorise',
+                        status: false
+                    });
+                });
+        }
+
+         */
+
         if(user_id === 'undefined'){
             res.status(400).json({
                 message: 'missing information, unable to process, please refresh the web page and try again',
@@ -56,10 +101,59 @@ const uploadFileVerify = (req, res, next) =>{
             return;
         }
     }
-
-    //all pass
-    next();
+    //if no match
+    else{
+        res.status(400).json({
+            message: 'type not match, unable to process, please refresh the web page and try again',
+            status: false
+        });
+    }
 }
+
+//verify if the user_id in ItemBlock === to the user_id in the given token
+//also if the itemblock is absence or not
+//return a promise resolve when verify pass
+const itemBlockVerify = (itemBlock_id, user_id) => {
+
+    return new Promise((resolve, reject) => {
+        const query = {_id: itemBlock_id};
+
+        ItemBlock
+            .findOne(query)
+            .then(items => {
+                if (items.user_id == user_id){
+                    resolve();
+                }
+                reject();
+            })
+            .catch(error => {
+                reject();
+            })
+    });
+}
+
+/*
+//verify if the user_id in profileBlock === to the user_id in the given token
+//also if the profileBlock is absence or not
+//return a promise resolve when verify pass
+const profileBlockVerify = (user_id) => {
+
+    return new Promise((resolve, reject) => {
+        const query = {_id: user_id};
+
+        ProfileBlock
+            .findOne(query)
+            .then(items => {
+                if (items.user_id === user_id) resolve();
+                reject();
+            })
+            .catch(error => {
+                reject();
+            })
+    });
+}
+*/
+
 
 
 
@@ -100,8 +194,7 @@ const uploadFileToCloudinary = (req, res, next) => {
         .catch( (error) => {
             console.log(error);
             res.status(500).json({
-                status: 'fail uploaded',
-                message: null
+                message: 'fail uploaded'
             });
         });
 };
@@ -137,5 +230,9 @@ const uploadFromBuffer = (files) => {
         streamifier.createReadStream(files.file.data).pipe(cld_upload_stream);
     });
 };
+
+//add delete from cloud
+//add verify user_id === user+id
+//make <upload> more options
 
 module.exports = {uploadFileToCloudinary, uploadFileVerify};
