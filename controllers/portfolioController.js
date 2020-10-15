@@ -4,6 +4,7 @@ const { cloudinary } = require('../config/cloudinary');
 //bring in mongoDB collection
 const ItemBlock = require('mongoose').model('ItemBlock');
 const User = require('mongoose').model('User');
+const ProfileBlock = require('mongoose').model('ProfileBlock');
 //const File = require('mongoose').model('File');
 const File = require('../models/Files');
 
@@ -11,6 +12,7 @@ const File = require('../models/Files');
 const ITEMBLOCK = 'ItemBlock';
 const FILE = 'File';
 const USER = 'User';
+
 
 const uploadFileToMongoDB = (req, res) =>{
     //get all the info
@@ -37,7 +39,8 @@ const createFiles = (req, res) => {
         mimetype: req.upload_file.mimetype,
         size: req.upload_file.size,
         urlCloudinary: req.upload_file.urlCloudinary,
-        resource_type: req.upload_file.resource_type
+        resource_type: req.upload_file.resource_type,
+        public_id: req.upload_file.public_id
     });
 
     newFile
@@ -64,7 +67,9 @@ const uploadItemBlock = (req, res) => {
     ItemBlock
         .findOne(query)
         .then(items => {
+            if(items.public_id) deleteFileCloudinary(items.public_id);
             items.urlThumbnail = req.upload_file.urlCloudinary;
+            items.public_id = req.upload_file.public_id;
             items.save();
             res.status(200).json({
                 message: "Item blocks: image added",
@@ -79,25 +84,27 @@ const uploadItemBlock = (req, res) => {
         })
 };
 
-/*
+
 // function for update image in ProfileBlock
 const uploadProfileBlock = (req, res) => {
 
-    const user_id = req.body.user_id;
+    const user_id = req.user._id;
     const query = { user_id: user_id };
     ProfileBlock
         .findOne(query)
         .then(items => {
+            if(items.public_id) deleteFileCloudinary(items.public_id);
             items.urlProfile = req.upload_file.urlCloudinary;
+            items.public_id = req.upload_file.public_id;
             items.save();
             res.status(200).json({
-                status: "user profile: image added",
-                itemblocks: items
+                message: "user profile: image added",
+                Profileblocks: items
             });
         })
         .catch(error => {
             res.status(500).json({
-                status: "An error has occurred, please try again",
+                message: "An error has occurred, please try again",
                 err: error
             });
         })
@@ -105,16 +112,10 @@ const uploadProfileBlock = (req, res) => {
 
 };
 
- */
-const uploadProfileBlock = (req, res) => {
-    res.status(500).json({
-        message: "An error has occurred, please try again",
-    });
-}
 
 
 const deleteFileCloudinary = (public_id) => {
-    cloudinary.v2.uploader.destroy(public_id, function(error,result)
+    cloudinary.uploader.destroy(public_id, function(error,result)
     {
         if(error) console.log(error);
     });

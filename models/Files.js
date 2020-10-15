@@ -8,6 +8,7 @@ const FileSchema = new mongoose.Schema({
     mimetype: {type: String, require: true},
     size: {type: Number, required: true},
     urlCloudinary: {type: String, required: true},
+    public_id: {type: String, required: true},
     resource_type: {type: String, required: true},
     date: {type: Date, default: Date.now},
 }, {collection: 'files'});

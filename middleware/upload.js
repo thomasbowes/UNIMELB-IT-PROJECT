@@ -9,7 +9,8 @@ const USER = 'User';
 
 //bring in mongoDB collections
 const ItemBlock = require('mongoose').model('ItemBlock');
-//const ProfileBlock = require('mongoose').model('ProfileBlock');
+const ProfileBlock = require('mongoose').model('ProfileBlock');
+
 
 const uploadFileVerify = (req, res, next) =>{
 
@@ -70,8 +71,10 @@ const uploadFileVerify = (req, res, next) =>{
     }
     //check if type === User
     else if(type === USER){
+        //error when:
+        //user_id is absence
+        //user_id in Profile != user_id in token or Profile is absence
 
-        /*
         if(user_id === 'undefined'){
             res.status(400).json({
                 message: 'Error Found - fail to upload image to profile, please refresh the web page and try again',
@@ -89,16 +92,6 @@ const uploadFileVerify = (req, res, next) =>{
                         status: false
                     });
                 });
-        }
-
-         */
-
-        if(user_id === 'undefined'){
-            res.status(400).json({
-                message: 'missing information, unable to process, please refresh the web page and try again',
-                status: false
-            });
-            return;
         }
     }
     //if no match
@@ -132,19 +125,19 @@ const itemBlockVerify = (itemBlock_id, user_id) => {
     });
 }
 
-/*
+
 //verify if the user_id in profileBlock === to the user_id in the given token
 //also if the profileBlock is absence or not
 //return a promise resolve when verify pass
 const profileBlockVerify = (user_id) => {
 
     return new Promise((resolve, reject) => {
-        const query = {_id: user_id};
+        const query = {user_id: user_id};
 
         ProfileBlock
             .findOne(query)
             .then(items => {
-                if (items.user_id === user_id) resolve();
+                if (items.user_id == user_id) resolve();
                 reject();
             })
             .catch(error => {
@@ -152,9 +145,6 @@ const profileBlockVerify = (user_id) => {
             })
     });
 }
-*/
-
-
 
 
 // a middleware used to upload file to Cloudinary and return the file info
@@ -185,7 +175,8 @@ const uploadFileToCloudinary = (req, res, next) => {
                 md5: req.files.file.md5,
                 resource_type: result.resource_type,
                 created_at: result.created_at,
-                urlCloudinary: result.secure_url
+                urlCloudinary: result.secure_url,
+                public_id: result.public_id
             };
 
             next();
