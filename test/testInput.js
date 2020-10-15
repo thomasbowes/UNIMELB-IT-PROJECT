@@ -29,6 +29,13 @@ exports.userTests = [
     }
 ]
 
+exports.rightUpdateUserDetails = {
+    contents: {
+        firstname: "Test Change",
+        lastname: "Test Change"
+    }
+};
+
 exports.itemTests = [
     {
         user_id: mongoose.Types.ObjectId('1021b706175df1546e3acb09'),
@@ -44,31 +51,73 @@ exports.itemTests = [
     }
 ]
 
-exports.correctItemDetails = {
+exports.profileTests = [
+    {
+        user_id: mongoose.Types.ObjectId('1021b706175df1546e3acb09'),
+        title: 'Test 1',
+        aboutMe: 'Test Body' 
+    }, 
+    {
+        user_id: mongoose.Types.ObjectId('f3d6c9d62d60d057f06440f3'),
+        title: 'Test 2',
+        aboutMe: 'Test Body 2' 
+    }
+]
+
+exports.correctProfileDetails = {
     title: "Test 3",
-    type: "Project"
+    aboutMe: "Test Body"
+};
+
+exports.missingProfileDetails = {
+    title: "Missing"
+};
+
+exports.rightUpdProfileDetails = {
+    contents: {
+        title: "Test 10",
+        aboutMe: "Test Change"
+    }
+}
+
+exports.wrongUpdProfileDetails = {
+    contents: {
+        title: "Test 10",
+        aboutMe: "Test Change"
+    }
+};
+
+exports.correctItemDetails = {
+    contents: {
+        title: "Test 3",
+        type: "Project"
+    }
 };
 
 exports.incorrectItemDetails = {
-    title: "Test 4",
-    // incorrect spelling of type
-    type: "Prject"
+    contents: {
+        title: "Test 4",
+        // incorrect spelling of type
+        type: "Prject"
+    }
 }
 
 exports.missingItemDetails = {
-    // missing type of item block
-    title: "Test 5"
+    contents: {
+        // missing type of item block
+        title: "Test 5"
+    }
 }
 
 exports.rightUpdItemDetails = {
-    change: {
+    contents: {
         title: "Test 4",
         type: "Education"
     }
 };
 
 exports.wrongUpdItemDetails = {
-    change: {
+    contents: {
         title: "Test 4",
         // incorrect spelling of "Education"
         type: "Educatio"
