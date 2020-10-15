@@ -1,13 +1,12 @@
 .project-block-with-image {
     background: white;
     border: 1px solid rgba(0, 58, 88, 0.2);
-    height: 8rem;
     display: flex;
     flex-direction: row;
     width: 90%;
     margin: 0.5rem auto;
     max-width: 108rem;
-    height: 10rem;
+    height: auto;
     font-family: "kumbh sans", sans-serif;
     overflow: hidden;
 }
@@ -18,18 +17,18 @@
 }
 
 .project-block-with-image__pic img {
-    height: 10rem;
+    height: auto;
     width: 10rem;
 }
 
 
 
-.project__overview {
+.project__overview_withImage {
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
     padding: 1rem 0;
-    height: 11rem;
+    height: auto;
     box-sizing: border-box;
     overflow: hidden;
     flex-grow: 1;
@@ -51,16 +50,16 @@
 }
 
 
-.overview__description {
-    height: 5rem;
+.overview__description_withImage {
     overflow: hidden;
     text-overflow: ellipsis;
     color: rgba(0,0,0,0.6);
     font-size: 0.8rem;
+    height: auto;
 }
 
 .overview__see-more {
-    height: 1rem;
+    height: auto;
     padding: 0.5rem 0;
     margin-top: auto;
 }

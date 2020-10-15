@@ -15,6 +15,7 @@ mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const User = mongoose.model('User');
 const ItemBlock = mongoose.model('ItemBlock');
+const ProfileBlock = mongoose.model('ProfileBlock');
 const testInput = require('./testInput');
 
 // testing our whole application 
@@ -24,6 +25,7 @@ describe('App test', () => {
 	let refresh_token;
 	let user_id;
 	let item_id;
+	let profile_id;
 
 	// setting things up before testing (inputting test examples)
 	before(async function () {
@@ -34,6 +36,7 @@ describe('App test', () => {
 		// inserting all tests into mock database
 		await User.insertMany(testInput.userTests);
 		await ItemBlock.insertMany(testInput.itemTests);
+		await ProfileBlock.insertMany(testInput.profileTests);
 	});
 
 	// after finishing tests, delete all records in mock db and closing server
@@ -42,6 +45,7 @@ describe('App test', () => {
 		this.timeout(15000);
 		await User.deleteMany({});
 		await ItemBlock.deleteMany({});
+		await ProfileBlock.deleteMany({});
 		await mongoose.connection.close();
 		await server.close();
 	});
@@ -179,7 +183,7 @@ describe('App test', () => {
 				.send(missingItemDetails)
 				.expect('Content-Type', /json/)
 				.expect({
-					status: "Missing either user id, type of item block, or its title"
+					status: "Missing either user id, type of item block, its title or the contents body"
 				})
 				.expect(401, done);
 		});
@@ -218,7 +222,7 @@ describe('App test', () => {
 
 		it("Update item block with missing details", function(done) {
 			const missUpdItemDetails = {};
-			// forgot item_id and change 
+			// forgot item_id and contents 
 			missUpdItemDetails.user_id = user_id;
 
 			request(app)
@@ -278,6 +282,172 @@ describe('App test', () => {
 					status: "Item block has been successfully deleted"
 				})
 				.expect(200, done);
+		});
+	});
+
+	describe("Testing /api/profileblocks/create route", () => {
+		it("Create profile block with correct details", function(done) {
+			const correctProfileDetails = testInput.correctProfileDetails;
+			correctProfileDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/profileblocks/create')
+				.set("Authorization", "Bearer " + access_token)
+				.send(correctProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect(201)
+				.end((err, res) => {
+					profile_id = res.body.profile._id;
+					done();
+				});	
+		});
+
+		it("Create profile block with missing details", function(done) {
+			// no user id is provided
+			const missingProfileDetails = testInput.missingProfileDetails;
+
+			request(app)
+				.post('/api/profileblocks/create')
+				.set("Authorization", "Bearer " + access_token)
+				.send(missingProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					message: "Request is invalid for current user"
+				})
+				.expect(401, done);
+		});
+	});
+
+	describe("Testing /api/profileblocks/update route", () => {
+		it("Update profile block with correct details", function(done) {
+			const rightUpdProfileDetails = testInput.rightUpdProfileDetails;
+			rightUpdProfileDetails.user_id = user_id;
+			rightUpdProfileDetails.profile_id = profile_id;
+
+			request(app)
+				.post('/api/profileblocks/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(rightUpdProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Profile block has been successfully updated"
+				})
+				.expect(200, done);
+		});
+
+		it("Update profile block with incorrect details", function(done) {
+			const wrongUpdProfileDetails = testInput.wrongUpdProfileDetails;
+			wrongUpdProfileDetails.user_id = user_id;
+			// profile block doesn't exist in test database
+			wrongUpdProfileDetails.profile_id = mongoose.Types.ObjectId('f3d6c9d62d60d057f0644009');
+
+			request(app)
+				.post('/api/profileblocks/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(wrongUpdProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Profile block does not exist in our database"
+				})
+				.expect(200, done);
+		});
+
+		it("Update profile block with missing details", function(done) {
+			const missUpdProfileDetails = {};
+			// forgot profile_id and contents body 
+			missUpdProfileDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/profileblocks/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(missUpdProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing user id, profile id or profile attributes that needs to be changed"
+				})
+				.expect(401, done);
+		});	
+	});
+
+	describe("Testing /api/profileblocks/delete route", () => {
+		it("Delete profile block with missing details", function(done) {
+			const missingDeleteProfileDetails = {};
+			// forgot profile_id
+			missingDeleteProfileDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/profileblocks/delete')
+				.set("Authorization", "Bearer " + access_token)
+				.send(missingDeleteProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Missing user id or profile id"
+				})
+				.expect(401, done);
+		});
+
+		it("Delete profile block with incorrect details", function(done) {
+			const incorrectDeleteProfileDetails = {};
+			incorrectDeleteProfileDetails.profile_id = mongoose.Types.ObjectId('1121b706175df1546e3acb09');
+			incorrectDeleteProfileDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/profileblocks/delete')
+				.set("Authorization", "Bearer " + access_token)
+				.send(incorrectDeleteProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Profile block does not exist in our database"
+				})
+				.expect(200, done);
+		});
+
+		it("Delete profile block with correct details", function(done) {
+			const correctDeleteProfileDetails = {};
+			correctDeleteProfileDetails.user_id = user_id;
+			correctDeleteProfileDetails.profile_id = profile_id;
+
+			request(app)
+				.post('/api/profileblocks/delete')
+				.set("Authorization", "Bearer " + access_token)
+				.send(correctDeleteProfileDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Profile block has been successfully deleted"
+				})
+				.expect(200, done);
+		});
+	});
+
+	describe("Testing /api/users/update endpoint", function() {
+		it("Correct details provided", function(done) {
+			const correctUserDetails = testInput.rightUpdateUserDetails;
+			correctUserDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/users/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(correctUserDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "User details have been successfully updated"
+				})
+				.expect(200, done);
+		});
+
+		it("Missing body provided", function(done) {
+			const missingUserDetails = {};
+			missingUserDetails.user_id = user_id;
+
+			request(app)
+				.post('/api/users/update')
+				.set("Authorization", "Bearer " + access_token)
+				.send(missingUserDetails)
+				.expect('Content-Type', /json/)
+				.expect({
+					status: "Include body of change"
+				})
+				.expect(401, done);
 		});
 	});
 
@@ -417,5 +587,110 @@ describe('App test', () => {
 				})
 				.expect(200, done)
 		});
+	});
+
+	// Search for users in database
+	describe("Search users in database", function() {
+		
+		it("Search an existing user by firstname with exact spelling", function(done) {
+			request(app)
+				.get('/api/users/search?key=TinTin')
+				.expect('Content-Type', /json/)
+				.expect( function(res) {
+					if (res.body.data.length !== 1){
+						throw new Error("Not finding the correct number of matches");
+					}
+				})
+				.expect(200, done);
+		});
+
+		it("Search an existing user by firstname case-sensitively", function(done) {
+			request(app)
+				.get('/api/users/search?key=tintin')
+				.expect('Content-Type', /json/)
+				.expect( function(res) {
+					if (res.body.data.length !== 1){
+						throw new Error("Not finding the correct number of matches");
+					}
+				})
+				.expect(200, done);
+		});
+
+		it("Search multiple existing users by lastname", function(done) {
+			request(app)
+				.get('/api/users/search?key=random')
+				.expect('Content-Type', /json/)
+				.expect( function(res) {
+					if (res.body.data.length !== 2){
+						throw new Error("Not finding the correct number of matches");
+					}
+				})
+				.expect(200, done);
+		});
+
+		it("Search existing users by fullname with space in the middle", function(done) {
+			request(app)
+				.get('/api/users/search?key=tintin random')
+				.expect('Content-Type', /json/)
+				.expect( function(res) {
+					if (res.body.data.length !== 1){
+						throw new Error("Not finding the correct number of matches");
+					}
+				})
+				.expect(200, done);
+		});
+
+		it("Search existing users by fullname without space in the middle", function(done) {
+			request(app)
+				.get('/api/users/search?key=tintinrandom')
+				.expect('Content-Type', /json/)
+				.expect( {
+					message: 'No matching result'
+				})
+				.expect(404, done);
+		});
+
+		it("Search existing users with space at the two ends", function(done) {
+			request(app)
+				.get('/api/users/search?key=     tintin random    ')
+				.expect('Content-Type', /json/)
+				.expect( function(res) {
+					if (res.body.data.length !== 1){
+						throw new Error("Not finding the correct number of matches");
+					}
+				})
+				.expect(200, done);
+		});
+
+		it("Search only spaces", function(done) {
+			request(app)
+				.get('/api/users/search?key=        ')
+				.expect('Content-Type', /json/)
+				.expect( {
+					message: "Please input something to search for"
+				})
+				.expect(400, done);
+		});
+
+		it("Search non-existing users", function(done) {
+			request(app)
+				.get('/api/users/search?key=Laker Champ')
+				.expect('Content-Type', /json/)
+				.expect( {
+					message: 'No matching result'
+				})
+				.expect(404, done);
+		});
+
+		it("Search nothing", function(done) {
+			request(app)
+				.get('/api/users/search?key=')
+				.expect('Content-Type', /json/)
+				.expect( {
+					message: "Please input something to search for"
+				})
+				.expect(400, done);
+		});
+
 	});
 });

@@ -15,19 +15,19 @@ const authMiddleware = require('../../middleware/authorization');
  * @apiGroup ItemBlocks
  *
  * @apiParam {String} user_id User's id (to be associated with item block), REQUIRED
- * @apiParam {String} type type of item block, REQUIRED
- * @apiParam {String} title title of an item block, REQUIRED
- * @apiParam {String} description description for an item block, NOT REQUIRED
- * @apiParam {String} urlThumbnail Cloudinary URL that contains thumbnail pic, NOT REQUIRED
+ * @apiParam {Object} contents Object that includes attributes that are added when creating profile block, REQUIRED
  *
  * @apiParamExample Example Body: 
  * {
  *     "user_id": "ajfiajijf892jfaiojio",
- *     "type": "Project",
- *     "title": "Test"
+ *     "contents": {
+ *         "type": "Project",
+ *         "title": "Test"
+ *     }
  * }
  *
  * @apiSuccess {String} status Item block creation result
+ * @apiSuccess {Object} item The created item block
  *
  * @apiSuccessExample Successful Response:
  * HTTP/1.1 201 OK
@@ -36,9 +36,9 @@ const authMiddleware = require('../../middleware/authorization');
  *     "item": {
  *	        "urlThumbnail": "Thumbnail",
  *	        "_id": "5f826c26fa1ff03fc7998402",
- *	        "user_id": "5f7a7f7240e08a0017990a5e",
+ *	        "user_id": "ajfiajijf892jfaiojio",
  *	        "type": "Project",
- *	        "title": "Testing Once",
+ *	        "title": "Test",
  *	        "description": "",
  *	        "date": "2020-10-11T02:21:26.649Z",
  *	        "__v": 0
@@ -66,13 +66,13 @@ router.route('/create')
  *
  * @apiParam {String} user_id User's id (to be associated with item block), REQUIRED
  * @apiParam {String} item_id ID of an item block you're trying to update, REQUIRED
- * @apiParam {Object} change Object that includes attributes of an item block you're trying to change, REQUIRED
+ * @apiParam {Object} contents Object that includes attributes of an item block you're trying to change, REQUIRED
  *
  * @apiParamExample Example Body: 
  * {
  *     "user_id": "ajfiajijf892jfaiojio",
  *     "item_id": "lkjalksfi98789348915987897",
- *     "change": {
+ *     "contents": {
  *	       "title": "Test Update",
  *         "description": "Test Update"
  *     }
@@ -111,7 +111,7 @@ router.route('/update')
  * @apiParamExample Example Body: 
  * {
  *     "user_id": "ajfiajijf892jfaiojio",
- *     "item_id": "lkjalksfi98789348915987897",
+ *     "item_id": "lkjalksfi98789348915987897"
  * }
  *
  * @apiSuccess {String} status Item block deletion result
@@ -148,7 +148,7 @@ router.route('/delete')
  *     "item_id": "5f81bdf6db99e33e48002c54"
  * }
  *
- * @apiSuccess {String} status Item block deletion result
+ * @apiSuccess {String} status Item block search result
  * @apiSuccess {Object} itemblock item block
  *
  * @apiSuccessExample Successful Response:
@@ -191,7 +191,7 @@ router.route('/see')
  *     "user_id": "5f7a7f7240e08a0017990a5e"
  * }
  *
- * @apiSuccess {String} status Item block deletion result
+ * @apiSuccess {String} status Item block search result
  * @apiSuccess {Object} itemblocks list of item blocks
  *
  * @apiSuccessExample Successful Response:

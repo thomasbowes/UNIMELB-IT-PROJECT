@@ -370,6 +370,95 @@ const refreshTokens = (req, res) => {
   }
 };
 
+
+// function dedicated to changing permissible user details (first, last name and password)
+const changeDetails = (req, res) => {
+  const userid = req.body.user_id;
+  const query = { _id: userid };  
+
+  if (!req.body.contents) {
+    return res.status(401).json({
+      status: "Include body of change"
+    });
+  }
+
+  // if password is included, make sure to encode it 
+  if (req.body.contents.password != undefined) {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.contents.password, salt);
+    req.body.contents.password = hash;
+  }
+
+  User
+    // req.body.contents is an object that contains the fields we want to change in an item block
+    .findOneAndUpdate(query, req.body.contents, {upsert: true})
+    .then(item => {
+      res.status(200).json({
+        status: "User details have been successfully updated"
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        status: "An error has occurred trying to update user details",
+        err: error
+      });
+    })
+};
+
+// Search for users in db based on user input
+const searchUsers = (req, res) => {
+
+  // The user has input something
+  if (req.query.key) {
+    let rexp;
+    let queryPromise;
+    const cleanedStr = req.query.key.trim();
+    
+    // Input is an email address
+    if( validator.isEmail(cleanedStr)){
+      rexp = new RegExp(cleanedStr, 'i');
+      queryPromise = User.find( {email: rexp} ).exec();
+    } 
+    // Else, assume input is a name.
+    else {
+  
+      // A full name has been entered
+      if (cleanedStr.indexOf(' ') !== -1) {
+        const names = cleanedStr.split(' ');
+        queryPromise = User.find( { 
+          firstname: new RegExp(names[0], 'i') ,
+          lastname: new RegExp(names[1], 'i') } )
+          .exec();
+      } 
+      // Either firstname or lastname has been entered
+      else {
+        rexp = new RegExp(cleanedStr, 'i');
+        queryPromise = User.find( { $or: [{ firstname: rexp }, { lastname: rexp }] }).exec();
+      }
+
+    }
+
+    queryPromise.then( doc => {
+      if (doc.length > 0) {
+        res.status(200).json({
+          message: "Matches have been found",
+          data: doc
+        });
+      } else {
+        res.status(404).json({message: 'No matching result'})
+      }
+    })
+    .catch(err => {res.status(500).json({message: 'Something went wrong in searchUser'})});
+  }
+
+  // The user just hit the search button without input
+  else {
+    res.status(400).json({
+      message: "Please input something to search for"
+    });
+  }
+}
+
 module.exports = { signToken, signRefreshToken };
 module.exports.registerNewUser = registerNewUser;
 module.exports.loginUser = loginUser;
@@ -378,3 +467,5 @@ module.exports.userEmailConfirmation = userEmailConfirmation;
 module.exports.testUser = testUser;
 module.exports.checkBody = checkBody;
 module.exports.refreshTokens = refreshTokens;
+module.exports.changeDetails = changeDetails;
+module.exports.searchUsers = searchUsers;

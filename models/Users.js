@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
     googleID: {type: String, required: false, immutable: true},
     email: {type: String, required: true, immutable: true},
     confirm: {type: Boolean, default: false},
-    isAdmin: {type: Boolean, default: false},
+    isAdmin: {type: Boolean, default: false, immutable: true},
     date: {type: Date, default: Date.now, immutable: true}
 }, {collection: 'users'});
 

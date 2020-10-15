@@ -29,19 +29,6 @@
     margin: 1rem;
 }
 
-
-.project__overview {
-    display: flex;
-    flex-direction: column;
-    margin-left: 1rem;
-    padding: 1rem 0;
-    height: 11rem;
-    box-sizing: border-box;
-    overflow: hidden;
-    flex-grow: 1;
-    flex-basis: 0;
-}
-
 .overview__title {
     text-decoration: none;
     margin-bottom: 0.2rem;
