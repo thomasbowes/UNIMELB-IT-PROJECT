@@ -199,7 +199,7 @@ const registerNewUser = function(req, res){
                });
 
                //send confirmation email
-               sendEmail(newUser.email, newUser._id);
+               sendEmail(newUser.email, newUser._id, newUser.firstname,  newUser.lastname);
 
                //hash the password
                bcrypt.genSalt(10, function(err, salt){
@@ -221,7 +221,7 @@ const registerNewUser = function(req, res){
 };
 
 //send confirmation email
-const sendEmail =  function(userEmail, userId) {
+const sendEmail =  function(userEmail, userId, userFirstname, UserLastname) {
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -231,14 +231,34 @@ const sendEmail =  function(userEmail, userId) {
         }
     });
 
+    let data = "<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional \/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\">\r\n" +
+        "<html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:v=\"urn:schemas-microsoft-com:vml\">\r\n" +
+        "<head>\r\n\r\n<meta content=\"text\/html; charset=utf-8\" http-equiv=\"Content-Type\">\r\n<meta content=\"width=device-width\" name=\"viewport\">" +
+        "\r\n\r\n<meta content=\"IE=edge\" http-equiv=\"X-UA-Compatible\">\r\n\r\n<\/head><body>\r\n    " +
+        "<div class=\"background\" style=\"background-color:rgb(3, 76, 113); font:1em sans-serif; height:inherit; padding-bottom:6rem; padding-top:3rem\" bgcolor=\"rgb(3, 76, 113)\" height=\"inherit\">\r\n      " +
+        "<img src=\"https:\/\/res.cloudinary.com\/dg3osx8ob\/image\/upload\/v1602860266\/logo_upyyhw.png\" alt=\"logo\" style=\"display:block; margin:0 auto; max-width:40rem; width:72%\" width=\"72%\">\r\n      " +
+        "<div class=\"email-body\" style=\"align-items:center; background-color:rgb(243, 246, 248); margin:0 auto; margin-top:3rem; max-width:50rem; padding:1rem; width:90%\" bgcolor=\"rgb(243, 246, 248)\" width=\"90%\">\r\n          " +
+        "<h1 style=\"text-align:center\" align=\"center\">Please verify your email address<\/h1>\r\n          " +
+        "<p style=\"margin:0; text-align:center\" align=\"center\">Dear " +
+        userFirstname +" " + UserLastname +
+        ", Thank you for signing up to Portfolio.Exchange!<\/p>\r\n          " +
+        "<p style=\"margin:0; text-align:center\" align=\"center\">Please confirm your e-mail by either clicking the button below<\/p>\r\n          " +
+        "<a href=\"" +
+        process.env.DOMAIN + "/api/users/confirmation/" + userId + "\"" +
+        "class=\"link\" style=\"background-color:rgb(100, 203, 140); border-radius:1.2rem; color:white; display:block; font-weight:bolder; margin:1.5rem auto; padding:1rem; text-align:center; text-decoration:none; width:8rem\" bgcolor=\"rgb(100, 203, 140)\" align=\"center\" width=\"8rem\">Verify E-Mail" +
+        "<\/a>\r\n          <p style=\"margin:0; text-align:center\" align=\"center\">Clicking the below link:<\/p>\r\n          " +
+        "<p style=\"margin:0; text-align:center\" align=\"center\">" +
+        process.env.DOMAIN + "/api/users/confirmation/" + userId +
+        "<\/p>" +
+        "\r\n      " +
+        "<\/div>\r\n    <\/div>\r\n<\/body>\r\n<\/html>"
+
+
     const mailOptions = {
         from: 'folio.exchange.team@gmail.com',
         to: userEmail,
         subject: 'Folio.Exchange - confirmation email',
-        text: isDevelopment() ?  ("Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId)
-                            : "Thank you for registering with folio.exchange, Here is your conformation link:" + "Heroku:" + process.env.DOMAIN + "/api/users/confirmation/" + userId
-        // text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
-        //text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "https://folioexchangetest.herokuapp.com/api/users/confirmation/" + userId + " Heroku: " + userId
+        html: data
     };
 
     // send mail with defined transport object
