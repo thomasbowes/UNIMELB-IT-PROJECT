@@ -4,7 +4,7 @@ class EditInfoForm extends Component{
     state = {
         input: this.props.oldValue
     }
-
+    
     inputChangeHandler = (event) => {
         this.setState({input: event.target.value});
     }
