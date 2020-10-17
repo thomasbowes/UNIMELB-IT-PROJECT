@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './UserProfile.css';
 
 import eggImage from '../../../assets/ProfilePageDocuments/egg.jpg'
-import EditInfoForm from '../EditInfoForm/EditInfoForm';
 import EditForm from '../EditForm/EditForm';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
 
@@ -60,21 +59,12 @@ class UserProfile extends Component{
                         <div className="UserInfoHolder">
                             <div className="UserInfo">
                                 <h1>{this.state.values[0]}</h1>
-                                {this.state.editable? <button onClick={() => this.setState({nameEditing: true}) } >edit</button>:null}
-                                {this.state.editable && this.state.nameEditing? 
-                                    <EditInfoForm saveChange={this.changeName} oldValue={this.state.name}/>: null}
                             </div>
                             <div className="UserInfo">
                                 <h2>{this.state.values[1]}</h2> 
-                                {this.state.editable? <button onClick={() => this.setState({highLevelDesEditing: true}) } >edit</button>:null}
-                                {this.state.editable && this.state.highLevelDesEditing? 
-                                    <EditInfoForm saveChange={this.changeHighLevelDes} oldValue={this.state.highLevelDes}/>: null}
                             </div>
                             <div className="Objective">
                                 <p>{this.state.values[2]}</p> 
-                                {this.state.editable? <button onClick={() => this.setState({descriptionEditing: true}) } >edit</button>:null}
-                                {this.state.editable && this.state.descriptionEditing? 
-                                    <EditInfoForm saveChange={this.changeDescription} oldValue={this.state.description}/>: null}
                             </div>
                         </div>}
                     {this.state.editable? null

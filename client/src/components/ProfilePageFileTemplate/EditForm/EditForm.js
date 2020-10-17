@@ -20,14 +20,13 @@ class EditForm extends Component{
     render(){
         return(
             <div>
-                <button onClick={() => {this.props.changeEditable(); this.props.changeValues(this.state.inputs)}}>Done</button>
                 {this.state.inputs.map((value, index) => {
                     return  <form>
                                 <p>Set {this.state.fields[index]}:</p>
                                 <input type="text" defaultValue={value} onChange={(event) => this.inputChangeHandler(event, index)}></input>
-                                <p>The current value is: {this.state.inputs[index]}</p>
                             </form>
                 })}
+                <button onClick={() => {this.props.changeEditable(); this.props.changeValues(this.state.inputs)}}>Save</button>
             </div>
             // <form>
             //     <input type="text" defaultValue={this.props.oldValue} onChange={this.inputChangeHandler} />
