@@ -10,7 +10,9 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "docs": "apidoc -i ./ -e node_modules -e ./docs -o ./docs",
-    "test": "node_modules/.bin/mocha",
+    "test": "mocha",
+    "test-awesome": "mocha test --reporter mochawesome",
+    "open-report": "open mochawesome-report/mochawesome.html",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "O (n!)",
@@ -40,6 +42,7 @@
     "apidoc": "^0.25.0",
     "chai": "^4.2.0",
     "mocha": "^8.1.3",
+    "mochawesome": "^6.1.1",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
   }
