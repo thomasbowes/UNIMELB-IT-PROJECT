@@ -15,12 +15,7 @@ router.use('/upload', authMiddleware.authenticateJWT);
 router.use('/upload', uploadMiddleware.uploadFileVerify);
 router.use('/upload', uploadMiddleware.uploadFileToCloudinary);
 router.route('/upload')
-    .post((req, res) => {
-        res.status(200).json({
-            message: 'file success uploaded',
-            status: true
-        });
-    })
+    .post(portfolioController.uploadFileToMongoDB);
 
 module.exports = router;
 

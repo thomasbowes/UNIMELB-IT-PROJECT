@@ -66,7 +66,13 @@ class ProjectPage extends Component {
                 {this.state.showPdf? <BackDrop clicked={this.showPdfToggle} show={this.state.showPdf}/>:null}
                 {this.state.showPdf? <PdfViewer file={eggPdf} />:null}
 
-                <FilesUpload />
+                <FilesUpload
+                    itemBlock_id='5f81bdf6db99e33e48002c54'
+                    type='File'
+                    maxFiles = {10}
+                    accept = ''
+                    disabled={false}
+                />
                     <p> img upload</p>
                 <ImgUpload />
             </div>

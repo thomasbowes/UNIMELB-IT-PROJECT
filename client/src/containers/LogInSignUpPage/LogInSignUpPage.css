@@ -64,6 +64,10 @@ a:hover {
     width: 40%;
 }
 
+.LoginSignupPage__error {
+    margin: 0;
+}
+
 .vertical-line {
     border-left: 3px solid rgba(0, 0, 0, 0.3);
     border-radius: 20%;
@@ -80,6 +84,15 @@ a:hover {
     opacity: 0.9;
     margin-top: 1rem;
     outline: none;
+    width: 100%;
+}
+
+.google-login-button {
+    background-color: rgba(237,55,57,0.9) !important;
+}
+
+.facebook-login-button {
+    background-color:rgb(43,92,147,0.9) !important;
 }
 
 .login-signup__form button:hover {
