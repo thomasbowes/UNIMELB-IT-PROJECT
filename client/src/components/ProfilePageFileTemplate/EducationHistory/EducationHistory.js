@@ -12,23 +12,30 @@ class EducationHistory extends Component {
         this.setState({editable: !oldEditable})
     }
 
-    changeItemHandler = (itemType, id, input) => {
-        this.props.changeItemHandler(itemType, id, input);
+    changeItemHandler = (id, input) => {
+        this.props.changeItemHandler(id, input);
+    }
+
+    hisItemRemoveHandler = (hisItemIndex) => {
+        this.props.hisItemRemoveHandler(hisItemIndex);
+    }
+
+    addNewItemHander = () => {
+        this.props.hisAddNewItemHandler();
     }
 
 
     render (){
 
-        const allItemsArray = this.props.ids.map((id, index) => {
+        const allItemsArray = this.props.contents.map((item, index) => {
             return <EducationalHistoryItem 
-                    school={this.props.schools[index]} 
-                    description={this.props.descriptions[index]} 
-                    image={this.props.images[index]}
-                    duration={this.props.durations[index]}
+                    item = {item}
                     editable={this.state.editable}
+
                     key={index}
                     id = {index}
-                    changeItemHandler={this.changeItemHandler}/>
+                    changeItemHandler={this.changeItemHandler}
+                    hisItemRemoveHandler = {this.hisItemRemoveHandler}/>
         })
 
         return(
@@ -39,6 +46,7 @@ class EducationHistory extends Component {
                 <div className="education-history-items">
                     {allItemsArray}
                 </div>
+                {this.state.editable? <button onClick={this.addNewItemHander}>Add a new Item</button>:null}
             </section>
 
         );

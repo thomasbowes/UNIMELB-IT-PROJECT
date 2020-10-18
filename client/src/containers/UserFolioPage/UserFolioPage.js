@@ -12,7 +12,10 @@ import UserProfile from '../../components/ProfilePageFileTemplate/UserProfile/Us
 
 
 const text = "The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering."
-    
+const school1 = "Eggy Junior High"
+const school2 = "University of Eggplication"
+const school3 = "Institute of Making Benedict Egg"
+
 class UserFolioPage extends Component {
     state = {
         educationHistory: {
@@ -22,33 +25,43 @@ class UserFolioPage extends Component {
             images: [google1, google1, google2],
             durations:["2022-2024", "2024-2027", "2027-2???"]
         },
+        eduHis: [[school1, "2022-2024", text+text, google1], [school2, "2024-2027", text, google1],[school3, "2027-2???", text, google1]]
     }
 
-    changeHisItemHandler = (itemType, id, input) => {
-        const newEduHis = {...this.state.educationHistory}
-        switch (itemType) {
-            case "school":
-                const newSchools = [...this.state.educationHistory.schools]
-                newSchools[id] = input
-                newEduHis.schools = newSchools
-                this.setState({educationHistory:newEduHis})
-                console.log("newState: " + this.state.toString())
-                break;
-            case "duration":
-                const newDurations = [...this.state.educationHistory.durations]
-                newDurations[id] = input
-                newEduHis.durations = newDurations
-                this.setState({educationHistory:newEduHis})
-                break;
-            case "description":
-                const newDes = [...this.state.educationHistory.descriptions]
-                newDes[id] = input
-                newEduHis.descriptions = newDes
-                this.setState({educationHistory:newEduHis})
-                break;
-            default:
-                return;
+    eduHisCopy = () => {
+        const newItem = []
+        let i = 0
+        for (i=0; i<this.state.eduHis.length; i++){
+            newItem.push([...this.state.eduHis[i]])
         }
+        return newItem;
+    }
+
+    changeHisItemHandler = (id, input) => {
+        const newItem = this.eduHisCopy();
+        newItem[id] = input
+        newItem[id].push(google1)
+
+        this.setState({eduHis: newItem})
+
+    }
+
+    hisItemRemoveHandler = (hisItemIndex) => {
+        const newItem = this.eduHisCopy();
+        
+        newItem.splice(hisItemIndex, 1);
+
+        this.setState({eduHis: newItem});
+    }
+
+    hisAddNewItemHandler = () => {
+
+        const newItem = this.eduHisCopy();
+
+        newItem.push(["Default School", "Default Durations", "Default Description", google1])
+
+        this.setState({eduHis: newItem})
+
     }
 
     render() {
@@ -60,12 +73,11 @@ class UserFolioPage extends Component {
                 <h2>My eggucation history</h2>
 
                 <EducationHistory
-                        ids = {this.state.educationHistory.ids}
-                        schools={this.state.educationHistory.schools}
-                        descriptions={this.state.educationHistory.descriptions}
-                        images={this.state.educationHistory.images}
-                        durations={this.state.educationHistory.durations} 
-                        changeItemHandler = {this.changeHisItemHandler}/>
+                        contents = {this.state.eduHis}
+
+                        changeItemHandler = {this.changeHisItemHandler}
+                        hisItemRemoveHandler = {this.hisItemRemoveHandler}
+                        hisAddNewItemHandler = {this.hisAddNewItemHandler}/>
 
                 <h2>My projeggcts</h2>
 
