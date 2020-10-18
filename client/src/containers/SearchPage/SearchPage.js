@@ -5,6 +5,9 @@ import './SearchItem/SearchItem'
 import SearchItem from './SearchItem/SearchItem';
 
 class SearchPage extends Component {
+
+    //how you access the searchResult "this.props.location.searchResult"
+
     render(){
         return (
             <Aux>
@@ -22,8 +25,6 @@ class SearchPage extends Component {
                     <SearchItem />
                     <SearchItem />
                 </div>
-
-
 
 
                 <div className="page-selector">

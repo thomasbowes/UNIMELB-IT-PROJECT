@@ -73,8 +73,6 @@ class ProjectPage extends Component {
                     accept = ''
                     disabled={false}
                 />
-                    <p> img upload</p>
-                <ImgUpload />
             </div>
         )
     }
