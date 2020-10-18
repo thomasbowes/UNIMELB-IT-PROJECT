@@ -27,6 +27,7 @@ class EditForm extends Component{
                             </form>
                 })}
                 <button onClick={() => {this.props.changeEditable(); this.props.changeValues(this.state.inputs)}}>Save</button>
+                <button onClick={this.props.changeEditable}>Cancel</button>
             </div>
             // <form>
             //     <input type="text" defaultValue={this.props.oldValue} onChange={this.inputChangeHandler} />
