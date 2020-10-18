@@ -21,6 +21,7 @@ const userRoute = require('./routes/api/users');
 const itemBlockRoute = require('./routes/api/itemblocks');
 const profBlockRoute = require('./routes/api/profileblocks');
 const portfolioRoute = require('./routes/api/portfolio');
+const fileRoute = require('./routes/api/files');
 
 app.use(cors());
 app.use(fileUpload());
@@ -34,6 +35,7 @@ app.use('/api/users', userRoute);
 app.use('/api/itemblocks', itemBlockRoute);
 app.use('/api/profileblocks', profBlockRoute);
 app.use('/api/portfolio', portfolioRoute);
+app.use('/api/files', fileRoute);
 
 // Serve Static assets (massive build file) if we are in production
 if (process.env.NODE_ENV === 'production'){
