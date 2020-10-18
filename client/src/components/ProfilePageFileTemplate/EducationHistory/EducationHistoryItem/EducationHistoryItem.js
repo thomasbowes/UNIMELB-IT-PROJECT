@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './EducationHistoryItem.css';
 import Aux from '../../../../hoc/Auxiliary/Auxiliary'
-import EditInfoForm from '../../EditInfoForm/EditInfoForm';
 import EditForm from '../../EditForm/EditForm';
 
 class EducationalHistoryItem extends Component {
@@ -35,33 +34,6 @@ class EducationalHistoryItem extends Component {
     changeItemHandler = (input) =>{
         this.props.changeItemHandler(this.props.id, input)
     }
-
-    // checkSchoolEditable = () => {
-    //     return this.checkItemEditable() && this.state.schoolEditable;
-    // }
-
-    // checkDurationEditable = () => {
-    //     return this.checkItemEditable() && this.state.durationEditable;
-    // }
-
-    // checkDesEditable = () => {
-    //     return this.checkItemEditable() && this.state.descriptionEditable;
-    // }
-
-    // changeSchoolHandler = (input) => {
-    //     this.props.changeItemHandler("school", this.props.id, input);
-    //     this.setState({schoolEditable: false});
-    // }
-
-    // changeDurationHandler = (input) => {
-    //     this.props.changeItemHandler("duration", this.props.id, input);
-    //     this.setState({durationEditable: false});
-    // }
-
-    // changeDesHandler = (input) => {
-    //     this.props.changeItemHandler("description", this.props.id, input);
-    //     this.setState({descriptionEditable: false});
-    // }
 
     itemDeleteHandler = () => {
         this.props.hisItemRemoveHandler(this.props.id);
