@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './EducationHistory.css'
 import './EducationHistoryItem/EducationHistoryItem'
 import EducationalHistoryItem from './EducationHistoryItem/EducationHistoryItem';
-
+import EditIcon from '../../../assets/EditIcons/edit.svg';
 class EducationHistory extends Component {
 
     state = {editable: false}
@@ -42,7 +42,7 @@ class EducationHistory extends Component {
             <section className="education-history">
                 <h1 id="heading">Education History</h1>
                 {this.state.editable? <button onClick={this.editableHandler}>Done</button> 
-                                    : <button onClick={this.editableHandler}>Edit</button>}
+                                    : <input className="education-history__edit" type="image" src={EditIcon} onClick={this.editableHandler}/>}
                 <div className="education-history-items">
                     {allItemsArray}
                 </div>

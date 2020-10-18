@@ -10,7 +10,6 @@ import UserFolioPage from './containers/UserFolioPage/UserFolioPage';
 import SearchPage from './containers/SearchPage/SearchPage'
 import RegisterNotificationPage from './containers/RegisterNotificationPage/RegisterNotificationPage'
 import ProjectPage from './containers/UserFolioPage/ProjectPage/ProjectPage'
-
 import Footer from './components/Footer/Footer';
 import './App.css'
 

@@ -1,0 +1,81 @@
+.edit-form__container {
+    width: 80%;
+    margin: auto 0.5rem;
+
+}
+
+.Edit-Form__single-form-entry {
+    width: 95%;
+    margin: 1rem 0;
+   
+}
+
+
+.single-form-entry__desc {
+    margin: 0;
+    margin-bottom: 0.2rem;
+}
+
+.single-form-entry__regInput {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.edit-form__button-selection {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    justify-content: space-between;
+    margin: 0 auto;
+    height: 2rem;
+}
+
+.Edit-Form__save-button {
+    background-color: rgba(8, 103, 150, 0.8);
+    color: white;
+    border: none;
+    padding: 0.5rem;
+}
+
+.Edit-Form__save-button:hover,
+.Edit-Form__save-button:active {
+    background-color: rgba(8, 103, 150, 1);
+
+
+}
+
+
+.Edit-Form__cancel-button {
+    background-color: rgba(0, 0, 0, 0);
+    color: rgba(0, 0, 0,  0.5);
+    border: none;
+    padding: 0rem;
+}
+
+.Edit-Form__cancel-button:hover,
+.Edit-Form__cancel-button:active {
+    color: rgba(0, 0, 0, 1);
+}
+
+
+.input,
+.textarea {
+  border: 1px solid #ccc;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 1px 6px;
+}
+
+.textarea {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    resize: vertical;
+    min-height: 40px;
+    background-color: white;
+    border-color: black;
+    line-height: 20px;
+  }
+
+  
