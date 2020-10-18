@@ -27,13 +27,11 @@ class EducationHistory extends Component {
 
     render (){
 
-        const allItemsArray = this.props.ids.map((id, index) => {
+        const allItemsArray = this.props.contents.map((item, index) => {
             return <EducationalHistoryItem 
-                    school={this.props.schools[index]} 
-                    description={this.props.descriptions[index]} 
-                    image={this.props.images[index]}
-                    duration={this.props.durations[index]}
+                    item = {item}
                     editable={this.state.editable}
+
                     key={index}
                     id = {index}
                     changeItemHandler={this.changeItemHandler}
