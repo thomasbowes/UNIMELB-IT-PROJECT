@@ -32,36 +32,41 @@ class EducationalHistoryItem extends Component {
         return this.props.editable && this.state.itemEditable;
     }
 
-    checkSchoolEditable = () => {
-        return this.checkItemEditable() && this.state.schoolEditable;
+    changeItemHandler = (input) =>{
+        this.props.changeItemHandler(this.props.id, input)
     }
 
-    checkDurationEditable = () => {
-        return this.checkItemEditable() && this.state.durationEditable;
-    }
+    // checkSchoolEditable = () => {
+    //     return this.checkItemEditable() && this.state.schoolEditable;
+    // }
 
-    checkDesEditable = () => {
-        return this.checkItemEditable() && this.state.descriptionEditable;
-    }
+    // checkDurationEditable = () => {
+    //     return this.checkItemEditable() && this.state.durationEditable;
+    // }
 
-    changeSchoolHandler = (input) => {
-        this.props.changeItemHandler("school", this.props.id, input);
-        this.setState({schoolEditable: false});
-    }
+    // checkDesEditable = () => {
+    //     return this.checkItemEditable() && this.state.descriptionEditable;
+    // }
 
-    changeDurationHandler = (input) => {
-        this.props.changeItemHandler("duration", this.props.id, input);
-        this.setState({durationEditable: false});
-    }
+    // changeSchoolHandler = (input) => {
+    //     this.props.changeItemHandler("school", this.props.id, input);
+    //     this.setState({schoolEditable: false});
+    // }
 
-    changeDesHandler = (input) => {
-        this.props.changeItemHandler("description", this.props.id, input);
-        this.setState({descriptionEditable: false});
-    }
+    // changeDurationHandler = (input) => {
+    //     this.props.changeItemHandler("duration", this.props.id, input);
+    //     this.setState({durationEditable: false});
+    // }
+
+    // changeDesHandler = (input) => {
+    //     this.props.changeItemHandler("description", this.props.id, input);
+    //     this.setState({descriptionEditable: false});
+    // }
 
     itemDeleteHandler = () => {
         this.props.hisItemRemoveHandler(this.props.id);
     }
+
 
     render(){
         return (
@@ -96,7 +101,8 @@ class EducationalHistoryItem extends Component {
                             </Aux>
                         :
                             <div>
-                                <EditForm values={this.props.item.slice(0, 3)} fields={["name", "duration", "description"]} />
+                                <EditForm values={this.props.item.slice(0, 3)} fields={["name", "duration", "description"]} 
+                                    changeEditable = {this.itemEditableHandler} changeValues = {this.changeItemHandler}/>
                             </div>
                         }
                     </div>

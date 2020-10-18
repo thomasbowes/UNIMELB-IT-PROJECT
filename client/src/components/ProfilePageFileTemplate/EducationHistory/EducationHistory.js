@@ -12,8 +12,8 @@ class EducationHistory extends Component {
         this.setState({editable: !oldEditable})
     }
 
-    changeItemHandler = (itemType, id, input) => {
-        this.props.changeItemHandler(itemType, id, input);
+    changeItemHandler = (id, input) => {
+        this.props.changeItemHandler(id, input);
     }
 
     hisItemRemoveHandler = (hisItemIndex) => {

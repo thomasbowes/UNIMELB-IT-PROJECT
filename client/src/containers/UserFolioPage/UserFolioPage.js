@@ -28,67 +28,103 @@ class UserFolioPage extends Component {
         eduHis: [[school1, "2022-2024", text+text, google1], [school2, "2024-2027", text, google1],[school3, "2027-2???", text, google1]]
     }
 
-    changeHisItemHandler = (itemType, id, input) => {
-        const newEduHis = {...this.state.educationHistory}
-        switch (itemType) {
-            case "school":
-                const newSchools = [...this.state.educationHistory.schools]
-                newSchools[id] = input
-                newEduHis.schools = newSchools
-                this.setState({educationHistory:newEduHis})
-                console.log("newState: " + this.state.toString())
-                break;
-            case "duration":
-                const newDurations = [...this.state.educationHistory.durations]
-                newDurations[id] = input
-                newEduHis.durations = newDurations
-                this.setState({educationHistory:newEduHis})
-                break;
-            case "description":
-                const newDes = [...this.state.educationHistory.descriptions]
-                newDes[id] = input
-                newEduHis.descriptions = newDes
-                this.setState({educationHistory:newEduHis})
-                break;
-            default:
-                return;
+    // changeHisItemHandler = (itemType, id, input) => {
+    //     const newEduHis = {...this.state.educationHistory}
+    //     switch (itemType) {
+    //         case "school":
+    //             const newSchools = [...this.state.educationHistory.schools]
+    //             newSchools[id] = input
+    //             newEduHis.schools = newSchools
+    //             this.setState({educationHistory:newEduHis})
+    //             console.log("newState: " + this.state.toString())
+    //             break;
+    //         case "duration":
+    //             const newDurations = [...this.state.educationHistory.durations]
+    //             newDurations[id] = input
+    //             newEduHis.durations = newDurations
+    //             this.setState({educationHistory:newEduHis})
+    //             break;
+    //         case "description":
+    //             const newDes = [...this.state.educationHistory.descriptions]
+    //             newDes[id] = input
+    //             newEduHis.descriptions = newDes
+    //             this.setState({educationHistory:newEduHis})
+    //             break;
+    //         default:
+    //             return;
+    //     }
+    // }
+
+    eduHisCopy = () => {
+        const newItem = []
+        let i = 0
+        for (i=0; i<this.state.eduHis.length; i++){
+            newItem.push([...this.state.eduHis[i]])
         }
+        return newItem;
     }
+
+    changeHisItemHandler = (id, input) => {
+        const newItem = this.eduHisCopy();
+        newItem[id] = input
+        newItem[id].push(google1)
+
+        this.setState({eduHis: newItem})
+
+    }
+
+    // hisItemRemoveHandler = (hisItemIndex) => {
+    //     let newSchools = [...this.state.educationHistory.schools];
+    //     let newDes = [...this.state.educationHistory.descriptions];
+    //     let newDurations = [...this.state.educationHistory.durations];
+    //     let newImages = [...this.state.educationHistory.images];
+
+    //     let newIds = [];
+    //     let i = 0;
+    //     for (i =0 ; i<newSchools.length-1; i++){
+    //         newIds.push(i);
+    //     }
+        
+    //     newSchools.splice(hisItemIndex, 1);
+    //     newDes.splice(hisItemIndex, 1);
+    //     newDurations.splice(hisItemIndex, 1);
+    //     newImages.splice(hisItemIndex, 1);
+
+    //     this.setState({educationHistory: {ids: newIds, schools: newSchools, durations:newDurations, images:newImages, descriptions:newDes}});
+    // }
 
     hisItemRemoveHandler = (hisItemIndex) => {
-        let newSchools = [...this.state.educationHistory.schools];
-        let newDes = [...this.state.educationHistory.descriptions];
-        let newDurations = [...this.state.educationHistory.durations];
-        let newImages = [...this.state.educationHistory.images];
-
-        let newIds = [];
-        let i = 0;
-        for (i =0 ; i<newSchools.length-1; i++){
-            newIds.push(i);
-        }
+        const newItem = this.eduHisCopy();
         
-        newSchools.splice(hisItemIndex, 1);
-        newDes.splice(hisItemIndex, 1);
-        newDurations.splice(hisItemIndex, 1);
-        newImages.splice(hisItemIndex, 1);
+        newItem.splice(hisItemIndex, 1);
 
-        this.setState({educationHistory: {ids: newIds, schools: newSchools, durations:newDurations, images:newImages, descriptions:newDes}});
+        this.setState({eduHis: newItem});
     }
 
+    // hisAddNewItemHandler = () => {
+    //     let newSchools = [...this.state.educationHistory.schools];
+    //     let newDes = [...this.state.educationHistory.descriptions];
+    //     let newDurations = [...this.state.educationHistory.durations];
+    //     let newImages = [...this.state.educationHistory.images];
+    //     let newIds = [...this.state.educationHistory.ids];
+
+    //     newSchools.push("Default School");
+    //     newDes.push("Default Description");
+    //     newDurations.push("Default Durations");
+    //     newImages.push(google1);
+    //     newIds.push(newIds.length);
+
+    //     this.setState({educationHistory: {ids: newIds, schools: newSchools, durations:newDurations, images:newImages, descriptions:newDes}})
+
+    // }
+
     hisAddNewItemHandler = () => {
-        let newSchools = [...this.state.educationHistory.schools];
-        let newDes = [...this.state.educationHistory.descriptions];
-        let newDurations = [...this.state.educationHistory.durations];
-        let newImages = [...this.state.educationHistory.images];
-        let newIds = [...this.state.educationHistory.ids];
 
-        newSchools.push("Default School");
-        newDes.push("Default Description");
-        newDurations.push("Default Durations");
-        newImages.push(google1);
-        newIds.push(newIds.length);
+        const newItem = this.eduHisCopy();
 
-        this.setState({educationHistory: {ids: newIds, schools: newSchools, durations:newDurations, images:newImages, descriptions:newDes}})
+        newItem.push(["Default School", "Default Durations", "Default Description", google1])
+
+        this.setState({eduHis: newItem})
 
     }
 
