@@ -84,8 +84,6 @@ class UserFolioPage extends Component {
 
                 <ProfileBlockWithImage image={google2} text={text+text+text} title="Founded Eooggle" />
                 <ProfileBlockWithImage image={google1} text={text} title="Founded Eggipedia" />
-                {/* <ProfileBlockNoImage text={text} title="Founded Eooggle" />
-                <ProfileBlockTwoProject texts={[text, text]} titles={["Founded Eooggle", "Founded Eggipedia"]} /> */}
                 
             </div>
         

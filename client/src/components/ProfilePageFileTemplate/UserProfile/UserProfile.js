@@ -13,7 +13,7 @@ const highLevelDes = "An eggcellent student at Eggy Institute of Technology"
 class UserProfile extends Component{
 
     state = {
-        values: [name, des, highLevelDes],
+        values: [name, highLevelDes, des],
 
         editable: false,
 
@@ -70,7 +70,7 @@ class UserProfile extends Component{
                         </div>}
                     
                     {this.state.editable? null
-                                        :<input className="User-info__edit" type="image" src={EditIcon} onClick={this.changeEditable} />}
+                                        :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeEditable} />}
                 </div>
             </Aux>
         );

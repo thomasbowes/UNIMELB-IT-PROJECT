@@ -42,7 +42,7 @@ class EducationHistory extends Component {
             <section className="education-history">
                 <h1 id="heading">Education History</h1>
                 {this.state.editable? <button onClick={this.editableHandler}>Done</button> 
-                                    : <input className="education-history__edit" type="image" src={EditIcon} onClick={this.editableHandler}/>}
+                                    : <input className="education-history__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>}
                 <div className="education-history-items">
                     {allItemsArray}
                 </div>

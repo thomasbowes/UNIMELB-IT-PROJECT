@@ -57,18 +57,12 @@ class EducationalHistoryItem extends Component {
                                     <a href="#title">
                                         <h1>{this.props.item[0]}</h1>
                                     </a>
-                                    {/* {this.checkItemEditable() ? <button onClick={() => this.setState({schoolEditable: !this.state.schoolEditable})}>Edit School</button>:null}
-                                    {this.checkSchoolEditable() ? <EditInfoForm saveChange={this.changeSchoolHandler} oldValue={this.props.school}/>:null} */}
 
                                     <h1>{this.props.item[1]}</h1>
-                                    {/* {this.checkItemEditable()? <button onClick={() => this.setState({durationEditable: !this.state.durationEditable})}>Edit Duration</button>:null}
-                                    {this.checkDurationEditable()? <EditInfoForm saveChange={this.changeDurationHandler} oldValue={this.props.duration}/>:null} */}
                                 </div>
 
                                 <div className="overview__description">
                                     {this.props.item[2]}
-                                    {/* {this.checkItemEditable()? <button onClick={() => this.setState({descriptionEditable: !this.state.descriptionEditable})}>Edit Description</button>:null}
-                                    {this.checkDesEditable() ? <EditInfoForm saveChange={this.changeDesHandler} oldValue={this.props.description}/>:null} */}
                                 </div>
                             </Aux>
                         :
