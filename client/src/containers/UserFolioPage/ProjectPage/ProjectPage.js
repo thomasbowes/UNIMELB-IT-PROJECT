@@ -10,6 +10,9 @@ import FilesUpload from '../../../components/FilesUpload/FilesUpload';
 import ImgUpload from '../../../components/FilesUpload/ImgUpload';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
 
+// import redcross from '../../../assets/ProjectPage-icons/redcross.svg'
+import crossIcon from '../../../assets/LoginPage-icons/cross.svg';
+
 import eggImg1 from '../../../assets/ProfilePageDocuments/egg1.jpg'
 import eggImg2 from '../../../assets/ProfilePageDocuments/egg2.jpg'
 import eggImg3 from '../../../assets/ProfilePageDocuments/egg3.jpg'
@@ -29,7 +32,42 @@ class ProjectPage extends Component {
         filesEditable: false,
 
         title: defaultTitle,
-        description: defaultDes}
+        description: defaultDes,
+        
+        images : [
+            {
+                original: eggImg1,
+                thumbnail: eggImg1,
+                id: "a"
+            },
+            {
+                original: eggImg2,
+                thumbnail: eggImg2,
+                id: "b"
+            },
+            {
+                original: eggImg3,
+                thumbnail: eggImg3,
+                id: "c"
+            },
+            {
+                original: eggImg4,
+                thumbnail: eggImg4,
+                id: "d"
+            },
+            {
+                original: eggImg5,
+                thumbnail: eggImg5,
+                id: "f"
+            }
+        ],
+
+        pdfs : [
+            {file: eggPdf, show: false},
+            {file: eggPdf, show: false}
+        ]
+
+    }
 
     showPdfToggle = () => {
         const newShowPdf = !this.state.showPdf;
@@ -44,29 +82,22 @@ class ProjectPage extends Component {
         this.setState({titleDesEditable: !this.state.titleDesEditable})
     }
 
+    changeFileEditable = () => {
+        this.setState({filesEditable: !this.state.filesEditable})
+    }
+
+    editingImages = () => {
+        return this.state.images.map((image, index) => {
+            return <Aux>
+                        <img src={crossIcon} alt="delete" />
+                        <img src={image.original} alt={"image:"+image.id} />
+                    </Aux>
+        })
+    }
+
+
+
     render(){
-        const images = [
-            {
-                original: eggImg1,
-                thumbnail: eggImg1,
-            },
-            {
-                original: eggImg2,
-                thumbnail: eggImg2,
-            },
-            {
-                original: eggImg3,
-                thumbnail: eggImg3,
-            },
-            {
-                original: eggImg4,
-                thumbnail: eggImg4,
-            },
-            {
-                original: eggImg5,
-                thumbnail: eggImg5,
-            }
-        ];
         return (
             <div className="ProjectPage">
 
@@ -81,20 +112,27 @@ class ProjectPage extends Component {
                         <button onClick={this.changeTitleDesEditable}>Change project title/description</button>
                     </Aux>
                     }
-
-                <div className="ImageGallery">   
-                    <ImageGallery items={images} 
-                        showThumbnails={false}
-                        autoPlay={true}
-                    />
-                </div> 
+                <button onClick={this.changeFileEditable}>Edit Files</button>
+                {this.state.filesEditable? 
+                    this.editingImages()
+                :   <div className="ImageGallery">   
+                        <ImageGallery items={this.state.images} 
+                            showThumbnails={false}
+                            autoPlay={true}
+                        />
+                    </div> 
+                }
             
                 <div className="test">
                     <PdfPreview file={eggPdf} clicked={this.showPdfToggle}/>
                 </div>
     
-                {this.state.showPdf? <BackDrop clicked={this.showPdfToggle} show={this.state.showPdf}/>:null}
-                {this.state.showPdf? <PdfViewer file={eggPdf} />:null}
+                {this.state.showPdf & !this.state.filesEditable? 
+                    <Aux>
+                        <BackDrop clicked={this.showPdfToggle} show={this.state.showPdf}/>
+                        <PdfViewer file={eggPdf} />
+                    </Aux>
+                :   null}
 
                 <FilesUpload
                     itemBlock_id='5f81bdf6db99e33e48002c54'

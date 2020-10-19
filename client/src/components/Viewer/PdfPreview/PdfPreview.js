@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
+import crossIcon from '../../../assets/LoginPage-icons/cross.svg';
 
 import './PdfPreview.css'
 
 import { Document, Page, pdfjs } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
 
 const PdfPreview = (props) => {
     const [numPages, setNumPages] = useState(null);
@@ -15,6 +17,7 @@ const PdfPreview = (props) => {
     return (
             <div className="PdfPreview" onClick={props.clicked}>
                 <a href="#preview">
+                    <img src={crossIcon} alt="delete" />
                     <Document className="Pdf"
                         file={props.file}
                         onLoadSuccess={onDocumentLoadSuccess}>
