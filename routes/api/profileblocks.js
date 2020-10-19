@@ -20,7 +20,6 @@ const authMiddleware = require('../../middleware/authorization');
  *
  * @apiParamExample Example Body: 
  * {
- *     "user_id": "ajfiajijf892jfaiojio",
  *     "profile_id": "lkjalksfi98789348915987897",
  *     "contents": {
  *	       "title": "Test Update",
