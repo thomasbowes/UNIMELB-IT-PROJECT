@@ -202,9 +202,11 @@ class ProjectPage extends Component {
                     </Aux>
                 :   <Aux>
                         <div className="ImageGallery">   
-                            <ImageGallery items={this.state.images} 
-                                showThumbnails={false}
-                                autoPlay={true}/>
+                            {this.state.images.length > 0? 
+                                <ImageGallery items={this.state.images} 
+                                    showThumbnails={false}
+                                    autoPlay={true}/>
+                            :   null}
                         </div> 
                         {this.showPdfs()}
                     </Aux>
