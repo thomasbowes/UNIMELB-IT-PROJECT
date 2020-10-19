@@ -11,7 +11,6 @@ import FilesUpload from '../../../components/FilesUpload/FilesUpload';
 import ImgUpload from '../../../components/FilesUpload/ImgUpload';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
 
-// import redcross from '../../../assets/ProjectPage-icons/redcross.svg'
 import crossIcon from '../../../assets/LoginPage-icons/cross.svg';
 
 import eggImg1 from '../../../assets/ProfilePageDocuments/egg1.jpg'
@@ -69,11 +68,6 @@ class ProjectPage extends Component {
         ]
 
     }
-
-    // showPdfToggle = () => {
-    //     const newShowPdf = !this.state.showPdf;
-    //     this.setState({showPdf: newShowPdf})
-    // }
 
     changeTitleDes = (inputs) => {
         this.setState({title: inputs[0], description: inputs[1]})
@@ -215,18 +209,6 @@ class ProjectPage extends Component {
                         {this.showPdfs()}
                     </Aux>
                 }
-            
-                {/* <div className="test">
-                    <PdfPreview file={eggPdf} clicked={this.showPdfToggle}/>
-                </div>
-    
-                {this.state.showPdf & !this.state.filesEditable? 
-                    <Aux>
-                        <BackDrop clicked={this.showPdfToggle} show={this.state.showPdf}/>
-                        <PdfViewer file={eggPdf} />
-                    </Aux>
-                :   null} */}
-
             </div>
         )
     }

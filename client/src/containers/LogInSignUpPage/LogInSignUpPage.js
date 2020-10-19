@@ -193,7 +193,7 @@ class LogInPage extends Component{
 
     // Generates html for error message
     errorPrintHandler = (prop) => {
-        if (prop != "") {
+        if (prop !== "") {
             return <p className="LoginSignupPage__error">{prop}</p>
         } else {
             return null;

@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-// import crossIcon from '../../../assets/LoginPage-icons/cross.svg';
 
 import './PdfPreview.css'
 
