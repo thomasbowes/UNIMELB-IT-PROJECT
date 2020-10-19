@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './EditForm.css';
+import CancelIcon from '../../../assets/EditIcons/cancel.svg';
 
 const regInput = "input";
 const largeInput = "large input";
@@ -16,7 +17,22 @@ class EditForm extends Component{
 
 
     inputChangeHandler = (event, index) => {
+        if (index ===0) {
+            console.log(event);
+        }
         const newValue = event.target.value;
+        const newInputs = [...this.state.inputs];
+
+        newInputs[index] = newValue
+        this.setState({inputs: newInputs});
+    }
+
+
+    ainputChangeHandler = (event, index) => {
+        
+        console.log(event);
+        
+        const newValue = event;
         const newInputs = [...this.state.inputs];
 
         newInputs[index] = newValue
@@ -31,16 +47,16 @@ class EditForm extends Component{
                 {this.state.inputs.map((value, index) => {
                     if (this.state.inputTypes[index] === regInput) {
                         return  (
-                            <form className="Edit-Form__single-form-entry">
+                            <form key={index} className="Edit-Form__single-form-entry">
                                 <p className="single-form-entry__desc">Set {this.state.fields[index]}:</p>
                                 <input className="single-form-entry__regInput" type="text" defaultValue={value} onChange={(event) => this.inputChangeHandler(event, index)}></input>
                             </form>
                             )
                     } else if (this.state.inputTypes[index] === largeInput) {
                         return  (
-                            <form className="Edit-Form__single-form-entry">
+                            <form key={index} className="Edit-Form__single-form-entry">
                                 <p className="single-form-entry__desc">Set {this.state.fields[index]}:</p>
-                                <span className="textarea" role="textbox" contentEditable></span> 
+                                <span className="textarea" role="textbox" onChange={(event) => this.ainputChangeHandler(this.props.children, index)} contentEditable>{value}</span> 
                                 <input className="single-form-entry__largeInput" style={{display: "none"}} type="text" defaultValue={value} onChange={(event) => this.inputChangeHandler(event, index)}></input>
                             </form>
                             )
@@ -49,11 +65,12 @@ class EditForm extends Component{
                     }
                     
                 })}
-                <hr></hr>
+                <hr className="edit-form-horizontal-line"></hr>
                 <div className="edit-form__button-selection">
                     <button className="Edit-Form__cancel-button" onClick={this.props.changeEditable}>Cancel</button>
                     <button className="Edit-Form__save-button" onClick={() => {this.props.changeEditable(); this.props.changeValues(this.state.inputs)}}>Save Changes</button>
                 </div>
+                <input className="edit-form__cancel" type="image" src={CancelIcon} onClick={this.props.changeEditable} />
             </div>
             // <form>
             //     <input type="text" defaultValue={this.props.oldValue} onChange={this.inputChangeHandler} />
