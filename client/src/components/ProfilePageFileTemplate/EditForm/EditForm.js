@@ -32,7 +32,7 @@ class EditForm extends Component{
         
         console.log(event);
         
-        const newValue = event;
+        const newValue = event.currentTarget.textContent;
         const newInputs = [...this.state.inputs];
 
         newInputs[index] = newValue
@@ -56,7 +56,7 @@ class EditForm extends Component{
                         return  (
                             <form key={index} className="Edit-Form__single-form-entry">
                                 <p className="single-form-entry__desc">Set {this.state.fields[index]}:</p>
-                                <span className="textarea" role="textbox" onChange={(event) => this.ainputChangeHandler(this.props.children, index)} contentEditable>{value}</span> 
+                                <span className="textarea" role="textbox" onInput={(event) => this.ainputChangeHandler(event, index)} contentEditable={true}>{value}</span> 
                                 <input className="single-form-entry__largeInput" style={{display: "none"}} type="text" defaultValue={value} onChange={(event) => this.inputChangeHandler(event, index)}></input>
                             </form>
                             )
