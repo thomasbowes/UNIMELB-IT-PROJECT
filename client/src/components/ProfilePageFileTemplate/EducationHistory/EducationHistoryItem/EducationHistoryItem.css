@@ -4,6 +4,13 @@
     flex-direction: row;
     width: auto;
     align-items: center;
+    position: relative;
+}
+
+.education-history-item_edit {
+    position: absolute;
+    top: 0rem;
+    right: 0.5rem;
 }
 
 .horizontal-divider {
@@ -38,4 +45,9 @@
     margin: 0;
     display: flex;
     justify-content: space-between;
+}
+
+.tab-off-set {
+    padding-right: 1rem;
+    color: red;
 }

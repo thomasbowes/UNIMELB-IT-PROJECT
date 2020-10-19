@@ -32,8 +32,8 @@ class EditForm extends Component{
         this.setState({inputs: newInputs});
     }
 
-
-    ainputChangeHandler = (event, index) => {
+    //input has to be handled differently for large input
+    largeInputChangeHandler = (event, index) => {
         
         console.log(event);
         
@@ -61,7 +61,7 @@ class EditForm extends Component{
                         return  (
                             <form key={index} className="Edit-Form__single-form-entry">
                                 <p className="single-form-entry__desc">Set {this.state.fields[index]}:</p>
-                                <span className="textarea" role="textbox" onInput={(event) => this.ainputChangeHandler(event, index)} contentEditable={true}>{value}</span> 
+                                <span className="textarea" role="textbox" onInput={(event) => this.largeInputChangeHandler(event, index)} contentEditable={true}>{value}</span> 
                                 <input className="single-form-entry__largeInput" style={{display: "none"}} type="text" defaultValue={value} onChange={(event) => this.inputChangeHandler(event, index)}></input>
                             </form>
                             )
@@ -72,7 +72,7 @@ class EditForm extends Component{
                 })}
                 <hr className="edit-form-horizontal-line"></hr>
                 <div className="edit-form__button-selection">
-                    <button className="Edit-Form__cancel-button" onClick={this.props.changeEditable}>Cancel</button>
+                    {this.props.isDeletable === true ? <button className="Edit-Form__cancel-button" onClick={this.props.deleteItem}>Delete</button> : <div></div>}
                     <button className="Edit-Form__save-button" onClick={() => {this.props.changeEditable(); this.props.changeValues(this.state.inputs)}}>Save Changes</button>
                 </div>
                 <input className="edit-form__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.props.changeEditable} />

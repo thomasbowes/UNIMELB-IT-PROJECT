@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import './EducationHistoryItem.css';
 import Aux from '../../../../hoc/Auxiliary/Auxiliary'
 import EditForm from '../../EditForm/EditForm';
+import EditIcon from '../../../../assets/EditIcons/edit.svg';
+
 
 class EducationalHistoryItem extends Component {
     state = {
         itemEditable: false,
-
         schoolEditable: false,
         durationEditable: false,
         descriptionEditable: false,
@@ -36,11 +37,18 @@ class EducationalHistoryItem extends Component {
     }
 
     itemDeleteHandler = () => {
+        this.setState({itemEditable: false});
         this.props.hisItemRemoveHandler(this.props.id);
     }
 
 
     render(){
+        let overviewOffset = ["overview__title"]; //classes
+
+        if (this.props.editable) {
+            overviewOffset.push("tab-off-set");
+        }
+
         return (
             <Aux>
                 <div className="education-history-item">
@@ -53,7 +61,7 @@ class EducationalHistoryItem extends Component {
                     <div className="education-history__info">
                         {!this.state.itemEditable? 
                             <Aux>
-                                <div className="overview__title">
+                                <div className={overviewOffset.join(" ")}>
                                     <a href="#title">
                                         <h1>{this.props.item[0]}</h1>
                                     </a>
@@ -67,23 +75,28 @@ class EducationalHistoryItem extends Component {
                             </Aux>
                         :
                             <div>
-                                <EditForm values={this.props.item.slice(0, 3)} fields={["name", "duration", "description"]} 
-                                    changeEditable = {this.itemEditableHandler} changeValues = {this.changeItemHandler}
-                                    inputTypes={["input", "input", "large input"]}/>
+                                <EditForm 
+                                    values={this.props.item.slice(0, 3)} 
+                                    fields={["name", "duration", "description"]} 
+                                    changeEditable = {this.itemEditableHandler} 
+                                    changeValues = {this.changeItemHandler}
+                                    inputTypes={["input", "input", "large input"]}
+                                    isDeletable={true}
+                                    deleteItem={this.itemDeleteHandler}
+                                    />
                             </div>
                         }
                     </div>
-                </div>
 
-
-
-                {this.props.editable? 
+                    {this.props.editable && !this.state.itemEditable? 
                     <Aux>
-                        <button onClick={this.itemEditableHandler}>Edit this item</button> 
-                        <button onClick={this.itemDeleteHandler}>Delete this item</button>
+                        <input className="education-history-item_edit" type="image" src={EditIcon} onClick={this.itemEditableHandler} alt="edit"/>
+                        
                     </Aux> 
                     :null}
-                <div className="horizontal-divider"></div> 
+                    
+                </div>               
+                {!this.props.isLastItem? <div className="horizontal-divider"></div>: <div style={{minHeight: "1rem"}}></div>} 
             </Aux>
         );
     }

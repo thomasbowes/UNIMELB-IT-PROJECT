@@ -21,6 +21,12 @@
     top: 0.5rem;
 }
 
+.education-history__cancel {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
+
 .education-history #heading {
     margin-left: 1rem;
     color: rgba(0, 58, 88, 1);
@@ -74,4 +80,30 @@
 .overview__see-more a:hover {
     color: rgba(8, 103, 150, 1);
     text-decoration: underline;
+}
+
+.education-history__add-new-container {
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+.education-history__add-new {
+    text-align: center;
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 1rem;
+	font: inherit;
+	cursor: pointer;
+    outline: inherit;
+    width: 100%;
+}
+.education-history__add-new:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.education-history__add-new img {
+    vertical-align: middle;
+    margin-bottom: 0.25rem;
 }
