@@ -13,7 +13,12 @@ class EditForm extends Component{
         inputs: this.props.values,
         fields: this.props.fields,
         inputTypes: this.props.inputTypes,
+        oldValues: this.props.values
     }
+
+    shouldComponentUpdate() {
+        return this.state.value === this.state.oldValues;
+      }
 
 
     inputChangeHandler = (event, index) => {

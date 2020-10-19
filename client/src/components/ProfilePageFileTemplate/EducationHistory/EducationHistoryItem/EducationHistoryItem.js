@@ -74,7 +74,8 @@ class EducationalHistoryItem extends Component {
                         :
                             <div>
                                 <EditForm values={this.props.item.slice(0, 3)} fields={["name", "duration", "description"]} 
-                                    changeEditable = {this.itemEditableHandler} changeValues = {this.changeItemHandler}/>
+                                    changeEditable = {this.itemEditableHandler} changeValues = {this.changeItemHandler}
+                                    inputTypes={["input", "input", "large input"]}/>
                             </div>
                         }
                     </div>
