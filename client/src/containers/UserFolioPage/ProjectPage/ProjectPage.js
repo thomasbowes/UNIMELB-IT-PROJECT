@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import ImageGallery from 'react-image-gallery';
 import './ProjectPage.css'
 
-import eggPdf from '../../../assets/ProfilePageDocuments/eggPdf.pdf';
+import eggPdf1 from '../../../assets/ProfilePageDocuments/eggPdf1.pdf';
+import eggPdf2 from '../../../assets/ProfilePageDocuments/eggPdf2.pdf';
 import PdfViewer from '../../../components/Viewer/PdfViewer/PdfViewer';
 import PdfPreview from '../../../components/Viewer/PdfPreview/PdfPreview';
 import BackDrop from '../../../components/UI/BackDrop/BackDrop'
@@ -63,16 +64,16 @@ class ProjectPage extends Component {
         ],
 
         pdfs : [
-            {file: eggPdf, show: false},
-            {file: eggPdf, show: false}
+            {file: eggPdf1, show: false, id:"1"},
+            {file: eggPdf2, show: false, id:"2"}
         ]
 
     }
 
-    showPdfToggle = () => {
-        const newShowPdf = !this.state.showPdf;
-        this.setState({showPdf: newShowPdf})
-    }
+    // showPdfToggle = () => {
+    //     const newShowPdf = !this.state.showPdf;
+    //     this.setState({showPdf: newShowPdf})
+    // }
 
     changeTitleDes = (inputs) => {
         this.setState({title: inputs[0], description: inputs[1]})
@@ -86,14 +87,89 @@ class ProjectPage extends Component {
         this.setState({filesEditable: !this.state.filesEditable})
     }
 
+    deleteImageByIndex = (index) => {
+        const newImages = [...this.state.images];
+        newImages.splice(index, 1);
+        this.setState({images: newImages});
+    }
+
+    deletePdfByIndex = (index) => {
+        const newPdfs = [...this.state.pdfs];
+        newPdfs.splice(index, 1);
+        this.setState({pdfs: newPdfs});
+    }
+
     editingImages = () => {
         return this.state.images.map((image, index) => {
             return <Aux>
-                        <img src={crossIcon} alt="delete" />
+                        <img src={crossIcon} alt="delete" onClick={() => this.deleteImageByIndex(index)}/>
                         <img src={image.original} alt={"image:"+image.id} />
                     </Aux>
         })
     }
+
+    getPdfIndexById = (id) => {
+        let i = 0
+        for (i = 0 ; i < this.state.pdfs.length ; i++){
+            if (this.state.pdfs[i].id === id){
+                return i;
+            }
+        }
+        return null;
+    }
+
+    getPdfIndexByActive = () => {
+        let i = 0
+        for (i = 0 ; i < this.state.pdfs.length ; i++){
+            if (this.state.pdfs[i].show === true){
+                return i;
+            }
+        }
+        return null;
+    }
+
+
+    // change the show pdf value, given the id of the pdf
+    showPdfToggle = (index) => {
+        const newPdfs = [...this.state.pdfs]
+
+        const newPdfItem = this.state.pdfs[index]
+        const oldShowPdf = newPdfItem.show;
+        newPdfItem.show = ! oldShowPdf;
+        newPdfs[index] = newPdfItem;
+
+        this.setState({pdfs: newPdfs})
+    }
+
+    showPdfs = () => {
+        return this.state.pdfs.map((pdf, index)=>{
+            return <Aux>
+                        <PdfPreview file={pdf.file} clicked={()=>this.showPdfToggle(index)} />
+                        {pdf.show? 
+                            <Aux>
+                                <BackDrop clicked={()=>this.showPdfToggle(index)} show={pdf.show}/>
+                                <PdfViewer file={pdf.file} />
+                            </Aux>
+                        :   null
+                        }
+                    </Aux>
+        })
+    }
+
+    doNothing = () => {
+
+    }
+
+    showPdfEditing = () => {
+        return this.state.pdfs.map((pdf,index) => {
+            return <Aux>
+                        <img src={crossIcon} alt="delete" onClick={() => this.deletePdfByIndex(index)}/>
+                        <PdfPreview file={pdf.file}  clicked={this.doNothing} />
+                    </Aux>
+        })
+    }
+
+    
 
 
 
@@ -112,18 +188,35 @@ class ProjectPage extends Component {
                         <button onClick={this.changeTitleDesEditable}>Change project title/description</button>
                     </Aux>
                     }
-                <button onClick={this.changeFileEditable}>Edit Files</button>
+
+                <button onClick={this.changeFileEditable}>{this.state.filesEditable? "Save" : "Edit Files"}</button>
+
+
                 {this.state.filesEditable? 
-                    this.editingImages()
-                :   <div className="ImageGallery">   
-                        <ImageGallery items={this.state.images} 
-                            showThumbnails={false}
-                            autoPlay={true}
+                    <Aux>
+                        {this.editingImages()}
+                        {this.showPdfEditing()}
+                        <FilesUpload
+                            itemBlock_id='5f81bdf6db99e33e48002c54'
+                            type='File'
+                            maxFiles = {10}
+                            accept = ''
+                            disabled={false}
                         />
-                    </div> 
+                        <p> img upload</p>
+                        <ImgUpload />
+                    </Aux>
+                :   <Aux>
+                        <div className="ImageGallery">   
+                            <ImageGallery items={this.state.images} 
+                                showThumbnails={false}
+                                autoPlay={true}/>
+                        </div> 
+                        {this.showPdfs()}
+                    </Aux>
                 }
             
-                <div className="test">
+                {/* <div className="test">
                     <PdfPreview file={eggPdf} clicked={this.showPdfToggle}/>
                 </div>
     
@@ -132,17 +225,8 @@ class ProjectPage extends Component {
                         <BackDrop clicked={this.showPdfToggle} show={this.state.showPdf}/>
                         <PdfViewer file={eggPdf} />
                     </Aux>
-                :   null}
+                :   null} */}
 
-                <FilesUpload
-                    itemBlock_id='5f81bdf6db99e33e48002c54'
-                    type='File'
-                    maxFiles = {10}
-                    accept = ''
-                    disabled={false}
-                />
-                    <p> img upload</p>
-                <ImgUpload />
             </div>
         )
     }

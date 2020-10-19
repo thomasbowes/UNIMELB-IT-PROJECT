@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import crossIcon from '../../../assets/LoginPage-icons/cross.svg';
+// import crossIcon from '../../../assets/LoginPage-icons/cross.svg';
 
 import './PdfPreview.css'
 
@@ -17,7 +17,6 @@ const PdfPreview = (props) => {
     return (
             <div className="PdfPreview" onClick={props.clicked}>
                 <a href="#preview">
-                    <img src={crossIcon} alt="delete" />
                     <Document className="Pdf"
                         file={props.file}
                         onLoadSuccess={onDocumentLoadSuccess}>
