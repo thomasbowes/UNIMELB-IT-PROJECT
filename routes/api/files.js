@@ -21,20 +21,20 @@ const authMiddleware = require('../../middleware/authorization');
  * @apiSuccessExample Successful Response:
  * HTTP/1.1 200 OK
  * {
- *     "status": "All files have been successfully deleted"
+ *     "message": "All files have been successfully deleted"
  * }
  *
- * @apiError RequiredDetailsMissing Required parameters not provided
+ * @apiError RequiredDetailsMissing Required parameters not provided or file to delete
  *
  * @apiErrorExample Error-Response:
  * HTTP/1.1 401 Unauthorized
  * {
- *     "status": "Missing  item id"
+ *     "message": "Error occur could not delete files, please try again"
  * }
  */
 router.use('/deleteAll', authMiddleware.authenticateJWT);
 router.route('/deleteAll')
-    .post();
+    .post(filesController.deleteAllFiles);
 
 //need change file_id
 /**
@@ -90,27 +90,33 @@ router.route('/delete')
  * HTTP/1.1 200 OK
  * {
  *     "status": "Item block has been successfully found",
- *     "itemblocks": [
- *	 	    {
- *	  	        "urlThumbnail": "Thumbnail",
- *	 	        "_id": "5f81bdf6db99e33e48002c54",
- * 	 	        "user_id": "5f7a7f7240e08a0017990a5e",
- *	 	        "type": "Project",
- *	 	        "title": "Test",
- *	 	        "description": "",
- * 	 	        "date": "2020-10-10T13:58:14.064Z",
- *	  	        "__v": 0
- *	 	    },
- *	 	    {
- *	 	        "urlThumbnail": "Thumbnail",
- *	 	        "_id": "5f81bdfedb99e33e48002c55",
- *	 	        "user_id": "5f7a7f7240e08a0017990a5e",
- *	 	        "type": "Education",
- *	 	        "title": "Test 2",
- *	 	        "description": "",
- *	 	        "date": "2020-10-10T13:58:22.794Z",
- *	 	        "__v": 0
- *	 	    }
+ *     "files": [
+ *          {
+ *              "_id": "5f8da29fe794779e98fa1032",
+ *              "user_id": "5f7962230b1b514af41ffa3a",
+ *              "itemBlock_id": "5f81bdf6db99e33e48002c54",
+ *              "title": "dummy.pdf",
+ *              "mimetype": "application/pdf",
+ *              "size": 13264,
+ *              "urlCloudinary": "https://res.cloudinary.com/dg3osx8ob/image/upload/v1603117727/project/dummy_b08tr5.pdf",
+ *              "resource_type": "image",
+ *              "public_id": "project/dummy_b08tr5",
+ *              "date": "2020-10-19T14:28:47.493Z",
+ *              "__v": 0
+ *           },
+ *           {
+ *              "_id": "5f8da29fe794779e98fa1033",
+ *              "user_id": "5f7962230b1b514af41ffa3a",
+ *              "itemBlock_id": "5f81bdf6db99e33e48002c54",
+ *              "title": "smaple file.txt",
+ *              "mimetype": "text/plain",
+ *              "size": 11,
+ *              "urlCloudinary": "https://res.cloudinary.com/dg3osx8ob/raw/upload/v1603117728/project/smaple_file_kogyx0.txt",
+ *              "resource_type": "raw",
+ *              "public_id": "project/smaple_file_kogyx0.txt",
+ *              "date": "2020-10-19T14:28:47.895Z",
+ *              "__v": 0
+ *            }
  *      ]
  * }
  *
@@ -122,7 +128,6 @@ router.route('/delete')
  *     "status": "Missing  item id"
  * }
  */
-router.use('/seeAll', authMiddleware.authenticateJWT);
 router.route('/seeAll')
     .post(filesController.seeAllFiles);
 
