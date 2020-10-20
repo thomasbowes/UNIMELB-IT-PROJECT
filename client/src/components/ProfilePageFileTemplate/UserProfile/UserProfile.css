@@ -10,11 +10,18 @@
     /* height: 15rem; */
     align-items: flex-start;
     overflow-y: hidden;
+    position: relative;
 }
 
 .User-info:hover {
     border: 1px solid rgba(0, 58, 88, 0.8);
     background: #fbfbfb;
+}
+
+.User-info__edit {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
 }
 
 .UserPicture{
@@ -27,10 +34,6 @@
     width: 15rem;
     height: 15rem;
 }
-
-/* .UserInfoHolder{
-    flex-wrap: wrap;
-} */
 
 .UserInfoHolder {
     margin-top: 1.5rem;

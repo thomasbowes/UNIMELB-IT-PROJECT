@@ -4,14 +4,14 @@ const dotenv = require('dotenv');
 // Point to the file storing environment variables, in order to use them in the nodejs app
 dotenv.config({ path: './.env' });
 
-const ItemBlock = require('mongoose').model('ItemBlock');
+const ItemBlock = mongoose.model('ItemBlock');
 
 // Middleware passed to make sure that required contents of create request is present
 const checkCreateBody = (req, res, next) => {
 	// check if required fields for creating itemblock are present
-	if (!req.body.user_id || !req.body.contents || !req.body.contents.type || !req.body.contents.title) {
+	if (!req.body.contents || !req.body.contents.type || !req.body.contents.title) {
 		return res.status(401).json({
-			status: "Missing either user id, type of item block, its title or the contents body"
+			status: "Missing either type of item block, its title or the contents body"
 		});
 	}
 
@@ -23,7 +23,7 @@ const createItem = (req, res, next) => {
 	// add user id attribute to content object (intention is to separate user id from contents
 	// initally; this for the sole purpose for my auth middleware to work (if further explanation
 	// is needed, contact me))
-	req.body.contents.user_id = req.body.user_id;
+	req.body.contents.user_id = req.user._id;
 
 	// attributes of new profile object must be stored in "req.body.contents" in order to
 	// save this new profile block in the database
@@ -48,9 +48,9 @@ const createItem = (req, res, next) => {
 // Middleware passed to make sure that required contents of update request is present
 const checkUpdateBody = (req, res, next) => {
 	// check if required fields for updating itemblock are present
-	if (!req.body.user_id || !req.body.item_id || !req.body.contents) {
+	if (!req.body.item_id || !req.body.contents) {
 		return res.status(401).json({
-			status: "Missing either user id, item id, or the body of change"
+			status: "Missing either item id or the body of change"
 		});
 	}
 
@@ -82,9 +82,9 @@ const updateItem = (req, res, next) => {
 // Middleware passed to make sure that required contents of delete request is present
 const checkDeleteBody = (req, res, next) => {
 	// check if required fields for deleting itemblock are present
-	if (!req.body.user_id || !req.body.item_id) {
+	if (!req.body.item_id) {
 		return res.status(401).json({
-			status: "Missing either user id or item id"
+			status: "Missing item id"
 		});
 	}
 
@@ -131,10 +131,17 @@ const seeItem = (req, res, next) => {
 	ItemBlock
 		.findOne(query)
 		.then(item => {
-			res.status(200).json({
-				status: "Item block has been successfully found",
-				itemblock: item
-			});
+			if (!item) {
+				res.status(200).json({
+					status: "Item block does not exist",
+					itemblock: {}
+				});
+			} else {
+				res.status(200).json({
+					status: "Item block has been successfully found",
+					itemblock: item
+				});
+			}
 		})
 		.catch(error => {
 			res.status(500).json({
@@ -164,10 +171,17 @@ const seeAllItems = (req, res, next) => {
 	ItemBlock
 		.find(query)
 		.then(items => {
-			res.status(200).json({
-				status: "Item blocks has been successfully found",
-				itemblocks: items
-			});
+			if (!items) {
+				res.status(200).json({
+					status: "User doesn't have any item blocks or user doesn't exist",
+					itemblocks: []
+				});
+			} else {
+				res.status(200).json({
+					status: "Item blocks has been successfully found",
+					itemblocks: items
+				});
+			}
 		})
 		.catch(error => {
 			res.status(500).json({
