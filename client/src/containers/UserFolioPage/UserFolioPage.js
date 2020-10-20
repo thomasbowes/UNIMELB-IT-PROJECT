@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './UserFolioPage.css'
 
+
 import ProfileBlockWithImage from '../../components/ProfilePageFileTemplate/ProjectBlockWithImage/ProfileBlockWithImage';
 import EducationHistory from '../../components/ProfilePageFileTemplate/EducationHistory/EducationHistory';
 
@@ -9,6 +10,11 @@ import google2 from '../../assets/ProfilePageDocuments/google2.jpg';
 
 import "react-image-gallery/styles/css/image-gallery.css";
 import UserProfile from '../../components/ProfilePageFileTemplate/UserProfile/UserProfile'
+
+//redux
+import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
+import axios from "axios";
 
 
 
@@ -26,7 +32,56 @@ class UserFolioPage extends Component {
             images: [google1, google1, google2],
             durations:["2022-2024", "2024-2027", "2027-2???"]
         },
+        itemBlocks: [],
+        profileBlocks: [],
         eduHis: [[school1, "2022-2024", text+text, google1], [school2, "2024-2027", text, google1],[school3, "2027-2???", text, google1]]
+    }
+
+    //get the data right after the user access his/her folio page
+    componentDidMount() {
+        let user_id;
+
+        //check if redux userAuthToken exit, if not check if userAuthToken is in local storage
+       if(this.props.userAuthToken){
+           user_id = this.props.userAuthToken._id;
+
+       }else{
+           const userAuthToken = JSON.parse(localStorage.getItem('userAuthToken'));
+           if(!userAuthToken){
+               this.setState({itemBlocks: []});
+               return;
+           }
+           else{
+               user_id = userAuthToken._id;
+           }
+       }
+
+       //set user id for query data
+        const data = {
+            user_id: user_id
+        }
+
+       //get itemBlocks
+        axios.post('/api/itemblocks/seeall', data)
+            .then(response => {
+                console.log(response.data);
+                this.setState({itemBlocks: response.data});
+            })
+            .catch(error => {
+                this.setState({itemBlocks: []});
+                console.log(error);
+            });
+
+       //get user profileBlock
+        axios.post('/api/profileblocks/see', data)
+            .then(response => {
+                console.log(response);
+                this.setState({profileBlocks: response.data});
+            })
+            .catch(error => {
+                this.setState({profileBlocks: []});
+                console.log(error);
+            });
     }
 
     eduHisCopy = () => {
@@ -69,7 +124,7 @@ class UserFolioPage extends Component {
           return (
             <div className="UserFolioPage">
 
-                <UserProfile />
+                <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' />
 
                 <h2>My eggucation history</h2>
 
@@ -91,5 +146,22 @@ class UserFolioPage extends Component {
     }
 }
 
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        LoginMessage: state.auth.message,
+        userAuthToken: state.auth.userAuthToken
+    };
+};
 
-export default UserFolioPage;
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (email, password) => dispatch( actionCreators.auth(email, password)),
+        onLogout: () => dispatch(actionCreators.authLogout())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserFolioPage);

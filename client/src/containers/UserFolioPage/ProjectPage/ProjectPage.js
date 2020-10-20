@@ -18,22 +18,28 @@ import eggImg2 from '../../../assets/ProfilePageDocuments/egg2.jpg'
 import eggImg3 from '../../../assets/ProfilePageDocuments/egg3.jpg'
 import eggImg4 from '../../../assets/ProfilePageDocuments/egg4.jpg'
 import eggImg5 from '../../../assets/ProfilePageDocuments/egg5.jpg'
+
+import axios from "axios";
+
 import EditForm from '../../../components/ProfilePageFileTemplate/EditForm/EditForm';
 
 const defaultTitle = "Default Title"
 const defaultDes = "Default Description: The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering.The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering."
 
 
+
 class ProjectPage extends Component {
     state = {
         showPdf: false,
-
+      
+        files: [],
+      
         titleDesEditable: false,
         filesEditable: false,
-
+      
         title: defaultTitle,
         description: defaultDes,
-        
+      
         images : [
             {
                 original: eggImg1,
@@ -66,8 +72,35 @@ class ProjectPage extends Component {
             {file: eggPdf1, show: false, id:"1"},
             {file: eggPdf2, show: false, id:"2"}
         ]
-
     }
+
+
+    componentDidMount() {
+        //const item_id = this.props.itemBlock_id;5f81bdf6db99e33e48002c54
+
+        const item_id = "5f81bdf6db99e33e48002c54";
+
+        if(!item_id) return;
+
+        //set item id for query data
+        const data = {
+            item_id: item_id
+        }
+
+        //get all files by given item_id
+        axios.post('/api/files/seeAll', data)
+            .then(response => {
+                console.log(response.data);
+                this.setState({files: response.data});
+                console.log(this.state.files);
+            })
+            .catch(error => {
+                this.setState({files: []});
+                console.log(error);
+            });
+    }
+
+       
 
     changeTitleDes = (inputs) => {
         this.setState({title: inputs[0], description: inputs[1]})
@@ -170,7 +203,7 @@ class ProjectPage extends Component {
     render(){
         return (
             <div className="ProjectPage">
-
+          
                 {this.state.titleDesEditable? 
                     <EditForm values={[this.state.title, this.state.description]} 
                         changeEditable = {this.changeTitleDesEditable} 
@@ -195,8 +228,10 @@ class ProjectPage extends Component {
                             itemBlock_id='5f81bdf6db99e33e48002c54'
                             type='File'
                             maxFiles = {10}
-                            accept = ''
-                            disabled={false}
+                            //accept="image/*,audio/*,video/*"
+                            accept = 'image/*,audio/*,video/*'
+                            //disabled={false}
+                            fileRejectMessage = 'Image, audio and video files only'
                         />
                         <p> img upload</p>
                         <ImgUpload />

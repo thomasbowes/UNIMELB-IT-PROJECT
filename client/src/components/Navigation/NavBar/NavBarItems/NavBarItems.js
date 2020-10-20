@@ -5,9 +5,40 @@ import Aux from '../../../../hoc/Auxiliary/Auxiliary';
 
 import { connect } from 'react-redux';
 import * as actionCreators from '../../../../store/actions/index';
-
+import axios from "axios";
 
 class NavBarItems extends Component {
+
+    state = {
+        searchString :'',
+    }
+
+    setStateHandler = (event) => {
+        event.preventDefault();
+        this.setState({searchString: event.target.value});
+    }
+
+
+    searchSubmitHandler = (event) =>{
+
+        if(event.key === 'Enter') {
+
+            //if no input return
+            if (this.state.searchString === '') return;
+
+            event.preventDefault();
+            const data = this.state.searchString;
+
+            axios.get('/api/users/search?' + "key=" + data)
+                .then(response => {
+                    console.log(response.data);
+                    this.props.history.push({pathname: '/search', searchResult: response.data});
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
 
     logInSignUpButtons = ( 
         <li className="main-nav__item main-nav__item--cta">
@@ -37,9 +68,10 @@ class NavBarItems extends Component {
 
         return (
             <ul className="NavBarItems">
+                <p>{this.state.searchString} </p>
 
                 <div className="search-bar">
-                    <input type="text" placeholder="Search..." onKeyPress={this.handleKeyPress}/>
+                    <input type="text" placeholder="Search..." onChange={this.setStateHandler} onKeyPress={this.searchSubmitHandler}/>
                 </div>
                 
                 <li className="main-nav__item">

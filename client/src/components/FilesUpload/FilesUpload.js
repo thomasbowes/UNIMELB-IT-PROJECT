@@ -83,9 +83,9 @@ class FilesUpload extends Component {
                     canCancel={false}
                     //accept="image/*,audio/*,video/*"
                     accept={this.props.accept}
-                    inputContent={(files, extra) => (extra.reject ? 'Image, audio and video files only' : 'Files upload: Drag or Click')}
+                    inputContent={(files, extra) => (extra.reject ? this.props.fileRejectMessage : 'Files upload: Drag or Click')}
                     disabled={files => files.some(f => ['preparing', 'getting_upload_params', 'uploading'].includes(f.meta.status))}
-                    disabled={this.props.disabled}
+                    //disabled={this.props.disabled}
                     inputWithFilesContent={files => `${this.props.maxFiles - files.length} more files allowed`}
                     styles={{
                         dropzoneReject: { borderColor: 'red', backgroundColor: '#DAA' },
