@@ -7,12 +7,25 @@
     width: 90%;
     max-width: 108rem;
     font-family: "kumbh sans", sans-serif;
+    position: relative;
 }
 
 .education-history:hover {
     border: 1px solid rgba(0, 58, 88, 0.8);
     background: #fbfbfb;
 } 
+
+.education-history__edit {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
+
+.education-history__cancel {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
 
 .education-history #heading {
     margin-left: 1rem;
@@ -67,4 +80,24 @@
 .overview__see-more a:hover {
     color: rgba(8, 103, 150, 1);
     text-decoration: underline;
+}
+
+.education-history__add-new {
+    text-align: center;
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 1rem;
+	font: inherit;
+	cursor: pointer;
+    outline: inherit;
+    width: 100%;
+}
+.education-history__add-new:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.education-history__add-new img {
+    vertical-align: middle;
+    margin-bottom: 0.25rem;
 }

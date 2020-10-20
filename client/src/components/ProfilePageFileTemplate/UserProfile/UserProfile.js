@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './UserProfile.css';
 
+import EditIcon from '../../../assets/EditIcons/edit.svg';
 import eggImage from '../../../assets/ProfilePageDocuments/egg.jpg'
 import EditForm from '../EditForm/EditForm';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
@@ -12,7 +13,7 @@ const highLevelDes = "An eggcellent student at Eggy Institute of Technology"
 class UserProfile extends Component{
 
     state = {
-        values: [name, des, highLevelDes],
+        values: [name, highLevelDes, des],
 
         editable: false,
 
@@ -54,7 +55,7 @@ class UserProfile extends Component{
                     </div>
 
                     {this.state.editable? 
-                        <EditForm values={this.state.values} fields={["Name", "High Level Description", "Description"]} changeValues={this.changeValues} changeEditable={this.changeEditable}/>
+                        <EditForm values={this.state.values} fields={["Name", "High Level Description", "Description"]} inputTypes={["input", "input", "large input"]} changeValues={this.changeValues} changeEditable={this.changeEditable}/>
                         :
                         <div className="UserInfoHolder">
                             <div className="UserInfo">
@@ -67,8 +68,9 @@ class UserProfile extends Component{
                                 <p>{this.state.values[2]}</p> 
                             </div>
                         </div>}
+                    
                     {this.state.editable? null
-                                        :<button onClick={this.changeEditable} >Edit my profile</button>}
+                                        :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeEditable} />}
                 </div>
             </Aux>
         );
