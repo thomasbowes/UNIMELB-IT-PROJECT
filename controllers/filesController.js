@@ -7,6 +7,7 @@ const File = require('../models/Files');
 //delete a file by given a file_id
 const deleteAFile = (req,res) => {
 
+    //fetch all require data
     const file_id = req.body.file_id;
     const user_id = req.user._id;
     const isAdmin = req.user.isAdmin;
@@ -15,8 +16,10 @@ const deleteAFile = (req,res) => {
         .findById(file_id)
         .then(items => {
 
+            //check if user is admin or id the user_id match
             if(items.user_id == user_id || isAdmin){
 
+                //delete the file from cloudinary
                 deleteFileCloudinary(items.public_id, items.resource_type);
                 File
                     .findByIdAndRemove(items._id)
@@ -43,6 +46,7 @@ const deleteAFile = (req,res) => {
 }
 
 //return all files given an item_id
+//no need to check for anything
 const seeAllFiles = (req,res) => {
 
     const item_id = req.body.item_id;
@@ -67,6 +71,8 @@ const seeAllFiles = (req,res) => {
 
 
 //delete a file by given a file_id
+//a function that return a promise and "in" is stand for internal function
+//design for connecting deleteitemblock route
 const deleteAllFilesIn = (req,res) => {
 
     const user_id = req.user._id;
@@ -84,6 +90,9 @@ const deleteAllFilesIn = (req,res) => {
             .find(query)
             .then(items => {
 
+                //we need that for deleting the file(s) from Cloudinary
+                //we could not delete the file form Cloudinary by just provide the public_id, resource_type is also required
+
                 //turn an array of dictionary of an attribute "public_id" into an array of public_id
                 const all_public_id = items.map(({public_id}) => public_id);
                 //turn an array of dictionary of an attribute "resource_type" into an array of resource_type
@@ -93,26 +102,10 @@ const deleteAllFilesIn = (req,res) => {
                     reject();
                 }
 
-
+                //delete all files form Cloudinary one by one
                 for (let i = 0; i < all_public_id.length; i++){
                     deleteFileCloudinary(all_public_id[i], all_resource_type[i]);
                 }
-
-                //turn an array of dictionary of an attribute "public_id into" an array of public_id when resource_type = 'image'
-                //const all_public_id_image = items.flatMap(({public_id, resource_type}) => resource_type === 'image' ? [] : public_id);
-                //turn an array of dictionary of an attribute "public_id into" an array of public_id when resource_type = 'raw'
-                //const all_public_id_raw = items.flatMap(({public_id, resource_type}) => resource_type === 'raw' ? [] : public_id);
-                //turn an array of dictionary of an attribute "public_id into" an array of public_id when resource_type = 'video'
-                //const all_public_id_video = items.flatMap(({public_id, resource_type}) => resource_type === 'video' ? [] : public_id);
-
-                //console.log(all_public_id_image);
-                //console.log(all_public_id_raw);
-                //console.log(all_public_id_video);
-
-                //perform delete form cloudinary
-                //deleteManyFilesCloudinary(all_public_id_image, 'image');
-                //deleteManyFilesCloudinary(all_public_id_raw, 'raw');
-                //deleteFileCloudinary(all_public_id_video, 'video');
 
                 //remove form DB
                 File.deleteMany(query)
@@ -129,6 +122,7 @@ const deleteAllFilesIn = (req,res) => {
     });
 }
 
+//delete many files at once
 const deleteAllFiles = (req,res) => {
 
     deleteAllFilesIn(req, res)
@@ -145,19 +139,10 @@ const deleteAllFiles = (req,res) => {
 }
 
 
-
+//delete file form Clodinary
 const deleteFileCloudinary = (public_id, resource_type) => {
 
     cloudinary.uploader.destroy(public_id, {resource_type: resource_type}, function(error,result)
-    {
-        console.log(result, error);
-    });
-}
-
-
-const deleteManyFilesCloudinary = (public_id, resource_type) => {
-
-    cloudinary.api.delete_resources(public_id, {resource_type: resource_type}, function(error,result)
     {
         console.log(result, error);
     });

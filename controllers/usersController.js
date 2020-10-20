@@ -231,6 +231,7 @@ const sendEmail =  function(userEmail, userId, userFirstname, UserLastname) {
         }
     });
 
+    //The HTML code for making confirmation email prettier
     let data = "<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional \/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\">\r\n" +
         "<html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:v=\"urn:schemas-microsoft-com:vml\">\r\n" +
         "<head>\r\n\r\n<meta content=\"text\/html; charset=utf-8\" http-equiv=\"Content-Type\">\r\n<meta content=\"width=device-width\" name=\"viewport\">" +
