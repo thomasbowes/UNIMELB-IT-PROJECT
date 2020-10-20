@@ -175,7 +175,8 @@ class ProjectPage extends Component {
                     <EditForm values={[this.state.title, this.state.description]} 
                         changeEditable = {this.changeTitleDesEditable} 
                         changeValues={this.changeTitleDes}
-                        fields={["Project Title", "Project Description"]}/>
+                        fields={["Project Title", "Project Description"]}
+                        inputTypes={["input", "large input"]}/>
                 :   <Aux>
                         <h1>{this.state.title}</h1>
                         <p>{this.state.description}</p>
