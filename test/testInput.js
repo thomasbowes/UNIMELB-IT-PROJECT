@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 // Inputs for Getting all existing users
 exports.userTests = [
     {
+        _id: mongoose.Types.ObjectId('1021b706175df1546e3acb09'),
         firstname: 'tester1',
         lastname: 'One',
         password: '$2a$10$BUUI/8btB/pVQHPSZpey7O4QMdyQYl//M1nWKO6hMDXWTtu3KNmoO',
@@ -53,6 +54,7 @@ exports.itemTests = [
 
 exports.profileTests = [
     {
+        _id: mongoose.Types.ObjectId('1021b706175df1546e3acb10'),
         user_id: mongoose.Types.ObjectId('1021b706175df1546e3acb09'),
         title: 'Test 1',
         aboutMe: 'Test Body' 
@@ -63,15 +65,6 @@ exports.profileTests = [
         aboutMe: 'Test Body 2' 
     }
 ]
-
-exports.correctProfileDetails = {
-    title: "Test 3",
-    aboutMe: "Test Body"
-};
-
-exports.missingProfileDetails = {
-    title: "Missing"
-};
 
 exports.rightUpdProfileDetails = {
     contents: {

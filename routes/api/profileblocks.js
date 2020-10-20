@@ -10,56 +10,6 @@ const pblockController = require('../../controllers/profileblocksController');
 const authMiddleware = require('../../middleware/authorization');
 
 /**
- * @api {post} /create Creates a profile block in our database
- * @apiName CreateProfileBlock
- * @apiGroup ProfileBlocks
- *
- * @apiParam {String} user_id User's id (to be associated with profile block), REQUIRED
- * @apiParam {Object} contents This object includes all attributes to be included when creating a profile
- *
- * @apiParamExample Example Body: 
- * {
- *     "user_id": "ajfiajijf892jfaiojio",
- *     "contents": {
- *	       "title": "About Me",
- *         "aboutMe": "My name is ...",
- *         "urlProfile": "http://cloudinarystuff"
- *     }
- * }
- *
- * @apiSuccess {String} status Profile block creation result
- * @apiSuccess {Object} profile The created profile block
- *
- * @apiSuccessExample Successful Response:
- * HTTP/1.1 201 OK
- * {
- *     "status": "Profile block has been successfully created",
- *     "profile": {
- *	        "urlProfile": "http://cloudinarystuff",
- *	        "_id": "5f826c26fa1ff03fc7998402",
- *	        "user_id": "ajfiajijf892jfaiojio",
- *	        "title": "About Me",
- *	        "aboutMe": "My name is ...",
- *	        "date": "2020-10-11T02:21:26.649Z",
- *	        "__v": 0
- *   	}
- * }
- *
- * @apiError RequiredDetailsMissing Required parameters not provided
- * 
- * @apiErrorExample Error-Response: 
- * HTTP/1.1 401 Unauthorized
- * {
- *     "status": "Missing user id"
- * }
- */
-router.use('/create', authMiddleware.authenticateJWT);
-router.use('/create', authMiddleware.authenticateUser);
-router.use('/create', pblockController.checkCreateBody);
-router.route('/create')
-	.post(pblockController.createProfile);
-
-/**
  * @api {post} /update Updates a profile block in our database
  * @apiName UpdateProfileBlock
  * @apiGroup ProfileBlocks
@@ -70,7 +20,6 @@ router.route('/create')
  *
  * @apiParamExample Example Body: 
  * {
- *     "user_id": "ajfiajijf892jfaiojio",
  *     "profile_id": "lkjalksfi98789348915987897",
  *     "contents": {
  *	       "title": "Test Update",
@@ -91,50 +40,14 @@ router.route('/create')
  * @apiErrorExample Error-Response: 
  * HTTP/1.1 401 Unauthorized
  * {
- *     "status": "Missing user id, profile id or profile attributes that needs to be changed"
+ *     "status": "Missing profile id or profile attributes that needs to be changed"
  * }
  */
 router.use('/update', authMiddleware.authenticateJWT);
-router.use('/update', authMiddleware.authenticateUser);
 router.use('/update', pblockController.checkUpdateBody);
+router.use('/update', authMiddleware.authenticateUser);
 router.route('/update')
 	.post(pblockController.updateProfile);
-
-/**
- * @api {post} /delete deletes a profile block from our database
- * @apiName DeleteProfileBlock
- * @apiGroup ProfileBlocks
- *
- * @apiParam {String} user_id User's id (associated with profile block), REQUIRED
- * @apiParam {String} profile_id ID of a profile block you're trying to delete, REQUIRED
- *
- * @apiParamExample Example Body: 
- * {
- *     "user_id": "ajfiajijf892jfaiojio",
- *     "profile_id": "lkjalksfi98789348915987897"
- * }
- *
- * @apiSuccess {String} status Profile block deletion result
- *
- * @apiSuccessExample Successful Response:
- * HTTP/1.1 200 OK
- * {
- *     "status": "Profile block has been successfully deleted"
- * }
- *
- * @apiError RequiredDetailsMissing Required parameters not provided
- * 
- * @apiErrorExample Error-Response: 
- * HTTP/1.1 401 Unauthorized
- * {
- *     "status": "Missing user id or profile id"
- * }
- */
-router.use('/delete', authMiddleware.authenticateJWT);
-router.use('/delete', authMiddleware.authenticateUser);
-router.use('/delete', pblockController.checkDeleteBody);
-router.route('/delete')
-	.post(pblockController.deleteProfile);
 
 /**
  * @api {post} /see searches for a profile block from our database

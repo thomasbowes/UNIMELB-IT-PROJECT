@@ -10,7 +10,8 @@ dotenv.config({ path: './.env' });
 // needed to generate and sign token 
 const jwt = require('jsonwebtoken');
 
-const User = require('mongoose').model('User');
+const User = mongoose.model('User');
+const ProfileBlock = mongoose.model('ProfileBlock');
 
 // Test which environment is the app running in for mailOptions and userEmailConfirmation
 const isDevelopment = function() {
@@ -210,9 +211,17 @@ const registerNewUser = function(req, res){
                        newUser.password = hash;
                        newUser.save()
                            .then(() => {
-                               res.status(201).json({
-                                   status: 'Thank you for registering - Please confirm your email address.'
+                               // autogenerate new profile block for new user
+                               const newProfile = new ProfileBlock({
+                                   user_id: newUser._id
                                });
+
+                               newProfile.save()
+                                   .then(() => {
+                                       res.status(201).json({
+                                           status: 'Thank you for registering - Please confirm your email address.'
+                                       });
+                                   });
                            });
                    });
                });
@@ -373,7 +382,7 @@ const refreshTokens = (req, res) => {
 
 // function dedicated to changing permissible user details (first, last name and password)
 const changeDetails = (req, res) => {
-  const userid = req.body.user_id;
+  const userid = req.user._id;
   const query = { _id: userid };  
 
   if (!req.body.contents) {
