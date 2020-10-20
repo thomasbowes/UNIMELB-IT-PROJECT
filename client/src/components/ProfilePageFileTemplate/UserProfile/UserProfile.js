@@ -69,7 +69,7 @@ class UserProfile extends Component{
                             </div>
                         </div>}
                     
-                    {(this.state.editable) || (!this.props.hasEditingRight) ? null
+                    {this.state.editable || (!this.props.hasEditingRight) ? null
                                         :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeEditable} />}
                 </div>
             </Aux>

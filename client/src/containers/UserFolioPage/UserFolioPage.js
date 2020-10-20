@@ -145,7 +145,9 @@ class UserFolioPage extends Component {
 
                         changeItemHandler = {this.changeHisItemHandler}
                         hisItemRemoveHandler = {this.hisItemRemoveHandler}
-                        hisAddNewItemHandler = {this.hisAddNewItemHandler}/>
+                        hisAddNewItemHandler = {this.hisAddNewItemHandler}
+                        
+                        hasEditingRight = {this.checkHasRightToEdit()}/>
 
                 <h2>My projeggcts</h2>
 
