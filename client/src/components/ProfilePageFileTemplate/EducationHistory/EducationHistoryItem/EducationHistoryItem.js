@@ -46,7 +46,7 @@ class EducationalHistoryItem extends Component {
         let overviewOffset = ["overview__title"]; //classes
 
         if (this.props.editable) {
-            overviewOffset.push("tab-off-set");
+            overviewOffset.push("education-history__tab-off-set");
         }
 
         return (

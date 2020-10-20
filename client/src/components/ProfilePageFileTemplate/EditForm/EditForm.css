@@ -9,7 +9,7 @@
     top: 0.5rem;
 }
 
-.Edit-Form__single-form-entry {
+.edit-form__single-form-entry {
     width: 95%;
     margin: 1rem 0;
    
@@ -35,30 +35,30 @@
     height: 2rem;
 }
 
-.Edit-Form__save-button {
+.edit-form__save-button {
     background-color: rgba(8, 103, 150, 0.8);
     color: white;
     border: none;
     padding: 0.5rem;
 }
 
-.Edit-Form__save-button:hover,
-.Edit-Form__save-button:active {
+.edit-form__save-button:hover,
+.edit-form__save-button:active {
     background-color: rgba(8, 103, 150, 1);
 
 
 }
 
 
-.Edit-Form__cancel-button {
+.edit-form__cancel-button {
     background-color: rgba(0, 0, 0, 0);
     color: rgba(0, 0, 0,  0.5);
     border: none;
     padding: 0rem;
 }
 
-.Edit-Form__cancel-button:hover,
-.Edit-Form__cancel-button:active {
+.edit-form__cancel-button:hover,
+.edit-form__cancel-button:active {
     color: rgba(0, 0, 0, 1);
 }
 
@@ -67,8 +67,8 @@
     margin-left: 0;
 }
 
-.input,
-.textarea {
+/* .input, add this back if css breaks */
+.single-form-entry__textarea {
   border: 1px solid #ccc;
   font-family: inherit;
   font-size: inherit;
@@ -76,7 +76,7 @@
   overflow-wrap: break-word;
 }
 
-.textarea {
+.single-form-entry__textarea {
     box-sizing: border-box;
     display: block;
     width: 100%;

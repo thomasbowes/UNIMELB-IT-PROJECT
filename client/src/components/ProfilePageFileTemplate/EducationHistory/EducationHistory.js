@@ -50,7 +50,7 @@ class EducationHistory extends Component {
                 <div className="education-history-items">
                     {allItemsArray}
                 </div>
-                {this.state.editable? <div className="education-history__add-new-container">
+                {this.state.editable? <div>
                             <hr style={{margin: "0"}}/>
                             <button className="education-history__add-new" onClick={this.addNewItemHander}><img src={AddIcon} alt="add-item"/> Add a new Item</button>
                         </div>:null}
