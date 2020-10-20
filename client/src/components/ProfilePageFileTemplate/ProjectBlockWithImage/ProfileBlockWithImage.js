@@ -22,7 +22,7 @@ class ProfileBlockWithImage extends Component {
                         {this.props.text}    
                     </div>
                     <div className="overview__see-more">
-                        <Link to="/userfolio/projects">See more</Link>
+                        <Link to={window.location.pathname + "/projects/2"}>See more</Link>
                     </div>
                 </div>
             </section>

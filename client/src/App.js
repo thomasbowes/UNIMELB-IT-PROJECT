@@ -68,7 +68,7 @@ class App extends Component {
           <Route path='/home/notification/welcome' exact component={RegisterNotificationPage} />
           <Route path='/about' component={AboutPage} />
           <Route path='/signup' exact component={LogInSignUpPage} />
-          <Route path='/userfolio/projects' component={ProjectPage} />
+          <Route path='/userfolio/:userId/projects/:projectId' exact component={ProjectPage} />
           <Route path='/userfolio/:userId' exact component={UserFolioPage} />
           <Route path='/search' component={SearchPage} />
           <Redirect from='/' exact to='/home' />
