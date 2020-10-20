@@ -11,8 +11,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "docs": "apidoc -i ./ -e node_modules -e ./docs -o ./docs",
     "test": "mocha",
-    "test-awesome": "mocha test --reporter mochawesome",
-    "open-report": "open mochawesome-report/mochawesome.html",
+    "test-awesome": "mocha test --reporter mochawesome --reporter-options html=false",
+    "generate-test-report":"marge --inline -f testReport ./mochawesome-report/mochawesome.json",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "O (n!)",
@@ -43,6 +43,7 @@
     "chai": "^4.2.0",
     "mocha": "^8.1.3",
     "mochawesome": "^6.1.1",
+    "mochawesome-report-generator": "^5.1.0",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
   }
