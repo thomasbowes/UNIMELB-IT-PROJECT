@@ -10,7 +10,7 @@ import axios from "axios";
 class NavBarItems extends Component {
 
     state = {
-        searchString :'',
+        searchString :''
     }
 
     setStateHandler = (event) => {
@@ -47,16 +47,17 @@ class NavBarItems extends Component {
 
     );
 
-    myProfileButton = (
+    myProfileButton = () => (
         <Aux>
             <li className="main-nav__item">
-                <NavLink to='/userfolio' exact onClick={this.props.click}>MyFolioPage</NavLink>
+                <NavLink to={'/userfolio/' + this.props.userAuthToken._id} exact onClick={this.props.click}>MyFolioPage</NavLink>
             </li>
             <li className="main-nav__item">
                 <NavLink to='/home' exact onClick={() => {this.props.click(); this.props.onLogout()}}>Logout</NavLink>
             </li>
         </Aux>
     );
+
 
     handleKeyPress = (event) => {
         if(event.key === 'Enter'){
@@ -78,7 +79,7 @@ class NavBarItems extends Component {
                     <NavLink to='/about' exact onClick={this.props.click}>About</NavLink>
                 </li>
 
-                {this.props.userAuthToken? this.myProfileButton: this.logInSignUpButtons}
+                {this.props.userAuthToken? this.myProfileButton(): this.logInSignUpButtons}
             </ul>
         );
     }
