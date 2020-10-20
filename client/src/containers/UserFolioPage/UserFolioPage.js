@@ -34,7 +34,7 @@ class UserFolioPage extends Component {
         },
         itemBlocks: [],
         profileBlocks: [],
-        eduHis: [[school1, "2022-2024", text+text, google1], [school2, "2024-2027", text, google1],[school3, "2027-2???", text, google1]]
+        eduHis: [[school1, "2022-2024", text+text, google1], [school2, "2024-2027", text, google1],[school3, "2027-2???", text, google1]],
     }
 
     //get the data right after the user access his/her folio page
@@ -120,11 +120,23 @@ class UserFolioPage extends Component {
 
     }
 
+    // return true if the visitor has the right to edit this userFolioPage
+    checkHasRightToEdit = () => {
+        const folioOwnerId = this.props.match.params.userId;
+        const visitorToken = this.props.userAuthToken;
+        // return true, if the visitor is the folioPage owner, or the visitor is an admin staff
+        if (visitorToken !== null && folioOwnerId !== null && (folioOwnerId===visitorToken._id || this.props.userAuthToken.isAdmin)){
+            return true;
+        }
+        return false;
+        // otherwise return false
+    }
+
     render() {
           return (
             <div className="UserFolioPage">
 
-                <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' />
+                <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' hasEditingRight={this.checkHasRightToEdit()}/>
 
                 <h2>My eggucation history</h2>
 

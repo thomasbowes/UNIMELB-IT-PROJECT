@@ -54,7 +54,7 @@ class UserProfile extends Component{
                         <img className="UserPicture"src={eggImage} alt='egg' />
                     </div>
 
-                    {this.state.editable? 
+                    {this.state.editable && this.props.hasEditingRight? 
                         <EditForm values={this.state.values} fields={["Name", "High Level Description", "Description"]} inputTypes={["input", "input", "large input"]} changeValues={this.changeValues} changeEditable={this.changeEditable}/>
                         :
                         <div className="UserInfoHolder">
@@ -69,7 +69,7 @@ class UserProfile extends Component{
                             </div>
                         </div>}
                     
-                    {this.state.editable? null
+                    {(this.state.editable) || (!this.props.hasEditingRight) ? null
                                         :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeEditable} />}
                 </div>
             </Aux>
