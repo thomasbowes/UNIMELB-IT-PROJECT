@@ -29,9 +29,9 @@ class ProjectPage extends Component {
     }
 
     componentDidMount() {
-        const item_id = this.props.itemBlock_id;
+        //const item_id = this.props.itemBlock_id;5f81bdf6db99e33e48002c54
 
-        console.log(item_id);
+        const item_id = "5f81bdf6db99e33e48002c54";
 
         if(!item_id) return;
 
@@ -45,14 +45,12 @@ class ProjectPage extends Component {
             .then(response => {
                 console.log(response.data);
                 this.setState({files: response.data});
+                console.log(this.state.files);
             })
             .catch(error => {
                 this.setState({files: []});
                 console.log(error);
             });
-
-
-        console.log(this.state.files);
     }
 
     render(){
