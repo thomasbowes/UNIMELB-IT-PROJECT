@@ -435,58 +435,127 @@ const changeDetails = (req, res) => {
     })
 };
 
-// Search for users in db based on user input
-const searchUsers = (req, res) => {
 
-  // The user has input something
-  if (req.query.key) {
-    let rexp;
-    let queryPromise;
-    const cleanedStr = req.query.key.trim();
+/* Find the urlProfile in ProfileBlock, and include it with the result of searchUser
+  Input: Array of users (i.e. result of searchUser)
+  Output: A single promise that will resolve to an array of resolved value of individual promises
+          (i.e. array of user object with the urlProfile inserted)
+*/
+const searchUrlProfile = docUsers => {
+
+  const docPromises = docUsers.map(oneUser => {
     
-    // Input is an email address
-    if( validator.isEmail(cleanedStr)){
-      rexp = new RegExp(cleanedStr, 'i');
-      queryPromise = User.find( {email: rexp} ).exec();
-    } 
-    // Else, assume input is a name.
-    else {
-  
-      // A full name has been entered
-      if (cleanedStr.indexOf(' ') !== -1) {
-        const names = cleanedStr.split(' ');
-        queryPromise = User.find( { 
-          firstname: new RegExp(names[0], 'i') ,
-          lastname: new RegExp(names[1], 'i') } )
-          .exec();
-      } 
-      // Either firstname or lastname has been entered
-      else {
-        rexp = new RegExp(cleanedStr, 'i');
-        queryPromise = User.find( { $or: [{ firstname: rexp }, { lastname: rexp }] }).exec();
+    let userWithUrl = oneUser.toObject();
+    profileBlockPromise = ProfileBlock.find( {user_id: oneUser._id}, 'urlProfile' ).exec();
+    return profileBlockPromise.then(doc => {
+      
+      // Matching ProfileBlock has been found, insert urlProfile in user
+      if(doc.length === 1) {
+        userWithUrl["urlProfile"] = doc[0].urlProfile; 
+      }
+      // No match has been found. Mark the url as empty
+      else if(doc.length === 0){
+        userWithUrl["urlProfile"] = "";
+      }
+      // Something went wrong. There should be only one match. 
+      else if(doc.length > 1){
+        console.log("More than one profile block has been found, something went wrong");
+        userWithUrl["urlProfile"] = "";
       }
 
+      return userWithUrl;
+    })
+    .catch(err => {
+      console.log("Something went wrong in searchUrlProfile: " + err);
+    });
+
+  });
+
+  return Promise.all(docPromises);
+}
+
+
+// Find all matching users in the database, returning a promise to be handled later
+const searchUsers = searchStr => {
+
+  let rexp;
+  let queryPromise;
+  const cleanedStr = searchStr.trim();
+  
+  // Input is an email address
+  if( validator.isEmail(cleanedStr)){
+    rexp = new RegExp(cleanedStr, 'i');
+    queryPromise = User.find( {email: rexp}, 'firstname lastname email isAdmin' )
+                      .exec();
+  } 
+  // Else, assume input is a name.
+  else {
+
+    // A full name has been entered
+    if (cleanedStr.indexOf(' ') !== -1) {
+      const names = cleanedStr.split(' ');
+      queryPromise = User.find( { 
+        firstname: new RegExp(names[0], 'i') ,
+        lastname: new RegExp(names[1], 'i') } , 
+        'firstname lastname email isAdmin')
+        .exec();
+    } 
+    // Either firstname or lastname has been entered
+    else {
+      rexp = new RegExp(cleanedStr, 'i');
+      queryPromise = User.find( { $or: [{ firstname: rexp }, { lastname: rexp }] }, 
+                                  'firstname lastname email isAdmin'
+                              ).exec();
     }
 
-    queryPromise.then( doc => {
-      if (doc.length > 0) {
-        res.status(200).json({
-          message: "Matches have been found",
-          data: doc
-        });
-      } else {
-        res.status(404).json({message: 'No matching result'})
-      }
-    })
-    .catch(err => {res.status(500).json({message: 'Something went wrong in searchUser'})});
   }
 
-  // The user just hit the search button without input
+  return queryPromise;
+}
+
+
+// Return the search-user results that is ready to be used by frontend
+const returnSearchUserResults = (req, res) => {
+
+  // The user has input something
+  if (req.query.key){
+    searchUsers(req.query.key)
+    .then(doc => {
+      
+      // No match has been found
+      if(doc.length === 0){
+        res.status(200).json({message: 'No matching result'});
+      }
+      // Matches have been found
+      else if (doc.length > 0){
+        return searchUrlProfile(doc)
+              .then( docWithUrlProfile => {
+                    res.status(200).json({
+                      message: "Matches have been found",
+                      data: docWithUrlProfile
+                    })
+              })
+              .catch(err => {
+                res.status(500).json({
+                  message: 'Something went wrong in returnSearchUserResults'
+                })
+              });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Something went wrong in returnSearchUserResults'
+      });
+    });
+  }
+
+  // The user has input nothing
   else {
     res.status(400).json({
       message: "Please input something to search for"
     });
   }
+
 }
 
 module.exports = { signToken, signRefreshToken };
@@ -498,4 +567,4 @@ module.exports.testUser = testUser;
 module.exports.checkBody = checkBody;
 module.exports.refreshTokens = refreshTokens;
 module.exports.changeDetails = changeDetails;
-module.exports.searchUsers = searchUsers;
+module.exports.returnSearchUserResults = returnSearchUserResults;
