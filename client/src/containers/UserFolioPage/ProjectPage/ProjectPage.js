@@ -11,6 +11,11 @@ import FilesUpload from '../../../components/FilesUpload/FilesUpload';
 import ImgUpload from '../../../components/FilesUpload/ImgUpload';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
 
+//redux
+import { connect } from 'react-redux';
+import * as actionCreators from '../../../store/actions/index';
+import axios from "axios";
+
 import crossIcon from '../../../assets/LoginPage-icons/cross.svg';
 
 import eggImg1 from '../../../assets/ProfilePageDocuments/egg1.jpg'
@@ -18,8 +23,6 @@ import eggImg2 from '../../../assets/ProfilePageDocuments/egg2.jpg'
 import eggImg3 from '../../../assets/ProfilePageDocuments/egg3.jpg'
 import eggImg4 from '../../../assets/ProfilePageDocuments/egg4.jpg'
 import eggImg5 from '../../../assets/ProfilePageDocuments/egg5.jpg'
-
-import axios from "axios";
 
 import EditForm from '../../../components/ProfilePageFileTemplate/EditForm/EditForm';
 
@@ -196,6 +199,29 @@ class ProjectPage extends Component {
         })
     }
 
+    // return true if the visitor has the right to edit this userFolioPage
+    checkHasRightToEdit = () => {
+        const folioOwnerId = this.props.match.params.userId;
+        const visitorToken = this.props.userAuthToken;
+        // return true, if the visitor is the folioPage owner, or the visitor is an admin staff
+        if (visitorToken !== null && folioOwnerId !== null && (folioOwnerId===visitorToken._id || this.props.userAuthToken.isAdmin)){
+            return true;
+        }
+        return false;
+        // otherwise return false
+    }
+
+    // return the edit buttons, based on whether the file and profile is editable
+    editButtons = () => {
+        if (this.state.titleDesEditable){
+            return <button onClick={this.changeFileEditable}>{this.state.filesEditable? "Save" : "Edit Files"}</button>
+        }
+        return <Aux>
+                    <button onClick={this.changeTitleDesEditable}>Change project title/description</button>
+                    <button onClick={this.changeFileEditable}>{this.state.filesEditable? "Save" : "Edit Files"}</button>
+                </Aux>
+    }
+
     
 
 
@@ -204,7 +230,7 @@ class ProjectPage extends Component {
         return (
             <div className="ProjectPage">
           
-                {this.state.titleDesEditable? 
+                {this.state.titleDesEditable && this.checkHasRightToEdit()? 
                     <EditForm values={[this.state.title, this.state.description]} 
                         changeEditable = {this.changeTitleDesEditable} 
                         changeValues={this.changeTitleDes}
@@ -213,11 +239,13 @@ class ProjectPage extends Component {
                 :   <Aux>
                         <h1>{this.state.title}</h1>
                         <p>{this.state.description}</p>
-                        <button onClick={this.changeTitleDesEditable}>Change project title/description</button>
                     </Aux>
-                    }
+                }
 
-                <button onClick={this.changeFileEditable}>{this.state.filesEditable? "Save" : "Edit Files"}</button>
+                {this.checkHasRightToEdit()?
+                    this.editButtons()
+                :   null
+                }
 
 
                 {this.state.filesEditable? 
@@ -252,4 +280,22 @@ class ProjectPage extends Component {
     }
 }
 
-export default ProjectPage;
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        LoginMessage: state.auth.message,
+        userAuthToken: state.auth.userAuthToken
+    };
+};
+
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (email, password) => dispatch( actionCreators.auth(email, password)),
+        onLogout: () => dispatch(actionCreators.authLogout())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage);
