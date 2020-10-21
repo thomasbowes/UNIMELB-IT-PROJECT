@@ -4,6 +4,7 @@ import './UserFolioPage.css'
 
 import ProfileBlockWithImage from '../../components/ProfilePageFileTemplate/ProjectBlockWithImage/ProfileBlockWithImage';
 import EducationHistory from '../../components/ProfilePageFileTemplate/EducationHistory/EducationHistory';
+import JobHistory from '../../components/ProfilePageFileTemplate/JobHistory/JobHistory';
 
 import google1 from '../../assets/ProfilePageDocuments/google.png';
 import google2 from '../../assets/ProfilePageDocuments/google2.jpg';
@@ -32,6 +33,7 @@ class UserFolioPage extends Component {
         profileBlocks: [],
         profileValues: [name, highLevelDes, des],
         eduHis: [[school1, "2022-2024", text+text, google1], [school2, "2024-2027", text, google1],[school3, "2027-2???", text, google1]],
+        jobHis: [["job1", "2022-2024", text+text, google1], ["Job2", "2024-2027", text, google1],["job3", "2027-2???", text, google1]]
     }
 
     //get the data right after the user access his/her folio page
@@ -79,7 +81,9 @@ class UserFolioPage extends Component {
                 this.setState({profileBlocks: []});
                 console.log(error);
             });
+
     }
+
 
     eduHisCopy = () => {
         const newItem = []
@@ -90,24 +94,21 @@ class UserFolioPage extends Component {
         return newItem;
     }
 
-    changeHisItemHandler = (id, input) => {
+    eduChangeHisItemHandler = (id, input) => {
         const newItem = this.eduHisCopy();
         newItem[id] = input
         newItem[id].push(google1)
-
         this.setState({eduHis: newItem})
 
     }
 
-    hisItemRemoveHandler = (hisItemIndex) => {
-        const newItem = this.eduHisCopy();
-        
+    eduItemRemoveHandler = (hisItemIndex) => {
+        const newItem = this.eduHisCopy();       
         newItem.splice(hisItemIndex, 1);
-
         this.setState({eduHis: newItem});
     }
 
-    hisAddNewItemHandler = () => {
+    eduAddNewItemHandler = () => {
 
         const newItem = this.eduHisCopy();
 
@@ -117,6 +118,42 @@ class UserFolioPage extends Component {
 
     }
 
+    jobHisCopy = () => {
+        const newItem = []
+        let i = 0
+        for (i=0; i<this.state.jobHis.length; i++){
+            newItem.push([...this.state.jobHis[i]])
+        }
+        return newItem;
+    }
+
+    jobChangeHisItemHandler = (id, input) => {
+        const newItem = this.jobHisCopy();
+        newItem[id] = input
+        newItem[id].push(google1)
+        this.setState({jobHis: newItem})
+
+    }
+
+    jobItemRemoveHandler = (hisItemIndex) => {
+        const newItem = this.jobHisCopy();       
+        newItem.splice(hisItemIndex, 1);
+        this.setState({jobHis: newItem});
+    }
+
+    jobAddNewItemHandler = () => {
+
+        const newItem = this.jobHisCopy();
+
+        newItem.push(["Default School", "Default Durations", "Default Description", google1])
+
+        this.setState({jobHis: newItem})
+
+    }
+
+
+
+    
     // return true if the visitor has the right to edit this userFolioPage
     checkHasRightToEdit = () => {
         const folioOwnerId = this.props.match.params.userId;
@@ -140,18 +177,24 @@ class UserFolioPage extends Component {
                 <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' hasEditingRight={this.checkHasRightToEdit()}
                     changeProfileValues={this.changeProfileValues} values={this.state.profileValues}/>
 
-                <h2>My eggucation history</h2>
 
                 <EducationHistory
                         contents = {this.state.eduHis}
+                        changeItemHandler = {this.eduChangeHisItemHandler}
+                        hisItemRemoveHandler = {this.eduItemRemoveHandler}
+                        hisAddNewItemHandler = {this.eduAddNewItemHandler}
+                        hasEditingRight = {this.checkHasRightToEdit()}/>
+       
+                <JobHistory
+                                        
+                        contents = {this.state.jobHis}
 
-                        changeItemHandler = {this.changeHisItemHandler}
-                        hisItemRemoveHandler = {this.hisItemRemoveHandler}
-                        hisAddNewItemHandler = {this.hisAddNewItemHandler}
-                        
+                        changeItemHandler = {this.jobChangeHisItemHandler}
+                        hisItemRemoveHandler = {this.jobItemRemoveHandler}
+                        hisAddNewItemHandler = {this.jobAddNewItemHandler}                
                         hasEditingRight = {this.checkHasRightToEdit()}/>
 
-                <h2>My projeggcts</h2>
+
 
                 <ProfileBlockWithImage image={google2} text={text+text+text} title="Founded Eooggle" />
                 <ProfileBlockWithImage image={google1} text={text} title="Founded Eggipedia" />
