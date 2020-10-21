@@ -182,7 +182,8 @@ class UserFolioPage extends Component {
                         contents = {this.state.eduHis}
                         changeItemHandler = {this.eduChangeHisItemHandler}
                         hisItemRemoveHandler = {this.eduItemRemoveHandler}
-                        hisAddNewItemHandler = {this.eduAddNewItemHandler}/>
+                        hisAddNewItemHandler = {this.eduAddNewItemHandler}
+                        hasEditingRight = {this.checkHasRightToEdit()}/>
        
                 <JobHistory
                                         
@@ -190,7 +191,7 @@ class UserFolioPage extends Component {
 
                         changeItemHandler = {this.jobChangeHisItemHandler}
                         hisItemRemoveHandler = {this.jobItemRemoveHandler}
-                        hisAddNewItemHandler = {this.jobAddNewItemHandler}/>                
+                        hisAddNewItemHandler = {this.jobAddNewItemHandler}                
                         hasEditingRight = {this.checkHasRightToEdit()}/>
 
 
