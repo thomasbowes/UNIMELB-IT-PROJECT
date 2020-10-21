@@ -6,6 +6,9 @@ import EditIcon from '../../../assets/EditIcons/edit.svg';
 import AddIcon from '../../../assets/EditIcons/add.svg';
 import CancelIcon from '../../../assets/EditIcons/cancel.svg';
 
+import {connect} from "react-redux";
+import axios from "axios";
+
 class EducationHistory extends Component {
 
     state = {editable: false}
@@ -25,6 +28,39 @@ class EducationHistory extends Component {
 
     addNewItemHander = () => {
         this.props.hisAddNewItemHandler();
+
+
+
+
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            contents: {
+                type: 'Default',
+                title: 'default'
+            }
+        }
+
+
+        axios.post('/api/itemblocks/create',data, headers)
+            .then((res)=>{
+                console.log(res.data);
+                }
+            )
+            .catch((err)=>{
+                console.log(err)
+        })
+
+
     }
 
     // if the content is being edited, return the cross button. Otherwise return the pencil button
@@ -70,4 +106,18 @@ class EducationHistory extends Component {
     }
 }
 
-export default EducationHistory; 
+
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+        userAuthToken: state.auth.userAuthToken
+    };
+};
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EducationHistory);
