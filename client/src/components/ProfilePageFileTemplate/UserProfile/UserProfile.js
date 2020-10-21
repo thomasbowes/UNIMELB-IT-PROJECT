@@ -6,15 +6,9 @@ import eggImage from '../../../assets/ProfilePageDocuments/egg.jpg'
 import EditForm from '../EditForm/EditForm';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
 
-const des = "A dedicated eggspert in the field of eggnomics, pushing egg-legislation to be beneficial for your average egg. With my extensive egg-u-cation i bring a dynamic off eggspertise to wherever i work."
-const name = "Mr. Eggy Egglington"
-const highLevelDes = "An eggcellent student at Eggy Institute of Technology"
-
 class UserProfile extends Component{
 
     state = {
-        values: [name, highLevelDes, des],
-
         editable: false,
 
         nameEditing: false,
@@ -23,25 +17,13 @@ class UserProfile extends Component{
         
     }
 
-    changeName = (newName) =>{
-        this.setState({name: newName, nameEditing: false})
-    }
-
-    changeHighLevelDes = (newName) =>{
-        this.setState({highLevelDes: newName, highLevelDesEditing: false})
-    }
-
-    changeDescription = (newName) =>{
-        this.setState({description: newName, descriptionEditing: false})
-    }
-
     changeEditable = () => {
         const oldEditable = this.state.editable
         this.setState({editable: !oldEditable, nameEditing: false, highLevelDesEditing: false, descriptionEditing: false})
     }
 
     changeValues = (inputs) => {
-        this.setState({values: inputs})
+        this.props.changeProfileValues(inputs);
     }
 
     
@@ -54,22 +36,26 @@ class UserProfile extends Component{
                         <img className="UserPicture"src={eggImage} alt='egg' />
                     </div>
 
-                    {this.state.editable? 
-                        <EditForm values={this.state.values} fields={["Name", "High Level Description", "Description"]} inputTypes={["input", "input", "large input"]} changeValues={this.changeValues} changeEditable={this.changeEditable}/>
+                    {this.state.editable && this.props.hasEditingRight? 
+                        <EditForm values={this.props.values} 
+                            fields={["Name", "High Level Description", "Description"]} 
+                            inputTypes={["input", "input", "large input"]} 
+                            changeValues={this.changeValues} 
+                            changeEditable={this.changeEditable}/>
                         :
                         <div className="UserInfoHolder">
                             <div className="UserInfo">
-                                <h1>{this.state.values[0]}</h1>
+                                <h1>{this.props.values[0]}</h1>
                             </div>
                             <div className="UserInfo">
-                                <h2>{this.state.values[1]}</h2> 
+                                <h2>{this.props.values[1]}</h2> 
                             </div>
                             <div className="Objective">
-                                <p>{this.state.values[2]}</p> 
+                                <p>{this.props.values[2]}</p> 
                             </div>
                         </div>}
                     
-                    {this.state.editable? null
+                    {this.state.editable || (!this.props.hasEditingRight) ? null
                                         :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeEditable} />}
                 </div>
             </Aux>

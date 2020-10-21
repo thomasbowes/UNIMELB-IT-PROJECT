@@ -14,12 +14,10 @@ const authMiddleware = require('../../middleware/authorization');
  * @apiName CreateItemBlock
  * @apiGroup ItemBlocks
  *
- * @apiParam {String} user_id User's id (to be associated with item block), REQUIRED
  * @apiParam {Object} contents Object that includes attributes that are added when creating profile block, REQUIRED
  *
  * @apiParamExample Example Body: 
  * {
- *     "user_id": "ajfiajijf892jfaiojio",
  *     "contents": {
  *         "type": "Project",
  *         "title": "Test"
@@ -50,11 +48,10 @@ const authMiddleware = require('../../middleware/authorization');
  * @apiErrorExample Error-Response: 
  * HTTP/1.1 401 Unauthorized
  * {
- *     "status": "Missing either user id, type of item block, or its title"
+ *     "status": "Missing either type of item block, its title or the contents body"
  * }
  */
 router.use('/create', authMiddleware.authenticateJWT);
-router.use('/create', authMiddleware.authenticateUser);
 router.use('/create', iblockController.checkCreateBody);
 router.route('/create')
 	.post(iblockController.createItem);
@@ -64,13 +61,11 @@ router.route('/create')
  * @apiName UpdateItemBlock
  * @apiGroup ItemBlocks
  *
- * @apiParam {String} user_id User's id (to be associated with item block), REQUIRED
  * @apiParam {String} item_id ID of an item block you're trying to update, REQUIRED
  * @apiParam {Object} contents Object that includes attributes of an item block you're trying to change, REQUIRED
  *
  * @apiParamExample Example Body: 
  * {
- *     "user_id": "ajfiajijf892jfaiojio",
  *     "item_id": "lkjalksfi98789348915987897",
  *     "contents": {
  *	       "title": "Test Update",
@@ -91,12 +86,12 @@ router.route('/create')
  * @apiErrorExample Error-Response: 
  * HTTP/1.1 401 Unauthorized
  * {
- *     "status": "Missing either user id, item id, or the body of change"
+ *     "status": "Missing either item id or the body of change"
  * }
  */
 router.use('/update', authMiddleware.authenticateJWT);
-router.use('/update', authMiddleware.authenticateUser);
 router.use('/update', iblockController.checkUpdateBody);
+router.use('/update', authMiddleware.authenticateUser);
 router.route('/update')
 	.post(iblockController.updateItem);
 
@@ -105,12 +100,10 @@ router.route('/update')
  * @apiName DeleteItemBlock
  * @apiGroup ItemBlocks
  *
- * @apiParam {String} user_id User's id (associated with item block), REQUIRED
  * @apiParam {String} item_id ID of an item block you're trying to delete, REQUIRED
  *
  * @apiParamExample Example Body: 
  * {
- *     "user_id": "ajfiajijf892jfaiojio",
  *     "item_id": "lkjalksfi98789348915987897"
  * }
  *
@@ -127,12 +120,12 @@ router.route('/update')
  * @apiErrorExample Error-Response: 
  * HTTP/1.1 401 Unauthorized
  * {
- *     "status": "Missing either user id or item id"
+ *     "status": "Missing item id"
  * }
  */
 router.use('/delete', authMiddleware.authenticateJWT);
-router.use('/delete', authMiddleware.authenticateUser);
 router.use('/delete', iblockController.checkDeleteBody);
+router.use('/delete', authMiddleware.authAdminUser);
 router.route('/delete')
 	.post(iblockController.deleteItem);
 
@@ -230,7 +223,6 @@ router.route('/see')
  *     "status": "Missing user id"
  * }
  */
-router.use('/seeall', iblockController.checkSeeAllBody);
 router.route('/seeall')
 	.post(iblockController.seeAllItems);
 

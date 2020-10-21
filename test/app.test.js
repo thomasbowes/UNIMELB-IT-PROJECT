@@ -25,7 +25,7 @@ describe('App test', () => {
 	let refresh_token;
 	let user_id;
 	let item_id;
-	let profile_id;
+	let profile_id = '1021b706175df1546e3acb10';
 
 	// setting things up before testing (inputting test examples)
 	before(async function () {
@@ -147,7 +147,6 @@ describe('App test', () => {
 	describe("Testing /api/itemblocks/create route", () => {
 		it("Create item block with correct details", function(done) {
 			const correctItemDetails = testInput.correctItemDetails;
-			correctItemDetails.user_id = user_id;
 
 			request(app)
 				.post('/api/itemblocks/create')
@@ -163,7 +162,6 @@ describe('App test', () => {
 
 		it("Create item block with incorrect details", function(done) {
 			const incorrectItemDetails = testInput.incorrectItemDetails;
-			incorrectItemDetails.user_id = user_id;
 
 			request(app)
 				.post('/api/itemblocks/create')
@@ -175,7 +173,6 @@ describe('App test', () => {
 
 		it("Create item block with missing details", function(done) {
 			const missingItemDetails = testInput.missingItemDetails;
-			missingItemDetails.user_id = user_id;
 
 			request(app)
 				.post('/api/itemblocks/create')
@@ -183,7 +180,7 @@ describe('App test', () => {
 				.send(missingItemDetails)
 				.expect('Content-Type', /json/)
 				.expect({
-					status: "Missing either user id, type of item block, its title or the contents body"
+					status: "Missing either type of item block, its title or the contents body"
 				})
 				.expect(401, done);
 		});
@@ -192,7 +189,6 @@ describe('App test', () => {
 	describe("Testing /api/itemblocks/update route", () => {
 		it("Update item block with correct details", function(done) {
 			const rightUpdItemDetails = testInput.rightUpdItemDetails;
-			rightUpdItemDetails.user_id = user_id;
 			rightUpdItemDetails.item_id = item_id;
 
 			request(app)
@@ -208,7 +204,6 @@ describe('App test', () => {
 
 		it("Update item block with incorrect details", function(done) {
 			const wrongUpdItemDetails = testInput.wrongUpdItemDetails;
-			wrongUpdItemDetails.user_id = user_id;
 			wrongUpdItemDetails.item_id = item_id;
 
 			request(app)
@@ -221,9 +216,8 @@ describe('App test', () => {
 		});
 
 		it("Update item block with missing details", function(done) {
+			// contents body is missing from below object
 			const missUpdItemDetails = {};
-			// forgot item_id and contents 
-			missUpdItemDetails.user_id = user_id;
 
 			request(app)
 				.post('/api/itemblocks/update')
@@ -231,7 +225,7 @@ describe('App test', () => {
 				.send(missUpdItemDetails)
 				.expect('Content-Type', /json/)
 				.expect({
-					status: "Missing either user id, item id, or the body of change"
+					status: "Missing either item id or the body of change"
 				})
 				.expect(401, done);
 		});		
@@ -239,9 +233,8 @@ describe('App test', () => {
 
 	describe("Testing /api/itemblocks/delete route", () => {
 		it("Delete item block with missing details", function(done) {
-			const missingDeleteItemDetails = {};
 			// forgot item_id
-			missingDeleteItemDetails.user_id = user_id;
+			const missingDeleteItemDetails = {};
 
 			request(app)
 				.post('/api/itemblocks/delete')
@@ -249,7 +242,7 @@ describe('App test', () => {
 				.send(missingDeleteItemDetails)
 				.expect('Content-Type', /json/)
 				.expect({
-					status: "Missing either user id or item id"
+					status: "Missing item id"
 				})
 				.expect(401, done);
 		});
@@ -257,20 +250,21 @@ describe('App test', () => {
 		it("Delete item block with incorrect details", function(done) {
 			const incorrectDeleteItemDetails = {};
 			incorrectDeleteItemDetails.item_id = mongoose.Types.ObjectId('1121b706175df1546e3acb09');
-			incorrectDeleteItemDetails.user_id = user_id;
 
 			request(app)
 				.post('/api/itemblocks/delete')
 				.set("Authorization", "Bearer " + access_token)
 				.send(incorrectDeleteItemDetails)
 				.expect('Content-Type', /json/)
+				.expect({
+					message: "No such id exists in the database"
+				})
 				// even though item block doesn't exist, database operation still returns something
-				.expect(200, done);
+				.expect(401, done);
 		});
 
 		it("Delete item block with correct details", function(done) {
 			const correctDeleteItemDetails = {};
-			correctDeleteItemDetails.user_id = user_id;
 			correctDeleteItemDetails.item_id = item_id;
 
 			request(app)
@@ -285,43 +279,9 @@ describe('App test', () => {
 		});
 	});
 
-	describe("Testing /api/profileblocks/create route", () => {
-		it("Create profile block with correct details", function(done) {
-			const correctProfileDetails = testInput.correctProfileDetails;
-			correctProfileDetails.user_id = user_id;
-
-			request(app)
-				.post('/api/profileblocks/create')
-				.set("Authorization", "Bearer " + access_token)
-				.send(correctProfileDetails)
-				.expect('Content-Type', /json/)
-				.expect(201)
-				.end((err, res) => {
-					profile_id = res.body.profile._id;
-					done();
-				});	
-		});
-
-		it("Create profile block with missing details", function(done) {
-			// no user id is provided
-			const missingProfileDetails = testInput.missingProfileDetails;
-
-			request(app)
-				.post('/api/profileblocks/create')
-				.set("Authorization", "Bearer " + access_token)
-				.send(missingProfileDetails)
-				.expect('Content-Type', /json/)
-				.expect({
-					message: "Request is invalid for current user"
-				})
-				.expect(401, done);
-		});
-	});
-
 	describe("Testing /api/profileblocks/update route", () => {
 		it("Update profile block with correct details", function(done) {
 			const rightUpdProfileDetails = testInput.rightUpdProfileDetails;
-			rightUpdProfileDetails.user_id = user_id;
 			rightUpdProfileDetails.profile_id = profile_id;
 
 			request(app)
@@ -337,7 +297,6 @@ describe('App test', () => {
 
 		it("Update profile block with incorrect details", function(done) {
 			const wrongUpdProfileDetails = testInput.wrongUpdProfileDetails;
-			wrongUpdProfileDetails.user_id = user_id;
 			// profile block doesn't exist in test database
 			wrongUpdProfileDetails.profile_id = mongoose.Types.ObjectId('f3d6c9d62d60d057f0644009');
 
@@ -347,15 +306,14 @@ describe('App test', () => {
 				.send(wrongUpdProfileDetails)
 				.expect('Content-Type', /json/)
 				.expect({
-					status: "Profile block does not exist in our database"
+					message: "No such id exists in the database"
 				})
-				.expect(200, done);
+				.expect(401, done);
 		});
 
 		it("Update profile block with missing details", function(done) {
 			const missUpdProfileDetails = {};
-			// forgot profile_id and contents body 
-			missUpdProfileDetails.user_id = user_id;
+			// forgot contents body 
 
 			request(app)
 				.post('/api/profileblocks/update')
@@ -363,66 +321,15 @@ describe('App test', () => {
 				.send(missUpdProfileDetails)
 				.expect('Content-Type', /json/)
 				.expect({
-					status: "Missing user id, profile id or profile attributes that needs to be changed"
+					status: "Missing profile id or profile attributes that needs to be changed"
 				})
 				.expect(401, done);
 		});	
 	});
 
-	describe("Testing /api/profileblocks/delete route", () => {
-		it("Delete profile block with missing details", function(done) {
-			const missingDeleteProfileDetails = {};
-			// forgot profile_id
-			missingDeleteProfileDetails.user_id = user_id;
-
-			request(app)
-				.post('/api/profileblocks/delete')
-				.set("Authorization", "Bearer " + access_token)
-				.send(missingDeleteProfileDetails)
-				.expect('Content-Type', /json/)
-				.expect({
-					status: "Missing user id or profile id"
-				})
-				.expect(401, done);
-		});
-
-		it("Delete profile block with incorrect details", function(done) {
-			const incorrectDeleteProfileDetails = {};
-			incorrectDeleteProfileDetails.profile_id = mongoose.Types.ObjectId('1121b706175df1546e3acb09');
-			incorrectDeleteProfileDetails.user_id = user_id;
-
-			request(app)
-				.post('/api/profileblocks/delete')
-				.set("Authorization", "Bearer " + access_token)
-				.send(incorrectDeleteProfileDetails)
-				.expect('Content-Type', /json/)
-				.expect({
-					status: "Profile block does not exist in our database"
-				})
-				.expect(200, done);
-		});
-
-		it("Delete profile block with correct details", function(done) {
-			const correctDeleteProfileDetails = {};
-			correctDeleteProfileDetails.user_id = user_id;
-			correctDeleteProfileDetails.profile_id = profile_id;
-
-			request(app)
-				.post('/api/profileblocks/delete')
-				.set("Authorization", "Bearer " + access_token)
-				.send(correctDeleteProfileDetails)
-				.expect('Content-Type', /json/)
-				.expect({
-					status: "Profile block has been successfully deleted"
-				})
-				.expect(200, done);
-		});
-	});
-
 	describe("Testing /api/users/update endpoint", function() {
 		it("Correct details provided", function(done) {
 			const correctUserDetails = testInput.rightUpdateUserDetails;
-			correctUserDetails.user_id = user_id;
 
 			request(app)
 				.post('/api/users/update')
@@ -437,7 +344,6 @@ describe('App test', () => {
 
 		it("Missing body provided", function(done) {
 			const missingUserDetails = {};
-			missingUserDetails.user_id = user_id;
 
 			request(app)
 				.post('/api/users/update')
@@ -647,7 +553,7 @@ describe('App test', () => {
 				.expect( {
 					message: 'No matching result'
 				})
-				.expect(404, done);
+				.expect(200, done);
 		});
 
 		it("Search existing users with space at the two ends", function(done) {
@@ -679,7 +585,7 @@ describe('App test', () => {
 				.expect( {
 					message: 'No matching result'
 				})
-				.expect(404, done);
+				.expect(200, done);
 		});
 
 		it("Search nothing", function(done) {
@@ -693,4 +599,48 @@ describe('App test', () => {
 		});
 
 	});
+
+
+	// The result of search users need to include urlProfile
+	describe("Include urlProfile in the search user result", function() {
+
+		it("If urlProfile doesn't exist, this property is set to the empty string", function(done) {
+			request(app)
+			.get('/api/users/search?key=tester')
+			.expect('Content-Type', /json/)
+			.expect( function(res) {
+				if (res.body.data.length === 0){
+					throw new Error("Not the expected response. There should be matches.");
+				}
+
+				if (res.body.data[0].urlProfile || res.body.data[1].urlProfile){
+					throw new Error("Not the expected response. This should be empty string. ");
+				}
+			})
+			.expect(200, done);
+		});
+
+		
+		it("For all users, if urlProfile exists, it will be sent back. Empty String otherwise", function(done){
+			request(app)
+			.get('/api/users/search?key=t')
+			.expect('Content-Type', /json/)
+			.expect( function(res) {
+				
+				if (res.body.data.length === 0){
+					throw new Error("Not the expected response. There should be matches.");
+				}
+
+				if(!res.body.data[0].urlProfile || !res.body.data[3].urlProfile){
+					throw new Error("Not the expected response. urlProfile should not be empty");
+				}
+
+				if(res.body.data[1].urlProfile || res.body.data[2].urlProfile){
+					throw new Error("Not the expected response. This should be empty string.");
+				}
+			})
+			.expect(200, done);
+		});
+	});
+
 });

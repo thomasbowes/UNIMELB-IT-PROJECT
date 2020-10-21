@@ -6,6 +6,9 @@ import EditIcon from '../../../assets/EditIcons/edit.svg';
 import AddIcon from '../../../assets/EditIcons/add.svg';
 import CancelIcon from '../../../assets/EditIcons/cancel.svg';
 
+import {connect} from "react-redux";
+import axios from "axios";
+
 class EducationHistory extends Component {
 
     state = {editable: false}
@@ -25,6 +28,47 @@ class EducationHistory extends Component {
 
     addNewItemHander = () => {
         this.props.hisAddNewItemHandler();
+
+
+
+
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            contents: {
+                type: 'Default',
+                title: 'default'
+            }
+        }
+
+
+        axios.post('/api/itemblocks/create',data, headers)
+            .then((res)=>{
+                console.log(res.data);
+                }
+            )
+            .catch((err)=>{
+                console.log(err)
+        })
+
+
+    }
+
+    // if the content is being edited, return the cross button. Otherwise return the pencil button
+    editButton = () => {
+        if (this.state.editable){
+            return <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.editableHandler} />  
+        }
+        return <input className="education-history__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>
     }
 
 
@@ -45,12 +89,14 @@ class EducationHistory extends Component {
         return(
             <section className="education-history">
                 <h1 id="heading">Education History</h1>
-                {this.state.editable? <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.editableHandler} />  
-                                    : <input className="education-history__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>}
+                {this.props.hasEditingRight? 
+                    this.editButton()
+                :   null
+                }
                 <div className="education-history-items">
                     {allItemsArray}
                 </div>
-                {this.state.editable? <div>
+                {this.state.editable && this.props.hasEditingRight? <div>
                             <hr style={{margin: "0"}}/>
                             <button className="education-history__add-new" onClick={this.addNewItemHander}><img src={AddIcon} alt="add-item"/> Add a new Item</button>
                         </div>:null}
@@ -60,4 +106,18 @@ class EducationHistory extends Component {
     }
 }
 
-export default EducationHistory; 
+
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+        userAuthToken: state.auth.userAuthToken
+    };
+};
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EducationHistory);
