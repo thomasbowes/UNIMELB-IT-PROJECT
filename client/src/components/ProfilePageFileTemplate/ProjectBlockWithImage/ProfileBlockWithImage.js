@@ -5,6 +5,15 @@ import {Link} from 'react-router-dom'
 const projectId = "thisisastaticprojectid";
 
 class ProfileBlockWithImage extends Component {
+    
+    addSlashToEndStringIfRequired = (str) => {
+        const lastChar = str[str.length - 1];
+        if (lastChar === '/'){
+            return str;
+        }
+        return str + "/";
+    }
+
     render () {
         return(
             <section className="project-block-with-image">
@@ -24,7 +33,7 @@ class ProfileBlockWithImage extends Component {
                         {this.props.text}    
                     </div>
                     <div className="overview__see-more">
-                        <Link to={window.location.pathname + "/projects/"+projectId}>See more</Link>
+                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+projectId}>See more</Link>
                     </div>
                 </div>
             </section>
