@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import './ProfileBlockWithImage.css'
 import {Link} from 'react-router-dom'
 
+const projectId = "thisisastaticprojectid";
+
 class ProfileBlockWithImage extends Component {
     render () {
         return(
@@ -22,7 +24,7 @@ class ProfileBlockWithImage extends Component {
                         {this.props.text}    
                     </div>
                     <div className="overview__see-more">
-                        <Link to={window.location.pathname + "/projects/2"}>See more</Link>
+                        <Link to={window.location.pathname + "/projects/"+projectId}>See more</Link>
                     </div>
                 </div>
             </section>
