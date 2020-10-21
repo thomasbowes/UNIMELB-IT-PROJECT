@@ -553,7 +553,7 @@ describe('App test', () => {
 				.expect( {
 					message: 'No matching result'
 				})
-				.expect(404, done);
+				.expect(200, done);
 		});
 
 		it("Search existing users with space at the two ends", function(done) {
@@ -585,7 +585,7 @@ describe('App test', () => {
 				.expect( {
 					message: 'No matching result'
 				})
-				.expect(404, done);
+				.expect(200, done);
 		});
 
 		it("Search nothing", function(done) {
@@ -599,4 +599,48 @@ describe('App test', () => {
 		});
 
 	});
+
+
+	// The result of search users need to include urlProfile
+	describe("Include urlProfile in the search user result", function() {
+
+		it("If urlProfile doesn't exist, this property is set to the empty string", function(done) {
+			request(app)
+			.get('/api/users/search?key=tester')
+			.expect('Content-Type', /json/)
+			.expect( function(res) {
+				if (res.body.data.length === 0){
+					throw new Error("Not the expected response. There should be matches.");
+				}
+
+				if (res.body.data[0].urlProfile || res.body.data[1].urlProfile){
+					throw new Error("Not the expected response. This should be empty string. ");
+				}
+			})
+			.expect(200, done);
+		});
+
+		
+		it("For all users, if urlProfile exists, it will be sent back. Empty String otherwise", function(done){
+			request(app)
+			.get('/api/users/search?key=t')
+			.expect('Content-Type', /json/)
+			.expect( function(res) {
+				
+				if (res.body.data.length === 0){
+					throw new Error("Not the expected response. There should be matches.");
+				}
+
+				if(!res.body.data[0].urlProfile || !res.body.data[3].urlProfile){
+					throw new Error("Not the expected response. urlProfile should not be empty");
+				}
+
+				if(res.body.data[1].urlProfile || res.body.data[2].urlProfile){
+					throw new Error("Not the expected response. This should be empty string.");
+				}
+			})
+			.expect(200, done);
+		});
+	});
+
 });
