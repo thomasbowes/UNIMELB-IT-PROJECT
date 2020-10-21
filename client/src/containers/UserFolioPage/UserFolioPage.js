@@ -22,18 +22,15 @@ const text = "The egg is the organic vessel containing the zygote in which an em
 const school1 = "Eggy Junior High"
 const school2 = "University of Eggplication"
 const school3 = "Institute of Making Benedict Egg"
+const des = "A dedicated eggspert in the field of eggnomics, pushing egg-legislation to be beneficial for your average egg. With my extensive egg-u-cation i bring a dynamic off eggspertise to wherever i work."
+const name = "Mr. Eggy Egglington"
+const highLevelDes = "An eggcellent student at Eggy Institute of Technology"
 
 class UserFolioPage extends Component {
     state = {
-        educationHistory: {
-            ids: [0,1,2],
-            schools: ["Eggy Junior High", "University of Eggplication", "Institute of Making Benedict Egg"],
-            descriptions:[text+text, text, text], 
-            images: [google1, google1, google2],
-            durations:["2022-2024", "2024-2027", "2027-2???"]
-        },
         itemBlocks: [],
         profileBlocks: [],
+        profileValues: [name, highLevelDes, des],
         eduHis: [[school1, "2022-2024", text+text, google1], [school2, "2024-2027", text, google1],[school3, "2027-2???", text, google1]],
     }
 
@@ -132,11 +129,16 @@ class UserFolioPage extends Component {
         // otherwise return false
     }
 
+    changeProfileValues = (values) => {
+        this.setState({profileValues: values})
+    }
+
     render() {
           return (
             <div className="UserFolioPage">
 
-                <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' hasEditingRight={this.checkHasRightToEdit()}/>
+                <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' hasEditingRight={this.checkHasRightToEdit()}
+                    changeProfileValues={this.changeProfileValues} values={this.state.profileValues}/>
 
                 <h2>My eggucation history</h2>
 
