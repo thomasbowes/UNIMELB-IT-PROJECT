@@ -604,24 +604,31 @@ describe('App test', () => {
 	// The result of search users need to include urlProfile
 	describe("Include urlProfile in the search user result", function() {
 
-		it("If urlProfile doesn't exist, this property is set to the empty string", function(done) {
+		it("If the ProfileBlock doesn't exist: title, aboutMe and urlProfile set to empty string", function(done) {
 			request(app)
 			.get('/api/users/search?key=tester')
 			.expect('Content-Type', /json/)
 			.expect( function(res) {
+				
 				if (res.body.data.length === 0){
 					throw new Error("Not the expected response. There should be matches.");
 				}
 
 				if (res.body.data[0].urlProfile || res.body.data[1].urlProfile){
-					throw new Error("Not the expected response. This should be empty string. ");
+					throw new Error("Not the expected response. urlProfile should be empty string. ");
+				}
+				if (res.body.data[0].title || res.body.data[1].title){
+					throw new Error("Not the expected response. title should be empty string. ");
+				}
+				if (res.body.data[0].aboutMe || res.body.data[1].aboutMe){
+					throw new Error("Not the expected response. aboutMe should be empty string. ");
 				}
 			})
 			.expect(200, done);
 		});
 
 		
-		it("For all users, if urlProfile exists, it will be sent back. Empty String otherwise", function(done){
+		it("For all users, if ProfileBlock exists: title, aboutMe, urlProfile will be sent back (if exist).", function(done){
 			request(app)
 			.get('/api/users/search?key=t')
 			.expect('Content-Type', /json/)
@@ -635,8 +642,16 @@ describe('App test', () => {
 					throw new Error("Not the expected response. urlProfile should not be empty");
 				}
 
+				if(!res.body.data[0].title || !res.body.data[0].aboutMe){
+					throw new Error("Not the expected response. title and aboutMe for this user should not be empty");
+				}
+
+				if(res.body.data[3].title || res.body.data[3].aboutMe){
+					throw new Error("Not the expected response. aboutMe for these users should be empty string");
+				}
+			
 				if(res.body.data[1].urlProfile || res.body.data[2].urlProfile){
-					throw new Error("Not the expected response. This should be empty string.");
+					throw new Error("Not the expected response. urlProfile should be empty string.");
 				}
 			})
 			.expect(200, done);

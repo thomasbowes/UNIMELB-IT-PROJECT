@@ -28,11 +28,12 @@ class NavBarItems extends Component {
 
             event.preventDefault();
             const data = this.state.searchString;
+            const searchURL = `/api/users/search?key=${data}`;
 
-            axios.get('/api/users/search?' + "key=" + data)
+            axios.get(searchURL)
                 .then(response => {
-                    console.log(response.data);
-                    this.props.history.push({pathname: '/search', searchResult: response.data});
+                    //console.log(response.data.data);
+                    this.props.history.push({pathname: '/search', searchResult: response.data.data});
                 })
                 .catch(error => {
                     console.log(error);
@@ -69,7 +70,6 @@ class NavBarItems extends Component {
 
         return (
             <ul className="NavBarItems">
-                <p>{this.state.searchString} </p>
 
                 <div className="search-bar">
                     <input type="text" placeholder="Search..." onChange={this.setStateHandler} onKeyPress={this.searchSubmitHandler}/>

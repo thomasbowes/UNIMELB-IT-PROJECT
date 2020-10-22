@@ -29,7 +29,9 @@ const highLevelDes = "An eggcellent student at Eggy Institute of Technology"
 
 class UserFolioPage extends Component {
     state = {
-        itemBlocks: [],
+        itemBlocks_Job: [],
+        itemBlocks_Education: [],
+        itemBlocks_Project: [],
         profileBlocks: [],
         profileValues: [name, highLevelDes, des],
         eduHis: [[school1, "2022-2024", text+text, google1], [school2, "2024-2027", text, google1],[school3, "2027-2???", text, google1]],
@@ -63,8 +65,21 @@ class UserFolioPage extends Component {
        //get itemBlocks
         axios.post('/api/itemblocks/seeall', data)
             .then(response => {
-                console.log(response.data);
-                this.setState({itemBlocks: response.data});
+
+                const itemBlocks_Job = response.data.itemblocks.flatMap((item) => item.type === 'Job' ? item : []);
+                const itemBlocks_Education = response.data.itemblocks.flatMap((item) => item.type === 'Education' ? item: []);
+                const itemBlocks_Project = response.data.itemblocks.flatMap((item) => item.type === 'Project' ? item : []);
+
+                this.setState({itemBlocks_Job: itemBlocks_Job});
+                this.setState({itemBlocks_Education: itemBlocks_Education});
+                this.setState({itemBlocks_Project: itemBlocks_Project});
+
+                //--------------------------------------------------------------------------------------------------------------------remove -----------------
+                console.log(response.data.itemblocks);
+                console.log("JOB--", this.state.itemBlocks_Job);
+                console.log("Education--", this.state.itemBlocks_Education);
+                console.log("project--", this.state.itemBlocks_Project);
+
             })
             .catch(error => {
                 this.setState({itemBlocks: []});
@@ -74,8 +89,8 @@ class UserFolioPage extends Component {
        //get user profileBlock
         axios.post('/api/profileblocks/see', data)
             .then(response => {
-                console.log(response);
-                this.setState({profileBlocks: response.data});
+                console.log(response.data.profile);
+                this.setState({profileBlocks: response.data.profile});
             })
             .catch(error => {
                 this.setState({profileBlocks: []});

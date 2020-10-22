@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import Dropzone, { IDropzoneProps, ILayoutProps } from 'react-dropzone-uploader'
+import Dropzone from 'react-dropzone-uploader'
 import 'react-dropzone-uploader/dist/styles.css'
 
 //input accept type: ex: "image/*,audio/*,video/*"
@@ -10,7 +10,6 @@ import 'react-dropzone-uploader/dist/styles.css'
 
 //import relevent redux things
 import { connect } from 'react-redux';
-import * as actionCreators from '../../store/actions/index';
 
 class FilesUpload extends Component {
 
@@ -63,7 +62,8 @@ class FilesUpload extends Component {
         else if(status === 'done')
         {
             if (xhr.readyState === 4) {
-                //console.log(xhr.response);
+                let resObj = JSON.parse(xhr.response);
+                console.log(resObj.item);
             }
         }
 

@@ -94,8 +94,8 @@ class ProjectPage extends Component {
         //get all files by given item_id
         axios.post('/api/files/seeAll', data)
             .then(response => {
-                console.log(response.data);
-                this.setState({files: response.data});
+                //console.log(response.data.files);
+                this.setState({files: response.data.files});
                 console.log(this.state.files);
             })
             .catch(error => {
@@ -262,8 +262,6 @@ class ProjectPage extends Component {
                             //disabled={false}
                             fileRejectMessage = 'Image, audio and video files only'
                         />
-                        <p> img upload</p>
-                        <ImgUpload />
                     </Aux>
                 :   <Aux>
                         <div className="ImageGallery">   
