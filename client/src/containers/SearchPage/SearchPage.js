@@ -6,23 +6,45 @@ import SearchItem from './SearchItem/SearchItem';
 
 class SearchPage extends Component {
 
+    state = {
+        showMore: false
+    }
+
+    // If a new search occurs we reset show more
+    componentDidUpdate(prevProps) {
+        if (prevProps !== this.props && this.state.showMore) {
+            this.setState({showMore: false});
+        }
+        return true;
+    }
+
     // return all the search results in the form of search items
     searchItems = () => {
         if (this.props.location.searchResult === undefined){
-            return <h1>Oops! No result found...</h1>;
+            return <h1 className="search_no-found-text">Oops! No result found, try another search term.</h1>;
         }
         const searchResult = this.props.location.searchResult;
-        return searchResult.map((item) => {
+        return searchResult.map((item, index) => {
+            // Renders a maximum of 10 items if show more is set to false
+            if (index < 10 || this.state.showMore) {
             return <SearchItem 
                         userId={item._id}
                         aboutMe={item.aboutMe}
-                        email={item.email}
                         firstName={item.firstname}
                         lastName={item.lastname}
-                        title={this.title}
-                        urlProfile={this.urlProfile}
-                        id={item._id}/>
-        })
+                        title={item.title}
+                        urlProfile={item.urlProfile}
+                        id={item._id}
+                        key={item._id}/>
+        } else {
+            return null;
+        }})
+    }
+
+    // Sets show more property to true so that we render all items
+    showMoreItemsHandler = () => {
+        this.setState({showMore: true});
+        return;
     }
 
     // return number of items found
@@ -35,30 +57,19 @@ class SearchPage extends Component {
     render(){
         return (
             <Aux>
-                {/* <div className="search__info">Showing 10 of 1009 results:</div> */}
-
                 {this.searchInfo()}
 
                 <div className="search-list">
                     {this.searchItems()}
                 </div>
-
-
-                {/* <div className="page-selector">
-                    <div className="page-selector__next-previous"> Previous</div>
-                    <div className="page-selector__page-numbers">
-                        <div className="page-selector__page-number page-selector__current">1</div>
-                        <div className="page-selector__page-number">2</div>
-                        <div className="page-selector__page-number">3</div>
-                        <div className="page-selector__page-number">4</div>
-                        <div className="page-selector__page-number">5</div>
-                    </div>
-                    <div  className="page-selector__next-previous">Next </div>
-                </div> */}
+                {!this.state.showMore && this.props.location.searchResult !== undefined && this.props.location.searchResult.length >10 ? 
+                        <div onClick={this.showMoreItemsHandler} className="search__see-more">
+                            <h2>Click Here for more search results</h2>
+                        </div>
+                        :<div onClick={this.showMoreItemsHandler} className="search__see-more"></div>}
             </Aux>
         );
 
     }
 }
-
 export default SearchPage;
