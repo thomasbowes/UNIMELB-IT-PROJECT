@@ -7,13 +7,13 @@ import SearchItem from './SearchItem/SearchItem';
 class SearchPage extends Component {
 
     state = {
-        showMore: false
+        showNumItems: 10
     }
 
-    // If a new search occurs we reset show more
+    // If a new search occurs we reset show num items to 10
     componentDidUpdate(prevProps) {
-        if (prevProps !== this.props && this.state.showMore) {
-            this.setState({showMore: false});
+        if (prevProps !== this.props && this.state.showNumItems>10) {
+            this.setState({showNumItems: 10});
         }
         return true;
     }
@@ -25,25 +25,26 @@ class SearchPage extends Component {
         }
         const searchResult = this.props.location.searchResult;
         return searchResult.map((item, index) => {
-            // Renders a maximum of 10 items if show more is set to false
-            if (index < 10 || this.state.showMore) {
-            return <SearchItem 
-                        userId={item._id}
-                        aboutMe={item.aboutMe}
-                        firstName={item.firstname}
-                        lastName={item.lastname}
-                        title={item.title}
-                        urlProfile={item.urlProfile}
-                        id={item._id}
-                        key={item._id}/>
-        } else {
-            return null;
-        }})
+
+            // Renders only showNumItems amount ofitems
+            if (index < this.state.showNumItems) {
+                return <SearchItem 
+                            userId={item._id}
+                            aboutMe={item.aboutMe}
+                            firstName={item.firstname}
+                            lastName={item.lastname}
+                            title={item.title}
+                            urlProfile={item.urlProfile}
+                            id={item._id}
+                            key={item._id}/>
+            } else {
+                return null;
+            }});
     }
 
-    // Sets show more property to true so that we render all items
-    showMoreItemsHandler = () => {
-        this.setState({showMore: true});
+    // Sets show num items property to show 10 additional items
+    addshowNumItemsHandler = () => {
+        this.setState({showNumItems: this.state.showNumItems + 10});
         return;
     }
 
@@ -62,11 +63,12 @@ class SearchPage extends Component {
                 <div className="search-list">
                     {this.searchItems()}
                 </div>
-                {!this.state.showMore && this.props.location.searchResult !== undefined && this.props.location.searchResult.length >10 ? 
-                        <div onClick={this.showMoreItemsHandler} className="search__see-more">
+
+                {this.props.location.searchResult !== undefined && this.state.showNumItems < this.props.location.searchResult.length ? 
+                        <div onClick={this.addshowNumItemsHandler} className="search__see-more">
                             <h2>Click Here for more search results</h2>
                         </div>
-                        :<div onClick={this.showMoreItemsHandler} className="search__see-more"></div>}
+                        :<div className="search__see-more"></div>}
             </Aux>
         );
 
