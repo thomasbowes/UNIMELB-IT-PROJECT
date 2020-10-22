@@ -58,11 +58,11 @@ class UserFolioPage extends Component {
        }
 
        //set user id for query data
+       const userId = this.props.match.params.userId;
+
         const data = {
             user_id: userId
         }
-
-        const userId = this.props.match.params.userId;
 
        //get itemBlocks
         axios.post('/api/itemblocks/seeall', data)
