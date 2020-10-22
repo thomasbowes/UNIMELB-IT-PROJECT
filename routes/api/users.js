@@ -326,6 +326,6 @@ router.route('/update')
  * 
  */
 router.route('/search')
-	.get(usersController.searchUsers);
+	.get(usersController.returnSearchUserResults);
 	
 module.exports = router;
