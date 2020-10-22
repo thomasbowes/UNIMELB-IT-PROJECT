@@ -18,11 +18,9 @@ const ItemBlockSchema = new mongoose.Schema({
     date: {type: Date, default: Date.now, immutable: true},
     // latest new attributes (there's an alternate way to seperate attributes to certain types
     // but that requires changing stuff so best not for now)
-    startDate: {type: Date, required: false},
-    endDate: {type: Date, required: false},
-    organisation: {type: String, required: false},
-    role: {type: String, required: false},
-    degree: {type: String, required: false}
+    startDate: {type: String, required: false},
+    endDate: {type: String, required: false},
+    organisation: {type: String, required: false}
 }, {collection: 'itemblocks'});
 
 const ItemBlock = mongoose.model('ItemBlock', ItemBlockSchema);
