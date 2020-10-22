@@ -15,7 +15,12 @@ const ItemBlockSchema = new mongoose.Schema({
     // replace default value with cloudinary url
     urlThumbnail: {type: String, required: true, default: "https://res.cloudinary.com/dg3osx8ob/image/upload/v1602739213/defaultItemBlock_drwafh.png"},
     public_id: {type: String, required: false},
-    date: {type: Date, default: Date.now, immutable: true}
+    date: {type: Date, default: Date.now, immutable: true},
+    // latest new attributes (there's an alternate way to seperate attributes to certain types
+    // but that requires changing stuff so best not for now)
+    startDate: {type: String, required: false},
+    endDate: {type: String, required: false},
+    organisation: {type: String, required: false}
 }, {collection: 'itemblocks'});
 
 const ItemBlock = mongoose.model('ItemBlock', ItemBlockSchema);
