@@ -27,6 +27,14 @@ class JobHistory extends Component {
         this.props.hisAddNewItemHandler();
     }
 
+    // if the content is being edited, return the cross button. Otherwise return the pencil button
+    editButton = () => {
+        if (this.state.editable){
+            return <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.editableHandler} />  
+        }
+        return <input className="education-history__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>
+    }
+
 
     render (){
 
@@ -45,12 +53,14 @@ class JobHistory extends Component {
         return(
             <section className="job-history">
                 <h1 id="heading">Job History</h1>
-                {this.state.editable? <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.editableHandler} />  
-                                    : <input className="education-history__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>}
+                {this.props.hasEditingRight? 
+                    this.editButton()
+                :   null
+                }
                 <div className="job-history-items">
                     {allItemsArray}
                 </div>
-                {this.state.editable? <div>
+                {this.state.editable && this.props.hasEditingRight? <div>
                             <hr style={{margin: "0"}}/>
                             <button className="education-history__add-new" onClick={this.addNewItemHander}><img src={AddIcon} alt="add-item"/> Add a new Item</button>
                         </div>:null}
