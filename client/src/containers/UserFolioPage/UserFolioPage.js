@@ -87,8 +87,8 @@ class UserFolioPage extends Component {
        //get user profileBlock
         axios.post('/api/profileblocks/see', data)
             .then(response => {
-                console.log(response);
-                this.setState({profileBlocks: response.data});
+                console.log(response.data.profile);
+                this.setState({profileBlocks: response.data.profile});
             })
             .catch(error => {
                 this.setState({profileBlocks: []});

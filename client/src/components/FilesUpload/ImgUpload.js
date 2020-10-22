@@ -1,3 +1,4 @@
+/*
 import React, {Component} from 'react';
 
 import Dropzone, { IDropzoneProps, ILayoutProps } from 'react-dropzone-uploader'
@@ -118,3 +119,5 @@ const mapDispatchToProps = dispatch => {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilesUpload);
+
+ */
