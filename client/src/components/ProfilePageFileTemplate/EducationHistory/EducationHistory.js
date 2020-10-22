@@ -41,7 +41,7 @@ class EducationHistory extends Component {
 
         const data = {
             contents: {
-                type: 'Default',
+                type: 'Education',
                 title: 'default'
             }
         }
@@ -52,7 +52,7 @@ class EducationHistory extends Component {
                 }
             )
             .catch((err)=>{
-                console.log(err)
+                console.log(err);
         })
 
 
