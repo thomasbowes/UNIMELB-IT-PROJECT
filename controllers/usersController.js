@@ -449,13 +449,11 @@ const searchUrlProfile = docUsers => {
     profileBlockPromise = ProfileBlock.find( {user_id: oneUser._id}, 'urlProfile title aboutMe' ).exec();
     return profileBlockPromise.then(doc => {
       
-      // Matching ProfileBlock has been found, insert urlProfile in user
+      // Matching ProfileBlock has been found, insert urlProfile, title and aboutMe in user
       if(doc.length === 1) {
         userWithUrl["urlProfile"] = doc[0].urlProfile;
         // These two fields are not required, hence not necessarily present
-        //console.log("The entire doc is: " + JSON.stringify(doc[0], null, '\t'));
         if(doc[0].title){
-          //console.log("No title. This is expected");
           userWithUrl["title"] = doc[0].title;
         }
         else{
