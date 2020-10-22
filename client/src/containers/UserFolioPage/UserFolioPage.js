@@ -59,8 +59,10 @@ class UserFolioPage extends Component {
 
        //set user id for query data
         const data = {
-            user_id: user_id
+            user_id: userId
         }
+
+        const userId = this.props.match.params.userId;
 
        //get itemBlocks
         axios.post('/api/itemblocks/seeall', data)
@@ -166,6 +168,82 @@ class UserFolioPage extends Component {
 
     }
 
+    // convert the item blocks (array of objects) to array of item blocks (array of arrays)
+    itemBlockToArray =  (itemBlock) => {
+        itemBlock.map(({title, startDate, endDate, description, urlThumbnail, type, user_id, public_id, date, organisation}) => {
+            return [title, startDate, endDate, description, urlThumbnail, type, user_id, public_id, date, organisation]
+        })
+    }
+
+    // convert the array of array to item block (array of objects)
+    arrayToItemBlock = (array) => {
+        const itemBlock = array.map((item) => {
+                            return {title: item[0], 
+                                    startDate: item[1],
+                                    endDate: item[2], 
+                                    description: item[3], 
+                                    urlThumbnail: item[4], 
+                                    type: item[5], 
+                                    user_id: item[6], 
+                                    public_id: item[7], 
+                                    date: item[8], 
+                                    organisation: item[9]}
+                        })
+        for (let i =0; i<array.length; i++){
+            Object.keys(itemBlock[i]).forEach(key => itemBlock[i][key] === undefined ? delete itemBlock[i][key] : {});
+        }
+    }
+
+    // convert a itemBlock item (in array form) to the object form
+    arrayToItemBlockObject = (item) => {
+        const obj = {title: item[0], 
+            startDate: item[1],
+            endDate: item[2], 
+            description: item[3], 
+            urlThumbnail: item[4], 
+            type: item[5], 
+            user_id: item[6], 
+            public_id: item[7], 
+            date: item[8], 
+            organisation: item[9]}
+        
+        Object.keys(obj).forEach(key => obj[key] === undefined ? delete obj[key] : {});
+        return obj;
+    }
+
+    // convert profile block dictionary to profile block array
+    profileBlockToArray = (profileDic) => {
+        return [profileDic.name, 
+            profileDic.title, 
+            profileDic.aboutMe, 
+            profileDic.urlProfile, 
+            profileDic.user_id, 
+            profileDic.public_id, 
+            profileDic.date, 
+            profileDic.website, 
+            profileDic.phone, 
+            profileDic.location, 
+            profileDic.email];
+    }
+
+    // convert the profile block array to profile block object
+    arrayToProfileBlock = (array) => {
+        const obj = {
+            name: array[0], 
+            title: array[1], 
+            aboutMe: array[2], 
+            urlProfile: array[3], 
+            user_id: array[4], 
+            public_id: array[5], 
+            date: array[6], 
+            website: array[7], 
+            phone: array[8], 
+            location: array[9], 
+            email: array[10]
+        }
+        Object.keys(obj).forEach(key => obj[key] === undefined ? delete obj[key] : {});
+        return obj
+    }
 
 
     

@@ -42,7 +42,8 @@ class EducationHistory extends Component {
         const data = {
             contents: {
                 type: 'Education',
-                title: 'default'
+                title: 'Title not added',
+                description: 'New education history item'
             }
         }
 
