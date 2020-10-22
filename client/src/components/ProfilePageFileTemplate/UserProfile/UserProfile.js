@@ -24,6 +24,9 @@ class UserProfile extends Component{
 
     changeValues = (inputs) => {
         this.props.changeProfileValues(inputs);
+
+
+
     }
 
     

@@ -261,8 +261,6 @@ class ProjectPage extends Component {
                             //disabled={false}
                             fileRejectMessage = 'Image, audio and video files only'
                         />
-                        <p> img upload</p>
-                        <ImgUpload />
                     </Aux>
                 :   <Aux>
                         <div className="ImageGallery">   
