@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import './SearchItem.css'
-import userImage from '../../../assets/TeamMembers/Thomas.jpg'
+import defaultUserImage from '../../../assets/ProfilePageDocuments/defaultUserImage.jpg'
+import {Link} from 'react-router-dom';
+
+const defaultTitle = "Title not added"
 
 class SearchItem extends Component{
     render() {
@@ -8,27 +11,32 @@ class SearchItem extends Component{
             <section className="search-item">
                 <div className="search-item__profile-pic">
                     <a href="#search-item__profile-pic">
-                        <img src={userImage} alt="user"/>
+                        {this.props.urlProfile === undefined?
+                            <img src={defaultUserImage} alt="user" />
+                        :   <img src={this.props.urlProfile} alt="user"/>}
                     </a>
                 </div>
 
                 <div className="search-item__bio">
                     <div className="bio__name">
                         <a href="#bio__name">
-                            <h1>Jeff Geofferson</h1>
+                            <h1>{this.props.firstName + " " + this.props.lastName}</h1>
                         </a>
                     </div>
 
                     <div className="bio__title">
-                        <h2>A mad dog at big boy industries</h2>
+                        {this.props.title === undefined ? 
+                            <h2>{defaultTitle}</h2>
+                        :   <h2>{this.props.title}</h2>}
                     </div>
 
                     <div className="bio__about">
-                        A dedicated mad dog, pushing the big boy industry to be a welcoming place for all.
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero incidunt dolores quisquam reiciendis quae perferendis at deleniti minus natus dolorum, laboriosam ea tenetur, fuga sint quis optio praesentium dolore maiores. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero incidunt dolores quisquam reiciendis quae perferendis at deleniti minus natus dolorum, laboriosam ea tenetur, fuga sint quis optio praesentium dolore maiores. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero incidunt dolores quisquam reiciendis quae perferendis at deleniti minus natus dolorum, laboriosam ea tenetur, fuga sint quis optio praesentium dolore maiores. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero incidunt dolores quisquam reiciendis quae perferendis at deleniti minus natus dolorum, laboriosam ea tenetur, fuga sint quis optio praesentium dolore maiores. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero incidunt dolores quisquam reiciendis quae perferendis at deleniti minus natus dolorum, laboriosam ea tenetur, fuga sint quis optio praesentium dolore maiores. 
+                        {"Email: " + this.props.email}
                     </div>
                     <div className="bio__see-more">
-                        <a href="#bio__see-more">See more</a>
+                        <Link to={"/userfolio/" + this.props.userId} >
+                            <a href="#bio__see-more">See more</a>
+                        </Link>
                     </div>
                 </div>
             </section>
