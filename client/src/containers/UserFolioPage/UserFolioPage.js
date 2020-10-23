@@ -7,7 +7,6 @@ import EducationHistory from '../../components/ProfilePageFileTemplate/Education
 import JobHistory from '../../components/ProfilePageFileTemplate/JobHistory/JobHistory';
 
 import google1 from '../../assets/ProfilePageDocuments/google.png';
-import google2 from '../../assets/ProfilePageDocuments/google2.jpg';
 
 import "react-image-gallery/styles/css/image-gallery.css";
 import UserProfile from '../../components/ProfilePageFileTemplate/UserProfile/UserProfile'
@@ -139,7 +138,7 @@ class UserFolioPage extends Component {
 
        //set user id for query data
         const data = {
-            user_id: user_id
+            user_id: this.props.match.params.userId
         }
 
     //    //get itemBlocks
@@ -281,7 +280,7 @@ class UserFolioPage extends Component {
 
     profileBlocks = () => {
         return this.state.itemBlocks_Project.map((item, index) => {
-            return <ProfileBlockWithImage item={item} index={index} />
+            return <ProfileBlockWithImage item={item} index={index} key={item.public_id}/>
         })
     }
 
@@ -309,7 +308,9 @@ class UserFolioPage extends Component {
 
                 <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' hasEditingRight={this.checkHasRightToEdit()}
                     changeProfileValues={this.changeProfileValues} values={this.state.profileBlocks}/>
-                <button>Convert this userFolioPage to pdf</button>
+                {this.checkHasRightToEdit()?
+                    <button>Convert this myFolioPage to pdf</button>
+                :   null}
                 <button>Share this userFolioPage</button>
                 
                 {!this.checkHasRightToEdit() && this.state.itemBlocks_Education.length === 0?

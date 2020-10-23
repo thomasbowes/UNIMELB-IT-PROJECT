@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './UserProfile.css';
 
 import EditIcon from '../../../assets/EditIcons/edit.svg';
-import eggImage from '../../../assets/ProfilePageDocuments/egg.jpg'
 import EditForm from '../EditForm/EditForm';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
 

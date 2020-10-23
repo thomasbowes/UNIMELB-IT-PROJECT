@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import './ProfileBlockWithImage.css'
 import {Link} from 'react-router-dom'
 
-const projectId = "thisisastaticprojectid";
-
 class ProfileBlockWithImage extends Component {
     
     addSlashToEndStringIfRequired = (str) => {
