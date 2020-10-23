@@ -29,13 +29,57 @@ const highLevelDes = "An eggcellent student at Eggy Institute of Technology"
 
 class UserFolioPage extends Component {
     state = {
-        itemBlocks_Job: [],
-        itemBlocks_Education: [],
+        itemBlocks_Job: [{
+            startDate: "2018",
+            endDate: "present",
+            organisation: "google",
+            title: "founder and ceo",
+            description: text+text,
+            thumbnail: google1
+        },
+        {
+            startDate: "2013",
+            endDate: "2018",
+            organisation: "maccas",
+            title: "Chief burger flipper",
+            description: text+text,
+            thumbnail: google1
+        },
+        {
+            startDate: "2012",
+            endDate: "2012",
+            organisation: "kfc",
+            title: "Chief chicken flipper",
+            description: text+text,
+            thumbnail: google1
+        }],
+        itemBlocks_Education: [{
+            startDate: "present",
+            endDate: "2018",
+            organisation: "monash",
+            title: "bachelor founder and ceo",
+            description: text+text,
+            thumbnail: google1
+        },
+        {
+            startDate: "2018",
+            endDate: "2012",
+            organisation: "rmit",
+            title: " bachelor Chief burger flipper",
+            description: text+text,
+            thumbnail: google1
+        },
+        {
+            startDate: "2012",
+            endDate: "2012",
+            organisation: "mit",
+            title: "bachelor Chief chicken flipper",
+            description: text+text,
+            thumbnail: google1
+        }],
         itemBlocks_Project: [],
         profileBlocks: [],
-        profileValues: [name, highLevelDes, des],
-        eduHis: [[school1, "2022-2024", text+text, google1], [school2, "2024-2027", text, google1],[school3, "2027-2???", text, google1]],
-        jobHis: [["job1", "2022-2024", text+text, google1], ["Job2", "2024-2027", text, google1],["job3", "2027-2???", text, google1]]
+        profileValues: [name, highLevelDes, des]
     }
 
     //get the data right after the user access his/her folio page
@@ -62,40 +106,40 @@ class UserFolioPage extends Component {
             user_id: user_id
         }
 
-       //get itemBlocks
-        axios.post('/api/itemblocks/seeall', data)
-            .then(response => {
+    //    //get itemBlocks
+    //     axios.post('/api/itemblocks/seeall', data)
+    //         .then(response => {
 
-                const itemBlocks_Job = response.data.itemblocks.flatMap((item) => item.type === 'Job' ? item : []);
-                const itemBlocks_Education = response.data.itemblocks.flatMap((item) => item.type === 'Education' ? item: []);
-                const itemBlocks_Project = response.data.itemblocks.flatMap((item) => item.type === 'Project' ? item : []);
+    //             const itemBlocks_Job = response.data.itemblocks.flatMap((item) => item.type === 'Job' ? item : []);
+    //             const itemBlocks_Education = response.data.itemblocks.flatMap((item) => item.type === 'Education' ? item: []);
+    //             const itemBlocks_Project = response.data.itemblocks.flatMap((item) => item.type === 'Project' ? item : []);
 
-                this.setState({itemBlocks_Job: itemBlocks_Job});
-                this.setState({itemBlocks_Education: itemBlocks_Education});
-                this.setState({itemBlocks_Project: itemBlocks_Project});
+    //             this.setState({itemBlocks_Job: itemBlocks_Job});
+    //             this.setState({itemBlocks_Education: itemBlocks_Education});
+    //             this.setState({itemBlocks_Project: itemBlocks_Project});
 
-                //--------------------------------------------------------------------------------------------------------------------remove -----------------
-                console.log(response.data.itemblocks);
-                console.log("JOB--", this.state.itemBlocks_Job);
-                console.log("Education--", this.state.itemBlocks_Education);
-                console.log("project--", this.state.itemBlocks_Project);
+    //             //--------------------------------------------------------------------------------------------------------------------remove -----------------
+    //             console.log(response.data.itemblocks);
+    //             console.log("JOB--", this.state.itemBlocks_Job);
+    //             console.log("Education--", this.state.itemBlocks_Education);
+    //             console.log("project--", this.state.itemBlocks_Project);
 
-            })
-            .catch(error => {
-                this.setState({itemBlocks: []});
-                console.log(error);
-            });
+    //         })
+    //         .catch(error => {
+    //             this.setState({itemBlocks: []});
+    //             console.log(error);
+    //         });
 
-       //get user profileBlock
-        axios.post('/api/profileblocks/see', data)
-            .then(response => {
-                console.log(response.data.profile);
-                this.setState({profileBlocks: response.data.profile});
-            })
-            .catch(error => {
-                this.setState({profileBlocks: []});
-                console.log(error);
-            });
+    //    //get user profileBlock
+    //     axios.post('/api/profileblocks/see', data)
+    //         .then(response => {
+    //             console.log(response.data.profile);
+    //             this.setState({profileBlocks: response.data.profile});
+    //         })
+    //         .catch(error => {
+    //             this.setState({profileBlocks: []});
+    //             console.log(error);
+    //         });
 
     }
 
@@ -103,8 +147,8 @@ class UserFolioPage extends Component {
     eduHisCopy = () => {
         const newItem = []
         let i = 0
-        for (i=0; i<this.state.eduHis.length; i++){
-            newItem.push([...this.state.eduHis[i]])
+        for (i=0; i<this.state.itemBlocks_Education.length; i++){
+            newItem.push({...this.state.itemBlocks_Education[i]})
         }
         return newItem;
     }
@@ -112,32 +156,39 @@ class UserFolioPage extends Component {
     eduChangeHisItemHandler = (id, input) => {
         const newItem = this.eduHisCopy();
         newItem[id] = input
-        newItem[id].push(google1)
-        this.setState({eduHis: newItem})
+        this.setState({itemBlocks_Education: newItem})
+        
 
     }
 
     eduItemRemoveHandler = (hisItemIndex) => {
         const newItem = this.eduHisCopy();       
         newItem.splice(hisItemIndex, 1);
-        this.setState({eduHis: newItem});
+        this.setState({itemBlocks_Education: newItem});
     }
 
     eduAddNewItemHandler = () => {
 
         const newItem = this.eduHisCopy();
 
-        newItem.push(["Default School", "Default Durations", "Default Description", google1])
+        newItem.push({
+            startDate: "",
+            endDate: "",
+            organisation: "",
+            title: "DefaultTitle",
+            description: "",
+            thumbnail: ""
+        });
 
-        this.setState({eduHis: newItem})
+        this.setState({itemBlocks_Education: newItem})
 
     }
 
     jobHisCopy = () => {
         const newItem = []
         let i = 0
-        for (i=0; i<this.state.jobHis.length; i++){
-            newItem.push([...this.state.jobHis[i]])
+        for (i=0; i<this.state.itemBlocks_Job.length; i++){
+            newItem.push({...this.state.itemBlocks_Job[i]})
         }
         return newItem;
     }
@@ -145,24 +196,31 @@ class UserFolioPage extends Component {
     jobChangeHisItemHandler = (id, input) => {
         const newItem = this.jobHisCopy();
         newItem[id] = input
-        newItem[id].push(google1)
-        this.setState({jobHis: newItem})
+        this.setState({itemBlocks_Job: newItem})
+        
 
     }
 
     jobItemRemoveHandler = (hisItemIndex) => {
         const newItem = this.jobHisCopy();       
         newItem.splice(hisItemIndex, 1);
-        this.setState({jobHis: newItem});
+        this.setState({itemBlocks_Job: newItem});
     }
 
     jobAddNewItemHandler = () => {
 
         const newItem = this.jobHisCopy();
 
-        newItem.push(["Default School", "Default Durations", "Default Description", google1])
+        newItem.push({
+            startDate: "startdate",
+            endDate: "enddate",
+            organisation: "insert company",
+            title: "insert role",
+            description: "describe",
+            thumbnail: ""
+        });
 
-        this.setState({jobHis: newItem})
+        this.setState({itemBlocks_Job: newItem})
 
     }
 
@@ -194,7 +252,7 @@ class UserFolioPage extends Component {
 
 
                 <EducationHistory
-                        contents = {this.state.eduHis}
+                        contents = {this.state.itemBlocks_Education}
                         changeItemHandler = {this.eduChangeHisItemHandler}
                         hisItemRemoveHandler = {this.eduItemRemoveHandler}
                         hisAddNewItemHandler = {this.eduAddNewItemHandler}
@@ -202,7 +260,7 @@ class UserFolioPage extends Component {
        
                 <JobHistory
                                         
-                        contents = {this.state.jobHis}
+                        contents = {this.state.itemBlocks_Job}
 
                         changeItemHandler = {this.jobChangeHisItemHandler}
                         hisItemRemoveHandler = {this.jobItemRemoveHandler}

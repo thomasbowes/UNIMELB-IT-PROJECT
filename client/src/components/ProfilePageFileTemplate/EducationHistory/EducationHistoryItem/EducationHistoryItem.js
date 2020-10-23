@@ -11,7 +11,6 @@ class EducationalHistoryItem extends Component {
         schoolEditable: false,
         durationEditable: false,
         descriptionEditable: false,
-
     }
 
     componentDidUpdate = () => {
@@ -54,7 +53,7 @@ class EducationalHistoryItem extends Component {
                 <div className="education-history-item">
                     <div className="education-history__pic">
                         <a href="#image">
-                            <img src={this.props.item[3]} alt="education-history"/>
+                            <img src={this.props.item["thumbnail"]} alt="education-history"/>
                         </a>
                         {/* {this.state.itemEditable? <button>Edit Image</button>:null} */}
                     </div>
@@ -62,25 +61,25 @@ class EducationalHistoryItem extends Component {
                         {!this.state.itemEditable? 
                             <Aux>
                                 <div className={overviewOffset.join(" ")}>
-                                    <a href="#title">
-                                        <h1>{this.props.item[0]}</h1>
+                                <a href="#title">
+                                        <h1>{this.props.item["title"]}</h1>
                                     </a>
 
-                                    <h1>{this.props.item[1]}</h1>
+                                    <h1>{this.props.item["startDate"]} - {this.props.item["endDate"]}</h1>
                                 </div>
 
                                 <div className="overview__description">
-                                    {this.props.item[2]}
+                                    {this.props.item["description"]}
                                 </div>
                             </Aux>
                         :
                             <div>
                                 <EditForm 
-                                    values={this.props.item.slice(0, 3)} 
-                                    fields={["name", "duration", "description"]} 
+                                    values={this.props.item} 
+                                    fields={["title", "startDate", "endDate", "description"]} 
                                     changeEditable = {this.itemEditableHandler} 
                                     changeValues = {this.changeItemHandler}
-                                    inputTypes={["input", "input", "large input"]}
+                                    inputTypes={["input", "time period input", "time period input", "large input"]}
                                     isDeletable={true}
                                     deleteItem={this.itemDeleteHandler}
                                     />
