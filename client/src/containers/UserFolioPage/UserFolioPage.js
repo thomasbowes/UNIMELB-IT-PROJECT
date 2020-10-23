@@ -260,7 +260,8 @@ class UserFolioPage extends Component {
 
                 <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' hasEditingRight={this.checkHasRightToEdit()}
                     changeProfileValues={this.changeProfileValues} values={this.state.profileBlocks}/>
-
+                <button>Convert this userFolioPage to pdf</button>
+                <button>Share this userFolioPage</button>
 
                 <EducationHistory
                         contents = {this.state.itemBlocks_Education}
