@@ -11,6 +11,7 @@ import google2 from '../../assets/ProfilePageDocuments/google2.jpg';
 
 import "react-image-gallery/styles/css/image-gallery.css";
 import UserProfile from '../../components/ProfilePageFileTemplate/UserProfile/UserProfile'
+import eggImage from '../../assets/ProfilePageDocuments/egg.jpg'
 
 //redux
 import { connect } from 'react-redux';
@@ -78,7 +79,17 @@ class UserFolioPage extends Component {
             thumbnail: google1
         }],
         itemBlocks_Project: [],
-        profileBlocks: [],
+        profileBlocks: {
+            name: name,
+            title: highLevelDes,
+            aboutMe: des,
+            email: "eggy@gmail.com",
+            location: "eggTown",
+            phone: "egegegegegegge",
+            website: "eggy.com.au",
+            urlProfile: eggImage
+
+        },
         profileValues: [name, highLevelDes, des]
     }
 
@@ -240,7 +251,7 @@ class UserFolioPage extends Component {
     }
 
     changeProfileValues = (values) => {
-        this.setState({profileValues: values})
+        this.setState({profileBlocks: values})
     }
 
     render() {
@@ -248,7 +259,7 @@ class UserFolioPage extends Component {
             <div className="UserFolioPage">
 
                 <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' hasEditingRight={this.checkHasRightToEdit()}
-                    changeProfileValues={this.changeProfileValues} values={this.state.profileValues}/>
+                    changeProfileValues={this.changeProfileValues} values={this.state.profileBlocks}/>
 
 
                 <EducationHistory

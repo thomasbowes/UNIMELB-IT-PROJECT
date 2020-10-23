@@ -41,20 +41,21 @@ class UserProfile extends Component{
 
                     {this.state.editable && this.props.hasEditingRight? 
                         <EditForm values={this.props.values} 
-                            fields={["Name", "High Level Description", "Description"]} 
+                            fields={["name", "title", "aboutMe"]} 
                             inputTypes={["input", "input", "large input"]} 
+                            isDeletable={false}
                             changeValues={this.changeValues} 
                             changeEditable={this.changeEditable}/>
                         :
                         <div className="UserInfoHolder">
                             <div className="UserInfo">
-                                <h1>{this.props.values[0]}</h1>
+                                <h1>{this.props.values.name}</h1>
                             </div>
                             <div className="UserInfo">
-                                <h2>{this.props.values[1]}</h2> 
+                                <h2>{this.props.values.title}</h2> 
                             </div>
                             <div className="Objective">
-                                <p>{this.props.values[2]}</p> 
+                                <p>{this.props.values.aboutMe}</p> 
                             </div>
                         </div>}
                     
