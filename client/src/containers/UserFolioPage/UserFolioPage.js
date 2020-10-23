@@ -21,9 +21,6 @@ import axios from "axios";
 
 
 const text = "The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering."
-const school1 = "Eggy Junior High"
-const school2 = "University of Eggplication"
-const school3 = "Institute of Making Benedict Egg"
 const des = "A dedicated eggspert in the field of eggnomics, pushing egg-legislation to be beneficial for your average egg. With my extensive egg-u-cation i bring a dynamic off eggspertise to wherever i work."
 const name = "Mr. Eggy Egglington"
 const highLevelDes = "An eggcellent student at Eggy Institute of Technology"
@@ -294,6 +291,18 @@ class UserFolioPage extends Component {
         this.setState({itemBlocks_Project: newProjects})
     }
 
+    // return true if the visitor has the right to edit this userFolioPage
+    checkHasRightToEdit = () => {
+        const folioOwnerId = this.props.match.params.userId;
+        const visitorToken = this.props.userAuthToken;
+        // return true, if the visitor is the folioPage owner, or the visitor is an admin staff
+        if (visitorToken !== null && folioOwnerId !== null && (folioOwnerId===visitorToken._id || this.props.userAuthToken.isAdmin)){
+            return true;
+        }
+        return false;
+        // otherwise return false
+    }
+
     render() {
           return (
             <div className="UserFolioPage">
@@ -302,29 +311,36 @@ class UserFolioPage extends Component {
                     changeProfileValues={this.changeProfileValues} values={this.state.profileBlocks}/>
                 <button>Convert this userFolioPage to pdf</button>
                 <button>Share this userFolioPage</button>
+                
+                {!this.checkHasRightToEdit() && this.state.itemBlocks_Education.length === 0?
+                    null
+                :   <EducationHistory
+                    contents = {this.state.itemBlocks_Education}
+                    changeItemHandler = {this.eduChangeHisItemHandler}
+                    hisItemRemoveHandler = {this.eduItemRemoveHandler}
+                    hisAddNewItemHandler = {this.eduAddNewItemHandler}
+                    hasEditingRight = {this.checkHasRightToEdit()}/>
 
-                <EducationHistory
-                        contents = {this.state.itemBlocks_Education}
-                        changeItemHandler = {this.eduChangeHisItemHandler}
-                        hisItemRemoveHandler = {this.eduItemRemoveHandler}
-                        hisAddNewItemHandler = {this.eduAddNewItemHandler}
-                        hasEditingRight = {this.checkHasRightToEdit()}/>
-       
-                <JobHistory
-                                        
-                        contents = {this.state.itemBlocks_Job}
+                }
 
-                        changeItemHandler = {this.jobChangeHisItemHandler}
-                        hisItemRemoveHandler = {this.jobItemRemoveHandler}
-                        hisAddNewItemHandler = {this.jobAddNewItemHandler}                
-                        hasEditingRight = {this.checkHasRightToEdit()}/>
+                {!this.checkHasRightToEdit() && this.state.itemBlocks_Job.length === 0?
+                    null
+                :   <JobHistory               
+                    contents = {this.state.itemBlocks_Job}
+                    changeItemHandler = {this.jobChangeHisItemHandler}
+                    hisItemRemoveHandler = {this.jobItemRemoveHandler}
+                    hisAddNewItemHandler = {this.jobAddNewItemHandler}                
+                    hasEditingRight = {this.checkHasRightToEdit()}/>
+                }
 
+                {!this.checkHasRightToEdit() && this.state.itemBlocks_Project.length === 0?
+                    null
+                :   this.profileBlocks()
+                }
 
-
-                {/* <ProfileBlockWithImage image={google2} text={text+text+text} title="Founded Eooggle" />
-                <ProfileBlockWithImage image={google1} text={text} title="Founded Eggipedia" /> */}
-                {this.profileBlocks()}
-                <button onClick={this.addProjectHandler}>Add new project</button>
+                {this.state.itemBlocks_Project.length >= 10 ?
+                <button onClick={this.addProjectHandler} disabled="true">Reach the maximum 10 projects</button>
+                :   <button onClick={this.addProjectHandler}>Add new project</button>}
                 
             </div>
         
