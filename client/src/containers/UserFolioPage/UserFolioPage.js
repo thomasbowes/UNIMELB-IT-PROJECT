@@ -302,6 +302,14 @@ class UserFolioPage extends Component {
         // otherwise return false
     }
 
+    // return teh add project button
+    addProjectButton = () => {
+        if (this.state.itemBlocks_Project.length >= 10){
+            return <button onClick={this.addProjectHandler} disabled="true">Reach the maximum 10 projects</button>
+        }
+        return <button onClick={this.addProjectHandler}>Add new project: {(this.state.itemBlocks_Project.length+1).toString() + '/10'}</button>
+    }
+
     render() {
           return (
             <div className="UserFolioPage">
@@ -339,9 +347,10 @@ class UserFolioPage extends Component {
                 :   this.profileBlocks()
                 }
 
-                {this.state.itemBlocks_Project.length >= 10 ?
-                <button onClick={this.addProjectHandler} disabled="true">Reach the maximum 10 projects</button>
-                :   <button onClick={this.addProjectHandler}>Add new project</button>}
+                {this.checkHasRightToEdit()?
+                    this.addProjectButton()
+                :   null
+                }
                 
             </div>
         
