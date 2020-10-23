@@ -17,9 +17,6 @@
     background: #fbfbfb;
 }
 
-.search-item__profile-pic a {
-
-}
 
 .search-item__profile-pic img {
     height: 10rem;
@@ -36,6 +33,7 @@
     height: 11rem;
     box-sizing: border-box;
     overflow: hidden;
+    margin-right: 1rem;
 }
 
 .bio__name {
@@ -56,21 +54,31 @@
 
 .bio__title {
     margin-bottom: .4rem;
+    
 }
 
 .bio__title h2{
     padding: 0.1rem 0;
     font-size: 1rem;
     margin: 0;
-    font-weight: 500;
+    color:#003A58;
+    
+
 }
 
 .bio__about {
-    height: 3.2rem;
+    height: 3rem;
     overflow: hidden;
     text-overflow: ellipsis;
     color: rgba(0,0,0,0.6);
     font-size: 0.8rem;
+    
+}
+
+.bio__about p {
+    margin: 0;
+    
+
 }
 
 .bio__see-more {

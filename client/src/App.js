@@ -56,25 +56,26 @@ class App extends Component {
 
     return (
       <div className='App'>
-        <NavBar sideDrawerClicked={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
-        <BackDrop show={this.state.showBackDrop} clicked={this.clickBackDrop}/>
-        <SideDrawer open={this.state.showSideDrawer} clickItem={this.clickBackDrop} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
-        {this.state.showLoginSignUpPage? <LogInSignUpPage clickCross={this.clickBackDrop}/>: null }
+        <div className="App_main-content">
+          <NavBar sideDrawerClicked={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
+          <BackDrop show={this.state.showBackDrop} clicked={this.clickBackDrop}/>
+          <SideDrawer open={this.state.showSideDrawer} clickItem={this.clickBackDrop} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
+          {this.state.showLoginSignUpPage? <LogInSignUpPage clickCross={this.clickBackDrop}/>: null }
 
-        <Switch>
-          <Route path='/home' exact
-            render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
-          }/>
-          <Route path='/home/notification/welcome' exact component={RegisterNotificationPage} />
-          <Route path='/about' component={AboutPage} />
-          <Route path='/signup' exact component={LogInSignUpPage} />
-          <Route path='/userfolio/:userId/projects/:projectId' exact component={ProjectPage} />
-          <Route path='/userfolio/:userId' exact component={UserFolioPage} />
-          <Route path='/search' component={SearchPage} />
-          <Redirect from='/' exact to='/home' />
-          <Route render={() => <h1>URL Not found</h1>}/>
-        </Switch>
-
+          <Switch>
+            <Route path='/home' exact
+              render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
+            }/>
+            <Route path='/home/notification/welcome' exact component={RegisterNotificationPage} />
+            <Route path='/about' component={AboutPage} />
+            <Route path='/signup' exact component={LogInSignUpPage} />
+            <Route path='/userfolio/:userId/projects/:projectId' exact component={ProjectPage} />
+            <Route path='/userfolio/:userId' exact component={UserFolioPage} />
+            <Route path='/search' component={SearchPage} />
+            <Redirect from='/' exact to='/home' />
+            <Route render={() => <h1>URL Not found</h1>}/>
+          </Switch>
+        </div>
         <Footer />
       </div>
     );
