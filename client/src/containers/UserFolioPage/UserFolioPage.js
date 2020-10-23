@@ -29,6 +29,7 @@ const name = "Mr. Eggy Egglington"
 const highLevelDes = "An eggcellent student at Eggy Institute of Technology"
 
 class UserFolioPage extends Component {
+
     state = {
         itemBlocks_Job: [{
             startDate: "2018",
@@ -78,7 +79,20 @@ class UserFolioPage extends Component {
             description: text+text,
             thumbnail: google1
         }],
-        itemBlocks_Project: [],
+        itemBlocks_Project: [
+            {
+                title: "Founded Eooggle",
+                description: text,
+                urlThumbnail: google1,
+                public_id: "anfdoano"
+            },
+            {
+                title: "Founded Eggipedia",
+                description: text+text,
+                urlThumbnail: google1,
+                public_id: "wqt349873"
+            }
+        ],
         profileBlocks: {
             name: name,
             title: highLevelDes,
@@ -91,6 +105,20 @@ class UserFolioPage extends Component {
 
         },
         profileValues: [name, highLevelDes, des]
+    }
+
+    randomId = () => {
+        let r = Math.random().toString(36).substring(7);
+        return r; 
+    }
+
+    createDefaultProject = () => {
+        return {
+            title: "Default Name",
+            description: "Default description",
+            urlThumbnail: google1,
+            public_id: this.randomId()
+        }
     }
 
     //get the data right after the user access his/her folio page
@@ -254,6 +282,18 @@ class UserFolioPage extends Component {
         this.setState({profileBlocks: values})
     }
 
+    profileBlocks = () => {
+        return this.state.itemBlocks_Project.map((item, index) => {
+            return <ProfileBlockWithImage item={item} index={index} />
+        })
+    }
+
+    addProjectHandler = () => {
+        let newProjects = [...this.state.itemBlocks_Project]
+        newProjects.push(this.createDefaultProject());
+        this.setState({itemBlocks_Project: newProjects})
+    }
+
     render() {
           return (
             <div className="UserFolioPage">
@@ -281,8 +321,10 @@ class UserFolioPage extends Component {
 
 
 
-                <ProfileBlockWithImage image={google2} text={text+text+text} title="Founded Eooggle" />
-                <ProfileBlockWithImage image={google1} text={text} title="Founded Eggipedia" />
+                {/* <ProfileBlockWithImage image={google2} text={text+text+text} title="Founded Eooggle" />
+                <ProfileBlockWithImage image={google1} text={text} title="Founded Eggipedia" /> */}
+                {this.profileBlocks()}
+                <button onClick={this.addProjectHandler}>Add new project</button>
                 
             </div>
         
