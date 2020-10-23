@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
 import './EditForm.css';
 import CancelIcon from '../../../assets/EditIcons/cancel.svg';
+import _ from 'lodash';
 
 const regInput = "input";
 const largeInput = "large input";
+const timePeriodInput = "time period input";
+const MAXYEAR = 2020;
+const MINYEAR = 1950;
+
 
 class EditForm extends Component{
 
@@ -13,59 +18,82 @@ class EditForm extends Component{
         inputs: this.props.values,
         fields: this.props.fields,
         inputTypes: this.props.inputTypes,
-        oldValues: this.props.values
+        oldValues: this.props.values,
     }
 
-    shouldComponentUpdate() {
-        return this.state.value === this.state.oldValues;
-      }
+    // shouldComponentUpdate() {
+    //     return this.state.inputs === this.state.oldValues;
+    //   }
 
 
-    inputChangeHandler = (event, index) => {
-        if (index ===0) {
-            console.log(event);
-        }
+    inputChangeHandler = (event, value) => {
+        // if (index ===0) {
+        //     console.log(event);
+        // }
         const newValue = event.target.value;
-        const newInputs = [...this.state.inputs];
+        const newInputs = {...this.state.inputs};
 
-        newInputs[index] = newValue
+        newInputs[value] = newValue;
         this.setState({inputs: newInputs});
     }
 
     //input has to be handled differently for large input
-    largeInputChangeHandler = (event, index) => {
+    largeInputChangeHandler = (event, value) => {
         
         console.log(event);
         
         const newValue = event.currentTarget.textContent;
-        const newInputs = [...this.state.inputs];
+        const newInputs = {...this.state.inputs};
 
-        newInputs[index] = newValue
+        newInputs[value] = newValue;
         this.setState({inputs: newInputs});
     }
     
+    timePeriodInputChangeHandler = (event, value) => {
+        const newValue =event.target.value;
+        const newInputs = {...this.state.inputs};
 
-
+        newInputs[value] = newValue;
+        this.setState({inputs: newInputs});
+    }
+    
     render(){
         return(
             <div className="edit-form__container">
-                {this.state.inputs.map((value, index) => {
+                {this.state.fields.map((value, index) => {
                     if (this.state.inputTypes[index] === regInput) {
                         return  (
                             <form key={index} className="edit-form__single-form-entry">
                                 <p className="single-form-entry__desc">Set {this.state.fields[index]}:</p>
-                                <input className="single-form-entry__regInput" type="text" defaultValue={value} onChange={(event) => this.inputChangeHandler(event, index)}></input>
+                                <input className="single-form-entry__regInput" type="text" defaultValue={this.state.inputs[value]} onChange={(event) => this.inputChangeHandler(event, value)}></input>
                             </form>
                             )
                     } else if (this.state.inputTypes[index] === largeInput) {
                         return  (
                             <form key={index} className="edit-form__single-form-entry">
                                 <p className="single-form-entry__desc">Set {this.state.fields[index]}:</p>
-                                <span className="single-form-entry__textarea" role="textbox" onInput={(event) => this.largeInputChangeHandler(event, index)} contentEditable={true}>{value}</span> 
-                                <input className="single-form-entry__largeInput" style={{display: "none"}} type="text" defaultValue={value} onChange={(event) => this.inputChangeHandler(event, index)}></input>
+                                <span className="single-form-entry__textarea" role="textbox" 
+                                    onInput={(event) => this.largeInputChangeHandler(event, value)} 
+                                    contentEditable={true}>{this.state.inputs[value]}
+                                </span> 
                             </form>
                             )
-                    } else {
+                    } else if (this.state.inputTypes[index] === timePeriodInput) {
+                        return  (
+                            <form key={index} className="edit-form__single-form-entry">
+                                <label for={this.state.fields[index]}>Set {this.state.fields[index]}:</label>
+                                <select id={this.state.fields[index]} name={this.state.fields[index]} onChange={(event) => this.timePeriodInputChangeHandler(event, value)} value={this.state.inputs[value]} >
+                                    <option value="">n/a</option>
+                                    {this.state.fields[index] === "endDate"?<option value="present">present</option>:null}
+                                    { _.range(MAXYEAR, MINYEAR-1).map(value => <option key={value} value={value}>{value}</option>) }
+                                </select>
+
+                                
+                                
+                            </form>
+                            
+                            )
+                    }else {
                         return <p>Error</p>
                     }
                     

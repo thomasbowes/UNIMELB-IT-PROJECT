@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import './ProfileBlockWithImage.css'
 import {Link} from 'react-router-dom'
 
-const projectId = "thisisastaticprojectid";
-
 class ProfileBlockWithImage extends Component {
     
     addSlashToEndStringIfRequired = (str) => {
@@ -19,21 +17,21 @@ class ProfileBlockWithImage extends Component {
             <section className="project-block-with-image">
                 <div className="project-block-with-image__pic">
                     <a href="#image">
-                        <img src={this.props.image} alt='img'/>
+                        <img src={this.props.item.urlThumbnail} alt='img'/>
                     </a>
                 </div>
                 <div className="project__overview_withImage">
                     <div className="overview__title">
                         <a href="#title">
-                            <h1>{this.props.title}</h1>
+                            <h1>{this.props.item.title}</h1>
                         </a>
                     </div>
 
                     <div className="overview__description_withImage">
-                        {this.props.text}    
+                        {this.props.item.description}    
                     </div>
                     <div className="overview__see-more">
-                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+projectId}>See more</Link>
+                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item.public_id}>See more</Link>
                     </div>
                 </div>
             </section>
