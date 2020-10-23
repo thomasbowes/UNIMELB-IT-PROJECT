@@ -35,7 +35,15 @@ class UserFolioPage extends Component {
         profileBlocks: [],
         profileValues: [name, highLevelDes, des],
         eduHis: [[school1, "2022-2024", text+text, google1], [school2, "2024-2027", text, google1],[school3, "2027-2???", text, google1]],
-        jobHis: [["job1", "2022-2024", text+text, google1], ["Job2", "2024-2027", text, google1],["job3", "2027-2???", text, google1]]
+        jobHis: [["job1", "2022-2024", text+text, google1], ["Job2", "2024-2027", text, google1],["job3", "2027-2???", text, google1]],
+
+        profileItems: {name: name, title: namehighLevelDes, aboutMe: des},
+        eduHisItems: [{title: school1, startDate:"2022", endDate:"2024", description: text+text, urlThumbnail: google1}, 
+                 {title: school2, startDate:"2024", endDate:"2027", description:text, urlThumbnail: google1},
+                 {title: school3, startDate:"2027", endDate:"2???", description:text, urlThumbnail: google1}],
+        jobHisItems: [{title:"job1", startDate:"2022", endDate:"2024", description:text+text, urlThumbnail: google1}, 
+                 {title:"Job2", startDate:"2024", endDate:"2027", description:text, urlThumbnail: google1},
+                 {title:"job3", startDate:"2027", endDate:"2???", description:text, urlThumbnail: google1}]
     }
 
     //get the data right after the user access his/her folio page
@@ -100,6 +108,69 @@ class UserFolioPage extends Component {
             });
 
     }
+
+    // copy the item block
+    itemBlockCopy = (itemBlock) => {
+        const newBlock = []
+        for (let i = 0; i<itemBlock.length; i++){
+            newBlock.push({...itemBlock[i]})
+        }
+        return newBlock
+    }
+
+    // change the value of a item block
+    changeBlockHandler = (str, id, input) => {
+        const value = input;
+        value.urlThumbnail = google1;
+
+        // change education history block
+        if (str === "edu"){
+            const newItem = this.itemBlockCopy(this.state.eduHisItems);
+            newItem[id] = value
+            this.setState({eduHisItems: newItem})
+        }
+        //change job history block
+        if (str === "job"){
+            const newItem = this.itemBlockCopy(this.state.jobHisItems);
+            newItem[id] = value
+            this.setState({jobHisItems: newItem})
+        }
+    }
+
+    blockItemRemoveHandler = (str, itemIndex) => {
+        if (str === "edu") {
+            const newItem = this.itemBlockCopy(this.state.eduHisItems);      
+            newItem.splice(itemIndex, 1);
+            this.setState({eduHisItems: newItem});
+        }
+        if (str === "job") {
+            const newItem = this.itemBlockCopy(this.state.jobHisItems);      
+            newItem.splice(itemIndex, 1);
+            this.setState({jobHisItems: newItem});
+        }
+    }
+
+    blockAddNewItemHandler = (str) => {
+        if (str === "edu"){
+            const newItem = this.itemBlockCopy(this.state.eduHisItems);
+            newItem.push({title: "Default School", 
+                            startDate:"Default Start", 
+                            endDate:"Default End", 
+                            description: "Default Description", 
+                            urlThumbnail: google1})
+            this.setState({eduHisItems: newItem})
+        }
+        if (str === "job"){
+            const newItem = this.itemBlockCopy(this.state.jobHisItems);
+            newItem.push({title: "Default School", 
+                            startDate:"Default Start", 
+                            endDate:"Default End", 
+                            description: "Default Description", 
+                            urlThumbnail: google1})
+            this.setState({jobHisItems: newItem})
+        }
+    }
+
 
 
     eduHisCopy = () => {
@@ -273,18 +344,18 @@ class UserFolioPage extends Component {
 
                 <EducationHistory
                         contents = {this.state.eduHis}
-                        changeItemHandler = {this.eduChangeHisItemHandler}
-                        hisItemRemoveHandler = {this.eduItemRemoveHandler}
-                        hisAddNewItemHandler = {this.eduAddNewItemHandler}
+                        changeItemHandler = {this.changeBlockHandler}
+                        hisItemRemoveHandler = {this.blockItemRemoveHandler}
+                        hisAddNewItemHandler = {this.blockAddNewItemHandler}
                         hasEditingRight = {this.checkHasRightToEdit()}/>
        
                 <JobHistory
                                         
                         contents = {this.state.jobHis}
 
-                        changeItemHandler = {this.jobChangeHisItemHandler}
-                        hisItemRemoveHandler = {this.jobItemRemoveHandler}
-                        hisAddNewItemHandler = {this.jobAddNewItemHandler}                
+                        changeItemHandler = {this.changeBlockHandler}
+                        hisItemRemoveHandler = {this.blockItemRemoveHandler}
+                        hisAddNewItemHandler = {this.blockAddNewItemHandler}                
                         hasEditingRight = {this.checkHasRightToEdit()}/>
 
 
