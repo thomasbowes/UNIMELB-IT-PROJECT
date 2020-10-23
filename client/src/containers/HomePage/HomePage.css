@@ -5,7 +5,7 @@ main {
 
 .product-promo {
     background: url("../../assets/images/aurora.jpg") center/cover no-repeat border-box,
-    #ff1b68;
+    #003B59;
     height: calc(100vh - 2.5rem);
     margin-top: 0;
 }
