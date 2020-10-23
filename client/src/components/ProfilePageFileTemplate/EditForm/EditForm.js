@@ -18,12 +18,12 @@ class EditForm extends Component{
         inputs: this.props.values,
         fields: this.props.fields,
         inputTypes: this.props.inputTypes,
-        oldValues: this.props.values
+        oldValues: this.props.values,
     }
 
-    shouldComponentUpdate() {
-        return this.state.value === this.state.oldValues;
-      }
+    // shouldComponentUpdate() {
+    //     return this.state.inputs === this.state.oldValues;
+    //   }
 
 
     inputChangeHandler = (event, value) => {
@@ -49,6 +49,14 @@ class EditForm extends Component{
         this.setState({inputs: newInputs});
     }
     
+    timePeriodInputChangeHandler = (event, value) => {
+        const newValue =event.target.value;
+        const newInputs = {...this.state.inputs};
+
+        newInputs[value] = newValue;
+        this.setState({inputs: newInputs});
+    }
+    
     render(){
         return(
             <div className="edit-form__container">
@@ -64,14 +72,17 @@ class EditForm extends Component{
                         return  (
                             <form key={index} className="edit-form__single-form-entry">
                                 <p className="single-form-entry__desc">Set {this.state.fields[index]}:</p>
-                                <span className="single-form-entry__textarea" role="textbox" onInput={(event) => this.largeInputChangeHandler(event, value)} contentEditable={true}>{this.state.inputs[value]}</span> 
+                                <span className="single-form-entry__textarea" role="textbox" 
+                                    onInput={(event) => this.largeInputChangeHandler(event, value)} 
+                                    contentEditable={true}>{this.state.inputs[value]}
+                                </span> 
                             </form>
                             )
                     } else if (this.state.inputTypes[index] === timePeriodInput) {
                         return  (
                             <form key={index} className="edit-form__single-form-entry">
                                 <label for={this.state.fields[index]}>Set {this.state.fields[index]}:</label>
-                                <select id={this.state.fields[index]} name={this.state.fields[index]} onChange={(event) => this.timePeriodInputChangeHandler(event, index)} defaultValue={"2020"} Value={"2020"}>
+                                <select id={this.state.fields[index]} name={this.state.fields[index]} onChange={(event) => this.timePeriodInputChangeHandler(event, value)} value={this.state.inputs[value]} >
                                     <option value="">n/a</option>
                                     {this.state.fields[index] === "endDate"?<option value="present">present</option>:null}
                                     { _.range(MAXYEAR, MINYEAR-1).map(value => <option key={value} value={value}>{value}</option>) }
