@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import ImageGallery from 'react-image-gallery';
+import AttachmentItem from '../../../components/ProfilePageFileTemplate/AttachmentItem/AttachmentItem';
 import './ProjectPage.css'
 
-import eggPdf1 from '../../../assets/ProfilePageDocuments/eggPdf1.pdf';
-import eggPdf2 from '../../../assets/ProfilePageDocuments/eggPdf2.pdf';
-import PdfViewer from '../../../components/Viewer/PdfViewer/PdfViewer';
-import PdfPreview from '../../../components/Viewer/PdfPreview/PdfPreview';
+import EditIcon from '../../../assets/EditIcons/edit.svg';
+import AddIcon from '../../../assets/EditIcons/add.svg';
+import CancelIcon from '../../../assets/EditIcons/cancel.svg';
+
 import BackDrop from '../../../components/UI/BackDrop/BackDrop'
 import FilesUpload from '../../../components/FilesUpload/FilesUpload';
 import ImgUpload from '../../../components/FilesUpload/ImgUpload';
@@ -26,8 +27,8 @@ import eggImg5 from '../../../assets/ProfilePageDocuments/egg5.jpg'
 
 import EditForm from '../../../components/ProfilePageFileTemplate/EditForm/EditForm';
 
-const defaultTitle = "Default Title"
-const defaultDes = "Default Description: The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering.The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering."
+const defaultTitle = "My theses on eggs"
+const defaultDes = "The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering.The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering."
 
 
 
@@ -35,47 +36,15 @@ class ProjectPage extends Component {
     
     state = {
         showPdf: false,
-      
         files: [],
       
         titleDesEditable: false,
         filesEditable: false,
-      
+        
+        editMode: false,
+        
         title: defaultTitle,
-        description: defaultDes,
-      
-        images : [
-            {
-                original: eggImg1,
-                thumbnail: eggImg1,
-                id: "a"
-            },
-            {
-                original: eggImg2,
-                thumbnail: eggImg2,
-                id: "b"
-            },
-            {
-                original: eggImg3,
-                thumbnail: eggImg3,
-                id: "c"
-            },
-            {
-                original: eggImg4,
-                thumbnail: eggImg4,
-                id: "d"
-            },
-            {
-                original: eggImg5,
-                thumbnail: eggImg5,
-                id: "f"
-            }
-        ],
-
-        pdfs : [
-            {file: eggPdf1, show: false, id:"1"},
-            {file: eggPdf2, show: false, id:"2"}
-        ]
+        description: defaultDes        
     }
 
 
@@ -96,7 +65,7 @@ class ProjectPage extends Component {
             .then(response => {
                 //console.log(response.data.files);
                 this.setState({files: response.data.files});
-                console.log(this.state.files);
+ 
             })
             .catch(error => {
                 this.setState({files: []});
@@ -124,11 +93,7 @@ class ProjectPage extends Component {
         this.setState({images: newImages});
     }
 
-    deletePdfByIndex = (index) => {
-        const newPdfs = [...this.state.pdfs];
-        newPdfs.splice(index, 1);
-        this.setState({pdfs: newPdfs});
-    }
+
 
     editingImages = () => {
         return this.state.images.map((image, index) => {
@@ -139,66 +104,13 @@ class ProjectPage extends Component {
         })
     }
 
-    getPdfIndexById = (id) => {
-        let i = 0
-        for (i = 0 ; i < this.state.pdfs.length ; i++){
-            if (this.state.pdfs[i].id === id){
-                return i;
-            }
-        }
-        return null;
-    }
-
-    getPdfIndexByActive = () => {
-        let i = 0
-        for (i = 0 ; i < this.state.pdfs.length ; i++){
-            if (this.state.pdfs[i].show === true){
-                return i;
-            }
-        }
-        return null;
-    }
-
-
-    // change the show pdf value, given the id of the pdf
-    showPdfToggle = (index) => {
-        const newPdfs = [...this.state.pdfs]
-
-        const newPdfItem = this.state.pdfs[index]
-        const oldShowPdf = newPdfItem.show;
-        newPdfItem.show = ! oldShowPdf;
-        newPdfs[index] = newPdfItem;
-
-        this.setState({pdfs: newPdfs})
-    }
-
-    showPdfs = () => {
-        return this.state.pdfs.map((pdf, index)=>{
-            return <Aux>
-                        <PdfPreview file={pdf.file} clicked={()=>this.showPdfToggle(index)} />
-                        {pdf.show? 
-                            <Aux>
-                                <BackDrop clicked={()=>this.showPdfToggle(index)} show={pdf.show}/>
-                                <PdfViewer file={pdf.file} />
-                            </Aux>
-                        :   null
-                        }
-                    </Aux>
-        })
-    }
+    
 
     doNothing = () => {
 
     }
 
-    showPdfEditing = () => {
-        return this.state.pdfs.map((pdf,index) => {
-            return <Aux>
-                        <img src={crossIcon} alt="delete" onClick={() => this.deletePdfByIndex(index)}/>
-                        <PdfPreview file={pdf.file}  clicked={this.doNothing} />
-                    </Aux>
-        })
-    }
+  
 
     // return true if the visitor has the right to edit this userFolioPage
     checkHasRightToEdit = () => {
@@ -212,68 +124,147 @@ class ProjectPage extends Component {
         // otherwise return false
     }
 
-    // return the edit buttons, based on whether the file and profile is editable
     editButtons = () => {
         if (this.state.titleDesEditable){
-            return <button onClick={this.changeFileEditable}>{this.state.filesEditable? "Save" : "Edit Files"}</button>
+            return <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={() => {this.changeTitleDesEditable(); this.changeFileEditable(); this.setState({editMode: false})}} />  
         }
-        return <Aux>
-                    <button onClick={this.changeTitleDesEditable}>Change project title/description</button>
-                    <button onClick={this.changeFileEditable}>{this.state.filesEditable? "Save" : "Edit Files"}</button>
-                </Aux>
+        return <input className="education-history__edit" type="image" src={EditIcon} onClick={() => {this.changeTitleDesEditable(); this.changeFileEditable(); this.setState({editMode: true})}} alt="edit"/>
     }
 
+    // Renders all the attachment blocks that are not images when in view mode
+    // Renders all the attachments that are not images than all the images when in edit mode
     
+    getImages = (items) => {
+        let imageList = [];
+        for (let i=0; i<items.length; i++) {
+            if (items[i].mimetype.slice(0, 5) == "image") {
+                imageList.push(items[i]);
+            }
+        }
+        return imageList;
+    }
 
+    deleteAttachmentHandler = (index) => {
+        let filesNew = [...this.state.files];
+        filesNew.splice(index, 1)
+        this.setState({files: filesNew});
+    }
 
+    galleryFormatConvertor = (items) => {
+        let convertedList = [];
+        for (let i=0; i<items.length; i++) {
+            if (items[i].mimetype.slice(0, 5) == "image") {
+                convertedList.push({
+                    original: items[i].urlCloudinary,
+                    thumbnail: items[i].urlCloudinary,
+                    id: items[i]._id
+                });
+            }
+        }
+        return convertedList;
+    }
 
-    render(){
+    render() {
+        const showNonImageAttachments = this.state.files.map((item, index) => {
+            
+            if (item.mimetype.slice(0, 5) !== "image") {
+                return <AttachmentItem
+                    fileName=""
+                    key={item._id}
+                    name={item.title}
+                    size={item.size}
+                    url={item.urlCloudinary}
+                    editable={this.state.editMode}
+                    hasThumbnail={false}
+                    deleteAttachmentHandler={this.deleteAttachmentHandler}
+                    index={index}/>
+            } else {
+                return null;
+            }
+        });
+
+        const showImageAttachments = this.state.files.map((item, index) => {
+            
+            if (item.mimetype.slice(0, 5) === "image") {
+                return <AttachmentItem
+                    fileName=""
+                    key={item._id}
+                    name={item.title}
+                    size={item.size}
+                    url={item.urlCloudinary}
+                    editable={this.state.editMode}
+                    hasThumbnail={true}
+                    deleteAttachmentHandler={this.deleteAttachmentHandler}
+                    index={index}/>
+            } else {
+                return null;
+            }
+        });
+                       
         return (
-            <div className="ProjectPage">
-          
+            <div className="project-page-container">
+                <div style={{margin: "1rem 0"}}>
+                    <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                </div>
+                {this.state.titleDesEditable && this.checkHasRightToEdit()? <h1 className="project-page-container__title">Edit Mode</h1>:
+                <h1 className="project-page-container__title">{this.state.title}</h1>}
+                
+                {this.state.filesEditable? null:   
+                <Aux>
+                    <div className="ImageGallery">   
+                        {this.getImages(this.state.files).length > 0? 
+                            <ImageGallery items={this.galleryFormatConvertor(this.getImages(this.state.files))} 
+                                showThumbnails={false}
+                                autoPlay={true}/>
+                        :null}
+                    </div> 
+                </Aux>}
+                                
                 {this.state.titleDesEditable && this.checkHasRightToEdit()? 
                     <EditForm values={[this.state.title, this.state.description]} 
-                        changeEditable = {this.changeTitleDesEditable} 
+                        changeEditable = {() => {this.changeTitleDesEditable(); this.changeFileEditable(); this.setState({editMode: false})}} 
                         changeValues={this.changeTitleDes}
                         fields={["Project Title", "Project Description"]}
                         inputTypes={["input", "large input"]}/>
-                :   <Aux>
-                        <h1>{this.state.title}</h1>
-                        <p>{this.state.description}</p>
+                    :<Aux>
+                        <p style={{fontSize: "1.2rem"}}>{this.state.description}</p>
                     </Aux>
                 }
+                {this.state.titleDesEditable && this.checkHasRightToEdit() && (this.state.files.length - this.getImages(this.state.files).length) > 0? 
+                <div className="project-attachment-info">
+                    <h3>Delete an attachment</h3>
+                </div>:null}
+                
+                {showNonImageAttachments}
+                
+                {this.state.titleDesEditable && this.checkHasRightToEdit() && this.getImages(this.state.files).length > 0? 
+                <div className="project-attachment-info">
+                    <h3>Delete an image from carousel</h3>
+                </div>:null}
 
-                {this.checkHasRightToEdit()?
-                    this.editButtons()
-                :   null
-                }
+                {this.state.titleDesEditable && this.checkHasRightToEdit()? 
+                showImageAttachments:null}
 
+                {this.state.titleDesEditable && this.checkHasRightToEdit()? 
+                <div className="project-attachment-info">
+                    <h3>Drag and drop images or files below. Images will be added to a viewer and attachments at bottom of page.</h3>
+                </div>:null}    
 
-                {this.state.filesEditable? 
-                    <Aux>
-                        {this.editingImages()}
-                        {this.showPdfEditing()}
-                        <FilesUpload
-                            itemBlock_id='5f81bdf6db99e33e48002c54'
-                            type='File'
-                            maxFiles = {10}
-                            //accept="image/*,audio/*,video/*"
-                            accept = 'image/*,audio/*,video/*'
-                            //disabled={false}
-                            fileRejectMessage = 'Image, audio and video files only'
-                        />
-                    </Aux>
-                :   <Aux>
-                        <div className="ImageGallery">   
-                            {this.state.images.length > 0? 
-                                <ImageGallery items={this.state.images} 
-                                    showThumbnails={false}
-                                    autoPlay={true}/>
-                            :   null}
-                        </div> 
-                        {this.showPdfs()}
-                    </Aux>
-                }
+                {this.state.titleDesEditable && this.checkHasRightToEdit()?
+                <FilesUpload
+                    itemBlock_id='5f81bdf6db99e33e48002c54'
+                    type='File'
+                    maxFiles = {10}
+                    accept = '*'
+                    fileRejectMessage = 'Image, audio and video files only'
+                />:null}
+                   
+
+                {this.checkHasRightToEdit()? this.editButtons()
+                : null}
+                <div style={{margin: "1rem 0"}}>
+                    <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                </div>
             </div>
         )
     }

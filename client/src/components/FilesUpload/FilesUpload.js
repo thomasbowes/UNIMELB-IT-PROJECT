@@ -72,7 +72,8 @@ class FilesUpload extends Component {
     render() {
         return (
             <React.Fragment>
-                <p>{this.state.message}</p>
+                
+                {this.state.message?<p>{this.state.message}</p>: null}
                 <Dropzone
                     getUploadParams={this.getUploadParams}
                     onChangeStatus={this.handleChangeStatus}
@@ -89,8 +90,9 @@ class FilesUpload extends Component {
                     inputWithFilesContent={files => `${this.props.maxFiles - files.length} more files allowed`}
                     styles={{
                         dropzoneReject: { borderColor: 'red', backgroundColor: '#DAA' },
-                        dropzone: { width: 800, height: 500 },
+                        dropzone: { width: "95%", height: "20rem", overflowX: "auto", overflowY: "auto"},
                         inputLabel: (files, extra) => (extra.reject ? { color: 'red' } : {}),
+                        contentWithFiles: {color: "red"}
                     }}
                 />
             </React.Fragment>
