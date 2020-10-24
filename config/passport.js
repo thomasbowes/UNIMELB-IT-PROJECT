@@ -101,9 +101,13 @@ const facebookStrategy = new FacebookTokenStrategy(fbOptions,
 
 					newUser.save()
 						.then(() => {
+							let combinedName = newUser.firstname + " " + newUser.lastname;
+
 							// autogenerate profile block for new facebook user
 							const newProfile = new ProfileBlock({
-								user_id: newUser._id
+								user_id: newUser._id,
+								name: combinedName,
+								email: newUser.email
 							});
 
 							newProfile.save()
@@ -176,9 +180,12 @@ const googleStrategy = new GoogleTokenStrategy(googleOptions,
 
 					newUser.save()
 						.then(() => {
+							let combinedName = newUser.firstname + " " + newUser.lastname;
 							// autogenerate profile block for new google user
 							const newProfile = new ProfileBlock({
-								user_id: newUser._id
+								user_id: newUser._id,
+								name: combinedName,
+								email: newUser.email
 							});
 
 							newProfile.save()
