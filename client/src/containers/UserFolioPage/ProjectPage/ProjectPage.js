@@ -52,7 +52,7 @@ class ProjectPage extends Component {
     componentDidMount() {
         //const item_id = this.props.itemBlock_id;5f81bdf6db99e33e48002c54
 
-        const item_id = "5f81bdf6db99e33e48002c54";
+        const item_id = this.props.match.params.projectId;
 
         if(!item_id) return;
 
@@ -77,7 +77,33 @@ class ProjectPage extends Component {
        
 
     changeTitleDes = (inputs) => {
-        this.setState({title: inputs[0], description: inputs[1]})
+
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            item_id: this.props.match.params.projectId,
+            contents: {title: inputs[0], description: inputs[1]}
+        }
+
+        axios.post('/api/itemblocks/update',data, headers)
+            .then((res)=>{
+                    //console.log(res.data.item);
+                    this.setState({title: inputs[0], description: inputs[1]});
+                    //this.setState({title: res.data.item.title, description: res.data.item.description});
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
     }
 
     changeTitleDesEditable = () => {
