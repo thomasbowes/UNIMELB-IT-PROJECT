@@ -165,6 +165,11 @@ class ProjectPage extends Component {
         return convertedList;
     }
 
+    // delete the project based on project id
+    deleteProjectHandler = () => {
+
+    }
+
     render() {
         const showNonImageAttachments = this.state.files.map((item, index) => {
             
@@ -222,7 +227,13 @@ class ProjectPage extends Component {
                         :null}
                     </div> 
                 </Aux>}
-                                
+
+                {this.checkHasRightToEdit() && this.state.editMode?
+                    <Link to={"/userfolio/" + this.props.match.params.userId}>
+                        <button onClick={this.deleteProjectHandler}>Delete this project</button>
+                    </Link>
+                :   null }
+
                 {this.state.titleDesEditable && this.checkHasRightToEdit()? 
                     <EditForm values={[this.state.title, this.state.description]} 
                         changeEditable = {() => {this.changeTitleDesEditable(); this.changeFileEditable(); this.setState({editMode: false})}} 
@@ -262,6 +273,11 @@ class ProjectPage extends Component {
                     fileRejectMessage = 'Image, audio and video files only'
                 />:null}
                    
+                {this.checkHasRightToEdit() && this.state.editMode?
+                    <Link to={"/userfolio/" + this.props.match.params.userId}>
+                        <button onClick={this.deleteProjectHandler}>Delete this project</button>
+                    </Link>
+                :   null }
 
                 {this.checkHasRightToEdit()? this.editButtons()
                 : null}
