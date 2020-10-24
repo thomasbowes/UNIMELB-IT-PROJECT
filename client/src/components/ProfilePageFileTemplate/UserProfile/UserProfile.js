@@ -9,6 +9,7 @@ import Aux from '../../../hoc/Auxiliary/Auxiliary'
 import { connect } from 'react-redux';
 import axios from "axios";
 import * as actionCreators from "../../../store/actions";
+import FilesUpload from '../../FilesUpload/FilesUpload';
 
 class UserProfile extends Component{
 
@@ -24,6 +25,10 @@ class UserProfile extends Component{
     changeEditable = () => {
         const oldEditable = this.state.editable
         this.setState({editable: !oldEditable, nameEditing: false, highLevelDesEditing: false, descriptionEditing: false})
+    }
+
+    changeProfilePic = (img) => {
+        this.props.changeProfilePic(img);
     }
 
     changeValues = (inputs) => {
@@ -65,12 +70,21 @@ class UserProfile extends Component{
                     </div>
 
                     {this.state.editable && this.props.hasEditingRight? 
-                        <EditForm values={this.props.values} 
-                            fields={["name", "title", "email", "location", "phone", "website", "aboutMe"]} 
-                            inputTypes={["input", "input", "input", "input", "input", "input", "large input"]} 
-                            isDeletable={false}
-                            changeValues={this.changeValues} 
-                            changeEditable={this.changeEditable}/>
+                        <Aux>
+                            <EditForm values={this.props.values} 
+                                fields={["name", "title", "email", "location", "phone", "website", "aboutMe"]} 
+                                inputTypes={["input", "input", "input", "input", "input", "input", "large input"]} 
+                                isDeletable={false}
+                                changeValues={this.changeValues} 
+                                changeEditable={this.changeEditable}/>
+                            <FilesUpload
+                                type='User'
+                                maxFiles = {1}
+                                accept = 'image/*'
+                                fileRejectMessage = 'Image only'
+                                returnResult = {this.changeProfilePic}
+                            />
+                        </Aux>
                         :
                         <div className="UserInfoHolder">
                             <div className="UserInfo">

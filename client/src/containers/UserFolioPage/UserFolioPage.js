@@ -361,13 +361,21 @@ class UserFolioPage extends Component {
         return <button onClick={this.addProjectHandler}>Add new project: {(this.state.itemBlocks_Project.length+1).toString() + '/10'}</button>
     }
 
+    // change the profile image
+    changeProfilePic = (img) => {
+        let newProfile = {...this.state.profileBlocks}
+        newProfile.urlProfile = img
+        this.setState({profileBlocks: newProfile}) 
+    }
+
     render() {
         const pdfRoute = "/api/users/createPDF/";
           return (
             <div className="UserFolioPage">
 
                 <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' hasEditingRight={this.checkHasRightToEdit()}
-                    changeProfileValues={this.changeProfileValues} values={this.state.profileBlocks}/>
+                    changeProfileValues={this.changeProfileValues} values={this.state.profileBlocks}
+                    changeProfilePic={this.changeProfilePic}/>
                 {this.checkHasRightToEdit()?
                     <Link to= {pdfRoute + this.props.match.params.userId}>
                         <button>Convert this myFolioPage to pdf</button>

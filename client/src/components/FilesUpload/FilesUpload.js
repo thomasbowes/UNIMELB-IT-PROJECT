@@ -63,7 +63,7 @@ class FilesUpload extends Component {
         {
             if (xhr.readyState === 4) {
                 let resObj = JSON.parse(xhr.response);
-                this.props.addFile(resObj.item);
+                this.props.returnResult(resObj.item);
             }
         }
 
