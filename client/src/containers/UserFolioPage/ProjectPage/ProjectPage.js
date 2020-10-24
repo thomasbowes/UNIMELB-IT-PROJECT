@@ -6,6 +6,7 @@ import './ProjectPage.css'
 import EditIcon from '../../../assets/EditIcons/edit.svg';
 import AddIcon from '../../../assets/EditIcons/add.svg';
 import CancelIcon from '../../../assets/EditIcons/cancel.svg';
+import {Link} from 'react-router-dom'
 
 import BackDrop from '../../../components/UI/BackDrop/BackDrop'
 import FilesUpload from '../../../components/FilesUpload/FilesUpload';
@@ -204,7 +205,9 @@ class ProjectPage extends Component {
         return (
             <div className="project-page-container">
                 <div style={{margin: "1rem 0"}}>
-                    <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                    <Link to={"/userfolio/" + this.props.match.params.userId}>
+                        <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                    </Link>
                 </div>
                 {this.state.titleDesEditable && this.checkHasRightToEdit()? <h1 className="project-page-container__title">Edit Mode</h1>:
                 <h1 className="project-page-container__title">{this.state.title}</h1>}
@@ -263,7 +266,9 @@ class ProjectPage extends Component {
                 {this.checkHasRightToEdit()? this.editButtons()
                 : null}
                 <div style={{margin: "1rem 0"}}>
-                    <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                    <Link to={"/userfolio/" + this.props.match.params.userId}>
+                        <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                    </Link>
                 </div>
             </div>
         )
