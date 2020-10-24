@@ -312,7 +312,7 @@ class UserFolioPage extends Component {
     }
 
     render() {
-        const pdfRoute = "/api/users/creatPDF/";
+        const pdfRoute = "/api/users/createPDF/";
           return (
             <div className="UserFolioPage">
 
