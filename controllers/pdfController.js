@@ -3,7 +3,8 @@ const PDFDocument = require('pdfkit');
 
 
 const createPDF = (req, res) => {
-    
+    const userId = req.params.userId;
+    console.log("userId" + userId);
     
     res.writeHead(200, {
         //'Content-Length': doc.length,
