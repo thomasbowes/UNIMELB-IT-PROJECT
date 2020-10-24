@@ -8,7 +8,6 @@ import Aux from '../../../hoc/Auxiliary/Auxiliary'
 //redux
 import { connect } from 'react-redux';
 import axios from "axios";
-import * as actionCreators from "../../../store/actions";
 import FilesUpload from '../../FilesUpload/FilesUpload';
 
 class UserProfile extends Component{

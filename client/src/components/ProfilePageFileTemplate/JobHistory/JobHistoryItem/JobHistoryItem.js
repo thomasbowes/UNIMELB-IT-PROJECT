@@ -12,7 +12,6 @@ class JobHistoryItem extends Component {
         jobEditable: false,
         durationEditable: false,
         descriptionEditable: false,
-
     }
 
     componentDidUpdate = () => {

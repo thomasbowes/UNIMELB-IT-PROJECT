@@ -11,7 +11,6 @@ import google1 from '../../assets/ProfilePageDocuments/google.png';
 
 import "react-image-gallery/styles/css/image-gallery.css";
 import UserProfile from '../../components/ProfilePageFileTemplate/UserProfile/UserProfile'
-import eggImage from '../../assets/ProfilePageDocuments/egg.jpg'
 
 //redux
 import { connect } from 'react-redux';
@@ -19,93 +18,13 @@ import * as actionCreators from '../../store/actions/index';
 import axios from "axios";
 
 
-
-const text = "The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering."
-const des = "A dedicated eggspert in the field of eggnomics, pushing egg-legislation to be beneficial for your average egg. With my extensive egg-u-cation i bring a dynamic off eggspertise to wherever i work."
-const name = "Mr. Eggy Egglington"
-const highLevelDes = "An eggcellent student at Eggy Institute of Technology"
-
 class UserFolioPage extends Component {
 
     state = {
-        itemBlocks_Job: [
-        //     {
-        //     startDate: "2018",
-        //     endDate: "present",
-        //     organisation: "google",
-        //     title: "founder and ceo",
-        //     description: text+text,
-        //     thumbnail: google1
-        // },
-        // {
-        //     startDate: "2013",
-        //     endDate: "2018",
-        //     organisation: "maccas",
-        //     title: "Chief burger flipper",
-        //     description: text+text,
-        //     thumbnail: google1
-        // },
-        // {
-        //     startDate: "2012",
-        //     endDate: "2012",
-        //     organisation: "kfc",
-        //     title: "Chief chicken flipper",
-        //     description: text+text,
-        //     thumbnail: google1
-        // }
-    ],
-        itemBlocks_Education: [
-        //     {
-        //     startDate: "present",
-        //     endDate: "2018",
-        //     organisation: "monash",
-        //     title: "bachelor founder and ceo",
-        //     description: text+text,
-        //     thumbnail: google1
-        // },
-        // {
-        //     startDate: "2018",
-        //     endDate: "2012",
-        //     organisation: "rmit",
-        //     title: " bachelor Chief burger flipper",
-        //     description: text+text,
-        //     thumbnail: google1
-        // },
-        // {
-        //     startDate: "2012",
-        //     endDate: "2012",
-        //     organisation: "mit",
-        //     title: "bachelor Chief chicken flipper",
-        //     description: text+text,
-        //     thumbnail: google1
-        // }
-    ],
-        itemBlocks_Project: [
-            {
-                title: "Founded Eooggle",
-                description: text,
-                urlThumbnail: google1,
-                public_id: "anfdoano"
-            },
-            {
-                title: "Founded Eggipedia",
-                description: text+text,
-                urlThumbnail: google1,
-                public_id: "wqt349873"
-            }
-        ],
-        profileBlocks: {
-            name: name,
-            title: highLevelDes,
-            aboutMe: des,
-            email: "eggy@gmail.com",
-            location: "eggTown",
-            phone: "egegegegegegge",
-            website: "eggy.com.au",
-            urlProfile: eggImage
-
-        },
-        profileValues: [name, highLevelDes, des]
+        itemBlocks_Job: [],
+        itemBlocks_Education: [],
+        itemBlocks_Project: [],
+        profileBlocks: {},
     }
 
     randomId = () => {
@@ -124,25 +43,6 @@ class UserFolioPage extends Component {
 
     //get the data right after the user access his/her folio page
     componentDidMount() {
-
-       //  let user_id;
-       //
-       //  //check if redux userAuthToken exit, if not check if userAuthToken is in local storage
-       // if(this.props.userAuthToken){
-       //     user_id = this.props.userAuthToken._id;
-       //
-       // }else{
-       //     const userAuthToken = JSON.parse(localStorage.getItem('userAuthToken'));
-       //     if(!userAuthToken){
-       //         this.setState({itemBlocks: []});
-       //         return;
-       //     }
-       //     else{
-       //         user_id = userAuthToken._id;
-       //     }
-       // }
-
-       //set user id for query data
         const data = {
             user_id: this.props.match.params.userId
         }
@@ -158,12 +58,6 @@ class UserFolioPage extends Component {
                 this.setState({itemBlocks_Job: itemBlocks_Job});
                 this.setState({itemBlocks_Education: itemBlocks_Education});
                 this.setState({itemBlocks_Project: itemBlocks_Project});
-
-                //--------------------------------------------------------------------------------------------------------------------remove -----------------
-                console.log(response.data.itemblocks);
-                console.log("JOB--", this.state.itemBlocks_Job);
-                console.log("Education--", this.state.itemBlocks_Education);
-                console.log("project--", this.state.itemBlocks_Project);
 
             })
             .catch(error => {
@@ -208,22 +102,6 @@ class UserFolioPage extends Component {
         this.setState({itemBlocks_Education: newItem});
     }
 
-    // eduAddNewItemHandler = () => {
-
-    //     const newItem = this.eduHisCopy();
-
-    //     newItem.push({
-    //         startDate: "",
-    //         endDate: "",
-    //         organisation: "",
-    //         title: "DefaultTitle",
-    //         description: "",
-    //         thumbnail: ""
-    //     });
-
-    //     this.setState({itemBlocks_Education: newItem})
-
-    // }
 
     eduAddNewItemHandler = (newHisItem) => {
 
@@ -258,22 +136,6 @@ class UserFolioPage extends Component {
         this.setState({itemBlocks_Job: newItem});
     }
 
-    // jobAddNewItemHandler = () => {
-
-    //     const newItem = this.jobHisCopy();
-
-    //     newItem.push({
-    //         startDate: "startdate",
-    //         endDate: "enddate",
-    //         organisation: "insert company",
-    //         title: "insert role",
-    //         description: "describe",
-    //         thumbnail: ""
-    //     });
-
-    //     this.setState({itemBlocks_Job: newItem})
-
-    // }
 
     jobAddNewItemHandler = (newJobItem) => {
 

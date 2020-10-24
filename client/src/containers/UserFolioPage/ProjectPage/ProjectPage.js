@@ -4,13 +4,10 @@ import AttachmentItem from '../../../components/ProfilePageFileTemplate/Attachme
 import './ProjectPage.css'
 
 import EditIcon from '../../../assets/EditIcons/edit.svg';
-import AddIcon from '../../../assets/EditIcons/add.svg';
 import CancelIcon from '../../../assets/EditIcons/cancel.svg';
 import {Link} from 'react-router-dom'
 
-import BackDrop from '../../../components/UI/BackDrop/BackDrop'
 import FilesUpload from '../../../components/FilesUpload/FilesUpload';
-import ImgUpload from '../../../components/FilesUpload/ImgUpload';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
 
 //redux
@@ -20,17 +17,7 @@ import axios from "axios";
 
 import crossIcon from '../../../assets/LoginPage-icons/cross.svg';
 
-import eggImg1 from '../../../assets/ProfilePageDocuments/egg1.jpg'
-import eggImg2 from '../../../assets/ProfilePageDocuments/egg2.jpg'
-import eggImg3 from '../../../assets/ProfilePageDocuments/egg3.jpg'
-import eggImg4 from '../../../assets/ProfilePageDocuments/egg4.jpg'
-import eggImg5 from '../../../assets/ProfilePageDocuments/egg5.jpg'
-
 import EditForm from '../../../components/ProfilePageFileTemplate/EditForm/EditForm';
-
-const defaultTitle = "My theses on eggs"
-const defaultDes = "The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering.The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering."
-
 
 
 class ProjectPage extends Component {
@@ -152,7 +139,7 @@ class ProjectPage extends Component {
     getImages = (items) => {
         let imageList = [];
         for (let i=0; i<items.length; i++) {
-            if (items[i].mimetype.slice(0, 5) == "image") {
+            if (items[i].mimetype.slice(0, 5) === "image") {
                 imageList.push(items[i]);
             }
         }
@@ -198,7 +185,7 @@ class ProjectPage extends Component {
     galleryFormatConvertor = (items) => {
         let convertedList = [];
         for (let i=0; i<items.length; i++) {
-            if (items[i].mimetype.slice(0, 5) == "image") {
+            if (items[i].mimetype.slice(0, 5) === "image") {
                 convertedList.push({
                     original: items[i].urlCloudinary,
                     thumbnail: items[i].urlCloudinary,
