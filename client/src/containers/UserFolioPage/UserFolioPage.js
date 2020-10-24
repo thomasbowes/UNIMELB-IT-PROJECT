@@ -305,7 +305,7 @@ class UserFolioPage extends Component {
 
     profileBlocks = () => {
         return this.state.itemBlocks_Project.map((item, index) => {
-            return <ProfileBlockWithImage item={item} index={index} key={item.public_id}/>
+            return <ProfileBlockWithImage item={item} index={index} key={item._id}/>
         })
     }
 
