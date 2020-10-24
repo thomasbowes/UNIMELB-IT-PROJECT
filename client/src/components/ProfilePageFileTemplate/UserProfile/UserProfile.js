@@ -44,16 +44,18 @@ class UserProfile extends Component{
             }
         }
 
+        const input_copy = {...inputs};
+
+        delete input_copy.urlProfile;
 
         const data = {
-            profile_id: inputs._id,
-            contents: inputs
+            profile_id: input_copy._id,
+            contents: input_copy
         }
-
 
         axios.post('/api/profileblocks/update',data, headers)
             .then((res)=>{
-                this.props.changeProfileValues(inputs);
+                this.props.changeProfileValues(res.data.profile);
                 }
             )
             .catch((err)=>{
