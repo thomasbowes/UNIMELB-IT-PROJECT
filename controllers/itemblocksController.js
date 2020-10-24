@@ -68,7 +68,8 @@ const updateItem = (req, res, next) => {
 		.findOneAndUpdate(query, req.body.contents, {upsert: true})
 		.then(item => {
 			res.status(200).json({
-				status: "Item block has been successfully updated"
+				status: "Item block has been successfully updated",
+				item: item
 			});
 		})
 		.catch(error => {

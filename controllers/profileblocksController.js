@@ -42,11 +42,13 @@ const updateProfile = (req, res, next) => {
 			// check if block is present in database 
 			if (!results) {
 				res.status(200).json({
-					status: "Profile block does not exist in our database"
+					status: "Profile block does not exist in our database",
+					profile: {}
 				});
 			} else {
 				res.status(200).json({
-					status: "Profile block has been successfully updated"
+					status: "Profile block has been successfully updated",
+					profile: results
 				});
 			}
 		})

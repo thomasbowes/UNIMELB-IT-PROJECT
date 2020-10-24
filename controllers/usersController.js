@@ -424,7 +424,8 @@ const changeDetails = (req, res) => {
     .findOneAndUpdate(query, req.body.contents, {upsert: true})
     .then(item => {
       res.status(200).json({
-        status: "User details have been successfully updated"
+        status: "User details have been successfully updated",
+        userDetails: item
       });
     })
     .catch(error => {

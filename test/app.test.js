@@ -196,9 +196,6 @@ describe('App test', () => {
 				.set("Authorization", "Bearer " + access_token)
 				.send(rightUpdItemDetails)
 				.expect('Content-Type', /json/)
-				.expect({
-					status: "Item block has been successfully updated"
-				})
 				.expect(200, done);
 		});
 
@@ -289,9 +286,6 @@ describe('App test', () => {
 				.set("Authorization", "Bearer " + access_token)
 				.send(rightUpdProfileDetails)
 				.expect('Content-Type', /json/)
-				.expect({
-					status: "Profile block has been successfully updated"
-				})
 				.expect(200, done);
 		});
 
@@ -336,9 +330,6 @@ describe('App test', () => {
 				.set("Authorization", "Bearer " + access_token)
 				.send(correctUserDetails)
 				.expect('Content-Type', /json/)
-				.expect({
-					status: "User details have been successfully updated"
-				})
 				.expect(200, done);
 		});
 
