@@ -76,10 +76,10 @@ class EducationalHistoryItem extends Component {
                             <div>
                                 <EditForm 
                                     values={this.props.item} 
-                                    fields={["title", "startDate", "endDate", "description"]} 
+                                    fields={["title", "organisation", "startDate", "endDate", "description"]} 
                                     changeEditable = {this.itemEditableHandler} 
                                     changeValues = {this.changeItemHandler}
-                                    inputTypes={["input", "time period input", "time period input", "large input"]}
+                                    inputTypes={["input", "input", "time period input", "time period input", "large input"]}
                                     isDeletable={true}
                                     deleteItem={this.itemDeleteHandler}
                                     />
@@ -90,7 +90,6 @@ class EducationalHistoryItem extends Component {
                     {this.props.editable && !this.state.itemEditable? 
                     <Aux>
                         <input className="education-history-item_edit" type="image" src={EditIcon} onClick={this.itemEditableHandler} alt="edit"/>
-                        
                     </Aux> 
                     :null}
                     
