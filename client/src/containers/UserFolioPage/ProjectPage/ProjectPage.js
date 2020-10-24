@@ -159,6 +159,13 @@ class ProjectPage extends Component {
         return imageList;
     }
 
+    addFile = (file) => {
+        let files = [...this.state.files];
+        files.push(file);
+        this.setState({files: files})
+
+    }
+
     deleteAttachmentHandler = (index) => {
         let filesNew = [...this.state.files];
         filesNew.splice(index, 1)
