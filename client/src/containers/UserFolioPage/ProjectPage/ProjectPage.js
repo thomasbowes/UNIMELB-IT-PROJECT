@@ -41,8 +41,7 @@ class ProjectPage extends Component {
     
         editMode: false,
         
-        title: defaultTitle,
-        description: defaultDes        
+        projectBlock: {title: defaultTitle, description: defaultDes}       
     }
 
 
@@ -75,7 +74,7 @@ class ProjectPage extends Component {
 
     changeTitleDes = (inputs) => {
 
-        this.setState({title: inputs[0], description: inputs[1]});
+        this.setState({projectBlock: inputs});
 
         // let authToken;
         // if (!this.props.userAuthToken) authToken = '';
@@ -237,7 +236,7 @@ class ProjectPage extends Component {
                 </div>
                 {this.state.editMode && this.checkHasRightToEdit()? 
                     <h1 className="project-page-container__title">Edit Mode</h1>
-                :<h1 className="project-page-container__title">{this.state.title}</h1>}
+                :<h1 className="project-page-container__title">{this.state.projectBlock.title}</h1>}
                 
                 {this.state.editMode? null:   
                 <Aux>
@@ -257,13 +256,13 @@ class ProjectPage extends Component {
                 :   null }
 
                 {this.state.editMode && this.checkHasRightToEdit()? 
-                    <EditForm values={[this.state.title, this.state.description]} 
+                    <EditForm values={this.state.projectBlock} 
                         changeEditable = {this.changeEditable} 
                         changeValues={this.changeTitleDes}
                         fields={["title", "description"]}
                         inputTypes={["input", "large input"]}/>
                     :<Aux>
-                        <p style={{fontSize: "1.2rem"}}>{this.state.description}</p>
+                        <p style={{fontSize: "1.2rem"}}>{this.state.projectBlock.description}</p>
                     </Aux>
                 }
                 {this.state.editMode && this.checkHasRightToEdit() && (this.state.files.length - this.getImages(this.state.files).length) > 0? 
