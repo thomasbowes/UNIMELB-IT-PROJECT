@@ -151,3 +151,4 @@ const deleteFileCloudinary = (public_id, resource_type) => {
 module.exports.deleteAFile = deleteAFile;
 module.exports.seeAllFiles = seeAllFiles;
 module.exports.deleteAllFiles = deleteAllFiles;
+module.exports.deleteAllFilesIn = deleteAllFilesIn;

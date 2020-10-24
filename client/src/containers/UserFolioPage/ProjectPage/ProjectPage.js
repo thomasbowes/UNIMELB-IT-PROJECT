@@ -194,6 +194,29 @@ class ProjectPage extends Component {
     // delete the project based on project id
     deleteProjectHandler = () => {
 
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            item_id: this.props.match.params.projectId,
+        }
+
+        axios.post('/api/itemblocks/delete',data, headers)
+            .then((res)=>{
+                    return;
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
+
     }
 
     render() {
