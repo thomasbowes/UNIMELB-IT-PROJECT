@@ -8,6 +8,7 @@ dotenv.config({ path: './.env' });
 
 const usersController = require('../../controllers/usersController');
 const authMiddleware = require('../../middleware/authorization');
+const pdfController = require('../../controllers/pdfController');
 
 // @route GET api/items
 // @desc Get All Items
@@ -327,5 +328,8 @@ router.route('/update')
  */
 router.route('/search')
 	.get(usersController.returnSearchUserResults);
+
+router.route('/createPDF')
+	.get(pdfController.createPDF);
 	
 module.exports = router;
