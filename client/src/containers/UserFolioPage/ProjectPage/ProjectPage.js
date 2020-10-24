@@ -167,9 +167,32 @@ class ProjectPage extends Component {
     }
 
     deleteAttachmentHandler = (index) => {
-        let filesNew = [...this.state.files];
-        filesNew.splice(index, 1)
-        this.setState({files: filesNew});
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            file_id: this.state.files[index]._id
+        }
+
+        axios.post('/api/files/delete',data, headers)
+            .then((res)=>{
+                    let filesNew = [...this.state.files];
+                    filesNew.splice(index, 1)
+                    this.setState({files: filesNew});
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
+        
     }
 
     galleryFormatConvertor = (items) => {
