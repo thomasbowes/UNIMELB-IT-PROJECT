@@ -42,6 +42,7 @@ class JobHistoryItem extends Component {
     }
 
 
+
     render(){
         let overviewOffset = ["overview__title"]; //classes
 
@@ -54,7 +55,7 @@ class JobHistoryItem extends Component {
                 <div className="job-history-item">
                     <div className="education-history__pic">
                         <a href="#image">
-                            <img src={this.props.item["thumbnail"]} alt="job-history"/>
+                            <img src={this.props.item["urlThumbnail"]} alt="job-history"/>
                         </a>
                         {/* {this.state.itemEditable? <button>Edit Image</button>:null} */}
                     </div>
@@ -102,4 +103,4 @@ class JobHistoryItem extends Component {
     }
 }
 
-export default JobHistoryItem
+export default JobHistoryItem; 

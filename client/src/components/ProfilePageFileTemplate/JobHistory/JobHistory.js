@@ -6,6 +6,9 @@ import EditIcon from '../../../assets/EditIcons/edit.svg';
 import AddIcon from '../../../assets/EditIcons/add.svg';
 import CancelIcon from '../../../assets/EditIcons/cancel.svg';
 
+import {connect} from "react-redux";
+import axios from "axios";
+
 class JobHistory extends Component {
 
     state = {editable: false}
@@ -24,7 +27,36 @@ class JobHistory extends Component {
     }
 
     addNewItemHander = () => {
-        this.props.hisAddNewItemHandler();
+        // this.props.hisAddNewItemHandler();
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            contents: {
+                type: 'Job',
+                title: 'New Job Block'
+            }
+        }
+
+        axios.post('/api/itemblocks/create',data, headers)
+            .then((res)=>{
+                console.log(res.data.item);
+                this.props.hisAddNewItemHandler(res.data.item);
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+        })
+
+
     }
 
     // if the content is being edited, return the cross button. Otherwise return the pencil button
@@ -70,4 +102,18 @@ class JobHistory extends Component {
     }
 }
 
-export default JobHistory; 
+
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+        userAuthToken: state.auth.userAuthToken
+    };
+};
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(JobHistory);

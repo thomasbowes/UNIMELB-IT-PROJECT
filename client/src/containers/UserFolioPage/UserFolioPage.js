@@ -28,30 +28,32 @@ const highLevelDes = "An eggcellent student at Eggy Institute of Technology"
 class UserFolioPage extends Component {
 
     state = {
-        itemBlocks_Job: [{
-            startDate: "2018",
-            endDate: "present",
-            organisation: "google",
-            title: "founder and ceo",
-            description: text+text,
-            thumbnail: google1
-        },
-        {
-            startDate: "2013",
-            endDate: "2018",
-            organisation: "maccas",
-            title: "Chief burger flipper",
-            description: text+text,
-            thumbnail: google1
-        },
-        {
-            startDate: "2012",
-            endDate: "2012",
-            organisation: "kfc",
-            title: "Chief chicken flipper",
-            description: text+text,
-            thumbnail: google1
-        }],
+        itemBlocks_Job: [
+        //     {
+        //     startDate: "2018",
+        //     endDate: "present",
+        //     organisation: "google",
+        //     title: "founder and ceo",
+        //     description: text+text,
+        //     thumbnail: google1
+        // },
+        // {
+        //     startDate: "2013",
+        //     endDate: "2018",
+        //     organisation: "maccas",
+        //     title: "Chief burger flipper",
+        //     description: text+text,
+        //     thumbnail: google1
+        // },
+        // {
+        //     startDate: "2012",
+        //     endDate: "2012",
+        //     organisation: "kfc",
+        //     title: "Chief chicken flipper",
+        //     description: text+text,
+        //     thumbnail: google1
+        // }
+    ],
         itemBlocks_Education: [
         //     {
         //     startDate: "present",
@@ -255,18 +257,28 @@ class UserFolioPage extends Component {
         this.setState({itemBlocks_Job: newItem});
     }
 
-    jobAddNewItemHandler = () => {
+    // jobAddNewItemHandler = () => {
+
+    //     const newItem = this.jobHisCopy();
+
+    //     newItem.push({
+    //         startDate: "startdate",
+    //         endDate: "enddate",
+    //         organisation: "insert company",
+    //         title: "insert role",
+    //         description: "describe",
+    //         thumbnail: ""
+    //     });
+
+    //     this.setState({itemBlocks_Job: newItem})
+
+    // }
+
+    jobAddNewItemHandler = (newJobItem) => {
 
         const newItem = this.jobHisCopy();
 
-        newItem.push({
-            startDate: "startdate",
-            endDate: "enddate",
-            organisation: "insert company",
-            title: "insert role",
-            description: "describe",
-            thumbnail: ""
-        });
+        newItem.push(newJobItem);
 
         this.setState({itemBlocks_Job: newItem})
 
