@@ -19,11 +19,59 @@ class EducationHistory extends Component {
     }
 
     changeItemHandler = (id, input) => {
-        this.props.changeItemHandler(id, input);
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            item_id: input._id,
+            contents: input
+        }
+
+        axios.post('/api/itemblocks/update',data, headers)
+            .then((res)=>{
+                    //console.log(res.data.item);
+                    this.props.changeItemHandler(id, input);
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
     }
 
     hisItemRemoveHandler = (hisItemIndex) => {
-        this.props.hisItemRemoveHandler(hisItemIndex);
+
+        const target = this.props.contents[hisItemIndex];
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            item_id: target._id,
+        }
+
+        axios.post('/api/itemblocks/delete',data, headers)
+            .then((res)=>{
+                    this.props.hisItemRemoveHandler(hisItemIndex);
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
     }
 
     addNewItemHander = () => {

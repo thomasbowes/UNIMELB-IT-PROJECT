@@ -5,6 +5,11 @@ import EditIcon from '../../../assets/EditIcons/edit.svg';
 import EditForm from '../EditForm/EditForm';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
 
+//redux
+import { connect } from 'react-redux';
+import axios from "axios";
+import * as actionCreators from "../../../store/actions";
+
 class UserProfile extends Component{
 
     state = {
@@ -22,13 +27,34 @@ class UserProfile extends Component{
     }
 
     changeValues = (inputs) => {
-        this.props.changeProfileValues(inputs);
 
 
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
 
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+
+        const data = {
+            profile_id: inputs._id,
+            contents: inputs
+        }
+
+
+        axios.post('/api/profileblocks/update',data, headers)
+            .then((res)=>{
+                this.props.changeProfileValues(inputs);
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
     }
-
-    
 
     render(){
         return (
@@ -72,4 +98,19 @@ class UserProfile extends Component{
     }
 }
 
-export default UserProfile;
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        LoginMessage: state.auth.message,
+        userAuthToken: state.auth.userAuthToken
+    };
+};
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
