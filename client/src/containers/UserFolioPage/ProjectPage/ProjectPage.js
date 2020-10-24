@@ -38,10 +38,8 @@ class ProjectPage extends Component {
     state = {
         showPdf: false,
         files: [],
-    
         editMode: false,
-        
-        projectBlock: {title: defaultTitle, description: defaultDes}       
+        projectBlock: {}
     }
 
 
@@ -208,6 +206,35 @@ class ProjectPage extends Component {
             })
 
     }
+
+
+    //get the data right after the user access his/her project page
+    componentWillMount() {
+
+        //set user id for query data
+        const data = {
+            item_id: this.props.match.params.projectId
+        }
+
+        //get itemBlocks
+        axios.post('/api/itemblocks/see', data)
+            .then(res => {
+                console.log(res.data.itemblock);
+
+                if(this.isEmpty(res.data.itemblock)) this.props.history.push({pathname: '/notfound'});
+                this.setState({projectBlock: res.data.itemblock});
+            })
+            .catch(error => {
+                //this.setState({projectBlock: {}});
+                //console.log(error);
+                this.props.history.push({pathname: '/notfound'});
+            });
+    }
+
+    isEmpty = (value) => {
+        return Boolean(value && typeof value === 'object') && !Object.keys(value).length;
+    }
+
 
     render() {
         const showNonImageAttachments = this.state.files.map((item, index) => {

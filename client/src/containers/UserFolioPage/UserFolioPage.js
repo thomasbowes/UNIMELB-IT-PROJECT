@@ -124,22 +124,23 @@ class UserFolioPage extends Component {
 
     //get the data right after the user access his/her folio page
     componentDidMount() {
-        let user_id;
 
-        //check if redux userAuthToken exit, if not check if userAuthToken is in local storage
-       if(this.props.userAuthToken){
-           user_id = this.props.userAuthToken._id;
-
-       }else{
-           const userAuthToken = JSON.parse(localStorage.getItem('userAuthToken'));
-           if(!userAuthToken){
-               this.setState({itemBlocks: []});
-               return;
-           }
-           else{
-               user_id = userAuthToken._id;
-           }
-       }
+       //  let user_id;
+       //
+       //  //check if redux userAuthToken exit, if not check if userAuthToken is in local storage
+       // if(this.props.userAuthToken){
+       //     user_id = this.props.userAuthToken._id;
+       //
+       // }else{
+       //     const userAuthToken = JSON.parse(localStorage.getItem('userAuthToken'));
+       //     if(!userAuthToken){
+       //         this.setState({itemBlocks: []});
+       //         return;
+       //     }
+       //     else{
+       //         user_id = userAuthToken._id;
+       //     }
+       // }
 
        //set user id for query data
         const data = {
