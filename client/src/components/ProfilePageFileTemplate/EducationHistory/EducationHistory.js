@@ -96,7 +96,6 @@ class EducationHistory extends Component {
 
         axios.post('/api/itemblocks/create',data, headers)
             .then((res)=>{
-                console.log(res.data.item);
                 this.props.hisAddNewItemHandler(res.data.item);
                 }
             )

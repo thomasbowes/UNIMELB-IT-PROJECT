@@ -310,9 +310,34 @@ class UserFolioPage extends Component {
     }
 
     addProjectHandler = () => {
-        let newProjects = [...this.state.itemBlocks_Project]
-        newProjects.push(this.createDefaultProject());
-        this.setState({itemBlocks_Project: newProjects})
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            contents: {
+                type: 'Project',
+                title: 'New Project Block'
+            }
+        }
+
+        axios.post('/api/itemblocks/create',data, headers)
+            .then((res)=>{
+                    let newProjects = [...this.state.itemBlocks_Project];
+                    newProjects.push(res.data.item);
+                    this.setState({itemBlocks_Project: newProjects});
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
     }
 
     // return true if the visitor has the right to edit this userFolioPage
