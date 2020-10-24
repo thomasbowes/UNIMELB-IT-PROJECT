@@ -345,6 +345,7 @@ class ProjectPage extends Component {
                     maxFiles = {10}
                     accept = '*'
                     fileRejectMessage = 'Image, audio and video files only'
+                    addFile = {this.addFile}
                 />:null}
                    
                 {this.checkHasRightToEdit() && this.state.editMode?

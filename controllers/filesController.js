@@ -104,10 +104,7 @@ const deleteAllFilesIn = (req,res) => {
 
                 //delete all files form Cloudinary one by one
                 for (let i = 0; i < all_public_id.length; i++){
-                    deleteFileCloudinary(all_public_id[i], all_resource_type[i])
-                        .catch(() => {
-                            reject();
-                        });
+                    deleteFileCloudinary(all_public_id[i], all_resource_type[i]);
                 }
 
                 //remove form DB
