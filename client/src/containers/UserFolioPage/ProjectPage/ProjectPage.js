@@ -38,14 +38,10 @@ class ProjectPage extends Component {
     state = {
         showPdf: false,
         files: [],
-      
-        titleDesEditable: false,
-        filesEditable: false,
-        
+    
         editMode: false,
         
-        title: defaultTitle,
-        description: defaultDes        
+        projectBlock: {title: defaultTitle, description: defaultDes}       
     }
 
 
@@ -78,40 +74,33 @@ class ProjectPage extends Component {
 
     changeTitleDes = (inputs) => {
 
+        this.setState({projectBlock: inputs});
 
-        let authToken;
-        if (!this.props.userAuthToken) authToken = '';
-        else authToken = this.props.userAuthToken.token;
+        // let authToken;
+        // if (!this.props.userAuthToken) authToken = '';
+        // else authToken = this.props.userAuthToken.token;
 
-        const headers = {
-            headers: {
-                'Authorization': "Bearer " + authToken
-            }
-        }
+        // const headers = {
+        //     headers: {
+        //         'Authorization': "Bearer " + authToken
+        //     }
+        // }
 
-        const data = {
-            item_id: this.props.match.params.projectId,
-            contents: {title: inputs[0], description: inputs[1]}
-        }
+        // const data = {
+        //     item_id: this.props.match.params.projectId,
+        //     contents: {title: inputs[0], description: inputs[1]}
+        // }
 
-        axios.post('/api/itemblocks/update',data, headers)
-            .then((res)=>{
-                    //console.log(res.data.item);
-                    this.setState({title: inputs[0], description: inputs[1]});
-                    //this.setState({title: res.data.item.title, description: res.data.item.description});
-                }
-            )
-            .catch((err)=>{
-                console.log(err);
-            })
-    }
-
-    changeTitleDesEditable = () => {
-        this.setState({titleDesEditable: !this.state.titleDesEditable})
-    }
-
-    changeFileEditable = () => {
-        this.setState({filesEditable: !this.state.filesEditable})
+        // axios.post('/api/itemblocks/update',data, headers)
+        //     .then((res)=>{
+        //             //console.log(res.data.item);
+        //             this.setState({title: inputs[0], description: inputs[1]});
+        //             //this.setState({title: res.data.item.title, description: res.data.item.description});
+        //         }
+        //     )
+        //     .catch((err)=>{
+        //         console.log(err);
+        //     })
     }
 
     deleteImageByIndex = (index) => {
@@ -151,11 +140,16 @@ class ProjectPage extends Component {
         // otherwise return false
     }
 
+    changeEditable = () => {
+        const newEditMode = ! this.state.editMode
+        this.setState({editMode: newEditMode})
+    }
+
     editButtons = () => {
-        if (this.state.titleDesEditable){
-            return <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={() => {this.changeTitleDesEditable(); this.changeFileEditable(); this.setState({editMode: false})}} />  
+        if (this.state.editMode){
+            return <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.changeEditable} />  
         }
-        return <input className="education-history__edit" type="image" src={EditIcon} onClick={() => {this.changeTitleDesEditable(); this.changeFileEditable(); this.setState({editMode: true})}} alt="edit"/>
+        return <input className="education-history__edit" type="image" src={EditIcon} onClick={this.changeEditable} alt="edit"/>
     }
 
     // Renders all the attachment blocks that are not images when in view mode
@@ -263,10 +257,11 @@ class ProjectPage extends Component {
                         <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
                     </Link>
                 </div>
-                {this.state.titleDesEditable && this.checkHasRightToEdit()? <h1 className="project-page-container__title">Edit Mode</h1>:
-                <h1 className="project-page-container__title">{this.state.title}</h1>}
+                {this.state.editMode && this.checkHasRightToEdit()? 
+                    <h1 className="project-page-container__title">Edit Mode</h1>
+                :<h1 className="project-page-container__title">{this.state.projectBlock.title}</h1>}
                 
-                {this.state.filesEditable? null:   
+                {this.state.editMode? null:   
                 <Aux>
                     <div className="ImageGallery">   
                         {this.getImages(this.state.files).length > 0? 
@@ -283,37 +278,37 @@ class ProjectPage extends Component {
                     </Link>
                 :   null }
 
-                {this.state.titleDesEditable && this.checkHasRightToEdit()? 
-                    <EditForm values={[this.state.title, this.state.description]} 
-                        changeEditable = {() => {this.changeTitleDesEditable(); this.changeFileEditable(); this.setState({editMode: false})}} 
+                {this.state.editMode && this.checkHasRightToEdit()? 
+                    <EditForm values={this.state.projectBlock} 
+                        changeEditable = {this.changeEditable} 
                         changeValues={this.changeTitleDes}
-                        fields={["Project Title", "Project Description"]}
+                        fields={["title", "description"]}
                         inputTypes={["input", "large input"]}/>
                     :<Aux>
-                        <p style={{fontSize: "1.2rem"}}>{this.state.description}</p>
+                        <p style={{fontSize: "1.2rem"}}>{this.state.projectBlock.description}</p>
                     </Aux>
                 }
-                {this.state.titleDesEditable && this.checkHasRightToEdit() && (this.state.files.length - this.getImages(this.state.files).length) > 0? 
+                {this.state.editMode && this.checkHasRightToEdit() && (this.state.files.length - this.getImages(this.state.files).length) > 0? 
                 <div className="project-attachment-info">
                     <h3>Delete an attachment</h3>
                 </div>:null}
                 
                 {showNonImageAttachments}
                 
-                {this.state.titleDesEditable && this.checkHasRightToEdit() && this.getImages(this.state.files).length > 0? 
+                {this.state.editMode && this.checkHasRightToEdit() && this.getImages(this.state.files).length > 0? 
                 <div className="project-attachment-info">
                     <h3>Delete an image from carousel</h3>
                 </div>:null}
 
-                {this.state.titleDesEditable && this.checkHasRightToEdit()? 
+                {this.state.editMode && this.checkHasRightToEdit()? 
                 showImageAttachments:null}
 
-                {this.state.titleDesEditable && this.checkHasRightToEdit()? 
+                {this.state.editMode && this.checkHasRightToEdit()? 
                 <div className="project-attachment-info">
                     <h3>Drag and drop images or files below. Images will be added to a viewer and attachments at bottom of page.</h3>
                 </div>:null}    
 
-                {this.state.titleDesEditable && this.checkHasRightToEdit()?
+                {this.state.editMode && this.checkHasRightToEdit()?
                 <FilesUpload
                     itemBlock_id='5f81bdf6db99e33e48002c54'
                     type='File'
