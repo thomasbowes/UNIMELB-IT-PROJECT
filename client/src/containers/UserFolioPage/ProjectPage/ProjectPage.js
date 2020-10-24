@@ -333,7 +333,7 @@ class ProjectPage extends Component {
 
                 {this.state.editMode && this.checkHasRightToEdit()?
                 <FilesUpload
-                    itemBlock_id='5f81bdf6db99e33e48002c54'
+                    itemBlock_id= {this.props.match.params.projectId}
                     type='File'
                     maxFiles = {10}
                     accept = '*'
