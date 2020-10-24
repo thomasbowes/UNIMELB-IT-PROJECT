@@ -63,7 +63,7 @@ class JobHistoryItem extends Component {
                             <Aux>
                                 <div className={overviewOffset.join(" ")}>
                                     <a href="#title">
-                                        <h1>{this.props.item["title"]}</h1>
+                                        <h1>{this.props.item["organisation"] + ": " + this.props.item["title"]}</h1>
                                     </a>
 
                                     <h1>{this.props.item["startDate"]} - {this.props.item["endDate"]}</h1>
