@@ -52,30 +52,32 @@ class UserFolioPage extends Component {
             description: text+text,
             thumbnail: google1
         }],
-        itemBlocks_Education: [{
-            startDate: "present",
-            endDate: "2018",
-            organisation: "monash",
-            title: "bachelor founder and ceo",
-            description: text+text,
-            thumbnail: google1
-        },
-        {
-            startDate: "2018",
-            endDate: "2012",
-            organisation: "rmit",
-            title: " bachelor Chief burger flipper",
-            description: text+text,
-            thumbnail: google1
-        },
-        {
-            startDate: "2012",
-            endDate: "2012",
-            organisation: "mit",
-            title: "bachelor Chief chicken flipper",
-            description: text+text,
-            thumbnail: google1
-        }],
+        itemBlocks_Education: [
+        //     {
+        //     startDate: "present",
+        //     endDate: "2018",
+        //     organisation: "monash",
+        //     title: "bachelor founder and ceo",
+        //     description: text+text,
+        //     thumbnail: google1
+        // },
+        // {
+        //     startDate: "2018",
+        //     endDate: "2012",
+        //     organisation: "rmit",
+        //     title: " bachelor Chief burger flipper",
+        //     description: text+text,
+        //     thumbnail: google1
+        // },
+        // {
+        //     startDate: "2012",
+        //     endDate: "2012",
+        //     organisation: "mit",
+        //     title: "bachelor Chief chicken flipper",
+        //     description: text+text,
+        //     thumbnail: google1
+        // }
+    ],
         itemBlocks_Project: [
             {
                 title: "Founded Eooggle",
@@ -203,18 +205,28 @@ class UserFolioPage extends Component {
         this.setState({itemBlocks_Education: newItem});
     }
 
-    eduAddNewItemHandler = () => {
+    // eduAddNewItemHandler = () => {
+
+    //     const newItem = this.eduHisCopy();
+
+    //     newItem.push({
+    //         startDate: "",
+    //         endDate: "",
+    //         organisation: "",
+    //         title: "DefaultTitle",
+    //         description: "",
+    //         thumbnail: ""
+    //     });
+
+    //     this.setState({itemBlocks_Education: newItem})
+
+    // }
+
+    eduAddNewItemHandler = (newHisItem) => {
 
         const newItem = this.eduHisCopy();
 
-        newItem.push({
-            startDate: "",
-            endDate: "",
-            organisation: "",
-            title: "DefaultTitle",
-            description: "",
-            thumbnail: ""
-        });
+        newItem.push(newHisItem);
 
         this.setState({itemBlocks_Education: newItem})
 

@@ -53,7 +53,7 @@ class EducationalHistoryItem extends Component {
                 <div className="education-history-item">
                     <div className="education-history__pic">
                         <a href="#image">
-                            <img src={this.props.item["thumbnail"]} alt="education-history"/>
+                            <img src={this.props.item.urlThumbnail} alt="education-history"/>
                         </a>
                         {/* {this.state.itemEditable? <button>Edit Image</button>:null} */}
                     </div>

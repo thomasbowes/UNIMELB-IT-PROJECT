@@ -27,7 +27,7 @@ class EducationHistory extends Component {
     }
 
     addNewItemHander = () => {
-        this.props.hisAddNewItemHandler();
+        // this.props.hisAddNewItemHandler();
 
         let authToken;
         if (!this.props.userAuthToken) authToken = '';
@@ -42,13 +42,14 @@ class EducationHistory extends Component {
         const data = {
             contents: {
                 type: 'Education',
-                title: 'default'
+                title: 'New Education Block'
             }
         }
 
         axios.post('/api/itemblocks/create',data, headers)
             .then((res)=>{
-                console.log(res.data);
+                console.log(res.data.item);
+                this.props.hisAddNewItemHandler(res.data.item);
                 }
             )
             .catch((err)=>{
