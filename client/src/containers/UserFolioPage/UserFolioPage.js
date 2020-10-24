@@ -142,40 +142,40 @@ class UserFolioPage extends Component {
             user_id: this.props.match.params.userId
         }
 
-    //    //get itemBlocks
-    //     axios.post('/api/itemblocks/seeall', data)
-    //         .then(response => {
+       //get itemBlocks
+        axios.post('/api/itemblocks/seeall', data)
+            .then(response => {
 
-    //             const itemBlocks_Job = response.data.itemblocks.flatMap((item) => item.type === 'Job' ? item : []);
-    //             const itemBlocks_Education = response.data.itemblocks.flatMap((item) => item.type === 'Education' ? item: []);
-    //             const itemBlocks_Project = response.data.itemblocks.flatMap((item) => item.type === 'Project' ? item : []);
+                const itemBlocks_Job = response.data.itemblocks.flatMap((item) => item.type === 'Job' ? item : []);
+                const itemBlocks_Education = response.data.itemblocks.flatMap((item) => item.type === 'Education' ? item: []);
+                const itemBlocks_Project = response.data.itemblocks.flatMap((item) => item.type === 'Project' ? item : []);
 
-    //             this.setState({itemBlocks_Job: itemBlocks_Job});
-    //             this.setState({itemBlocks_Education: itemBlocks_Education});
-    //             this.setState({itemBlocks_Project: itemBlocks_Project});
+                this.setState({itemBlocks_Job: itemBlocks_Job});
+                this.setState({itemBlocks_Education: itemBlocks_Education});
+                this.setState({itemBlocks_Project: itemBlocks_Project});
 
-    //             //--------------------------------------------------------------------------------------------------------------------remove -----------------
-    //             console.log(response.data.itemblocks);
-    //             console.log("JOB--", this.state.itemBlocks_Job);
-    //             console.log("Education--", this.state.itemBlocks_Education);
-    //             console.log("project--", this.state.itemBlocks_Project);
+                //--------------------------------------------------------------------------------------------------------------------remove -----------------
+                console.log(response.data.itemblocks);
+                console.log("JOB--", this.state.itemBlocks_Job);
+                console.log("Education--", this.state.itemBlocks_Education);
+                console.log("project--", this.state.itemBlocks_Project);
 
-    //         })
-    //         .catch(error => {
-    //             this.setState({itemBlocks: []});
-    //             console.log(error);
-    //         });
+            })
+            .catch(error => {
+                this.setState({itemBlocks: []});
+                console.log(error);
+            });
 
-    //    //get user profileBlock
-    //     axios.post('/api/profileblocks/see', data)
-    //         .then(response => {
-    //             console.log(response.data.profile);
-    //             this.setState({profileBlocks: response.data.profile});
-    //         })
-    //         .catch(error => {
-    //             this.setState({profileBlocks: []});
-    //             console.log(error);
-    //         });
+       //get user profileBlock
+        axios.post('/api/profileblocks/see', data)
+            .then(response => {
+                console.log(response.data.profile);
+                this.setState({profileBlocks: response.data.profile});
+            })
+            .catch(error => {
+                this.setState({profileBlocks: []});
+                console.log(error);
+            });
 
     }
 
