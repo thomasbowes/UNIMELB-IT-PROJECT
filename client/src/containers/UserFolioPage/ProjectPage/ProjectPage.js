@@ -303,7 +303,7 @@ class ProjectPage extends Component {
                 </Aux>}
 
                 {this.checkHasRightToEdit() && this.state.editMode?
-                    <Link to={"/userfolio/" + this.props.match.params.userId } onClick={() => window.location.reload()}>
+                    <Link to={"/userfolio/" + this.props.match.params.userId }>
                         <button onClick={this.deleteProjectHandler}>Delete this project</button>
                     </Link>
                 :   null }
@@ -348,7 +348,7 @@ class ProjectPage extends Component {
                 />:null}
                    
                 {this.checkHasRightToEdit() && this.state.editMode?
-                    <Link to={"/userfolio/" + this.props.match.params.userId} onClick={() => window.location.reload()}>
+                    <Link to={"/userfolio/" + this.props.match.params.userId}>
                         <button onClick={this.deleteProjectHandler}>Delete this project</button>
                     </Link>
                 :   null }
