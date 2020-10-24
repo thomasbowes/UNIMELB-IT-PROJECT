@@ -30,10 +30,16 @@ class EducationHistory extends Component {
             }
         }
 
+        const input_copy = {...input};
+
+        delete input_copy.urlThumbnail;
+
         const data = {
-            item_id: input._id,
-            contents: input
+            item_id: input_copy._id,
+            contents: input_copy
         }
+
+
 
         axios.post('/api/itemblocks/update',data, headers)
             .then((res)=>{
