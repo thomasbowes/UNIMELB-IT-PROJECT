@@ -114,6 +114,10 @@ class EducationHistory extends Component {
         return <input className="education-history__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>
     }
 
+    changeEduItemProfileImg = (img, index) => {
+        this.props.changeEduItemProfileImg(img, index);
+    }
+
 
     render (){
 
@@ -126,6 +130,7 @@ class EducationHistory extends Component {
                     changeItemHandler={this.changeItemHandler}
                     hisItemRemoveHandler = {this.hisItemRemoveHandler}
                     isLastItem={this.props.contents.length === index+1}
+                    changeEduItemProfileImg={this.changeEduItemProfileImg}
                     />
         })
 

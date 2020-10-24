@@ -368,6 +368,22 @@ class UserFolioPage extends Component {
         this.setState({profileBlocks: newProfile}) 
     }
 
+    // change the image for a job history item
+    changeJobItemProfileImg = (img, index) => {
+        let newJobs = this.jobHisCopy();
+        newJobs[index].urlThumbnail = img;
+
+        this.setState({itemBlocks_Job: newJobs});
+    }
+
+    // change the image for a edu history item
+    changeEduItemProfileImg = (img, index) => {
+        let newEdus = this.eduHisCopy();
+        newEdus[index].urlThumbnail = img;
+
+        this.setState({itemBlocks_Education: newEdus});
+    }
+
     render() {
         const pdfRoute = "/api/users/createPDF/";
           return (
@@ -390,7 +406,8 @@ class UserFolioPage extends Component {
                     changeItemHandler = {this.eduChangeHisItemHandler}
                     hisItemRemoveHandler = {this.eduItemRemoveHandler}
                     hisAddNewItemHandler = {this.eduAddNewItemHandler}
-                    hasEditingRight = {this.checkHasRightToEdit()}/>
+                    hasEditingRight = {this.checkHasRightToEdit()}
+                    changeEduItemProfileImg={this.changeEduItemProfileImg}/>
 
                 }
 
@@ -401,7 +418,8 @@ class UserFolioPage extends Component {
                     changeItemHandler = {this.jobChangeHisItemHandler}
                     hisItemRemoveHandler = {this.jobItemRemoveHandler}
                     hisAddNewItemHandler = {this.jobAddNewItemHandler}                
-                    hasEditingRight = {this.checkHasRightToEdit()}/>
+                    hasEditingRight = {this.checkHasRightToEdit()}
+                    changeJobItemProfileImg={this.changeJobItemProfileImg}/>
                 }
 
                 {!this.checkHasRightToEdit() && this.state.itemBlocks_Project.length === 0?

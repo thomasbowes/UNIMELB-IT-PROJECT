@@ -3,6 +3,7 @@ import './JobHistoryItem.css';
 import Aux from '../../../../hoc/Auxiliary/Auxiliary'
 import EditForm from '../../EditForm/EditForm';
 import EditIcon from '../../../../assets/EditIcons/edit.svg';
+import FilesUpload from '../../../FilesUpload/FilesUpload';
 
 
 class JobHistoryItem extends Component {
@@ -39,6 +40,10 @@ class JobHistoryItem extends Component {
     itemDeleteHandler = () => {
         this.setState({itemEditable: false});
         this.props.hisItemRemoveHandler(this.props.id);
+    }
+
+    changeJobItemProfileImg = (img) => {
+        this.props.changeJobItemProfileImg(img, this.props.id);
     }
 
 
@@ -85,6 +90,14 @@ class JobHistoryItem extends Component {
                                     isDeletable={true}
                                     deleteItem={this.itemDeleteHandler}
                                     />
+                                <FilesUpload
+                                    type='ItemBlock'
+                                    maxFiles = {1}
+                                    itemBlock_id= {this.props.item._id}
+                                    accept = 'image/*'
+                                    fileRejectMessage = 'Image only'
+                                    returnResult = {this.changeJobItemProfileImg}
+                                />
                             </div>
                         }
                     </div>

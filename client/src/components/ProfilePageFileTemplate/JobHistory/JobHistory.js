@@ -113,6 +113,10 @@ class JobHistory extends Component {
         return <input className="education-history__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>
     }
 
+    changeJobItemProfileImg = (img, index) => {
+        this.props.changeJobItemProfileImg(img, index);
+    }
+
 
     render (){
 
@@ -125,6 +129,7 @@ class JobHistory extends Component {
                     changeItemHandler={this.changeItemHandler}
                     hisItemRemoveHandler = {this.hisItemRemoveHandler}
                     isLastItem={this.props.contents.length === index+1}
+                    changeJobItemProfileImg={this.changeJobItemProfileImg}
                     />
         })
 

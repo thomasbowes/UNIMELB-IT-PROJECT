@@ -3,6 +3,7 @@ import './EducationHistoryItem.css';
 import Aux from '../../../../hoc/Auxiliary/Auxiliary'
 import EditForm from '../../EditForm/EditForm';
 import EditIcon from '../../../../assets/EditIcons/edit.svg';
+import FilesUpload from '../../../FilesUpload/FilesUpload';
 
 
 class EducationalHistoryItem extends Component {
@@ -39,6 +40,11 @@ class EducationalHistoryItem extends Component {
         this.setState({itemEditable: false});
         this.props.hisItemRemoveHandler(this.props.id);
     }
+
+    changeEduItemProfileImg = (img) => {
+        this.props.changeEduItemProfileImg(img, this.props.id);
+    }
+
 
 
     render(){
@@ -83,6 +89,14 @@ class EducationalHistoryItem extends Component {
                                     isDeletable={true}
                                     deleteItem={this.itemDeleteHandler}
                                     />
+                                <FilesUpload
+                                    type='ItemBlock'
+                                    maxFiles = {1}
+                                    itemBlock_id= {this.props.item._id}
+                                    accept = 'image/*'
+                                    fileRejectMessage = 'Image only'
+                                    returnResult = {this.changeEduItemProfileImg}
+                                />
                             </div>
                         }
                     </div>
