@@ -211,9 +211,12 @@ const registerNewUser = function(req, res){
                        newUser.password = hash;
                        newUser.save()
                            .then(() => {
+                               let combinedName = newUser.firstname + " " + newUser.lastname;
                                // autogenerate new profile block for new user
                                const newProfile = new ProfileBlock({
-                                   user_id: newUser._id
+                                   user_id: newUser._id,
+                                   name: combinedName,
+                                   email: newUser.email
                                });
 
                                newProfile.save()
@@ -424,7 +427,8 @@ const changeDetails = (req, res) => {
     .findOneAndUpdate(query, req.body.contents, {upsert: true})
     .then(item => {
       res.status(200).json({
-        status: "User details have been successfully updated"
+        status: "User details have been successfully updated",
+        userDetails: item
       });
     })
     .catch(error => {
