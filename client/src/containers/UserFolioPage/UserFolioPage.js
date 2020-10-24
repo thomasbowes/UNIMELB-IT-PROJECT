@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './UserFolioPage.css'
+import {Link} from "react-router-dom"
 
 
 import ProfileBlockWithImage from '../../components/ProfilePageFileTemplate/ProjectBlockWithImage/ProfileBlockWithImage';
@@ -311,13 +312,16 @@ class UserFolioPage extends Component {
     }
 
     render() {
+        const pdfRoute = "/api/users/creatPDF/";
           return (
             <div className="UserFolioPage">
 
                 <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' hasEditingRight={this.checkHasRightToEdit()}
                     changeProfileValues={this.changeProfileValues} values={this.state.profileBlocks}/>
                 {this.checkHasRightToEdit()?
-                    <button>Convert this myFolioPage to pdf</button>
+                    <Link to= {pdfRoute + this.props.match.params.userId}>
+                        <button>Convert this myFolioPage to pdf</button>
+                    </Link>
                 :   null}
                 <button>Share this userFolioPage</button>
                 

@@ -10,6 +10,7 @@ const ItemBlockSchema = new mongoose.Schema({
     	required: true,
     	immutable: true
     },
+    // title field can also be substituted by role or degree
     title: {type: String, required: true},
     description: {type: String, required: false},
     // replace default value with cloudinary url
