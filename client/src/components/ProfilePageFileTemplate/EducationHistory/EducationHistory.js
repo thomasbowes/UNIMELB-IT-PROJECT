@@ -38,7 +38,7 @@ class EducationHistory extends Component {
         axios.post('/api/itemblocks/update',data, headers)
             .then((res)=>{
                     //console.log(res.data.item);
-                    this.props.changeItemHandler(id, input);
+                    this.props.changeItemHandler(id, res.data.item);
                 }
             )
             .catch((err)=>{

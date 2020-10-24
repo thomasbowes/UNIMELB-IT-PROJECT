@@ -74,33 +74,29 @@ class ProjectPage extends Component {
 
     changeTitleDes = (inputs) => {
 
-        this.setState({projectBlock: inputs});
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
 
-        // let authToken;
-        // if (!this.props.userAuthToken) authToken = '';
-        // else authToken = this.props.userAuthToken.token;
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
 
-        // const headers = {
-        //     headers: {
-        //         'Authorization': "Bearer " + authToken
-        //     }
-        // }
+        const data = {
+            item_id: this.props.match.params.projectId,
+            contents: inputs
+        }
 
-        // const data = {
-        //     item_id: this.props.match.params.projectId,
-        //     contents: {title: inputs[0], description: inputs[1]}
-        // }
-
-        // axios.post('/api/itemblocks/update',data, headers)
-        //     .then((res)=>{
-        //             //console.log(res.data.item);
-        //             this.setState({title: inputs[0], description: inputs[1]});
-        //             //this.setState({title: res.data.item.title, description: res.data.item.description});
-        //         }
-        //     )
-        //     .catch((err)=>{
-        //         console.log(err);
-        //     })
+        axios.post('/api/itemblocks/update',data, headers)
+            .then((res)=>{
+                    this.setState({projectBlock: res.data.item});
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
     }
 
     deleteImageByIndex = (index) => {
@@ -253,7 +249,7 @@ class ProjectPage extends Component {
         return (
             <div className="project-page-container">
                 <div style={{margin: "1rem 0"}}>
-                    <Link to={"/userfolio/" + this.props.match.params.userId}>
+                    <Link to={"/userfolio/" + this.props.match.params.userId} >
                         <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
                     </Link>
                 </div>
@@ -273,7 +269,7 @@ class ProjectPage extends Component {
                 </Aux>}
 
                 {this.checkHasRightToEdit() && this.state.editMode?
-                    <Link to={"/userfolio/" + this.props.match.params.userId}>
+                    <Link to={"/userfolio/" + this.props.match.params.userId } onClick={() => window.location.reload()}>
                         <button onClick={this.deleteProjectHandler}>Delete this project</button>
                     </Link>
                 :   null }
@@ -318,7 +314,7 @@ class ProjectPage extends Component {
                 />:null}
                    
                 {this.checkHasRightToEdit() && this.state.editMode?
-                    <Link to={"/userfolio/" + this.props.match.params.userId}>
+                    <Link to={"/userfolio/" + this.props.match.params.userId} onClick={() => window.location.reload()}>
                         <button onClick={this.deleteProjectHandler}>Delete this project</button>
                     </Link>
                 :   null }
