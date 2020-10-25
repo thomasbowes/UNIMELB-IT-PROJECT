@@ -3,6 +3,7 @@ import './EducationHistoryItem.css';
 import Aux from '../../../../hoc/Auxiliary/Auxiliary'
 import EditForm from '../../EditForm/EditForm';
 import EditIcon from '../../../../assets/EditIcons/edit.svg';
+import FilesUpload from '../../../FilesUpload/FilesUpload';
 
 
 class EducationalHistoryItem extends Component {
@@ -40,6 +41,11 @@ class EducationalHistoryItem extends Component {
         this.props.hisItemRemoveHandler(this.props.id);
     }
 
+    changeEduItemProfileImg = (img) => {
+        this.props.changeEduItemProfileImg(img, this.props.id);
+    }
+
+
 
     render(){
         let overviewOffset = ["overview__title"]; //classes
@@ -53,7 +59,7 @@ class EducationalHistoryItem extends Component {
                 <div className="education-history-item">
                     <div className="education-history__pic">
                         <a href="#image">
-                            <img src={this.props.item["thumbnail"]} alt="education-history"/>
+                            <img src={this.props.item.urlThumbnail} alt="education-history"/>
                         </a>
                         {/* {this.state.itemEditable? <button>Edit Image</button>:null} */}
                     </div>
@@ -62,7 +68,7 @@ class EducationalHistoryItem extends Component {
                             <Aux>
                                 <div className={overviewOffset.join(" ")}>
                                 <a href="#title">
-                                        <h1>{this.props.item["title"]}</h1>
+                                        <h1>{this.props.item["organisation"] + ": " + this.props.item["title"]}</h1>
                                     </a>
 
                                     <h1>{this.props.item["startDate"]} - {this.props.item["endDate"]}</h1>
@@ -83,6 +89,14 @@ class EducationalHistoryItem extends Component {
                                     isDeletable={true}
                                     deleteItem={this.itemDeleteHandler}
                                     />
+                                <FilesUpload
+                                    type='ItemBlock'
+                                    maxFiles = {1}
+                                    itemBlock_id= {this.props.item._id}
+                                    accept = 'image/*'
+                                    fileRejectMessage = 'Image only'
+                                    returnResult = {this.changeEduItemProfileImg}
+                                />
                             </div>
                         }
                     </div>

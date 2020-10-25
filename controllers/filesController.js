@@ -109,10 +109,13 @@ const deleteAllFilesIn = (req,res) => {
 
                 //remove form DB
                 File.deleteMany(query)
-                    .catch(error => console.log(error));
-
-                resolve();
-
+                    .then(()=>{
+                        resolve();
+                    })
+                    .catch( (error) => {
+                        console.log(error);
+                        reject();
+                    });
             })
             .catch(error => {
                 console.log(error);
@@ -151,3 +154,4 @@ const deleteFileCloudinary = (public_id, resource_type) => {
 module.exports.deleteAFile = deleteAFile;
 module.exports.seeAllFiles = seeAllFiles;
 module.exports.deleteAllFiles = deleteAllFiles;
+module.exports.deleteAllFilesIn = deleteAllFilesIn;

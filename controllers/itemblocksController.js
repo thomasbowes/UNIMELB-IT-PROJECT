@@ -6,6 +6,8 @@ dotenv.config({ path: './.env' });
 
 const ItemBlock = mongoose.model('ItemBlock');
 
+const filesControllers = require('./filesController');
+
 // Middleware passed to make sure that required contents of create request is present
 const checkCreateBody = (req, res, next) => {
 	// check if required fields for creating itemblock are present
@@ -97,16 +99,25 @@ const deleteItem = (req, res, next) => {
 	const itemid = req.body.item_id;
 	const query = { _id: itemid };
 
-	ItemBlock
-		.deleteOne(query)
-		.then(() => {
-			res.status(200).json({
-				status: "Item block has been successfully deleted"
-			});
+	filesControllers.deleteAllFilesIn(req, res)
+		.then(()=>{
+			ItemBlock
+				.deleteOne(query)
+				.then(() => {
+					res.status(200).json({
+						status: "Item block has been successfully deleted"
+					});
+				})
+				.catch(error => {
+					res.status(500).json({
+						status: "An error has occurred trying to delete an item block",
+						err: error
+					});
+				});
 		})
-		.catch(error => {
+		.catch(()=>{
 			res.status(500).json({
-				status: "An error has occurred trying to delete an item block",
+				status: "An error has occurred trying to delete all files",
 				err: error
 			});
 		});

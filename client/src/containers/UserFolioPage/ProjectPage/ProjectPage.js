@@ -4,12 +4,10 @@ import AttachmentItem from '../../../components/ProfilePageFileTemplate/Attachme
 import './ProjectPage.css'
 
 import EditIcon from '../../../assets/EditIcons/edit.svg';
-import AddIcon from '../../../assets/EditIcons/add.svg';
 import CancelIcon from '../../../assets/EditIcons/cancel.svg';
+import {Link} from 'react-router-dom'
 
-import BackDrop from '../../../components/UI/BackDrop/BackDrop'
 import FilesUpload from '../../../components/FilesUpload/FilesUpload';
-import ImgUpload from '../../../components/FilesUpload/ImgUpload';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
 
 //redux
@@ -19,17 +17,7 @@ import axios from "axios";
 
 import crossIcon from '../../../assets/LoginPage-icons/cross.svg';
 
-import eggImg1 from '../../../assets/ProfilePageDocuments/egg1.jpg'
-import eggImg2 from '../../../assets/ProfilePageDocuments/egg2.jpg'
-import eggImg3 from '../../../assets/ProfilePageDocuments/egg3.jpg'
-import eggImg4 from '../../../assets/ProfilePageDocuments/egg4.jpg'
-import eggImg5 from '../../../assets/ProfilePageDocuments/egg5.jpg'
-
 import EditForm from '../../../components/ProfilePageFileTemplate/EditForm/EditForm';
-
-const defaultTitle = "My theses on eggs"
-const defaultDes = "The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering.The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering."
-
 
 
 class ProjectPage extends Component {
@@ -37,21 +25,15 @@ class ProjectPage extends Component {
     state = {
         showPdf: false,
         files: [],
-      
-        titleDesEditable: false,
-        filesEditable: false,
-        
         editMode: false,
-        
-        title: defaultTitle,
-        description: defaultDes        
+        projectBlock: {}
     }
 
 
     componentDidMount() {
         //const item_id = this.props.itemBlock_id;5f81bdf6db99e33e48002c54
 
-        const item_id = "5f81bdf6db99e33e48002c54";
+        const item_id = this.props.match.params.projectId;
 
         if(!item_id) return;
 
@@ -76,15 +58,30 @@ class ProjectPage extends Component {
        
 
     changeTitleDes = (inputs) => {
-        this.setState({title: inputs[0], description: inputs[1]})
-    }
 
-    changeTitleDesEditable = () => {
-        this.setState({titleDesEditable: !this.state.titleDesEditable})
-    }
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
 
-    changeFileEditable = () => {
-        this.setState({filesEditable: !this.state.filesEditable})
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            item_id: this.props.match.params.projectId,
+            contents: inputs
+        }
+
+        axios.post('/api/itemblocks/update',data, headers)
+            .then((res)=>{
+                    this.setState({projectBlock: res.data.item});
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
     }
 
     deleteImageByIndex = (index) => {
@@ -124,11 +121,16 @@ class ProjectPage extends Component {
         // otherwise return false
     }
 
+    changeEditable = () => {
+        const newEditMode = ! this.state.editMode
+        this.setState({editMode: newEditMode})
+    }
+
     editButtons = () => {
-        if (this.state.titleDesEditable){
-            return <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={() => {this.changeTitleDesEditable(); this.changeFileEditable(); this.setState({editMode: false})}} />  
+        if (this.state.editMode){
+            return <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.changeEditable} />  
         }
-        return <input className="education-history__edit" type="image" src={EditIcon} onClick={() => {this.changeTitleDesEditable(); this.changeFileEditable(); this.setState({editMode: true})}} alt="edit"/>
+        return <input className="education-history__edit" type="image" src={EditIcon} onClick={this.changeEditable} alt="edit"/>
     }
 
     // Renders all the attachment blocks that are not images when in view mode
@@ -137,23 +139,53 @@ class ProjectPage extends Component {
     getImages = (items) => {
         let imageList = [];
         for (let i=0; i<items.length; i++) {
-            if (items[i].mimetype.slice(0, 5) == "image") {
+            if (items[i].mimetype.slice(0, 5) === "image") {
                 imageList.push(items[i]);
             }
         }
         return imageList;
     }
 
+    addFile = (file) => {
+        let files = [...this.state.files];
+        files.push(file);
+        this.setState({files: files})
+
+    }
+
     deleteAttachmentHandler = (index) => {
-        let filesNew = [...this.state.files];
-        filesNew.splice(index, 1)
-        this.setState({files: filesNew});
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            file_id: this.state.files[index]._id
+        }
+
+        axios.post('/api/files/delete',data, headers)
+            .then((res)=>{
+                    let filesNew = [...this.state.files];
+                    filesNew.splice(index, 1)
+                    this.setState({files: filesNew});
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
+        
     }
 
     galleryFormatConvertor = (items) => {
         let convertedList = [];
         for (let i=0; i<items.length; i++) {
-            if (items[i].mimetype.slice(0, 5) == "image") {
+            if (items[i].mimetype.slice(0, 5) === "image") {
                 convertedList.push({
                     original: items[i].urlCloudinary,
                     thumbnail: items[i].urlCloudinary,
@@ -163,6 +195,63 @@ class ProjectPage extends Component {
         }
         return convertedList;
     }
+
+    // delete the project based on project id
+    deleteProjectHandler = () => {
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            item_id: this.props.match.params.projectId,
+        }
+
+        axios.post('/api/itemblocks/delete',data, headers)
+            .then((res)=>{
+                    return;
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
+
+    }
+
+
+    //get the data right after the user access his/her project page
+    componentWillMount() {
+
+        //set user id for query data
+        const data = {
+            item_id: this.props.match.params.projectId
+        }
+
+        //get itemBlocks
+        axios.post('/api/itemblocks/see', data)
+            .then(res => {
+                console.log(res.data.itemblock);
+
+                if(this.isEmpty(res.data.itemblock)) this.props.history.push({pathname: '/notfound'});
+                this.setState({projectBlock: res.data.itemblock});
+            })
+            .catch(error => {
+                //this.setState({projectBlock: {}});
+                //console.log(error);
+                this.props.history.push({pathname: '/notfound'});
+            });
+    }
+
+    isEmpty = (value) => {
+        return Boolean(value && typeof value === 'object') && !Object.keys(value).length;
+    }
+
 
     render() {
         const showNonImageAttachments = this.state.files.map((item, index) => {
@@ -204,12 +293,15 @@ class ProjectPage extends Component {
         return (
             <div className="project-page-container">
                 <div style={{margin: "1rem 0"}}>
-                    <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                    <Link to={"/userfolio/" + this.props.match.params.userId} >
+                        <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                    </Link>
                 </div>
-                {this.state.titleDesEditable && this.checkHasRightToEdit()? <h1 className="project-page-container__title">Edit Mode</h1>:
-                <h1 className="project-page-container__title">{this.state.title}</h1>}
+                {this.state.editMode && this.checkHasRightToEdit()? 
+                    <h1 className="project-page-container__title">Edit Mode</h1>
+                :<h1 className="project-page-container__title">{this.state.projectBlock.title}</h1>}
                 
-                {this.state.filesEditable? null:   
+                {this.state.editMode? null:   
                 <Aux>
                     <div className="ImageGallery">   
                         {this.getImages(this.state.files).length > 0? 
@@ -219,51 +311,65 @@ class ProjectPage extends Component {
                         :null}
                     </div> 
                 </Aux>}
-                                
-                {this.state.titleDesEditable && this.checkHasRightToEdit()? 
-                    <EditForm values={[this.state.title, this.state.description]} 
-                        changeEditable = {() => {this.changeTitleDesEditable(); this.changeFileEditable(); this.setState({editMode: false})}} 
+
+                {this.checkHasRightToEdit() && this.state.editMode?
+                    <Link to={"/userfolio/" + this.props.match.params.userId }>
+                        <button onClick={this.deleteProjectHandler}>Delete this project</button>
+                    </Link>
+                :   null }
+
+                {this.state.editMode && this.checkHasRightToEdit()? 
+                    <EditForm values={this.state.projectBlock} 
+                        changeEditable = {this.changeEditable} 
                         changeValues={this.changeTitleDes}
-                        fields={["Project Title", "Project Description"]}
+                        fields={["title", "description"]}
                         inputTypes={["input", "large input"]}/>
                     :<Aux>
-                        <p style={{fontSize: "1.2rem"}}>{this.state.description}</p>
+                        <p style={{fontSize: "1.2rem"}}>{this.state.projectBlock.description}</p>
                     </Aux>
                 }
-                {this.state.titleDesEditable && this.checkHasRightToEdit() && (this.state.files.length - this.getImages(this.state.files).length) > 0? 
+                {this.state.editMode && this.checkHasRightToEdit() && (this.state.files.length - this.getImages(this.state.files).length) > 0? 
                 <div className="project-attachment-info">
                     <h3>Delete an attachment</h3>
                 </div>:null}
                 
                 {showNonImageAttachments}
                 
-                {this.state.titleDesEditable && this.checkHasRightToEdit() && this.getImages(this.state.files).length > 0? 
+                {this.state.editMode && this.checkHasRightToEdit() && this.getImages(this.state.files).length > 0? 
                 <div className="project-attachment-info">
                     <h3>Delete an image from carousel</h3>
                 </div>:null}
 
-                {this.state.titleDesEditable && this.checkHasRightToEdit()? 
+                {this.state.editMode && this.checkHasRightToEdit()? 
                 showImageAttachments:null}
 
-                {this.state.titleDesEditable && this.checkHasRightToEdit()? 
+                {this.state.editMode && this.checkHasRightToEdit()? 
                 <div className="project-attachment-info">
                     <h3>Drag and drop images or files below. Images will be added to a viewer and attachments at bottom of page.</h3>
                 </div>:null}    
 
-                {this.state.titleDesEditable && this.checkHasRightToEdit()?
+                {this.state.editMode && this.checkHasRightToEdit()?
                 <FilesUpload
-                    itemBlock_id='5f81bdf6db99e33e48002c54'
+                    itemBlock_id= {this.props.match.params.projectId}
                     type='File'
                     maxFiles = {10}
                     accept = '*'
                     fileRejectMessage = 'Image, audio and video files only'
+                    returnResult = {this.addFile}
                 />:null}
                    
+                {this.checkHasRightToEdit() && this.state.editMode?
+                    <Link to={"/userfolio/" + this.props.match.params.userId}>
+                        <button onClick={this.deleteProjectHandler}>Delete this project</button>
+                    </Link>
+                :   null }
 
                 {this.checkHasRightToEdit()? this.editButtons()
                 : null}
                 <div style={{margin: "1rem 0"}}>
-                    <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                    <Link to={"/userfolio/" + this.props.match.params.userId}>
+                        <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                    </Link>
                 </div>
             </div>
         )

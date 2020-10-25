@@ -5,6 +5,11 @@ import EditIcon from '../../../assets/EditIcons/edit.svg';
 import EditForm from '../EditForm/EditForm';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
 
+//redux
+import { connect } from 'react-redux';
+import axios from "axios";
+import FilesUpload from '../../FilesUpload/FilesUpload';
+
 class UserProfile extends Component{
 
     state = {
@@ -21,14 +26,41 @@ class UserProfile extends Component{
         this.setState({editable: !oldEditable, nameEditing: false, highLevelDesEditing: false, descriptionEditing: false})
     }
 
-    changeValues = (inputs) => {
-        this.props.changeProfileValues(inputs);
-
-
-
+    changeProfilePic = (img) => {
+        this.props.changeProfilePic(img);
     }
 
-    
+    changeValues = (inputs) => {
+
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const input_copy = {...inputs};
+
+        delete input_copy.urlProfile;
+
+        const data = {
+            profile_id: input_copy._id,
+            contents: input_copy
+        }
+
+        axios.post('/api/profileblocks/update',data, headers)
+            .then((res)=>{
+                this.props.changeProfileValues(res.data.profile);
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
+    }
 
     render(){
         return (
@@ -39,12 +71,21 @@ class UserProfile extends Component{
                     </div>
 
                     {this.state.editable && this.props.hasEditingRight? 
-                        <EditForm values={this.props.values} 
-                            fields={["name", "title", "email", "location", "phone", "website", "aboutMe"]} 
-                            inputTypes={["input", "input", "input", "input", "input", "input", "large input"]} 
-                            isDeletable={false}
-                            changeValues={this.changeValues} 
-                            changeEditable={this.changeEditable}/>
+                        <Aux>
+                            <EditForm values={this.props.values} 
+                                fields={["name", "title", "email", "location", "phone", "website", "aboutMe"]} 
+                                inputTypes={["input", "input", "input", "input", "input", "input", "large input"]} 
+                                isDeletable={false}
+                                changeValues={this.changeValues} 
+                                changeEditable={this.changeEditable}/>
+                            <FilesUpload
+                                type='User'
+                                maxFiles = {1}
+                                accept = 'image/*'
+                                fileRejectMessage = 'Image only'
+                                returnResult = {this.changeProfilePic}
+                            />
+                        </Aux>
                         :
                         <div className="UserInfoHolder">
                             <div className="UserInfo">
@@ -54,11 +95,11 @@ class UserProfile extends Component{
                                 <h2>{this.props.values.title}</h2> 
                             </div>
                             <div className="Objective">
-                                <p>Email: {this.props.values.email}</p>
-                                <p>Location: {this.props.values.location}</p>
-                                <p>Phone Number: {this.props.values.phone}</p>
-                                <p>Website: {this.props.values.website}</p>
-                                <p>{this.props.values.aboutMe}</p> 
+                                {this.props.values.email && this.props.values.email.length >0 ? <p>Email: {this.props.values.email}</p>: null}
+                                {this.props.values.location && this.props.values.location.length >0 ? <p>Location: {this.props.values.location}</p>: null}
+                                {this.props.values.phone && this.props.values.phone.length >0 ? <p>Phone Number: {this.props.values.phone}</p>: null}
+                                {this.props.values.website && this.props.values.website.length >0 ? <p>Website: {this.props.values.website}</p>: null}
+                                {this.props.values.aboutMe && this.props.values.aboutMe.length >0 ? <p>{this.props.values.aboutMe}</p>: null}
                                 
                             </div>
                         </div>}
@@ -72,4 +113,19 @@ class UserProfile extends Component{
     }
 }
 
-export default UserProfile;
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        LoginMessage: state.auth.message,
+        userAuthToken: state.auth.userAuthToken
+    };
+};
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

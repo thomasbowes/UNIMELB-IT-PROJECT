@@ -3,6 +3,7 @@ import './JobHistoryItem.css';
 import Aux from '../../../../hoc/Auxiliary/Auxiliary'
 import EditForm from '../../EditForm/EditForm';
 import EditIcon from '../../../../assets/EditIcons/edit.svg';
+import FilesUpload from '../../../FilesUpload/FilesUpload';
 
 
 class JobHistoryItem extends Component {
@@ -11,7 +12,6 @@ class JobHistoryItem extends Component {
         jobEditable: false,
         durationEditable: false,
         descriptionEditable: false,
-
     }
 
     componentDidUpdate = () => {
@@ -41,6 +41,11 @@ class JobHistoryItem extends Component {
         this.props.hisItemRemoveHandler(this.props.id);
     }
 
+    changeJobItemProfileImg = (img) => {
+        this.props.changeJobItemProfileImg(img, this.props.id);
+    }
+
+
 
     render(){
         let overviewOffset = ["overview__title"]; //classes
@@ -54,7 +59,7 @@ class JobHistoryItem extends Component {
                 <div className="job-history-item">
                     <div className="education-history__pic">
                         <a href="#image">
-                            <img src={this.props.item["thumbnail"]} alt="job-history"/>
+                            <img src={this.props.item["urlThumbnail"]} alt="job-history"/>
                         </a>
                         {/* {this.state.itemEditable? <button>Edit Image</button>:null} */}
                     </div>
@@ -63,7 +68,7 @@ class JobHistoryItem extends Component {
                             <Aux>
                                 <div className={overviewOffset.join(" ")}>
                                     <a href="#title">
-                                        <h1>{this.props.item["title"]}</h1>
+                                        <h1>{this.props.item["organisation"] + ": " + this.props.item["title"]}</h1>
                                     </a>
 
                                     <h1>{this.props.item["startDate"]} - {this.props.item["endDate"]}</h1>
@@ -84,6 +89,14 @@ class JobHistoryItem extends Component {
                                     isDeletable={true}
                                     deleteItem={this.itemDeleteHandler}
                                     />
+                                <FilesUpload
+                                    type='ItemBlock'
+                                    maxFiles = {1}
+                                    itemBlock_id= {this.props.item._id}
+                                    accept = 'image/*'
+                                    fileRejectMessage = 'Image only'
+                                    returnResult = {this.changeJobItemProfileImg}
+                                />
                             </div>
                         }
                     </div>
@@ -102,4 +115,4 @@ class JobHistoryItem extends Component {
     }
 }
 
-export default JobHistoryItem
+export default JobHistoryItem; 

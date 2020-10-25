@@ -6,6 +6,9 @@ import EditIcon from '../../../assets/EditIcons/edit.svg';
 import AddIcon from '../../../assets/EditIcons/add.svg';
 import CancelIcon from '../../../assets/EditIcons/cancel.svg';
 
+import {connect} from "react-redux";
+import axios from "axios";
+
 class JobHistory extends Component {
 
     state = {editable: false}
@@ -16,15 +19,94 @@ class JobHistory extends Component {
     }
 
     changeItemHandler = (id, input) => {
-        this.props.changeItemHandler(id, input);
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const input_copy = {...input};
+
+        delete input_copy.urlThumbnail;
+
+        const data = {
+            item_id: input_copy._id,
+            contents: input_copy
+        }
+
+        axios.post('/api/itemblocks/update',data, headers)
+            .then((res)=>{
+                    this.props.changeItemHandler(id, res.data.item);
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
     }
 
     hisItemRemoveHandler = (hisItemIndex) => {
-        this.props.hisItemRemoveHandler(hisItemIndex);
+
+        const target = this.props.contents[hisItemIndex];
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            item_id: target._id,
+        }
+
+        axios.post('/api/itemblocks/delete',data, headers)
+            .then((res)=>{
+                    this.props.hisItemRemoveHandler(hisItemIndex);
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
     }
 
     addNewItemHander = () => {
-        this.props.hisAddNewItemHandler();
+        // this.props.hisAddNewItemHandler();
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            contents: {
+                type: 'Job',
+                title: 'New Job Block'
+            }
+        }
+
+        axios.post('/api/itemblocks/create',data, headers)
+            .then((res)=>{
+                this.props.hisAddNewItemHandler(res.data.item);
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+        })
+
+
     }
 
     // if the content is being edited, return the cross button. Otherwise return the pencil button
@@ -33,6 +115,10 @@ class JobHistory extends Component {
             return <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.editableHandler} />  
         }
         return <input className="education-history__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>
+    }
+
+    changeJobItemProfileImg = (img, index) => {
+        this.props.changeJobItemProfileImg(img, index);
     }
 
 
@@ -47,6 +133,7 @@ class JobHistory extends Component {
                     changeItemHandler={this.changeItemHandler}
                     hisItemRemoveHandler = {this.hisItemRemoveHandler}
                     isLastItem={this.props.contents.length === index+1}
+                    changeJobItemProfileImg={this.changeJobItemProfileImg}
                     />
         })
 
@@ -70,4 +157,18 @@ class JobHistory extends Component {
     }
 }
 
-export default JobHistory; 
+
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+        userAuthToken: state.auth.userAuthToken
+    };
+};
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(JobHistory);

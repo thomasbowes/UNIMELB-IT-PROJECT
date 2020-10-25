@@ -31,7 +31,7 @@ class ProfileBlockWithImage extends Component {
                         {this.props.item.description}    
                     </div>
                     <div className="overview__see-more">
-                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item.public_id}>See more</Link>
+                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id}>See more</Link>
                     </div>
                 </div>
             </section>
