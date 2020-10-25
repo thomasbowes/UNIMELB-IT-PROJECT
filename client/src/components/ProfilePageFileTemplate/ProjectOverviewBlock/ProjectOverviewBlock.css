@@ -9,6 +9,7 @@
     height: auto;
     font-family: "kumbh sans", sans-serif;
     overflow: hidden;
+    position: relative;
 }
 
 .project-block-with-image:hover {
@@ -34,6 +35,7 @@
     overflow: hidden;
     flex-grow: 1;
     flex-basis: 0;
+    
 }
 
 .overview__title {
@@ -73,4 +75,10 @@
 .overview__see-more a:hover {
     color: rgba(8, 103, 150, 1);
     text-decoration: underline;
+}
+
+.overview-item_edit {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
 }

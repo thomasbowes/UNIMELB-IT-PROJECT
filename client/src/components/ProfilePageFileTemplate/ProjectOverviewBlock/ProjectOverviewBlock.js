@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import './ProjectOverviewBlock.css'
 import {Link} from 'react-router-dom'
 import ShowMoreText from 'react-show-more-text';
+import Aux from '../../../hoc/Auxiliary/Auxiliary'
+import EditIcon from '../../../assets/EditIcons/edit.svg';
 
 class ProfileBlockWithImage extends Component {
     
@@ -44,6 +46,13 @@ class ProfileBlockWithImage extends Component {
                 <div className="overview__see-more">
                     <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id}>See more</Link>
                 </div>
+
+                {this.props.hasEditingRight? 
+                    <Aux>
+                        <input className="overview-item_edit" type="image" src={EditIcon} onClick={this.itemEditableHandler} alt="edit"/>
+                        
+                    </Aux> 
+                    :null}
             </div>
             </section>
         );

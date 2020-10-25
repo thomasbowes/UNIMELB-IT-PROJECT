@@ -67,7 +67,6 @@
 }
 
 .bio__about {
-    height: 3rem;
     overflow: hidden;
     text-overflow: ellipsis;
     color: rgba(0,0,0,0.6);

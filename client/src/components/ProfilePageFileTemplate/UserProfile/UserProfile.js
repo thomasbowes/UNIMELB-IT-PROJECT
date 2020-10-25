@@ -99,7 +99,6 @@ class UserProfile extends Component{
                                 {this.props.values.location && this.props.values.location.length >0 ? <p>Location: {this.props.values.location}</p>: null}
                                 {this.props.values.phone && this.props.values.phone.length >0 ? <p>Phone Number: {this.props.values.phone}</p>: null}
                                 {this.props.values.website && this.props.values.website.length >0 ? <p>Website: {this.props.values.website}</p>: null}
-                                {this.props.values.aboutMe && this.props.values.aboutMe.length >0 ? <p>{this.props.values.aboutMe}</p>: null}
                                 
                             </div>
                         </div>}
@@ -107,6 +106,12 @@ class UserProfile extends Component{
                     {this.state.editable || (!this.props.hasEditingRight) ? null
                                         :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeEditable} />}
                 </div>
+                
+                {this.props.values.aboutMe && this.props.values.aboutMe.length >0 ? <div className="User-info">
+                    <p>{this.props.values.aboutMe}</p>
+                    </div>
+                    : null}
+                
             </Aux>
         );
 

@@ -169,7 +169,12 @@ class UserFolioPage extends Component {
 
     projectOverviewBlock = () => {
         return this.state.itemBlocks_Project.map((item, index) => {
-            return <ProjectOverviewBlock item={item} index={index} key={item._id}/>
+            return <ProjectOverviewBlock 
+            item={item} 
+            index={index} 
+            key={item._id}
+            hasEditingRight={this.checkHasRightToEdit()}
+            />
         })
     }
 

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './SearchItem.css'
 import defaultUserImage from '../../../assets/ProfilePageDocuments/defaultUserImage.jpg'
 import {Link} from 'react-router-dom';
+import ShowMoreText from 'react-show-more-text';
 
 const defaultTitle = ""
 
@@ -34,7 +35,18 @@ class SearchItem extends Component{
 
                     <div className="bio__about ">
                         {this.props.aboutMe !== "" ? 
-                         <p>{this.props.aboutMe}</p>
+                        <ShowMoreText
+                        /* Default options */
+                        lines={3}
+                        more=''
+                        less=''
+                        anchorClass=''
+                        onClick={()=>console.log("easteregg")}
+                        expanded={false}
+                        
+                        >
+                            <p>{this.props.aboutMe}</p>
+                        </ShowMoreText> 
                         :null}
                     </div>
 
