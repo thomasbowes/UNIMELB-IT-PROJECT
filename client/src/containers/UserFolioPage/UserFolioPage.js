@@ -12,6 +12,8 @@ import google1 from '../../assets/ProfilePageDocuments/google.png';
 import "react-image-gallery/styles/css/image-gallery.css";
 import UserProfile from '../../components/ProfilePageFileTemplate/UserProfile/UserProfile'
 
+import ImgUpload from "../../components/FilesUpload/ImgUpload";
+
 //redux
 import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
@@ -249,6 +251,7 @@ class UserFolioPage extends Component {
     render() {
         const pdfRoute = "/api/users/createPDF/";
           return (
+              <ImgUpload>
             <div className="UserFolioPage">
 
                 <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' hasEditingRight={this.checkHasRightToEdit()}
