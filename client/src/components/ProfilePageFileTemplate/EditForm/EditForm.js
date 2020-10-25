@@ -83,7 +83,6 @@ class EditForm extends Component{
                             <form key={index} className="edit-form__single-form-entry">
                                 <label for={this.state.fields[index]}>Set {this.state.fields[index]}:</label>
                                 <select id={this.state.fields[index]} name={this.state.fields[index]} onChange={(event) => this.timePeriodInputChangeHandler(event, value)} value={this.state.inputs[value]} >
-                                    <option value="">n/a</option>
                                     {this.state.fields[index] === "endDate"?<option value="present">present</option>:null}
                                     { _.range(MAXYEAR, MINYEAR-1).map(value => <option key={value} value={value}>{value}</option>) }
                                 </select>

@@ -3,9 +3,10 @@ import './UserFolioPage.css'
 import {Link} from "react-router-dom"
 
 
-import ProfileBlockWithImage from '../../components/ProfilePageFileTemplate/ProjectBlockWithImage/ProfileBlockWithImage';
+import ProjectOverviewBlock from '../../components/ProfilePageFileTemplate/ProjectOverviewBlock/ProjectOverviewBlock';
 import EducationHistory from '../../components/ProfilePageFileTemplate/EducationHistory/EducationHistory';
 import JobHistory from '../../components/ProfilePageFileTemplate/JobHistory/JobHistory';
+import AddIcon from '../../assets/EditIcons/add.svg';
 
 import google1 from '../../assets/ProfilePageDocuments/google.png';
 
@@ -166,9 +167,9 @@ class UserFolioPage extends Component {
         this.setState({profileBlocks: values})
     }
 
-    profileBlocks = () => {
+    projectOverviewBlock = () => {
         return this.state.itemBlocks_Project.map((item, index) => {
-            return <ProfileBlockWithImage item={item} index={index} key={item._id}/>
+            return <ProjectOverviewBlock item={item} index={index} key={item._id}/>
         })
     }
 
@@ -286,13 +287,14 @@ class UserFolioPage extends Component {
 
                 {!this.checkHasRightToEdit() && this.state.itemBlocks_Project.length === 0?
                     null
-                :   this.profileBlocks()
+                :   this.projectOverviewBlock()
                 }
 
                 {this.checkHasRightToEdit()?
                     this.addProjectButton()
                 :   null
                 }
+                <button className="education-history__add-new" onClick={this.addNewItemHander}><img src={AddIcon} alt="add-item"/> Add a new Item</button>
                 
             </div>
         

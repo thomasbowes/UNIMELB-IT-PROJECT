@@ -27,6 +27,7 @@
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
+    margin-right: 1rem;
     padding: 1rem 0;
     height: auto;
     box-sizing: border-box;
@@ -51,11 +52,10 @@
 
 
 .overview__description_withImage {
-    overflow: hidden;
-    text-overflow: ellipsis;
     color: rgba(0,0,0,0.6);
     font-size: 0.8rem;
     height: auto;
+    text-align: justify;
 }
 
 .overview__see-more {

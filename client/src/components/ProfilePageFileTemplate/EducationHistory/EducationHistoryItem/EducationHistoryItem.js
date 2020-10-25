@@ -4,7 +4,7 @@ import Aux from '../../../../hoc/Auxiliary/Auxiliary'
 import EditForm from '../../EditForm/EditForm';
 import EditIcon from '../../../../assets/EditIcons/edit.svg';
 import FilesUpload from '../../../FilesUpload/FilesUpload';
-
+import ShowMoreText from 'react-show-more-text';
 
 class EducationalHistoryItem extends Component {
     state = {
@@ -56,6 +56,7 @@ class EducationalHistoryItem extends Component {
 
         return (
             <Aux>
+                
                 <div className="education-history-item">
                     <div className="education-history__pic">
                         <a href="#image">
@@ -73,9 +74,19 @@ class EducationalHistoryItem extends Component {
 
                                     <h1>{this.props.item["startDate"]} - {this.props.item["endDate"]}</h1>
                                 </div>
-
+                                <p className="o-read-more-read-less__toggle"></p>
                                 <div className="overview__description">
-                                    {this.props.item["description"]}
+                                    <ShowMoreText
+                                        /* Default options */
+                                        lines={3}
+                                        more='Show more'
+                                        less='Show less'
+                                        anchorClass=''
+                                        onClick={this.executeOnClick}
+                                        expanded={false}
+                                    >
+                                        {this.props.item["description"]}
+                                    </ShowMoreText>    
                                 </div>
                             </Aux>
                         :

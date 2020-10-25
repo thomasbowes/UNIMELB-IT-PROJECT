@@ -67,7 +67,7 @@ class UserProfile extends Component{
             <Aux>
                 <div className="User-info">
                     <div className="UserPictureHolder">
-                        <img className="UserPicture"src={this.props.values.urlProfile} alt='egg' />
+                        <img className="UserPicture"src={this.props.values.urlProfile} alt='profile-image' />
                     </div>
 
                     {this.state.editable && this.props.hasEditingRight? 
