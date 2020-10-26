@@ -4,6 +4,7 @@ import Aux from '../../../../hoc/Auxiliary/Auxiliary'
 import EditForm from '../../EditForm/EditForm';
 import EditIcon from '../../../../assets/EditIcons/edit.svg';
 import FilesUpload from '../../../FilesUpload/FilesUpload';
+import ShowMoreText from 'react-show-more-text';
 
 
 class JobHistoryItem extends Component {
@@ -74,8 +75,19 @@ class JobHistoryItem extends Component {
                                     <h1>{this.props.item["startDate"]} - {this.props.item["endDate"]}</h1>
                                 </div>
 
-                                <div className="overview__description">
-                                    {this.props.item["description"]}
+                                <div className="overview__description" style={{textAlign: "justify"}}>
+                                    <ShowMoreText
+                                        /* Default options */
+                                        lines={3}
+                                        more='Show more'
+                                        less='Show less'
+                                        anchorClass=''
+                                        onClick={this.executeOnClick}
+                                        expanded={false}
+                                        
+                                    >
+                                        {this.props.item["description"]}
+                                    </ShowMoreText> 
                                 </div>
                             </Aux>
                         :

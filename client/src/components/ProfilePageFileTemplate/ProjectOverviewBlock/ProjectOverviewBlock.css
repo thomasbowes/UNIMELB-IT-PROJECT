@@ -9,6 +9,7 @@
     height: auto;
     font-family: "kumbh sans", sans-serif;
     overflow: hidden;
+    position: relative;
 }
 
 .project-block-with-image:hover {
@@ -27,12 +28,14 @@
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
+    margin-right: 1rem;
     padding: 1rem 0;
     height: auto;
     box-sizing: border-box;
     overflow: hidden;
     flex-grow: 1;
     flex-basis: 0;
+    
 }
 
 .overview__title {
@@ -51,11 +54,10 @@
 
 
 .overview__description_withImage {
-    overflow: hidden;
-    text-overflow: ellipsis;
     color: rgba(0,0,0,0.6);
     font-size: 0.8rem;
     height: auto;
+    text-align: justify;
 }
 
 .overview__see-more {
@@ -73,4 +75,10 @@
 .overview__see-more a:hover {
     color: rgba(8, 103, 150, 1);
     text-decoration: underline;
+}
+
+.overview-item_edit {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
 }

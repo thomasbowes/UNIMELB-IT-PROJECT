@@ -73,7 +73,7 @@ class App extends Component {
             <Route path='/userfolio/:userId' exact component={UserFolioPage} />
             <Route path='/search' component={SearchPage} />
             <Redirect from='/' exact to='/home' />
-            <Route render={() => <h1>URL Not found</h1>}/>
+            <Route render={() => <h1 style={{textAlign: "center", fontFamily: "sans-serif", marginTop: "4rem"}}>Oh Nooo, An error has occured</h1>}/>
           </Switch>
         </div>
         <Footer />

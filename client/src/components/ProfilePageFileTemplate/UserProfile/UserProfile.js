@@ -4,6 +4,7 @@ import './UserProfile.css';
 import EditIcon from '../../../assets/EditIcons/edit.svg';
 import EditForm from '../EditForm/EditForm';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
+import ShowMoreText from 'react-show-more-text';
 
 //redux
 import { connect } from 'react-redux';
@@ -13,17 +14,22 @@ import FilesUpload from '../../FilesUpload/FilesUpload';
 class UserProfile extends Component{
 
     state = {
-        editable: false,
-
+        profileEditable: false,
+        aboutEditable: false,
         nameEditing: false,
         highLevelDesEditing: false,
         descriptionEditing: false
         
     }
 
-    changeEditable = () => {
-        const oldEditable = this.state.editable
-        this.setState({editable: !oldEditable, nameEditing: false, highLevelDesEditing: false, descriptionEditing: false})
+    changeProfileEditable = () => {
+        const oldEditable = this.state.profileEditable
+        this.setState({profileEditable: !oldEditable, nameEditing: false, highLevelDesEditing: false, descriptionEditing: false})
+    }
+
+    changeAboutEditable = () => {
+        const oldEditable = this.state.aboutEditable
+        this.setState({aboutEditable: !oldEditable, nameEditing: false, highLevelDesEditing: false, descriptionEditing: false})
     }
 
     changeProfilePic = (img) => {
@@ -65,19 +71,21 @@ class UserProfile extends Component{
     render(){
         return (
             <Aux>
+                {/* Renders the main profile block with image, name and basic info */}
                 <div className="User-info">
-                    <div className="UserPictureHolder">
-                        <img className="UserPicture"src={this.props.values.urlProfile} alt='egg' />
+                    <div className="UserPicture">
+                        <img src={this.props.values.urlProfile} alt='profile-image' />
                     </div>
 
-                    {this.state.editable && this.props.hasEditingRight? 
+                    {/* Checks if block is in edit mode or view mode*/}
+                    {this.state.profileEditable && this.props.hasEditingRight? 
                         <Aux>
                             <EditForm values={this.props.values} 
-                                fields={["name", "title", "email", "location", "phone", "website", "aboutMe"]} 
-                                inputTypes={["input", "input", "input", "input", "input", "input", "large input"]} 
+                                fields={["name", "title", "email", "location", "phone", "website"]} 
+                                inputTypes={["input", "input", "input", "input", "input", "input"]} 
                                 isDeletable={false}
                                 changeValues={this.changeValues} 
-                                changeEditable={this.changeEditable}/>
+                                changeEditable={this.changeProfileEditable}/>
                             <FilesUpload
                                 type='User'
                                 maxFiles = {1}
@@ -88,25 +96,64 @@ class UserProfile extends Component{
                         </Aux>
                         :
                         <div className="UserInfoHolder">
+                            
                             <div className="UserInfo">
                                 <h1>{this.props.values.name}</h1>
+                                <h2>{this.props.values.title}</h2>
+                                {this.props.values.location && this.props.values.location.length >0 ? <p>{this.props.values.location}</p>: null} 
                             </div>
-                            <div className="UserInfo">
-                                <h2>{this.props.values.title}</h2> 
-                            </div>
+                            
                             <div className="Objective">
-                                {this.props.values.email && this.props.values.email.length >0 ? <p>Email: {this.props.values.email}</p>: null}
-                                {this.props.values.location && this.props.values.location.length >0 ? <p>Location: {this.props.values.location}</p>: null}
-                                {this.props.values.phone && this.props.values.phone.length >0 ? <p>Phone Number: {this.props.values.phone}</p>: null}
-                                {this.props.values.website && this.props.values.website.length >0 ? <p>Website: {this.props.values.website}</p>: null}
-                                {this.props.values.aboutMe && this.props.values.aboutMe.length >0 ? <p>{this.props.values.aboutMe}</p>: null}
+                                {(this.props.values.email && this.props.values.email.length >0) ||
+                                (this.props.values.phone && this.props.values.phone.length >0) ||
+                                (this.props.values.website && this.props.values.website.length >0)? <h3>Contact Info</h3>
+                                :null}
+                                {this.props.values.email && this.props.values.email.length >0 ? <p>{this.props.values.email}</p>: null}
+                                {this.props.values.phone && this.props.values.phone.length >0 ? <p>{this.props.values.phone}</p>: null}
+                                {this.props.values.website && this.props.values.website.length >0 ? <p>{this.props.values.website}</p>: null}
                                 
                             </div>
+                            {/* Switches Block to edit mode */}
+                    {this.state.profileEditable || (!this.props.hasEditingRight) ? null
+                                        :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeProfileEditable} />}
                         </div>}
                     
-                    {this.state.editable || (!this.props.hasEditingRight) ? null
-                                        :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeEditable} />}
                 </div>
+                
+
+
+                {/* Renders the about description. If no description it only shows for the profile owner. */}
+                {this.props.values.aboutMe || this.props.hasEditingRight ? <div className="user-about-block">
+                            <div className="user-about">
+                                <div className="user-about__title">
+                                    <h1>About Me</h1>
+                                </div>
+                                {!this.state.aboutEditable?<div className="overview__description_withImage">  
+                                <ShowMoreText
+                                    lines={6}
+                                    more='Show more'
+                                    less='Show less'
+                                    anchorClass=''
+                                    onClick={this.executeOnClick}
+                                    expanded={false}
+                                    onClick={()=>console.log("easteregg")}
+                                    style={{color: "red"}}>
+                                        <p>{this.props.values.aboutMe}</p>    
+                                </ShowMoreText> 
+                                </div>
+                                :<Aux>
+                                    <EditForm values={this.props.values} 
+                                        fields={["aboutMe"]} 
+                                        inputTypes={["large input"]} 
+                                        isDeletable={false}
+                                        changeValues={this.changeValues} 
+                                        changeEditable={this.changeAboutEditable}/>
+                                </Aux>}
+                            </div>
+                            {this.state.aboutEditable || (!this.props.hasEditingRight) ? null
+                                :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeAboutEditable} />}
+                        </div>
+                        :null}
             </Aux>
         );
 

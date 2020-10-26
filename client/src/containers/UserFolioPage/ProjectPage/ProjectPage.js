@@ -363,7 +363,7 @@ class ProjectPage extends Component {
                         <button onClick={this.deleteProjectHandler}>Delete this project</button>
                     </Link>
                 :   null }
-
+                
                 {this.checkHasRightToEdit()? this.editButtons()
                 : null}
                 <div style={{margin: "1rem 0"}}>

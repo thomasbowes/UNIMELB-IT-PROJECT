@@ -19,32 +19,29 @@ class EditForm extends Component{
         fields: this.props.fields,
         inputTypes: this.props.inputTypes,
         oldValues: this.props.values,
+        requireRerender: false
     }
 
-    // shouldComponentUpdate() {
-    //     return this.state.inputs === this.state.oldValues;
-    //   }
-
+    // form never has to re render to save performance
+    shouldComponentUpdate() {
+        if (this.state.requireRerender) {
+            this.setState({requireRerender: false});
+            return true;
+        }
+        return false;
+    }
 
     inputChangeHandler = (event, value) => {
-        // if (index ===0) {
-        //     console.log(event);
-        // }
         const newValue = event.target.value;
         const newInputs = {...this.state.inputs};
-
         newInputs[value] = newValue;
         this.setState({inputs: newInputs});
     }
 
     //input has to be handled differently for large input
     largeInputChangeHandler = (event, value) => {
-        
-        console.log(event);
-        
         const newValue = event.currentTarget.textContent;
         const newInputs = {...this.state.inputs};
-
         newInputs[value] = newValue;
         this.setState({inputs: newInputs});
     }
@@ -52,9 +49,9 @@ class EditForm extends Component{
     timePeriodInputChangeHandler = (event, value) => {
         const newValue =event.target.value;
         const newInputs = {...this.state.inputs};
-
         newInputs[value] = newValue;
         this.setState({inputs: newInputs});
+        this.state.requireRerender = true
     }
     
     render(){
@@ -72,10 +69,10 @@ class EditForm extends Component{
                         return  (
                             <form key={index} className="edit-form__single-form-entry">
                                 <p className="single-form-entry__desc">Set {this.state.fields[index]}:</p>
-                                <span className="single-form-entry__textarea" role="textbox" 
+                                <div className="single-form-entry__textarea" role="textbox" 
                                     onInput={(event) => this.largeInputChangeHandler(event, value)} 
                                     contentEditable={true}>{this.state.inputs[value]}
-                                </span> 
+                                </div> 
                             </form>
                             )
                     } else if (this.state.inputTypes[index] === timePeriodInput) {
@@ -83,20 +80,14 @@ class EditForm extends Component{
                             <form key={index} className="edit-form__single-form-entry">
                                 <label for={this.state.fields[index]}>Set {this.state.fields[index]}:</label>
                                 <select id={this.state.fields[index]} name={this.state.fields[index]} onChange={(event) => this.timePeriodInputChangeHandler(event, value)} value={this.state.inputs[value]} >
-                                    <option value="">n/a</option>
                                     {this.state.fields[index] === "endDate"?<option value="present">present</option>:null}
                                     { _.range(MAXYEAR, MINYEAR-1).map(value => <option key={value} value={value}>{value}</option>) }
                                 </select>
-
-                                
-                                
                             </form>
-                            
                             )
                     }else {
                         return <p>Error</p>
                     }
-                    
                 })}
                 <hr className="edit-form-horizontal-line"></hr>
                 <div className="edit-form__button-selection">
