@@ -211,7 +211,7 @@ class LogInPage extends Component{
                 <div className="modal">
                     <div className="modal__color-bar"></div>
                     <div className="login-signup"> 
-                        <a className="login-signup__close" href="#login-signup__close" onClick={this.props.clickCross}>
+                        <a className="login-signup__close" href="#login-signup__close" onClick={this.props.close}>
                             <img src={crossIcon} alt="" />
                         </a>
                         <div className="login-signup__form">
@@ -308,6 +308,7 @@ class LogInPage extends Component{
                         </div>
                     </div>   
                 </div>
+                {this.props.userAuthToken? setTimeout(() => {this.props.close()}, 1000):null}
             </div>
         )
     }
