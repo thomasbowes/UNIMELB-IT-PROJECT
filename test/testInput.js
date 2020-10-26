@@ -163,7 +163,7 @@ exports.loginOkay = {
 exports.newUser = {
     firstname: 'TinTin',
     lastname: 'Random',
-    email: 'tester3@mail.com',
+    email: 'folioexchangetesting@gmail.com',
     password: 'tesing123',
     confirm: false,
     isAdmin: false
@@ -172,7 +172,7 @@ exports.newUser = {
 exports.newUserDupEmail = {
     firstname: 'Captain',
     lastname: 'Random',
-    email: 'tester3@mail.com',
+    email: 'folioexchangetesting@gmail.com',
     password: 1234,
     confirm: false,
     isAdmin: false
