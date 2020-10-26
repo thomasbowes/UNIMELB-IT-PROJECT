@@ -37,7 +37,7 @@ const updateProfile = (req, res, next) => {
 
 	ProfileBlock
 		// req.body.contents is an object that contains the fields we want to change in a profile block
-		.findOneAndUpdate(query, req.body.contents, {upsert: true})
+		.findOneAndUpdate(query, req.body.contents, {upsert: true,  new: true})
 		.then(results => {
 			// check if block is present in database 
 			if (!results) {
