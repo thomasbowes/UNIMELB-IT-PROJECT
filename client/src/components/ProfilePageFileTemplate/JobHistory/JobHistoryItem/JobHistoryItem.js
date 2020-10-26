@@ -59,18 +59,13 @@ class JobHistoryItem extends Component {
             <Aux>
                 <div className="job-history-item">
                     <div className="education-history__pic">
-                        <a href="#image">
-                            <img src={this.props.item["urlThumbnail"]} alt="job-history"/>
-                        </a>
-                        {/* {this.state.itemEditable? <button>Edit Image</button>:null} */}
+                        <img src={this.props.item["urlThumbnail"]} alt="job-history"/>
                     </div>
                     <div className="education-history__info">
                         {!this.state.itemEditable? 
                             <Aux>
                                 <div className={overviewOffset.join(" ")}>
-                                    <a href="#title">
-                                        <h1>{this.props.item["organisation"] + ": " + this.props.item["title"]}</h1>
-                                    </a>
+                                     <h1>{this.props.item["organisation"] + ": " + this.props.item["title"]}</h1>
 
                                     <h1>{this.props.item["startDate"]} - {this.props.item["endDate"]}</h1>
                                 </div>

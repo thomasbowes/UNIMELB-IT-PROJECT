@@ -122,6 +122,13 @@ class JobHistory extends Component {
         this.props.changeJobItemProfileImg(img, index);
     }
 
+    addNewItemButton = () => {
+        if (this.props.contents.length >= 10){
+            return <button className="education-history__add-new" disabled="true"><img src={AddIcon} alt="add-item"/> Opps, item limit reached</button>
+        }
+        return <button className="education-history__add-new" onClick={this.addNewItemHander}><img src={AddIcon} alt="add-item"/> Add a new Item</button>
+    }
+
 
     render (){
 
@@ -148,10 +155,12 @@ class JobHistory extends Component {
                 <div className="job-history-items">
                     {allItemsArray}
                 </div>
-                {this.state.editable && this.props.hasEditingRight? <div>
-                            <hr style={{margin: "0"}}/>
-                            <button className="education-history__add-new" onClick={this.addNewItemHander}><img src={AddIcon} alt="add-item"/> Add a new Item</button>
-                        </div>:null}
+                {this.state.editable && this.props.hasEditingRight? 
+                            <div>
+                                <hr style={{margin: "0"}}/>
+                                {this.addNewItemButton()}
+                            </div>
+                            :null}
             </section>
 
         );
