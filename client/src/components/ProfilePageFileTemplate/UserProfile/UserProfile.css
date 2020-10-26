@@ -3,12 +3,13 @@
     background-color: white;
     width: 90%;
     max-width: 108rem;
-    margin: 1rem auto;
+    margin: 0.5rem auto;
     margin-top: 5rem;
     display: flex;
+    
     border: 1px solid rgba(0, 58, 88, 0.2);
     /* height: 15rem; */
-    align-items: flex-start;
+    align-items: stretch;
     overflow-y: hidden;
     position: relative;
 }
@@ -16,6 +17,22 @@
 .User-info:hover {
     border: 1px solid rgba(0, 58, 88, 0.8);
     background: #fbfbfb;
+}
+
+.User-info h1 {
+    color: #003A58;
+}
+
+.User-info h2 {
+    color: #003A58;
+}
+.User-info p {
+    margin: 0.2rem;
+}
+
+.Objective h3 {
+    color: #003A58;
+    margin:0;
 }
 
 .User-info__edit {
@@ -27,7 +44,7 @@
 .UserPicture{
     width: 15rem;
     height: 15rem;
-    margin:  auto 0;
+    margin:  0;
 }
 
 .UserPicture img{
@@ -36,11 +53,13 @@
 }
 
 .UserInfoHolder {
-    margin-top: 1.5rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: left;
-    justify-content: center;
+    justify-content: space-between;
+    max-height: 13rem;
+    box-sizing: border-box;
 }
 
 .UserInfoHolder h1{
@@ -58,13 +77,63 @@
 }
 
 
+.user-about-block {
+    background: white;
+    border: 1px solid rgba(0, 58, 88, 0.2);
+    width: 90%;
+    margin: 0.5rem auto;
+    max-width: 108rem;
+    height: auto;
+    font-family: "kumbh sans", sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+.user-about {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: 1rem 0;
+    height: auto;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+.user-about__title {
+    text-decoration: none;
+    margin-bottom: 0.2rem;
+}
+
+.user-about__title h1{
+    color: #003A58;
+    margin: 0;
+    font-size: 1.5em;
+}
+
 @media (max-width: 40rem) {
-    /* .User{
-        display: block;
-    } */
+    .UserInfoHolder {
+        position: relative;
+    }
+
     .User-info {
         flex-direction: column;
-        align-items: center;
-        /* height: 30rem; */
+        align-items: left;
+    }
+    .UserPicture{
+        width: 100%;
+        height: auto;
+        margin:  0;
+    }
+    
+    .UserPicture img{
+        width: 100%;
+        height: auto;
+    }
+
+    .User-info__edit {
+        position: absolute;
+        right: 0.5rem;
+        top: 0.5rem;
     }
 }

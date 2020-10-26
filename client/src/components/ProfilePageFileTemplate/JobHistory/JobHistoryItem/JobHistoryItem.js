@@ -75,7 +75,7 @@ class JobHistoryItem extends Component {
                                     <h1>{this.props.item["startDate"]} - {this.props.item["endDate"]}</h1>
                                 </div>
 
-                                <div className="overview__description">
+                                <div className="overview__description" style={{textAlign: "justify"}}>
                                     <ShowMoreText
                                         /* Default options */
                                         lines={3}

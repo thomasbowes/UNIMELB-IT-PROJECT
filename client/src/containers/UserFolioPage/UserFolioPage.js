@@ -224,9 +224,9 @@ class UserFolioPage extends Component {
     // return teh add project button
     addProjectButton = () => {
         if (this.state.itemBlocks_Project.length >= 10){
-            return <button onClick={this.addProjectHandler} disabled="true">Reach the maximum 10 projects</button>
+            return <button className="education-history__add-new" onClick={this.addProjectHandler} disabled="true">No more projects can be added, project Limit Reached</button>
         }
-        return <button onClick={this.addProjectHandler}>Add new project: {(this.state.itemBlocks_Project.length+1).toString() + '/10'}</button>
+        return <button className="education-history__add-new" onClick={this.addProjectHandler}><img src={AddIcon} alt="add-item"/> Add a new Project: {(this.state.itemBlocks_Project.length).toString() + '/10'}</button>
     }
 
     // change the profile image
@@ -256,16 +256,20 @@ class UserFolioPage extends Component {
         const pdfRoute = "/api/users/createPDF/";
           return (
             <div className="UserFolioPage">
-
-                <UserProfile itemBlock_id='5f81bdf6db99e33e48002c54' hasEditingRight={this.checkHasRightToEdit()}
-                    changeProfileValues={this.changeProfileValues} values={this.state.profileBlocks}
-                    changeProfilePic={this.changeProfilePic}/>
                 {this.checkHasRightToEdit()?
                     <Link to= {pdfRoute + this.props.match.params.userId}>
                         <button>Convert this myFolioPage to pdf</button>
                     </Link>
                 :   null}
                 <button>Share this userFolioPage</button>
+
+                <UserProfile 
+                    itemBlock_id='5f81bdf6db99e33e48002c54' 
+                    hasEditingRight={this.checkHasRightToEdit()}
+                    changeProfileValues={this.changeProfileValues} 
+                    values={this.state.profileBlocks}
+                    changeProfilePic={this.changeProfilePic}/>
+
                 
                 {!this.checkHasRightToEdit() && this.state.itemBlocks_Education.length === 0?
                     null
@@ -289,7 +293,7 @@ class UserFolioPage extends Component {
                     hasEditingRight = {this.checkHasRightToEdit()}
                     changeJobItemProfileImg={this.changeJobItemProfileImg}/>
                 }
-
+                <div> Projects </div>
                 {!this.checkHasRightToEdit() && this.state.itemBlocks_Project.length === 0?
                     null
                 :   this.projectOverviewBlock()
@@ -299,7 +303,7 @@ class UserFolioPage extends Component {
                     this.addProjectButton()
                 :   null
                 }
-                <button className="education-history__add-new" onClick={this.addNewItemHander}><img src={AddIcon} alt="add-item"/> Add a new Item</button>
+                
                 
             </div>
         
