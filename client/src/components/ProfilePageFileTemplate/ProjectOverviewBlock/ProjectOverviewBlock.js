@@ -51,7 +51,9 @@ class ProfileBlockWithImage extends Component {
 
                 {this.props.hasEditingRight? 
                     <Aux>
-                        <input className="overview-item_edit" type="image" src={EditIcon} onClick={this.itemEditableHandler} alt="edit"/>
+                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id}>
+                            <input className="overview-item_edit" type="image" src={EditIcon} onClick={this.itemEditableHandler} alt="edit"/>
+                        </Link>
                     </Aux> 
                     :null}
             </div>
