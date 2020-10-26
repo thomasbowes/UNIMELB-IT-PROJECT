@@ -257,7 +257,7 @@ class UserFolioPage extends Component {
           return (
             <div className="UserFolioPage">
                 {this.checkHasRightToEdit()?
-                    <Link to= {pdfRoute + this.props.match.params.userId}>
+                    <Link to= {pdfRoute + this.props.match.params.userId} target="_blank">
                         <button>Convert this myFolioPage to pdf</button>
                     </Link>
                 :   null}
