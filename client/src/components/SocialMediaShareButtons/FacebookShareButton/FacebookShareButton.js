@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./FacebookShareButton.module.css";
+import "../socialShared.css";
 import FacebookIcon from '../../../assets/Homepage-icons/facebook-icon.svg';
 
 const facebookShareButton = (props) => {
@@ -13,7 +14,7 @@ const facebookShareButton = (props) => {
     return (
     <div className={classes.button}>
         <a href={facebookLink}>
-            <img src={FacebookIcon} alt="Share Your Profile On Twitter" />
+            <img className="icon-sizing" src={FacebookIcon} alt="Share Your Profile On Twitter" />
         </a>
     </div>
     )

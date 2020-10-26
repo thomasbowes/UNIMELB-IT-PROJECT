@@ -1,1 +1,114 @@
+.user-folio-page__subheading {
+    text-align: left;
+    font-size: 2rem;
+    color: #003A58;
+    width: 90%;
+    max-width: 108rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+
+.share-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 100;
+}
+
+.share-window {
+    color: #003A58;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 30rem;
+    width: 90%;
+    max-width: 70rem;
+    background-color: white;
+    z-index: 101;
+    align-items: center;
+    border-radius: 8px;
+    overflow-y: auto;
+
+}
+
+.share-window__open {
+    color: rgba(0, 0, 0, 0.7);
+    padding: 0rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+
+}
+
+.share-window__open:hover {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 1);
+}
+
+.share-container {
+    padding-top: 4rem;
+    height: 100%;
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-y: overlay;
+    box-sizing: border-box;
+}
+
+
+.share-window__color-bar {
+    position: absolute;
+    top: 0rem;
+    border-radius: 8px 8px 0 0;
+    height: 0.8rem;;
+    width: 100%;
+    margin: 0;
+    background: linear-gradient(165deg,#003A58 , rgba(8, 103, 150, 1)) 40%;
+    margin-bottom: 2rem;
+}
+
+.share-window__close-button {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    height: 2rem;
+    cursor: pointer;
+}
+
+
+.share-window__url {
+    width: inherit;
+    padding: 1rem;
+    max-width: 90%;
+    box-sizing: border-box;
+    display: block;
+}
+
+.share-window__pdf-button {
+    margin: 1.5rem 0;
+    border: 1px solid #003A58;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.share-window__pdf-button:hover {
+    text-decoration: none;
+}
+
+.share-window__share-buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+
 
