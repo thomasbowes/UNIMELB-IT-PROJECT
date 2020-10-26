@@ -239,7 +239,7 @@ const sendEmail =  function(userEmail, userId, userFirstname, UserLastname) {
         service: 'gmail',
         auth: {
             user: 'folio.exchange.team@gmail.com',
-            pass: 'A!5!YvYmz&fhEPv'
+            pass: process.env.EMAILPW
         }
     });
 
