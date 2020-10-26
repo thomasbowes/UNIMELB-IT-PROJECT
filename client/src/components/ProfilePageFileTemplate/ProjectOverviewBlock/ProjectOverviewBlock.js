@@ -22,7 +22,9 @@ class ProfileBlockWithImage extends Component {
             <div className="project__overview_withImage">
                 <div className="overview__title">
                     <a href="#title">
-                        <h1>{this.props.item.title}</h1>
+                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id}>
+                            <h1>{this.props.item.title}</h1>
+                        </Link>
                     </a>
                 </div>
 
