@@ -38,98 +38,82 @@ const searchItemBlock = (userId) => {
 
 // Print out one category of itemBlock on the pdf
 const printItemBlock = (docArray, docPdf) => {
-    
+    docPdf.rect(docPdf.x, docPdf.y, 50, 3).fill('#003366');
+    docPdf.fontSize(10).moveDown();
+
     docPdf.fontSize(20)
         .fill('#000000')
         .text(docArray[0].type, 220);
     docPdf.fontSize(12).moveDown();
     docArray.forEach( oneDoc => {
+        // Assumption: the user will fill in at least the title field (required)
         if(oneDoc['organisation']){
-            docPdf.fontSize(17)
+            docPdf.fontSize(16)
                 .text(oneDoc['organisation'], {
                     width: 350,
                     align: 'justify'
                 });
+        }
+
+        if(!oneDoc['organisation'] && oneDoc['title']){
+            docPdf.fontSize(16)
+                .text(oneDoc['title'], {
+                    width: 350,
+                    align: 'justify'
+                });
+        }
+        else if(oneDoc['organisation'] && oneDoc['title']) {
+            docPdf.fontSize(14)
+                .text(oneDoc['title'], {
+                    width: 350,
+                    align: 'justify'
+                });
+        }
+
+        if(oneDoc['startDate'] || oneDoc['endDate']){
+            let dateToPrint;
+            if(oneDoc['startDate'] && oneDoc['endDate']){
+                dateToPrint = oneDoc['startDate'] + ' - ' + oneDoc['endDate'];
             }
-            if(oneDoc['title']){
-                docPdf.fontSize(15)
-                    .text(oneDoc['title'], {
-                        width: 350,
-                        align: 'justify'
-                    });
-            }
-            if(oneDoc['startDate'] || oneDoc['endDate']){
-                let dateToPrint;
-                if(oneDoc['startDate'] && oneDoc['endDate']){
-                    dateToPrint = oneDoc['startDate'] + ' - ' + oneDoc['endDate'];
+            else {
+                if(oneDoc['startDate']){
+                    dateToPrint = oneDoc['startDate'];
                 }
-                else {
-                    if(oneDoc['startDate']){
-                        dateToPrint = oneDoc['startDate'];
-                    }
-                    else if(oneDoc['endDate']){
-                        dateToPrint = oneDoc['endDate'];
-                    }
+                else if(oneDoc['endDate']){
+                    dateToPrint = oneDoc['endDate'];
                 }
-                docPdf.fontSize(12)
-                    .text(dateToPrint);
             }
-            if(oneDoc['description']){
-                docPdf.fontSize(12).moveDown();
-                docPdf.fontSize(12)
-                    .text(oneDoc['description'], {
-                        width: 350,
-                        align: 'justify'
-                    })
-                    .moveDown(2);
-            }
-        });
-}
+            docPdf.fontSize(12)
+                .text(dateToPrint);
+        }
+        if(oneDoc['description']){
+            docPdf.fontSize(12).moveDown();
+            docPdf.fontSize(12)
+                .text(oneDoc['description'], {
+                    width: 350,
+                    align: 'justify'
+                })
+                .moveDown(2);
+        }
+    });
+
+    docPdf.fontSize(12).moveDown();
+};
 
 
-
+// Create the PDF 
 const createPDF = async (req, res) => {
     const userId = req.params.userId;
-    let userPreferName;
-    let contactInfo = {};
+    let userPreferName = "";
+    let contactInfo;
 
 
     res.writeHead(200, {
-        //'Content-Length': doc.length,
         'Content-Type': 'application/pdf',
         'Content-disposition': 'attachment;filename=test.pdf'});
 
-    // Pretended profile block
-    /*
-    const profileBlock = {
-        website: "www.personalAccount.com.au",
-        phone: "1234 567 8900",
-        location: "Melbourne, Australia",
-        name: "lalala",
-        email: "tester123@gamil.com"
-    };
-    */
     const doc = new PDFDocument({bufferPages: true});
     doc.pipe(res);
-    /*
-    //Styling for the rectangle 
-    doc.rect(0, 0, 200, 2000).fill('#003366');
-    doc.font('Times-Roman')
-        .fontSize(20)
-        .fill('#FFFFFF')
-        .text("Contact", 10, 60);
-    
-    doc.moveDown(2);
-    Object.keys(profileBlock).forEach(oneKey => {    
-        doc.font('Times-Roman')
-            .fontSize(12)
-            .fill('#FFFFFF')
-            .text(profileBlock[oneKey], {
-                width:150
-            });
-        doc.moveDown();
-    });    
-    */
 
 
     // The first Promise (User)
@@ -138,10 +122,7 @@ const createPDF = async (req, res) => {
         const normalUserDoc = userDoc.toObject();
         // Combine the firstname and lastname together to display
         const fullName = normalUserDoc['firstname'] + ' ' + normalUserDoc['lastname'];
-        doc.font('Times-Roman')
-                .fontSize(30)
-                .fill('#000000')
-                .text(fullName, 220, 60);
+        userPreferName = fullName;
     } catch (err) {
         console.log("Error in finding User's data: " + err);
     }
@@ -151,9 +132,19 @@ const createPDF = async (req, res) => {
     // The second Promise (Profile Block) 
     try {
         const profileDoc = await searchProfileBlock(userId);
-        console.log(profileDoc);
         const normalProfileDoc = profileDoc.toObject();
+        console.log(JSON.stringify(normalProfileDoc));
         contactInfo = normalProfileDoc;
+
+        // Check if the user has preferred name
+        if(normalProfileDoc['name'] !== userPreferName){
+            userPreferName = normalProfileDoc['name'];
+        }
+        doc.font('Times-Roman')
+                .fontSize(30)
+                .fill('#000000')
+                .text(userPreferName, 220, 60);
+        
         // Print title and aboutMe
         doc.fontSize(13)
             .text(normalProfileDoc['title'], {
@@ -169,27 +160,6 @@ const createPDF = async (req, res) => {
                 align: 'justify'
             })
             .moveDown(3);
-        
-        /*
-        // Print the contact information
-        doc.font('Times-Roman')
-            .fontSize(20)
-            .fill('#FFFFFF')
-            .text("Contact", 10, 60);
-        doc.moveDown(2);
-        Object.keys(normalProfileDoc).forEach(oneKey => {
-            if(oneKey !== 'title' && oneKey !== 'aboutMe' && oneKey !== 'name' && oneKey !=='_id'){
-                doc.font('Times-Roman')
-                    .fontSize(12)
-                    .fill('#FFFFFF')
-                    .text(normalProfileDoc[oneKey], {
-                        width:150
-                    });
-                doc.moveDown();
-            }
-        });
-        */
-
     } catch (err) {
         console.log("The Profile Block is not present, or, Error in finding Profile Block: " + err);
     }
@@ -197,7 +167,6 @@ const createPDF = async (req, res) => {
     // The third Promise (the ItemBlock) title, description, startdate, enddate, organisation
     try{
         const itemDocArray = await searchItemBlock(userId);
-        //console.log(itemDocArray);
         let eduDoc = [];
         let jobDoc = [];
         let projectDoc = [];
@@ -225,28 +194,15 @@ const createPDF = async (req, res) => {
         }
 
         if(projectDoc.length !== 0){
-
+            printItemBlock(projectDoc, doc);
         }
-
-
-        console.log("eduDoc: " + JSON.stringify(eduDoc));
-        console.log("jobDoc: " + JSON.stringify(jobDoc));
-        console.log("projectDoc: " + JSON.stringify(projectDoc));
-
-        
-
-        
-        
-
-
-        
 
     } catch (err) {
         console.log("No Item Block is present, or, Error in finding Item Block: " + err);
     }
     
 
-    //Draw the blue rectangle on each page when everything is done
+    // Draw the blue rectangle on each page when everything is done
     try {
         const pageRange = doc.bufferedPageRange();
         numPage = pageRange.count;
@@ -262,24 +218,26 @@ const createPDF = async (req, res) => {
 
      // Print the contact information at last
      try{
-        // Print the contact information
-        doc.switchToPage(0);
-        doc.font('Times-Roman')
-            .fontSize(20)
-            .fill('#FFFFFF')
-            .text("Contact", 10, 60);
-        doc.moveDown(2);
-        Object.keys(contactInfo).forEach(oneKey => {
-            if(oneKey !== 'title' && oneKey !== 'aboutMe' && oneKey !== 'name' && oneKey !=='_id'){
-                doc.font('Times-Roman')
-                    .fontSize(12)
-                    .fill('#FFFFFF')
-                    .text(contactInfo[oneKey], {
-                        width:150
-                    });
-                doc.moveDown();
-            }
-        });
+        if(contactInfo){
+            // Print the contact information
+            doc.switchToPage(0);
+            doc.font('Times-Roman')
+                .fontSize(20)
+                .fill('#FFFFFF')
+                .text("Contact", 10, 60);
+            doc.moveDown(2);
+            Object.keys(contactInfo).forEach(oneKey => {
+                if(oneKey !== 'title' && oneKey !== 'aboutMe' && oneKey !== 'name' && oneKey !=='_id'){
+                    doc.font('Times-Roman')
+                        .fontSize(12)
+                        .fill('#FFFFFF')
+                        .text(contactInfo[oneKey], {
+                            width:150
+                        });
+                    doc.moveDown();
+                }
+            });
+        }
 
         doc.end();
 
@@ -287,53 +245,7 @@ const createPDF = async (req, res) => {
         console.log('Error in printing out the contact information: ' + err);
         doc.end();
     }
-    /*
-    // Display User information from User selection
-    
-    searchUserById(userId)
-    .then(userDoc => {
-        const normalUserDoc = userDoc.toObject();
-        //console.log(JSON.stringify(normalUserDoc, null, '\t'));
-        //console.log(Object.keys(normalUserDoc));
-        Object.keys(normalUserDoc).forEach(oneKey => {
-            if(oneKey === 'firstname' || oneKey === 'lastname'){
-                doc.font('Times-Roman')
-                .fontSize(40)
-                .fill('#000000')
-                .text(normalUserDoc[oneKey], 220, 60);
-            }
-        });
 
-        return searchProfileBlock(userId);
-    })
-    .then(profileDoc => {
-        const normalProfileDoc = profileDoc.toObject();
-        Object.keys(normalProfileDoc).forEach(oneKey => {
-            doc.font('Times-Roman')
-                .fontSize(12)
-                .text(normalProfileDoc[oneKey]);
-        });
-
-        //return the next search function
-
-    })
-    .then(() => {
-        doc.end();
-    })
-    .catch(err => {
-        doc.end();
-        console.log("A block is missing or error occur in pdfController: " + err);
-    });
-    */
-
-    //doc.end();
-    
-
-}
-    
-   
-    
-    
-
+};
 
 module.exports.createPDF = createPDF;
