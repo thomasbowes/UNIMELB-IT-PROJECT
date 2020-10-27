@@ -237,7 +237,7 @@ class UserFolioPage extends Component {
         // otherwise return false
     }
 
-    // return teh add project button
+    // return the add project button
     addProjectButton = () => {
         if (this.state.itemBlocks_Project.length >= 10){
             return <button className="education-history__add-new" onClick={this.addProjectHandler} disabled="true">No more projects can be added, project Limit Reached</button>
@@ -287,10 +287,10 @@ class UserFolioPage extends Component {
                                 <img src={pdfIcon} alt="" style={{height: "2.5rem", width: "2.5rem"}}/>Generate Profile PDF
                             </Link>
                             <div className="share-window__share-buttons">
-                                <FacebookShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
-                                <TwitterShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
-                                <LinkedInShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
-                                <EmailShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
+                                <FacebookShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
+                                <TwitterShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
+                                <LinkedInShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
+                                <EmailShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
                             </div>
                             <div className="share-window__url">
                                 <h2 style={{textAlign: "center", width: "90%", margin: "0 auto"}}>or share profile link</h2>

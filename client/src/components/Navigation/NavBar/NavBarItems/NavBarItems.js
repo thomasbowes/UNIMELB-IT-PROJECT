@@ -53,7 +53,7 @@ class NavBarItems extends Component {
     myProfileButton = () => (
         <Aux>
             <li className="main-nav__item">
-                <a onClick={() => {window.location.href='/userfolio/' + this.props.userAuthToken._id}}>MyFolioPage</a>
+                <a style={{cursor: "pointer"}} onClick={() => {window.location.href='/userfolio/' + this.props.userAuthToken._id}}>MyFolioPage</a>
             </li>
             <li className="main-nav__item">
                 <NavLink to='/home' exact onClick={() => {this.props.click(); this.props.onLogout()}}>Logout</NavLink>
