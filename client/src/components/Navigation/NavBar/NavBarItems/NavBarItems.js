@@ -22,6 +22,8 @@ class NavBarItems extends Component {
     searchSubmitHandler = (event) =>{
 
         if(event.key === 'Enter') {
+            // close side drawer
+            this.props.sideDrawerClicked();
 
             //if no input return
             if (this.state.searchString === '') return;
