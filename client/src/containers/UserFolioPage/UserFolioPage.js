@@ -327,7 +327,6 @@ class UserFolioPage extends Component {
 
                 {/* Generates User Profile Blocks */}
                 <UserProfile 
-                    itemBlock_id='5f81bdf6db99e33e48002c54' 
                     hasEditingRight={this.checkHasRightToEdit()}
                     changeProfileValues={this.changeProfileValues} 
                     values={this.state.profileBlocks}
