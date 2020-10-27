@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './UserFolioPage.css'
-
+import {Link} from "react-router-dom"
 
 
 import ProjectOverviewBlock from '../../components/ProfilePageFileTemplate/ProjectOverviewBlock/ProjectOverviewBlock';
@@ -18,7 +18,6 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
 import axios from "axios";
 
-const pdfRoute = "/api/users/createPDF/"
 
 class UserFolioPage extends Component {
 
@@ -261,15 +260,14 @@ class UserFolioPage extends Component {
         this.setState({itemBlocks_Education: newEdus});
     }
 
-    createAndDownloadPdf = () => {
-        axios.post(pdfRoute, this.props.match.params.userId);
-    }
-
     render() {
+        const pdfRoute = "/api/users/createPDF/";
           return (
             <div className="UserFolioPage">
                 {this.checkHasRightToEdit()?
-                    <button onClick={this.createAndDownloadPdf} >Convert this myFolioPage to pdf</button>
+                    <Link to= {pdfRoute + this.props.match.params.userId}>
+                        <button>Convert this myFolioPage to pdf</button>
+                    </Link>
                 :   null}
                 <button>Share this userFolioPage</button>
 
