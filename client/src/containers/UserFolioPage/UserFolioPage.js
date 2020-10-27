@@ -310,9 +310,9 @@ class UserFolioPage extends Component {
 
     editButton = () => {
         return (
-        <button className="share-window__open" onClick={this.toggleShareWindow}>
+        <a className="share-window__open" onClick={this.toggleShareWindow}>
             Share <img src={ShareIcon} alt=""/>
-        </button>
+        </a>
         );
     }
 
