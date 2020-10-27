@@ -9,7 +9,23 @@
     position: relative;
 }
 
-.project-page__goBack {
+.project-page-container p {
+    text-align: justify;
+}
+
+.project-page-container__edit {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
+
+.project-page-container__cancel {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
+
+.project-page__go-back {
     background-color: rgba(0, 0, 0, 0);
     border: none;
     cursor: pointer;
@@ -18,13 +34,14 @@
     font-weight: bold;
 }
 
-.project-page__goBack:hover {
+.project-page__go-back:hover {
     color: rgba(0, 58, 88,1);
 }
 
 .project-page-container__title {
     margin-top: 0;
     margin-bottom: 0.5rem;
+    color: rgba(0, 58, 88, 1);
 }
 
 .ImageGallery {

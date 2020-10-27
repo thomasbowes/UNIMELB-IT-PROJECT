@@ -37,21 +37,7 @@ class UserFolioPage extends Component {
         shareModalOpen: false
     }
 
-    randomId = () => {
-        let r = Math.random().toString(36).substring(7);
-        return r; 
-    }
-
-    // createDefaultProject = () => {
-    //     return {
-    //         title: "Default Name",
-    //         description: "Default description",
-    //         urlThumbnail: google1,
-    //         public_id: this.randomId()
-    //     }
-    // }
-
-    //get the data right after the user access his/her folio page
+    
     componentDidMount() {
         const data = {
             user_id: this.props.match.params.userId
@@ -240,9 +226,13 @@ class UserFolioPage extends Component {
     // return the add project button
     addProjectButton = () => {
         if (this.state.itemBlocks_Project.length >= 10){
-            return <button className="education-history__add-new" onClick={this.addProjectHandler} disabled="true">No more projects can be added, project Limit Reached</button>
+            return <div>
+                        <button className="profile-item__add-new" onClick={this.addProjectHandler} disabled="true">No more projects can be added, project Limit Reached</button>
+                    </div>
         }
-        return <button className="education-history__add-new" onClick={this.addProjectHandler}><img src={AddIcon} alt="add-item"/> Add a new Project: {(this.state.itemBlocks_Project.length).toString() + '/10'}</button>
+        return <div styles={{display: "flex", alignItems: "center"}}>
+                    <button className="profile-item__add-new" onClick={this.addProjectHandler}><img src={AddIcon} alt="add-item"/> Add a new Project: {(this.state.itemBlocks_Project.length).toString() + '/10'}</button>
+                </div>
     }
 
     // change the profile image
@@ -281,7 +271,7 @@ class UserFolioPage extends Component {
                     <div className="share-window">
                         <div className="share-container">
                             <div className="share-window__color-bar"></div>
-                            <h1 style={{margin: "0", paddingTop: "2rem"}}>Share Profile</h1>
+                            <h1 style={{flex: "1", margin: "0", paddingTop: "2rem"}}>Share Profile</h1>
 
                             <Link className="share-window__pdf-button" to= {pdfRoute + this.props.match.params.userId} target="_blank">
                                 <img src={pdfIcon} alt="" style={{height: "2.5rem", width: "2.5rem"}}/>Generate Profile PDF

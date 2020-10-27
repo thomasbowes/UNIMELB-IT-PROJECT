@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './ProjectOverviewBlock.css'
+import '../../../containers/UserFolioPage/profileShared.css';
 import {Link} from 'react-router-dom'
 import ShowMoreText from 'react-show-more-text';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
@@ -17,46 +18,46 @@ class ProfileBlockWithImage extends Component {
 
     render () {
         return(
-            <section className="project-block-with-image">
-                
-            <div className="project__overview_withImage">
-                <div className="overview__title">
-                    <a href="#title">
-                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id}>
-                            <h1>{this.props.item.title}</h1>
-                        </Link>
-                    </a>
-                </div>
+            <section className="profile-item">
 
-                
-                <ShowMoreText
-                    /* Default options */
-                    lines={7}
-                    more=''
-                    less=''
-                    anchorClass=''
-                    onClick={()=>console.log("easteregg")}
-                    expanded={false}
-                >
-                <div className="overview__description_withImage">  
-                    {this.props.item.description}    
-                
-                </div>
-                </ShowMoreText> 
+                    
+                    <Link style={{textDecoration: "none"}} to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id}>
+                        <h1 id="heading_no-bottom-margin" style={{fontSize: "1.375rem"}}>{this.props.item.title}</h1>
+                    </Link>
+                    
+                    
 
-                
-                <div className="overview__see-more">
-                    <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id}>See more</Link>
-                </div>
+                    <div className="profile-item__main-text-nowrap"> 
+                        <ShowMoreText
+                            /* Default options */
+                            lines={7}
+                            more=''
+                            less=''
+                            anchorClass=''
+                            onClick={()=>console.log("easteregg")}
+                            expanded={false}
+                        >
+                            <div className="profile-item__main-text">  
+                                {this.props.item.description}    
+                            
+                            </div>
+                        </ShowMoreText> 
+                    </div>
+                    
+                    <div className="project-block__white-space"></div>
 
-                {this.props.hasEditingRight? 
-                    <Aux>
-                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id}>
-                            <input className="overview-item_edit" type="image" src={EditIcon} onClick={this.itemEditableHandler} alt="edit"/>
-                        </Link>
-                    </Aux> 
-                    :null}
-            </div>
+                    <div className="project-block__see-more">
+                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id}>See more</Link>
+                    </div>
+
+                    {this.props.hasEditingRight? 
+                        <Aux>
+                            <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id}>
+                                <input className="profile-item__edit" type="image" src={EditIcon} onClick={this.itemEditableHandler} alt="edit"/>
+                            </Link>
+                        </Aux> 
+                        :null}
+                
             </section>
         );
     }

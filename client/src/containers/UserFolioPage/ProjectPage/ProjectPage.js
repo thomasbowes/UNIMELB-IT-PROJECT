@@ -128,9 +128,9 @@ class ProjectPage extends Component {
 
     editButtons = () => {
         if (this.state.editMode){
-            return <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.changeEditable} />  
+            return <input className="project-page-container__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.changeEditable} />  
         }
-        return <input className="education-history__edit" type="image" src={EditIcon} onClick={this.changeEditable} alt="edit"/>
+        return <input className="project-page-container__edit" type="image" src={EditIcon} onClick={this.changeEditable} alt="edit"/>
     }
 
     // Renders all the attachment blocks that are not images when in view mode
@@ -294,7 +294,7 @@ class ProjectPage extends Component {
             <div className="project-page-container">
                 <div style={{margin: "1rem 0"}}>
                     <Link to={"/userfolio/" + this.props.match.params.userId} >
-                        <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                        <button className="project-page__go-back"> {"<"} Back to main portfolio </button>
                     </Link>
                 </div>
                 {this.state.editMode && this.checkHasRightToEdit()? 
@@ -368,7 +368,7 @@ class ProjectPage extends Component {
                 : null}
                 <div style={{margin: "1rem 0"}}>
                     <Link to={"/userfolio/" + this.props.match.params.userId}>
-                        <button className="project-page__goBack"> {"<"} Back to main portfolio </button>
+                        <button className="project-page__go-back"> {"<"} Back to main portfolio </button>
                     </Link>
                 </div>
             </div>

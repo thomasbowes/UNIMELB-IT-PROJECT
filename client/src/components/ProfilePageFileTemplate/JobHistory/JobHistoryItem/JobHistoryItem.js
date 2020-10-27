@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './JobHistoryItem.css';
+import '../../../../containers/UserFolioPage/profileShared.css';
 import Aux from '../../../../hoc/Auxiliary/Auxiliary'
 import EditForm from '../../EditForm/EditForm';
 import EditIcon from '../../../../assets/EditIcons/edit.svg';
@@ -49,19 +50,19 @@ class JobHistoryItem extends Component {
 
 
     render(){
-        let overviewOffset = ["overview__title"]; //classes
+        let overviewOffset = ["profile-sub-item__title"]; //classes
 
         if (this.props.editable) {
-            overviewOffset.push("education-history__tab-off-set");
+            overviewOffset.push("profile-sub-item__tab-off-set");
         }
 
         return (
             <Aux>
-                <div className="job-history-item">
-                    <div className="education-history__pic">
+                <div className="profile-sub-item">
+                    <div className="profile-sub-item__pic">
                         <img src={this.props.item["urlThumbnail"]} alt="job-history"/>
                     </div>
-                    <div className="education-history__info">
+                    <div className="profile-item__info">
                         {!this.state.itemEditable? 
                             <Aux>
                                 <div className={overviewOffset.join(" ")}>
@@ -70,7 +71,7 @@ class JobHistoryItem extends Component {
                                     <h1>{this.props.item["startDate"]} - {this.props.item["endDate"]}</h1>
                                 </div>
 
-                                <div className="overview__description" style={{textAlign: "justify"}}>
+                                <div className="profile-sub-item__description-nowrap">
                                     <ShowMoreText
                                         /* Default options */
                                         lines={3}
@@ -81,7 +82,10 @@ class JobHistoryItem extends Component {
                                         expanded={false}
                                         
                                     >
+                                    <div className="profile-sub-item__description">   
                                         {this.props.item["description"]}
+                                    </div> 
+                                        
                                     </ShowMoreText> 
                                 </div>
                             </Aux>
@@ -110,7 +114,7 @@ class JobHistoryItem extends Component {
 
                     {this.props.editable && !this.state.itemEditable? 
                     <Aux>
-                        <input className="job-history-item_edit" type="image" src={EditIcon} onClick={this.itemEditableHandler} alt="edit"/>
+                        <input className="profile-sub-item_edit" type="image" src={EditIcon} onClick={this.itemEditableHandler} alt="edit"/>
                         
                     </Aux> 
                     :null}
