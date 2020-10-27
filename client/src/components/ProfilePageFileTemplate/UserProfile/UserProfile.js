@@ -126,22 +126,25 @@ class UserProfile extends Component{
 
 
                 {/* Renders the about description. If no description it only shows for the profile owner. */}
-                {this.props.values.aboutMe || this.props.hasEditingRight ? <div className="user-about-block">
-                            <div className="user-about">
-                                <div className="user-about__title">
-                                    <h1>About Me</h1>
-                                </div>
-                                {!this.state.aboutEditable?<div className="overview__description_withImage">  
-                                <ShowMoreText
-                                    lines={6}
-                                    more='Show more'
-                                    less='Show less'
-                                    anchorClass=''
-                                    onClick={this.executeOnClick}
-                                    expanded={false}
-                                    style={{color: "red"}}>
-                                        <div style={{color: "red", whiteSpace: "pre-wrap"}}>{this.props.values.aboutMe}</div>    
-                                </ShowMoreText> 
+                {this.props.values.aboutMe || this.props.hasEditingRight ? <div className="profile-item">
+                            
+                                
+                                <h1 id="heading_no-bottom-margin">About Me</h1>
+                                
+                                {!this.state.aboutEditable?
+                                <div className="profile-item__main-text-nowrap">  
+                                    <ShowMoreText
+                                        lines={6}
+                                        more='Show more'
+                                        less='Show less'
+                                        anchorClass=''
+                                        onClick={this.executeOnClick}
+                                        expanded={false}
+                                        style={{color: "red"}}>
+                                            <div className="profile-item__main-text"> 
+                                                {this.props.values.aboutMe} 
+                                            </div>
+                                    </ShowMoreText> 
                                 </div>
                                 :<Aux>
                                     <EditForm values={this.props.values} 
@@ -151,7 +154,7 @@ class UserProfile extends Component{
                                         changeValues={this.changeValues} 
                                         changeEditable={this.changeAboutEditable}/>
                                 </Aux>}
-                            </div>
+                            
                             {this.state.aboutEditable || (!this.props.hasEditingRight) ? null
                                 :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeAboutEditable} />}
                         </div>

@@ -1,4 +1,12 @@
-.project-block-with-image {
+.project-block__white-space {
+    height: 1rem;
+}
+.project-block__see-more {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 1rem;
+}
+/* .project-block-with-image {
     background: white;
     border: 1px solid rgba(0, 58, 88, 0.2);
     display: flex;
@@ -81,4 +89,4 @@
     position: absolute;
     right: 0.5rem;
     top: 0.5rem;
-}
+} */

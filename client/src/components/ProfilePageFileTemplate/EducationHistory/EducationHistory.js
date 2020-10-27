@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './EducationHistory.css'
+import '../../../containers/UserFolioPage/profileShared.css';
 import './EducationHistoryItem/EducationHistoryItem'
 import EducationalHistoryItem from './EducationHistoryItem/EducationHistoryItem';
 import EditIcon from '../../../assets/EditIcons/edit.svg';
@@ -115,9 +116,9 @@ class EducationHistory extends Component {
     // if the content is being edited, return the cross button. Otherwise return the pencil button
     editButton = () => {
         if (this.state.editable){
-            return <input className="education-history__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.editableHandler} />  
+            return <input className="profile-item__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.editableHandler} />  
         }
-        return <input className="education-history__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>
+        return <input className="profile-item__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>
     }
 
     changeEduItemProfileImg = (img, index) => {
@@ -126,9 +127,9 @@ class EducationHistory extends Component {
 
     addNewItemButton = () => {
         if (this.props.contents.length >= 10){
-            return <button className="education-history__add-new" disabled="true"><img src={AddIcon} alt="add-item"/> Opps, item limit reached</button>
+            return <button className="profile-item__add-new" disabled="true"><img src={AddIcon} alt="add-item"/> Opps, item limit reached</button>
         }
-        return <button className="education-history__add-new" onClick={this.addNewItemHander}><img src={AddIcon} alt="add-item"/> Add a new Item</button>
+        return <button className="profile-item__add-new" onClick={this.addNewItemHander}><img src={AddIcon} alt="add-item"/> Add a new Item</button>
     }
 
 
@@ -148,13 +149,13 @@ class EducationHistory extends Component {
         })
 
         return(
-            <section className="education-history">
+            <section className="profile-item">
                 <h1 id="heading">Education History</h1>
                 {this.props.hasEditingRight? 
                     this.editButton()
                 :   null
                 }
-                <div className="education-history-items">
+                <div className="profile-items">
                     {allItemsArray}
                 </div>
                 {this.state.editable && this.props.hasEditingRight? 

@@ -240,9 +240,13 @@ class UserFolioPage extends Component {
     // return the add project button
     addProjectButton = () => {
         if (this.state.itemBlocks_Project.length >= 10){
-            return <button className="education-history__add-new" onClick={this.addProjectHandler} disabled="true">No more projects can be added, project Limit Reached</button>
+            return <div>
+                        <button className="profile-item__add-new" onClick={this.addProjectHandler} disabled="true">No more projects can be added, project Limit Reached</button>
+                    </div>
         }
-        return <button className="education-history__add-new" onClick={this.addProjectHandler}><img src={AddIcon} alt="add-item"/> Add a new Project: {(this.state.itemBlocks_Project.length).toString() + '/10'}</button>
+        return <div styles={{display: "flex", alignItems: "center"}}>
+                    <button className="profile-item__add-new" onClick={this.addProjectHandler}><img src={AddIcon} alt="add-item"/> Add a new Project: {(this.state.itemBlocks_Project.length).toString() + '/10'}</button>
+                </div>
     }
 
     // change the profile image
