@@ -262,7 +262,9 @@ class UserFolioPage extends Component {
     }
 
     createAndDownloadPdf = () => {
-        axios.post(pdfRoute, this.props.match.params.userId);
+        const toSend = {userId: this.props.match.params.userId}
+        axios.post(pdfRoute, toSend);
+        console.log(toSend);
     }
 
     render() {
