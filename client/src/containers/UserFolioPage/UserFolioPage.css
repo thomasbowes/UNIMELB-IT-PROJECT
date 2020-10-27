@@ -97,20 +97,14 @@
 }
 
 
-.share-window__url {
-    width: inherit;
-    padding: 1rem;
-    max-width: 90%;
-    box-sizing: border-box;
-    display: block;
-}
-
 .share-window__pdf-button {
     margin: 1.5rem 0;
     border: 1px solid #003A58;
     padding: 0.5rem;
     display: flex;
     align-items: center;
+    height: 4rem;
+    flex: 1;
 }
 
 .share-window__pdf-button:hover {
@@ -120,8 +114,18 @@
 .share-window__share-buttons {
     display: flex;
     flex-direction: row;
+    flex: 1;
+    height: 3rem;
 }
 
+.share-window__url {
+    width: inherit;
+    padding: 1rem;
+    max-width: 90%;
+    box-sizing: border-box;
+    display: block;
+    flex: 1;
+}
 
 
 
