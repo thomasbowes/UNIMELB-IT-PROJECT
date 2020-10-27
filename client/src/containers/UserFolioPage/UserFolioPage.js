@@ -283,7 +283,7 @@ class UserFolioPage extends Component {
                         <div className="share-container">
                             <div className="share-window__color-bar"></div>
                             <h1 style={{margin: "0", paddingTop: "2rem"}}>Share Profile</h1>
-                            <Link className="share-window__pdf-button" to= {pdfRoute + this.props.match.params.userId}>
+                            <Link className="share-window__pdf-button" target="_blank" to={pdfRoute + this.props.match.params.userId}>
                                 <img src={pdfIcon} alt="" style={{height: "2.5rem", width: "2.5rem"}}/>Generate Profile PDF
                             </Link>
                             <div className="share-window__share-buttons">
