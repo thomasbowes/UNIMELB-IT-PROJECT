@@ -22,6 +22,8 @@ class NavBarItems extends Component {
     searchSubmitHandler = (event) =>{
 
         if(event.key === 'Enter') {
+            // close side drawer
+            this.props.sideDrawerClicked();
 
             //if no input return
             if (this.state.searchString === '') return;
@@ -51,7 +53,7 @@ class NavBarItems extends Component {
     myProfileButton = () => (
         <Aux>
             <li className="main-nav__item">
-                <NavLink to={'/userfolio/' + this.props.userAuthToken._id} exact onClick={this.props.click} target="_blank">MyFolioPage</NavLink>
+                <a style={{cursor: "pointer"}} onClick={() => {window.location.href='/userfolio/' + this.props.userAuthToken._id}}>MyFolioPage</a>
             </li>
             <li className="main-nav__item">
                 <NavLink to='/home' exact onClick={() => {this.props.click(); this.props.onLogout()}}>Logout</NavLink>

@@ -79,7 +79,6 @@ class UserFolioPage extends Component {
         axios.post('/api/profileblocks/see', data)
             .then(response => {
 
-                console.log(response.data.profile);
                 if(this.isEmpty(response.data.profile)) this.props.history.push({pathname: '/notfound'});
                 this.setState({profileBlocks: response.data.profile});
 
@@ -238,7 +237,7 @@ class UserFolioPage extends Component {
         // otherwise return false
     }
 
-    // return teh add project button
+    // return the add project button
     addProjectButton = () => {
         if (this.state.itemBlocks_Project.length >= 10){
             return <button className="education-history__add-new" onClick={this.addProjectHandler} disabled="true">No more projects can be added, project Limit Reached</button>
@@ -283,14 +282,15 @@ class UserFolioPage extends Component {
                         <div className="share-container">
                             <div className="share-window__color-bar"></div>
                             <h1 style={{margin: "0", paddingTop: "2rem"}}>Share Profile</h1>
+
                             <Link className="share-window__pdf-button" to= {pdfRoute + this.props.match.params.userId} target="_blank">
                                 <img src={pdfIcon} alt="" style={{height: "2.5rem", width: "2.5rem"}}/>Generate Profile PDF
                             </Link>
                             <div className="share-window__share-buttons">
-                                <FacebookShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
-                                <TwitterShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
-                                <LinkedInShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
-                                <EmailShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
+                                <FacebookShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
+                                <TwitterShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
+                                <LinkedInShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
+                                <EmailShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
                             </div>
                             <div className="share-window__url">
                                 <h2 style={{textAlign: "center", width: "90%", margin: "0 auto"}}>or share profile link</h2>
@@ -320,13 +320,12 @@ class UserFolioPage extends Component {
         return (
             <div className="UserFolioPage">
 
-                {/*Share Buttons window if the user owns this profile*/}              
-                {this.generateShareWindow("www.test.folio.exchange/userfolio/5f944e3f65a8c0as")} 
+                {/*Share Buttons window*/}              
+                {this.generateShareWindow(window.location.href)} 
 
 
                 {/* Generates User Profile Blocks */}
                 <UserProfile 
-                    itemBlock_id='5f81bdf6db99e33e48002c54' 
                     hasEditingRight={this.checkHasRightToEdit()}
                     changeProfileValues={this.changeProfileValues} 
                     values={this.state.profileBlocks}

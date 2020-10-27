@@ -24,17 +24,9 @@ class NavBar extends Component {
                         <div className="main-header__spacer"></div>
                     </div>
                     <nav className="main-nav"> 
-                        <NavBarItems click={this.doNothing} loginSignUpclicked={this.props.loginSignUpclicked}/>
+                        <NavBarItems click={this.doNothing} sideDrawerClicked={this.props.sideDrawerClicked} loginSignUpclicked={this.props.loginSignUpclicked}/>
                     </nav>
 
-
-
-                    {/* <div>
-                        <img src={Logo} alt='' />
-                        <DrawerToggle clicked={this.props.sideDrawerClicked}/>
-                    </div>
-                    
-                    <NavBarItems /> */}
 
                 </div>
             </header>
