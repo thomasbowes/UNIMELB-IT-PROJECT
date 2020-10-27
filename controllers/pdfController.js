@@ -103,6 +103,9 @@ const printItemBlock = (docArray, docPdf) => {
 
 // Create the PDF 
 const createPDF = async (req, res) => {
+    
+    console.log(req.body);
+    /*
     const userId = req.params.userId;
     let userPreferName = "";
     let contactInfo;
@@ -245,7 +248,7 @@ const createPDF = async (req, res) => {
         console.log('Error in printing out the contact information: ' + err);
         doc.end();
     }
-
+*/
 };
 
 module.exports.createPDF = createPDF;

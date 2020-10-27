@@ -329,7 +329,7 @@ router.route('/update')
 router.route('/search')
 	.get(usersController.returnSearchUserResults);
 
-router.route('/createPDF/:userId')
-	.get(pdfController.createPDF);
+router.route('/createPDF')
+	.post(pdfController.createPDF);
 	
 module.exports = router;
