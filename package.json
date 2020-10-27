@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "IT Project S2 2020 for team O(n!)",
   "main": "server.js",
+  "apidoc": {
+    "name": "API Document",
+    "version": "3.0.0"
+  },
   "scripts": {
     "client-install": "npm install --prefix client",
     "start": "node server.js",
