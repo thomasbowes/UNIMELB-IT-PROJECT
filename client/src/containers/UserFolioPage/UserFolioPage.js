@@ -79,7 +79,6 @@ class UserFolioPage extends Component {
         axios.post('/api/profileblocks/see', data)
             .then(response => {
 
-                console.log(response.data.profile);
                 if(this.isEmpty(response.data.profile)) this.props.history.push({pathname: '/notfound'});
                 this.setState({profileBlocks: response.data.profile});
 
