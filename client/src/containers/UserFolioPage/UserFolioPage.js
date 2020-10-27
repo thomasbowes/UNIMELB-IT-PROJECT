@@ -7,8 +7,11 @@ import ProjectOverviewBlock from '../../components/ProfilePageFileTemplate/Proje
 import EducationHistory from '../../components/ProfilePageFileTemplate/EducationHistory/EducationHistory';
 import JobHistory from '../../components/ProfilePageFileTemplate/JobHistory/JobHistory';
 import AddIcon from '../../assets/EditIcons/add.svg';
+import crossIcon from '../../assets/LoginPage-icons/cross.svg';
+import pdfIcon from '../../assets/Homepage-icons/pdf-icon.svg';
+import ShareIcon from '../../assets/Homepage-icons/share-icon.svg';
 
-import google1 from '../../assets/ProfilePageDocuments/google.png';
+import Aux from '../../hoc/Auxiliary/Auxiliary'
 
 import "react-image-gallery/styles/css/image-gallery.css";
 import UserProfile from '../../components/ProfilePageFileTemplate/UserProfile/UserProfile'
@@ -18,6 +21,11 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
 import axios from "axios";
 
+import EmailShareButton from '../../components/SocialMediaShareButtons/EmailShareButton/EmailShareButton';
+import FacebookShareButton from '../../components/SocialMediaShareButtons/FacebookShareButton/FacebookShareButton';
+import TwitterShareButton from '../../components/SocialMediaShareButtons/TwitterShareButton/TwitterShareButton';
+import LinkedInShareButton from '../../components/SocialMediaShareButtons/LinkedInShareButton/LinkedInShareButton';
+
 
 class UserFolioPage extends Component {
 
@@ -26,6 +34,7 @@ class UserFolioPage extends Component {
         itemBlocks_Education: [],
         itemBlocks_Project: [],
         profileBlocks: {},
+        shareModalOpen: false
     }
 
     randomId = () => {
@@ -33,14 +42,14 @@ class UserFolioPage extends Component {
         return r; 
     }
 
-    createDefaultProject = () => {
-        return {
-            title: "Default Name",
-            description: "Default description",
-            urlThumbnail: google1,
-            public_id: this.randomId()
-        }
-    }
+    // createDefaultProject = () => {
+    //     return {
+    //         title: "Default Name",
+    //         description: "Default description",
+    //         urlThumbnail: google1,
+    //         public_id: this.randomId()
+    //     }
+    // }
 
     //get the data right after the user access his/her folio page
     componentDidMount() {
@@ -260,58 +269,108 @@ class UserFolioPage extends Component {
         this.setState({itemBlocks_Education: newEdus});
     }
 
-    render() {
+    toggleShareWindow = () => {
+        this.setState({shareModalOpen: !this.state.shareModalOpen});
+    }
+    
+    //share-window__close-button
+    generateShareWindow = (url) => {
         const pdfRoute = "/api/users/createPDF/";
-          return (
-            <div className="UserFolioPage">
-                {this.checkHasRightToEdit()?
-                    <Link to= {pdfRoute + this.props.match.params.userId} target="_blank">
-                        <button>Convert this myFolioPage to pdf</button>
-                    </Link>
-                :   null}
-                <button>Share this userFolioPage</button>
+        if (this.state.shareModalOpen){
+            return(
+                <div className="share-background" onClick={this.toggleShareWindow}>
+                    <div className="share-window">
+                        <div className="share-container">
+                            <div className="share-window__color-bar"></div>
+                            <h1 style={{margin: "0", paddingTop: "2rem"}}>Share Profile</h1>
+                            <Link className="share-window__pdf-button" to= {pdfRoute + this.props.match.params.userId}>
+                                <img src={pdfIcon} alt="" style={{height: "2.5rem", width: "2.5rem"}}/>Generate Profile PDF
+                            </Link>
+                            <div className="share-window__share-buttons">
+                                <FacebookShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
+                                <TwitterShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
+                                <LinkedInShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
+                                <EmailShareButton profileBlock={url} fromOwner={this.state.hasEditingRight}/>
+                            </div>
+                            <div className="share-window__url">
+                                <h2 style={{textAlign: "center", width: "90%", margin: "0 auto"}}>or share profile link</h2>
+                                <p style={{wordWrap: "break-word", color: "black", textAlign: "center", fontSize: "2rem", borderStyle: "solid", borderWidth: "1px", padding: "1rem", backgroundColor: "rgba(0,0,0,0.1)"}}>{url}</p>
+                            </div>
+                            
+                            <img className="share-window__close-button" src={crossIcon} alt=""  onClick={this.toggleShareWindow}/>
+                            
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        return null;
+    }
 
+    editButton = () => {
+        return (
+        <a className="share-window__open" onClick={this.toggleShareWindow}>
+            Share <img src={ShareIcon} alt=""/>
+        </a>
+        );
+    }
+
+    render() {
+        
+        return (
+            <div className="UserFolioPage">
+
+                {/*Share Buttons window if the user owns this profile*/}              
+                {this.generateShareWindow("www.test.folio.exchange/userfolio/5f944e3f65a8c0as")} 
+
+
+                {/* Generates User Profile Blocks */}
                 <UserProfile 
                     itemBlock_id='5f81bdf6db99e33e48002c54' 
                     hasEditingRight={this.checkHasRightToEdit()}
                     changeProfileValues={this.changeProfileValues} 
                     values={this.state.profileBlocks}
-                    changeProfilePic={this.changeProfilePic}/>
+                    changeProfilePic={this.changeProfilePic} 
+                    shareButton={this.editButton}/>
 
-                
+                {/* Only show education block if there are items or the page is owned by observer */}
                 {!this.checkHasRightToEdit() && this.state.itemBlocks_Education.length === 0?
                     null
                 :   <EducationHistory
-                    contents = {this.state.itemBlocks_Education}
-                    changeItemHandler = {this.eduChangeHisItemHandler}
-                    hisItemRemoveHandler = {this.eduItemRemoveHandler}
-                    hisAddNewItemHandler = {this.eduAddNewItemHandler}
-                    hasEditingRight = {this.checkHasRightToEdit()}
-                    changeEduItemProfileImg={this.changeEduItemProfileImg}/>
+                        contents = {this.state.itemBlocks_Education}
+                        changeItemHandler = {this.eduChangeHisItemHandler}
+                        hisItemRemoveHandler = {this.eduItemRemoveHandler}
+                        hisAddNewItemHandler = {this.eduAddNewItemHandler}
+                        hasEditingRight = {this.checkHasRightToEdit()}
+                        changeEduItemProfileImg={this.changeEduItemProfileImg}/>
 
                 }
 
+                {/* Only show Job block if there are items or the page is owned by observer */}
                 {!this.checkHasRightToEdit() && this.state.itemBlocks_Job.length === 0?
                     null
                 :   <JobHistory               
-                    contents = {this.state.itemBlocks_Job}
-                    changeItemHandler = {this.jobChangeHisItemHandler}
-                    hisItemRemoveHandler = {this.jobItemRemoveHandler}
-                    hisAddNewItemHandler = {this.jobAddNewItemHandler}                
-                    hasEditingRight = {this.checkHasRightToEdit()}
-                    changeJobItemProfileImg={this.changeJobItemProfileImg}/>
-                }
-                <div> Projects </div>
-                {!this.checkHasRightToEdit() && this.state.itemBlocks_Project.length === 0?
-                    null
-                :   this.projectOverviewBlock()
+                        contents = {this.state.itemBlocks_Job}
+                        changeItemHandler = {this.jobChangeHisItemHandler}
+                        hisItemRemoveHandler = {this.jobItemRemoveHandler}
+                        hisAddNewItemHandler = {this.jobAddNewItemHandler}                
+                        hasEditingRight = {this.checkHasRightToEdit()}
+                        changeJobItemProfileImg={this.changeJobItemProfileImg}/>
                 }
 
+                {/* Add Projects and Projects Header */}
+                {!this.checkHasRightToEdit() && this.state.itemBlocks_Project.length === 0?
+                    null
+                :<Aux>
+                    <h2 className="user-folio-page__subheading"> My Personal Projects </h2>
+                    {this.projectOverviewBlock()}
+                </Aux>}
+
+                {/* Add Add project button if the owner is viewing their own page */}    
                 {this.checkHasRightToEdit()?
                     this.addProjectButton()
                 :   null
-                }
-                
+                }    
                 
             </div>
         

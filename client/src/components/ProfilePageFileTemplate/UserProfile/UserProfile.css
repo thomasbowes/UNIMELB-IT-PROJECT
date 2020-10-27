@@ -60,6 +60,7 @@
     justify-content: space-between;
     max-height: 13rem;
     box-sizing: border-box;
+    white-space: pre-wrap;
 }
 
 .UserInfoHolder h1{
@@ -76,6 +77,9 @@
     height: auto;
 }
 
+span {
+    white-space: pre;
+}
 
 .user-about-block {
     background: white;

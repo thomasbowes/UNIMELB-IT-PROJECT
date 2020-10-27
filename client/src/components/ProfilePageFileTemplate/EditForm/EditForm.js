@@ -28,7 +28,7 @@ class EditForm extends Component{
             this.setState({requireRerender: false});
             return true;
         }
-        return false;
+        return  false;
     }
 
     inputChangeHandler = (event, value) => {
@@ -44,6 +44,7 @@ class EditForm extends Component{
         const newInputs = {...this.state.inputs};
         newInputs[value] = newValue;
         this.setState({inputs: newInputs});
+        console.log(event.currentTarget.textContent);
     }
     
     timePeriodInputChangeHandler = (event, value) => {
@@ -68,9 +69,16 @@ class EditForm extends Component{
                         return  (
                             <form key={index} className="edit-form__single-form-entry">
                                 <p className="single-form-entry__desc">Set {this.state.fields[index]}:</p>
-                                <div className="single-form-entry__textarea" role="textbox" 
+                                {/*https://github.com/lovasoa/react-contenteditable/issues/182 solution from*/}
+                                <div onKeyDown={(event) => {
+                                    if (event.key === 'Enter') {
+                                    document.execCommand('insertLineBreak')
+                                    event.preventDefault()
+                                    }
+                                }} className="single-form-entry__textarea" role="textbox" 
                                     onInput={(event) => this.largeInputChangeHandler(event, value)} 
-                                    contentEditable={true}>{this.state.inputs[value]}
+                                    contentEditable={true}>
+                                    {this.state.inputs[value]}
                                 </div> 
                             </form>
                             )

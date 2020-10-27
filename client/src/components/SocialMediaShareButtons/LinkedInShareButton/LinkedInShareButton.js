@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./LinkedInShareButton.module.css";
+import "../socialShared.css";
 import LinkedInIcon from '../../../assets/Homepage-icons/linkedin-icon.svg';
 
 const linkedInShareButton = (props) => {
@@ -13,7 +14,7 @@ const linkedInShareButton = (props) => {
     return (
     <div className={classes.button}>
         <a href={linkedInLink}>
-            <img src={LinkedInIcon} alt="Share Your Profile On Twitter" />
+            <img className="icon-sizing" src={LinkedInIcon} alt="Share Your Profile On Twitter" />
         </a>
     </div>
     )

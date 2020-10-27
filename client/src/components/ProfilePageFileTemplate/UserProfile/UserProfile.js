@@ -114,8 +114,11 @@ class UserProfile extends Component{
                                 
                             </div>
                             {/* Switches Block to edit mode */}
-                    {this.state.profileEditable || (!this.props.hasEditingRight) ? null
-                                        :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeProfileEditable} />}
+                            {this.state.profileEditable || (!this.props.hasEditingRight) ? null
+                                            :<Aux>
+                                                <input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeProfileEditable} />    
+                                            </Aux>}
+                            {this.props.shareButton()}
                         </div>}
                     
                 </div>
@@ -137,7 +140,7 @@ class UserProfile extends Component{
                                     onClick={this.executeOnClick}
                                     expanded={false}
                                     style={{color: "red"}}>
-                                        <p>{this.props.values.aboutMe}</p>    
+                                        <div style={{color: "red", whiteSpace: "pre-wrap"}}>{this.props.values.aboutMe}</div>    
                                 </ShowMoreText> 
                                 </div>
                                 :<Aux>

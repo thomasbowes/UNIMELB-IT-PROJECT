@@ -36,7 +36,7 @@ a:hover {
 
 .modal__color-bar {
     border-radius: 8px 8px 0 0;
-    height: 0.8rem;;
+    height: 0.8rem;
     width: 100%;
     margin: 0;
     background: linear-gradient(165deg,#003A58 , rgba(8, 103, 150, 1)) 40%;
