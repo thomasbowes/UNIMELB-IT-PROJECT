@@ -14,7 +14,6 @@ const authMiddleware = require('../../middleware/authorization');
  * @apiName UpdateProfileBlock
  * @apiGroup ProfileBlocks
  *
- * @apiParam {String} user_id User's id (to be associated with profile block), REQUIRED
  * @apiParam {String} profile_id ID of a profile block you're trying to update, REQUIRED
  * @apiParam {Object} contents Object that includes attributes of a profile block you're trying to change, REQUIRED
  *
@@ -28,11 +27,21 @@ const authMiddleware = require('../../middleware/authorization');
  * }
  *
  * @apiSuccess {String} status Profile block update result
+ * @apiSuccess {Object} profile Updated profile block details
  *
  * @apiSuccessExample Successful Response:
  * HTTP/1.1 200 OK
  * {
- *     "status": "Profile block has been successfully updated"
+ *     "status": "Profile block has been successfully updated",
+ *     "profile": {
+ *	       "_id": "lkjalksfi98789348915987897",
+ *         "title": "Test Update",
+ *         "aboutMe": "Test Update",
+ *         "user_id": "lakjfdkj98798237497a98797",
+ *         "name": "Testing Boy",
+ *         "email": "tester@mail.com",
+ *         "__v": "0"
+ *     }
  * }
  *
  * @apiError RequiredDetailsMissing Required parameters not provided

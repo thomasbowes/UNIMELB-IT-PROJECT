@@ -74,11 +74,20 @@ router.route('/create')
  * }
  *
  * @apiSuccess {String} status Item block update result
+ * @apiSuccess {Object} item Updated item block details
  *
  * @apiSuccessExample Successful Response:
  * HTTP/1.1 200 OK
  * {
  *     "status": "Item block has been successfully updated"
+ *     "item": {
+ *         "_id": "lkjalksfi98789348915987897",
+ *         "title": "Test Update",
+ *         "description": "Test Update",
+ *         "__v": "0",
+ *         "type": "Education",
+ *         "user_id": "ajfij92348988afjaklfjajl"	
+ *     }
  * }
  *
  * @apiError RequiredDetailsMissing Required parameters not provided
