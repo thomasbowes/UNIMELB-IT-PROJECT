@@ -110,7 +110,7 @@ const createPDF = async (req, res) => {
 
     res.writeHead(200, {
         'Content-Type': 'application/pdf',
-        'Content-disposition': 'attachment;filename=test.pdf'});
+        'Content-disposition': 'attachment;filename=ePortfolio.pdf'});
 
     const doc = new PDFDocument({bufferPages: true});
     doc.pipe(res);

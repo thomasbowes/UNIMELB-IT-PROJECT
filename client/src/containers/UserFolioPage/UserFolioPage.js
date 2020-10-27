@@ -69,14 +69,22 @@ class UserFolioPage extends Component {
        //get user profileBlock
         axios.post('/api/profileblocks/see', data)
             .then(response => {
+
                 console.log(response.data.profile);
+                if(this.isEmpty(response.data.profile)) this.props.history.push({pathname: '/notfound'});
                 this.setState({profileBlocks: response.data.profile});
+
             })
             .catch(error => {
-                this.setState({profileBlocks: []});
                 console.log(error);
+                this.setState({profileBlocks: []});
+                this.props.history.push({pathname: '/notfound'});
             });
 
+    }
+
+    isEmpty = (value) => {
+        return Boolean(value && typeof value === 'object') && !Object.keys(value).length;
     }
 
 

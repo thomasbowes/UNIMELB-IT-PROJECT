@@ -50,8 +50,7 @@ class EditForm extends Component{
         const newValue =event.target.value;
         const newInputs = {...this.state.inputs};
         newInputs[value] = newValue;
-        this.setState({inputs: newInputs});
-        this.state.requireRerender = true
+        this.setState({inputs: newInputs, requireRerender: true});
     }
     
     render(){
