@@ -74,7 +74,7 @@ class UserProfile extends Component{
                 {/* Renders the main profile block with image, name and basic info */}
                 <div className="User-info">
                     <div className="UserPicture">
-                        <img src={this.props.values.urlProfile} alt='profile-image' />
+                        <img src={this.props.values.urlProfile} alt='profile' />
                     </div>
 
                     {/* Checks if block is in edit mode or view mode*/}
@@ -136,7 +136,6 @@ class UserProfile extends Component{
                                     anchorClass=''
                                     onClick={this.executeOnClick}
                                     expanded={false}
-                                    onClick={()=>console.log("easteregg")}
                                     style={{color: "red"}}>
                                         <p>{this.props.values.aboutMe}</p>    
                                 </ShowMoreText> 
