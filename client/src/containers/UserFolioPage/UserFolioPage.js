@@ -320,8 +320,8 @@ class UserFolioPage extends Component {
         return (
             <div className="UserFolioPage">
 
-                {/*Share Buttons window if the user owns this profile*/}              
-                {this.generateShareWindow("www.test.folio.exchange/userfolio/5f944e3f65a8c0as")} 
+                {/*Share Buttons window*/}              
+                {this.generateShareWindow(window.location.href)} 
 
 
                 {/* Generates User Profile Blocks */}
