@@ -57,7 +57,7 @@ class App extends Component {
     return (
       <div className='App'>
         <div className="App_main-content">
-          <NavBar sideDrawerClicked={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
+          <NavBar sideDrawerClicked={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler} closeBackDrop={this.clickBackDrop}/>
           <BackDrop show={this.state.showBackDrop} clicked={this.clickBackDrop}/>
           <SideDrawer open={this.state.showSideDrawer} clickItem={this.clickBackDrop} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
           {this.state.showLoginSignUpPage? <LogInSignUpPage close={this.clickBackDrop}/>: null }

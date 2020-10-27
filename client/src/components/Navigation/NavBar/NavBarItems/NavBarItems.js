@@ -23,7 +23,7 @@ class NavBarItems extends Component {
 
         if(event.key === 'Enter') {
             // close side drawer
-            this.props.sideDrawerClicked();
+            this.props.closeBackDrop();
 
             //if no input return
             if (this.state.searchString === '') return;
