@@ -1,6 +1,14 @@
 .edit-form__container {
     width: 100%;
-    margin: 0.5rem 0.5rem;
+    padding: 0.5rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.edit-form__container h2 {
+    color: #003A58;
 }
 
 .edit-form__cancel{
@@ -18,11 +26,16 @@
 .single-form-entry__desc {
     margin: 0;
     margin-bottom: 0.2rem;
+    font-size: 1rem;
+    color: rgba(0, 58, 88, 1);
+    font-weight: bold;
 }
 
 .single-form-entry__regInput {
     box-sizing: border-box;
     width: 100%;
+    margin: 0 0.2rem;
+    font-size: 1rem;
 }
 
 .edit-form__button-selection {
@@ -39,6 +52,7 @@
     color: white;
     border: none;
     padding: 0.5rem;
+    cursor: pointer;
 }
 
 .edit-form__save-button:hover,
@@ -47,36 +61,39 @@
 }
 
 
-.edit-form__cancel-button {
+.edit-form__delete-button {
     background-color: rgba(0, 0, 0, 0);
-    color: rgba(0, 0, 0,  0.5);
+    color: rgba(255, 1, 1, 0.7);
     border: none;
     padding: 0rem;
+    cursor: pointer;
 }
 
-.edit-form__cancel-button:hover,
-.edit-form__cancel-button:active {
-    color: rgba(0, 0, 0, 1);
+.edit-form__delete-button:hover,
+.edit-form__delete-button:active {
+    color: rgba(255, 1, 1, 1);
+    font-weight: bold;
 }
 
 .edit-form-horizontal-line {
     width: 95%;
-    margin-left: 0;
+
 }
 
 .input,
 .single-form-entry__textarea {
-  border: 1px solid #ccc;
-  font-family: inherit;
-  font-size: inherit;
-  padding: 1px 6px;
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
-  white-space: pre-wrap;       /* css-3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
+    border: 1px solid #ccc;
+    padding: 1px 2px;
+    overflow-wrap: break-word;
+    white-space: pre-wrap; 
+    white-space: -moz-pre-wrap;  
+    white-space: -pre-wrap;   
+    white-space: -o-pre-wrap;  
     word-wrap: break-word; 
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 0.2rem;
+    font-size: 1rem;
 }
 
 .single-form-entry__textarea {

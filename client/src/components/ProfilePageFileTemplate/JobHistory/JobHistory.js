@@ -80,7 +80,8 @@ class JobHistory extends Component {
     }
 
     addNewItemHander = () => {
-        // this.props.hisAddNewItemHandler();
+        const limitNumBlocks = 10;
+        if(this.props.contents.length >= limitNumBlocks) return;
 
         let authToken;
         if (!this.props.userAuthToken) authToken = '';
@@ -125,7 +126,7 @@ class JobHistory extends Component {
 
     addNewItemButton = () => {
         if (this.props.contents.length >= 10){
-            return <button className="profile-item__add-new" disabled="true"><img src={AddIcon} alt="add-item"/> Opps, item limit reached</button>
+            return <button className="profile-item__add-new" disabled={true}><img src={AddIcon} alt="add-item"/> Opps, item limit reached</button>
         }
         return <button className="profile-item__add-new" onClick={this.addNewItemHander}><img src={AddIcon} alt="add-item"/> Add a new Item</button>
     }

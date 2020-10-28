@@ -57,7 +57,7 @@ class App extends Component {
     return (
       <div className='App'>
         <div className="App_main-content">
-          <NavBar sideDrawerClicked={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
+          <NavBar sideDrawerClicked={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler} closeBackDrop={this.clickBackDrop}/>
           <BackDrop show={this.state.showBackDrop} clicked={this.clickBackDrop}/>
           <SideDrawer open={this.state.showSideDrawer} clickItem={this.clickBackDrop} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
           {this.state.showLoginSignUpPage? <LogInSignUpPage close={this.clickBackDrop}/>: null }
@@ -69,7 +69,7 @@ class App extends Component {
             <Route path='/home/notification/welcome' exact component={RegisterNotificationPage} />
             <Route path='/about' component={AboutPage} />
             <Route path='/signup' exact component={LogInSignUpPage} />
-            <Route path='/userfolio/:userId/projects/:projectId' exact component={ProjectPage} />
+            <Route path='/userfolio/:userId/projects/:projectId/:editMode' exact component={ProjectPage} />
             <Route path='/userfolio/:userId' exact component={UserFolioPage} />
             <Route path='/search' component={SearchPage} />
             <Redirect from='/' exact to='/home' />

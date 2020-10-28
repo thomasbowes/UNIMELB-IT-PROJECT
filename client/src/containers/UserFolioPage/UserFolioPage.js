@@ -110,6 +110,9 @@ class UserFolioPage extends Component {
 
         const newItem = this.eduHisCopy();
 
+        if (this.state.itemBlocks_Education.length >= 10){
+            return;
+        }
         newItem.push(newHisItem);
 
         this.setState({itemBlocks_Education: newItem})
@@ -141,12 +144,18 @@ class UserFolioPage extends Component {
 
 
     jobAddNewItemHandler = (newJobItem) => {
-
+        if (this.state.itemBlocks_Job.length >= 10){
+            console.log("Oops, limit reached")
+            return;
+        }
         const newItem = this.jobHisCopy();
 
+        console.log("ready to push")
         newItem.push(newJobItem);
+        console.log("pusheded")
 
         this.setState({itemBlocks_Job: newItem})
+        console.log("state updated")
 
     }
 
@@ -199,9 +208,13 @@ class UserFolioPage extends Component {
             }
         }
 
+        let newProjects = [...this.state.itemBlocks_Project];
+        if (newProjects >= 10){
+            return;
+        }
+
         axios.post('/api/itemblocks/create',data, headers)
             .then((res)=>{
-                    let newProjects = [...this.state.itemBlocks_Project];
                     newProjects.push(res.data.item);
                     this.setState({itemBlocks_Project: newProjects});
                 }
@@ -227,7 +240,7 @@ class UserFolioPage extends Component {
     addProjectButton = () => {
         if (this.state.itemBlocks_Project.length >= 10){
             return <div>
-                        <button className="profile-item__add-new" onClick={this.addProjectHandler} disabled="true">No more projects can be added, project Limit Reached</button>
+                        <button className="profile-item__add-new" onClick={this.addProjectHandler} disabled={true}>No more projects can be added, project Limit Reached</button>
                     </div>
         }
         return <div styles={{display: "flex", alignItems: "center"}}>
