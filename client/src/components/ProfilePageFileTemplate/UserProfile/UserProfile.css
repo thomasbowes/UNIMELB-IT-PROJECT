@@ -30,11 +30,6 @@
     margin: 0.2rem;
 }
 
-.Objective h3 {
-    color: #003A58;
-    margin:0;
-}
-
 .User-info__edit {
     position: absolute;
     right: 0.5rem;
@@ -53,12 +48,23 @@
 }
 
 .UserInfoHolder {
-    padding: 1rem;
+    padding: 0.7rem;
     display: flex;
     flex-direction: column;
     align-items: left;
     justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+}
 
+.UserInfoHolder-centered {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
     box-sizing: border-box;
     white-space: pre-wrap;
 }
@@ -71,6 +77,11 @@
 
 .UserInfoHolder h2{
     margin: 0;
+}
+
+.UserInfoHolder h3 {
+    color: #003A58;
+    margin:0;
 }
 
 .UserInfoHolder p {

@@ -79,13 +79,16 @@ class UserProfile extends Component{
 
                     {/* Checks if block is in edit mode or view mode*/}
                     {this.state.profileEditable && this.props.hasEditingRight? 
-                        <Aux>
+                        <div className="UserInfoHolder-centered">
                             <EditForm values={this.props.values} 
                                 fields={["name", "title", "email", "location", "phone", "website"]} 
                                 inputTypes={["input", "input", "input", "input", "input", "input"]} 
+                                fieldName={["Name", "Title", "E-mail Address", "Set Location" , "Contact Phone Number", "Personal Website"]}
                                 isDeletable={false}
                                 changeValues={this.changeValues} 
                                 changeEditable={this.changeProfileEditable}/>
+
+                            <p>Note: File uploads cannot be undone.</p>    
                             <FilesUpload
                                 type='User'
                                 maxFiles = {1}
@@ -93,7 +96,7 @@ class UserProfile extends Component{
                                 fileRejectMessage = 'Image only'
                                 returnResult = {this.changeProfilePic}
                             />
-                        </Aux>
+                        </div>
                         :
                         <div className="UserInfoHolder">
                             
@@ -103,7 +106,7 @@ class UserProfile extends Component{
                                 {this.props.values.location && this.props.values.location.length >0 ? <p>{this.props.values.location}</p>: null} 
                             </div>
                             
-                            <div className="Objective">
+                            <div className="user-info-contact">
                                 {(this.props.values.email && this.props.values.email.length >0) ||
                                 (this.props.values.phone && this.props.values.phone.length >0) ||
                                 (this.props.values.website && this.props.values.website.length >0)? <h3>Contact Info</h3>
@@ -129,26 +132,31 @@ class UserProfile extends Component{
                 {this.props.values.aboutMe || this.props.hasEditingRight ? <div className="profile-item">
                             
                                 
-                                <h1 id="heading_no-bottom-margin">About Me</h1>
+                                
                                 
                                 {!this.state.aboutEditable?
-                                <div className="profile-item__main-text-nowrap">  
-                                    <ShowMoreText
-                                        lines={6}
-                                        more='Show more'
-                                        less='Show less'
-                                        anchorClass=''
-                                        onClick={this.executeOnClick}
-                                        expanded={false}
-                                        style={{color: "red"}}>
-                                            <div className="profile-item__main-text"> 
-                                                {this.props.values.aboutMe} 
-                                            </div>
-                                    </ShowMoreText> 
-                                </div>
+                                <Aux>
+                                    <h1 id="heading_no-bottom-margin">About Me</h1>
+                                
+                                    <div className="profile-item__main-text-nowrap">  
+                                        <ShowMoreText
+                                            lines={6}
+                                            more='Show more'
+                                            less='Show less'
+                                            anchorClass=''
+                                            onClick={this.executeOnClick}
+                                            expanded={false}
+                                            style={{color: "red"}}>
+                                                <div className="profile-item__main-text"> 
+                                                    {this.props.values.aboutMe} 
+                                                </div>
+                                        </ShowMoreText> 
+                                    </div>
+                                </Aux>
                                 :<Aux>
                                     <EditForm values={this.props.values} 
                                         fields={["aboutMe"]} 
+                                        fieldName={["About Me"]}                                        
                                         inputTypes={["large input"]} 
                                         isDeletable={false}
                                         changeValues={this.changeValues} 
