@@ -34,6 +34,7 @@ class JobHistory extends Component {
         const input_copy = {...input};
 
         delete input_copy.urlThumbnail;
+        delete input_copy.public_id;
 
         const data = {
             item_id: input_copy._id,

@@ -52,6 +52,7 @@ class UserProfile extends Component{
         const input_copy = {...inputs};
 
         delete input_copy.urlProfile;
+        delete input_copy.public_id;
 
         const data = {
             profile_id: input_copy._id,
