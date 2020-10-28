@@ -30,7 +30,7 @@
     flex-direction: column;
     margin-left: 1rem;
     padding: 1rem 0;
-    height: 11rem;
+    height: 10rem;
     box-sizing: border-box;
     overflow: hidden;
     margin-right: 1rem;
@@ -111,6 +111,10 @@
 @media (max-width: 40rem) {
     
     .bio__about {
+        display: none;
+    }
+
+    .bio__title {
         display: none;
     }
 }

@@ -34,7 +34,7 @@ class SearchItem extends Component{
                     </div>
 
                     <div className="bio__about ">
-                        {this.props.aboutMe !== "" ? 
+                    {this.props.aboutMe !== "" ? 
                         <ShowMoreText
                         /* Default options */
                         lines={3}

@@ -88,16 +88,18 @@ class EducationalHistoryItem extends Component {
                                 </div>
                             </Aux>
                         :
-                            <div>
+                        <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                                 <EditForm 
                                     values={this.props.item} 
                                     fields={["title", "organisation", "startDate", "endDate", "description"]} 
+                                    fieldName={["Qualification Name", "Organisation", "Start Date", "End Date", "Education Description"]}
                                     changeEditable = {this.itemEditableHandler} 
                                     changeValues = {this.changeItemHandler}
                                     inputTypes={["input", "input", "time period input", "time period input", "large input"]}
                                     isDeletable={true}
                                     deleteItem={this.itemDeleteHandler}
                                     />
+                                <p>Note: File uploads cannot be undone.</p>
                                 <FilesUpload
                                     type='ItemBlock'
                                     maxFiles = {1}

@@ -130,6 +130,7 @@ class ProjectPage extends Component {
         }
 
 
+
         window.location.href = '/userfolio/' + 
                                 this.props.match.params.userId + 
                                 '/projects/' + 
@@ -320,7 +321,8 @@ class ProjectPage extends Component {
                     </Link>
                 </div>
                 {this.InEditMode() && this.checkHasRightToEdit()? 
-                    <h1 className="project-page-container__title">Edit Mode</h1>
+
+                    null
                 :<h1 className="project-page-container__title">{this.state.projectBlock.title}</h1>}
                 
                 {this.InEditMode()? null:   
@@ -334,11 +336,6 @@ class ProjectPage extends Component {
                     </div> 
                 </Aux>}
 
-                {this.checkHasRightToEdit() && this.InEditMode()?
-                    <Link to={"/userfolio/" + this.props.match.params.userId }>
-                        <button onClick={this.deleteProjectHandler}>Delete this project</button>
-                    </Link>
-                :   null }
 
                 {this.InEditMode() && this.checkHasRightToEdit()? 
                     <EditForm 
@@ -346,7 +343,10 @@ class ProjectPage extends Component {
                         changeEditable = {this.changeEditable} 
                         changeValues={this.changeTitleDes}
                         fields={["title", "description"]}
-                        inputTypes={["input", "large input"]}/>
+                        fieldName={["Project Title", "Description"]}
+                        inputTypes={["input", "large input"]}
+                        isDeletable={true}
+                        deleteItem={this.deleteProjectHandler}/>
                     :<Aux>
                         <p style={{fontSize: "1.2rem"}}>{this.state.projectBlock.description}</p>
                     </Aux>
@@ -380,12 +380,7 @@ class ProjectPage extends Component {
                     fileRejectMessage = 'Image, audio and video files only'
                     returnResult = {this.addFile}
                 />:null}
-                   
-                {this.checkHasRightToEdit() && this.InEditMode()?
-                    <a href={"/userfolio/" + this.props.match.params.userId}>
-                        <button onClick={this.deleteProjectHandler}>Delete this project</button>
-                    </a>
-                :   null }
+
                 
                 {this.checkHasRightToEdit()? this.editButtons()
                 : null}
