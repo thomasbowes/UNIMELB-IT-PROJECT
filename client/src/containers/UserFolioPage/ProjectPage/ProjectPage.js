@@ -197,7 +197,10 @@ class ProjectPage extends Component {
     }
 
     // delete the project based on project id
-    deleteProjectHandler = () => {
+    deleteProjectHandler = (e) => {
+
+        e.preventDefault();
+        const { href } = e.target.parentElement
 
         let authToken;
         if (!this.props.userAuthToken) authToken = '';
@@ -215,12 +218,15 @@ class ProjectPage extends Component {
 
         axios.post('/api/itemblocks/delete',data, headers)
             .then((res)=>{
-                    return;
                 }
             )
             .catch((err)=>{
                 console.log(err);
             })
+        
+            setTimeout(() => {
+                window.location.href = href;
+            }, 700);
 
     }
 
@@ -359,9 +365,9 @@ class ProjectPage extends Component {
                 />:null}
                    
                 {this.checkHasRightToEdit() && this.state.editMode?
-                    <Link to={"/userfolio/" + this.props.match.params.userId}>
+                    <a href={"/userfolio/" + this.props.match.params.userId}>
                         <button onClick={this.deleteProjectHandler}>Delete this project</button>
-                    </Link>
+                    </a>
                 :   null }
                 
                 {this.checkHasRightToEdit()? this.editButtons()
