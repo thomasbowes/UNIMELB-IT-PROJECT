@@ -268,12 +268,21 @@ router.route('/refresh')
  * }
  *
  * @apiSuccess {String} status User update result
+ * @apiSuccess {Object} userDetails Updated user details
  * 
  * @apiSuccessExample Successful Response:
  * HTTP/1.1 200
  * {
- *     "status": "User details have been successfully updated"
- * }
+ *     "status": "User details have been successfully updated",
+ *     "userDetails": {
+ *         "_id": "lkjaf982958klja89809",
+ *         "confirm": true,
+ *         "isAdmin": false,
+ *         "firstname": "Test",
+ *         "lastname": "Test",
+ *         "password": "ajklfjaj938924kaljfafajalj9872",
+ *         "__v": "0"
+ *     }
  * 
  * @apiError RequiredContentsMissing If "contents" object is not provided
  * 
