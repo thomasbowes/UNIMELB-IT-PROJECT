@@ -25,7 +25,6 @@ class ProjectPage extends Component {
     state = {
         showPdf: false,
         files: [],
-        editMode: false,
         projectBlock: {}
     }
 
@@ -122,12 +121,23 @@ class ProjectPage extends Component {
     }
 
     changeEditable = () => {
-        const newEditMode = ! this.state.editMode
-        this.setState({editMode: newEditMode})
+        const newEditMode = ! (this.props.match.params.editMode === 'true')
+
+
+        window.location.href = '/userfolio/' + 
+                                this.props.match.params.userId + 
+                                '/projects/' + 
+                                this.props.match.params.projectId + 
+                                '/' + 
+                                newEditMode
+    }
+
+    InEditMode = () => {
+        return this.props.match.params.editMode === 'true'
     }
 
     editButtons = () => {
-        if (this.state.editMode){
+        if (this.InEditMode()){
             return <input className="project-page-container__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.changeEditable} />  
         }
         return <input className="project-page-container__edit" type="image" src={EditIcon} onClick={this.changeEditable} alt="edit"/>
@@ -269,7 +279,7 @@ class ProjectPage extends Component {
                     name={item.title}
                     size={item.size}
                     url={item.urlCloudinary}
-                    editable={this.state.editMode}
+                    editable={this.InEditMode()}
                     hasThumbnail={false}
                     deleteAttachmentHandler={this.deleteAttachmentHandler}
                     index={index}/>
@@ -287,7 +297,7 @@ class ProjectPage extends Component {
                     name={item.title}
                     size={item.size}
                     url={item.urlCloudinary}
-                    editable={this.state.editMode}
+                    editable={this.InEditMode()}
                     hasThumbnail={true}
                     deleteAttachmentHandler={this.deleteAttachmentHandler}
                     index={index}/>
@@ -303,11 +313,11 @@ class ProjectPage extends Component {
                         <button className="project-page__go-back"> {"<"} Back to main portfolio </button>
                     </Link>
                 </div>
-                {this.state.editMode && this.checkHasRightToEdit()? 
+                {this.InEditMode() && this.checkHasRightToEdit()? 
                     <h1 className="project-page-container__title">Edit Mode</h1>
                 :<h1 className="project-page-container__title">{this.state.projectBlock.title}</h1>}
                 
-                {this.state.editMode? null:   
+                {this.InEditMode()? null:   
                 <Aux>
                     <div className="ImageGallery">   
                         {this.getImages(this.state.files).length > 0? 
@@ -318,13 +328,13 @@ class ProjectPage extends Component {
                     </div> 
                 </Aux>}
 
-                {this.checkHasRightToEdit() && this.state.editMode?
+                {this.checkHasRightToEdit() && this.InEditMode()?
                     <Link to={"/userfolio/" + this.props.match.params.userId }>
                         <button onClick={this.deleteProjectHandler}>Delete this project</button>
                     </Link>
                 :   null }
 
-                {this.state.editMode && this.checkHasRightToEdit()? 
+                {this.InEditMode() && this.checkHasRightToEdit()? 
                     <EditForm values={this.state.projectBlock} 
                         changeEditable = {this.changeEditable} 
                         changeValues={this.changeTitleDes}
@@ -334,27 +344,27 @@ class ProjectPage extends Component {
                         <p style={{fontSize: "1.2rem"}}>{this.state.projectBlock.description}</p>
                     </Aux>
                 }
-                {this.state.editMode && this.checkHasRightToEdit() && (this.state.files.length - this.getImages(this.state.files).length) > 0? 
+                {this.InEditMode() && this.checkHasRightToEdit() && (this.state.files.length - this.getImages(this.state.files).length) > 0? 
                 <div className="project-attachment-info">
                     <h3>Delete an attachment</h3>
                 </div>:null}
                 
                 {showNonImageAttachments}
                 
-                {this.state.editMode && this.checkHasRightToEdit() && this.getImages(this.state.files).length > 0? 
+                {this.InEditMode() && this.checkHasRightToEdit() && this.getImages(this.state.files).length > 0? 
                 <div className="project-attachment-info">
                     <h3>Delete an image from carousel</h3>
                 </div>:null}
 
-                {this.state.editMode && this.checkHasRightToEdit()? 
+                {this.InEditMode() && this.checkHasRightToEdit()? 
                 showImageAttachments:null}
 
-                {this.state.editMode && this.checkHasRightToEdit()? 
+                {this.InEditMode() && this.checkHasRightToEdit()? 
                 <div className="project-attachment-info">
                     <h3>Drag and drop images or files below. Images will be added to a viewer and attachments at bottom of page.</h3>
                 </div>:null}    
 
-                {this.state.editMode && this.checkHasRightToEdit()?
+                {this.InEditMode() && this.checkHasRightToEdit()?
                 <FilesUpload
                     itemBlock_id= {this.props.match.params.projectId}
                     type='File'
@@ -364,7 +374,7 @@ class ProjectPage extends Component {
                     returnResult = {this.addFile}
                 />:null}
                    
-                {this.checkHasRightToEdit() && this.state.editMode?
+                {this.checkHasRightToEdit() && this.InEditMode()?
                     <a href={"/userfolio/" + this.props.match.params.userId}>
                         <button onClick={this.deleteProjectHandler}>Delete this project</button>
                     </a>
