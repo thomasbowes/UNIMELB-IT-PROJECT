@@ -217,8 +217,11 @@ main {
     }
 }
 
+
+
+
 /* for mobile */
-@media (max-width: 40rem) {
+@media (max-width: 60rem) {
 
     .product-promo__slogan {
         bottom: 50%;
@@ -265,4 +268,12 @@ main {
         margin-top: 4rem;
     }
 
+}
+
+/* for horisontal mobile screens */
+@media (max-height: 50rem) {
+    .product-promo__slogan {
+        bottom: 30%;
+        left: 3%;
+    }
 }

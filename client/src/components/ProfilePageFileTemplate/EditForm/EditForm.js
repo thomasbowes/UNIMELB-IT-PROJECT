@@ -19,16 +19,20 @@ class EditForm extends Component{
         fields: this.props.fields,
         inputTypes: this.props.inputTypes,
         oldValues: this.props.values,
-        requireRerender: false
+        firstRender: true
     }
 
-    // form never has to re render to save performance
-    shouldComponentUpdate() {
-        if (this.state.requireRerender) {
-            this.setState({requireRerender: false});
-            return true;
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if ((nextProps.values.id !== null && nextProps.values.id !== prevState.oldValues.id)) {
+            return {
+                inputs: nextProps.values,
+                fields: nextProps.fields,
+                inputTypes: nextProps.inputTypes,
+                oldValues: nextProps.values,
+                firstRender: false
+            };
         }
-        return  false;
     }
 
     inputChangeHandler = (event, value) => {
@@ -55,7 +59,9 @@ class EditForm extends Component{
     }
     
     render(){
+        console.log("doesrenderstooge?");
         return(
+            
             <div className="edit-form__container">
                 {this.state.fields.map((value, index) => {
                     if (this.state.inputTypes[index] === regInput) {
