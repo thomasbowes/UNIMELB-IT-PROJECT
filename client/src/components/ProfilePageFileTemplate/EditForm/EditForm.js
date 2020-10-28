@@ -95,6 +95,7 @@ class EditForm extends Component{
                     } else if (this.state.inputTypes[index] === timePeriodInput) {
                         return  (
                             <form key={index} className="edit-form__single-form-entry">
+
                                 <label className="single-form-entry__desc" htmlFor={this.state.fields[index]}>Set {this.state.fieldName[index]}:</label>
                                 <select className="single-form-entry__regInput" id={this.state.fields[index]} name={this.state.fieldName[index]} onChange={(event) => this.timePeriodInputChangeHandler(event, value)} value={this.state.inputs[value]} >
                                     {this.state.fields[index] === "endDate"?<option value="present">present</option>:null}

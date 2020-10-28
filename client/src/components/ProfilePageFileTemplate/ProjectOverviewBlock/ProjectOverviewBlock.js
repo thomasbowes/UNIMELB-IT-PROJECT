@@ -21,7 +21,8 @@ class ProfileBlockWithImage extends Component {
             <section className="profile-item">
 
                     
-                    <Link style={{textDecoration: "none"}} to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id + "/false"}>
+                    <Link style={{textDecoration: "none"}} to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id + "/view"}>
+
                         <h1 id="heading_no-bottom-margin" style={{fontSize: "1.375rem"}}>{this.props.item.title}</h1>
                     </Link>
                     
@@ -47,12 +48,14 @@ class ProfileBlockWithImage extends Component {
                     <div className="project-block__white-space"></div>
 
                     <div className="project-block__see-more">
-                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id+ "/false"}>See more</Link>
+                        <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id+ "/view"}>See more</Link>
+
                     </div>
 
                     {this.props.hasEditingRight? 
                         <Aux>
-                            <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id+ "/true"}>
+                            <Link to={this.addSlashToEndStringIfRequired(window.location.pathname) + "projects/"+this.props.item._id+ "/edit"}>
+
                                 <input className="profile-item__edit" type="image" src={EditIcon} onClick={this.itemEditableHandler} alt="edit"/>
                             </Link>
                         </Aux> 
