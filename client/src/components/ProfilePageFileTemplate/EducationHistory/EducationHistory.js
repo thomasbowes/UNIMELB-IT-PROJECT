@@ -83,7 +83,7 @@ class EducationHistory extends Component {
 
     addNewItemHander = () => {
         const limitNumBlocks = 10;
-        if(this.props.contents.length === limitNumBlocks) return;
+        if(this.props.contents.length >= limitNumBlocks) return;
 
         let authToken;
         if (!this.props.userAuthToken) authToken = '';
