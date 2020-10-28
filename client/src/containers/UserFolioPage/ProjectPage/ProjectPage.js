@@ -25,7 +25,7 @@ class ProjectPage extends Component {
     state = {
         showPdf: false,
         files: [],
-        projectBlock: {}
+        projectBlock: {id: null}
     }
 
 
@@ -335,7 +335,8 @@ class ProjectPage extends Component {
                 :   null }
 
                 {this.InEditMode() && this.checkHasRightToEdit()? 
-                    <EditForm values={this.state.projectBlock} 
+                    <EditForm 
+                        values={this.state.projectBlock} 
                         changeEditable = {this.changeEditable} 
                         changeValues={this.changeTitleDes}
                         fields={["title", "description"]}

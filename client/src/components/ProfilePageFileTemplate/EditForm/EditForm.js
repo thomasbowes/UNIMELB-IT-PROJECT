@@ -19,7 +19,8 @@ class EditForm extends Component{
         fields: this.props.fields,
         inputTypes: this.props.inputTypes,
         oldValues: this.props.values,
-        requireRerender: false
+        requireRerender: false,
+        firstRender: true
     }
 
     // form never has to re render to save performance
@@ -29,6 +30,20 @@ class EditForm extends Component{
             return true;
         }
         return  false;
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if ((nextProps.values.id !== null || nextProps.values.id !== prevState.oldValues.id)
+             && prevState.firstRender) {
+            return {
+                inputs: nextProps.values,
+                fields: nextProps.fields,
+                inputTypes: nextProps.inputTypes,
+                oldValues: nextProps.values,
+                requireRerender: true,
+                firstRender: false
+            };
+        }
     }
 
     inputChangeHandler = (event, value) => {
