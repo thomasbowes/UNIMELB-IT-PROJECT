@@ -92,7 +92,7 @@ class EducationalHistoryItem extends Component {
                                 <EditForm 
                                     values={this.props.item} 
                                     fields={["title", "organisation", "startDate", "endDate", "description"]} 
-                                    fieldName={["Qualification Name", "Organisation", "Start Date", "End Date", "Job Description"]}
+                                    fieldName={["Qualification Name", "Organisation", "Start Date", "End Date", "Education Description"]}
                                     changeEditable = {this.itemEditableHandler} 
                                     changeValues = {this.changeItemHandler}
                                     inputTypes={["input", "input", "time period input", "time period input", "large input"]}
