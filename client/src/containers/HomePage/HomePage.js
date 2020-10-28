@@ -11,6 +11,10 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
 
 class HomePage extends Component {
+
+    linkToExamplePage = () => {
+        window.location.href = '/userfolio/5f9947889da95f0017bee5fc'
+    }
     render() {
         return (
             <main>
@@ -66,7 +70,7 @@ class HomePage extends Component {
                 </div>
 
                 <div className="example-snippet">
-                    <button className="cta-button">See Example</button>
+                    <button className="cta-button" onClick={this.linkToExamplePage}>See Example</button>
 
                     <div className="divider">
                 
