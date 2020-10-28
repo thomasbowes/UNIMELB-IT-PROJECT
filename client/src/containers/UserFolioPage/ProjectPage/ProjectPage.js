@@ -242,7 +242,7 @@ class ProjectPage extends Component {
             })
         
             setTimeout(() => {
-                window.location.href = href;
+                window.location.href = '/userfolio/' + this.props.match.params.userId;
             }, 700);
 
     }
