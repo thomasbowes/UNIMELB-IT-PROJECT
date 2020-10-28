@@ -99,7 +99,7 @@ class EducationalHistoryItem extends Component {
                                     isDeletable={true}
                                     deleteItem={this.itemDeleteHandler}
                                     />
-                                <p>Note: File uploads cannot be undone.</p>
+                                <p>Upload Thumbnail Below. Note: File uploads cannot be undone.</p>
                                 <FilesUpload
                                     type='ItemBlock'
                                     maxFiles = {1}

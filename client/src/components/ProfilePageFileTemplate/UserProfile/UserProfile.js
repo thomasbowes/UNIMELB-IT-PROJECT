@@ -89,7 +89,7 @@ class UserProfile extends Component{
                                 changeValues={this.changeValues} 
                                 changeEditable={this.changeProfileEditable}/>
 
-                            <p>Note: File uploads cannot be undone.</p>    
+                            <p>Upload Profile Picture Below. Note: File uploads cannot be undone.</p>    
                             <FilesUpload
                                 type='User'
                                 maxFiles = {1}
