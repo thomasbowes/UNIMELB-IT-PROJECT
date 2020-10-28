@@ -85,7 +85,7 @@ class EditForm extends Component{
                     } else if (this.state.inputTypes[index] === timePeriodInput) {
                         return  (
                             <form key={index} className="edit-form__single-form-entry">
-                                <label for={this.state.fields[index]}>Set {this.state.fields[index]}:</label>
+                                <label htmlFor={this.state.fields[index]}>Set {this.state.fields[index]}:</label>
                                 <select id={this.state.fields[index]} name={this.state.fields[index]} onChange={(event) => this.timePeriodInputChangeHandler(event, value)} value={this.state.inputs[value]} >
                                     {this.state.fields[index] === "endDate"?<option value="present">present</option>:null}
                                     { _.range(MAXYEAR, MINYEAR-1).map(value => <option key={value} value={value}>{value}</option>) }
