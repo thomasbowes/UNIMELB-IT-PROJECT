@@ -168,7 +168,7 @@
     margin: 1rem;
 }
 
-@media (max-width: 40rem) {
+@media (max-width: 60rem) {
     .profile-sub-item__title {
         flex-direction: column;
     }

@@ -77,14 +77,14 @@
 
 
 
-@media (min-width: 40rem) {
+@media (min-width: 60rem) {
     .NavBarItems{
         display: flex; 
     }
 }
 
 
-@media (max-width: 40rem) {
+@media (max-width: 60rem) {
     .NavBarItems{
         display: none; 
         margin: 0 auto;
