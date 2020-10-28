@@ -111,7 +111,7 @@ body {
 }
 
 /* for mobile */
-@media (max-width: 40rem) {
+@media (max-width: 60rem) {
     /* .nav-bar__container {
         display: none;
     } */
