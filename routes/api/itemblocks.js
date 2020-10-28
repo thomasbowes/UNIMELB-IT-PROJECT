@@ -53,6 +53,7 @@ const authMiddleware = require('../../middleware/authorization');
  */
 router.use('/create', authMiddleware.authenticateJWT);
 router.use('/create', iblockController.checkCreateBody);
+router.use('/create', iblockController.checkNumLimit);
 router.route('/create')
 	.post(iblockController.createItem);
 

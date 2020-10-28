@@ -20,6 +20,40 @@ const checkCreateBody = (req, res, next) => {
 	next();
 };
 
+// Middleware passed to make sure that itemBlocks does not exceed upper limit of 10 per user account per type
+const checkNumLimit = (req, res, next) => {
+
+	//set upper limit to 10 per user account per type
+	const numLimit = 10;
+
+	//type could be Edu, Job, Project
+	const type = req.body.contents.type;
+	const user_id = req.body.user_id;
+	// query represents which value we're using to search the database
+	const query = { user_id: user_id, type: type};
+
+	ItemBlock
+		.find(query)
+		.then((results)=>{
+			//set the length of the result
+			let count = results.length;
+			//reject if exceed upper limit
+			if(count >= numLimit){
+				return res.status(401).json({
+					status: "Exceed upper limit of 10 itemBlocks per user account per type"
+				});
+			}else{
+				next();
+			}
+		})
+		.catch((err)=>{
+			next();
+			console.log(err);
+		});
+
+};
+
+
 // function for creating a new item block
 const createItem = (req, res, next) => {
 	// add user id attribute to content object (intention is to separate user id from contents
@@ -213,3 +247,4 @@ module.exports.checkSeeBody = checkSeeBody;
 module.exports.seeItem = seeItem;
 module.exports.checkSeeAllBody = checkSeeAllBody;
 module.exports.seeAllItems = seeAllItems;
+module.exports.checkNumLimit = checkNumLimit;
