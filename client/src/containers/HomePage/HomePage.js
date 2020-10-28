@@ -94,12 +94,12 @@ class HomePage extends Component {
 
                     <article className="faq__questions">
                         <h1 className="faq__question">How hard is it to create a portfolio?</h1>
-                        <p className="faq__answer">With folio.exchanges award winning design creating, editing and managing your potfolio has never been easier.</p>
+                        <p className="faq__answer">With folio.exchange's award winning design creating, editing and managing your portfolio has never been easier.</p>
                     </article>
 
                     <article className="faq__questions">
                         <h1 className="faq__question">How can I share my portfolio with others?</h1>
-                        <p className="faq__answer">At folio.exchange we offer a wide variety of ways to share your portfolio, wgether it be through email, social media or PDF.</p>
+                        <p className="faq__answer">At folio.exchange we offer a wide variety of ways to share your portfolio, whether it be through email, social media or PDF.</p>
                     </article>
 
                 </div>
