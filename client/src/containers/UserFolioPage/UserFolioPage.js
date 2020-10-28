@@ -110,6 +110,9 @@ class UserFolioPage extends Component {
 
         const newItem = this.eduHisCopy();
 
+        if (newItem.length >= 10){
+            return;
+        }
         newItem.push(newHisItem);
 
         this.setState({itemBlocks_Education: newItem})
@@ -141,7 +144,9 @@ class UserFolioPage extends Component {
 
 
     jobAddNewItemHandler = (newJobItem) => {
-
+        if (newItem.length >= 10){
+            return;
+        }
         const newItem = this.jobHisCopy();
 
         newItem.push(newJobItem);
@@ -199,9 +204,13 @@ class UserFolioPage extends Component {
             }
         }
 
+        let newProjects = [...this.state.itemBlocks_Project];
+        if (newProjects >= 10){
+            return;
+        }
+
         axios.post('/api/itemblocks/create',data, headers)
             .then((res)=>{
-                    let newProjects = [...this.state.itemBlocks_Project];
                     newProjects.push(res.data.item);
                     this.setState({itemBlocks_Project: newProjects});
                 }
