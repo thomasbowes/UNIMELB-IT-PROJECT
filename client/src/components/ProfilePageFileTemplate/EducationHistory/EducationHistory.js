@@ -127,7 +127,7 @@ class EducationHistory extends Component {
 
     addNewItemButton = () => {
         if (this.props.contents.length >= 10){
-            return <button className="profile-item__add-new" disabled="true"><img src={AddIcon} alt="add-item"/> Opps, item limit reached</button>
+            return <button className="profile-item__add-new" disabled={true}><img src={AddIcon} alt="add-item"/> Opps, item limit reached</button>
         }
         return <button className="profile-item__add-new" onClick={this.addNewItemHander}><img src={AddIcon} alt="add-item"/> Add a new Item</button>
     }
