@@ -3,6 +3,8 @@ import './EditForm.css';
 import CancelIcon from '../../../assets/EditIcons/cancel.svg';
 import _ from 'lodash';
 
+import ContentEditable from 'react-contenteditable'
+
 const regInput = "input";
 const largeInput = "large input";
 const timePeriodInput = "time period input";
@@ -11,7 +13,6 @@ const MINYEAR = 1950;
 
 
 class EditForm extends Component{
-
     
 
     state = {
@@ -80,16 +81,20 @@ class EditForm extends Component{
                             <form key={index} className="edit-form__single-form-entry">
                                 <p className="single-form-entry__desc">Set {this.state.fieldName[index]}:</p>
                                 {/*https://github.com/lovasoa/react-contenteditable/issues/182 solution from*/}
-                                <div onKeyDown={(event) => {
-                                    if (event.key === 'Enter') {
-                                    document.execCommand('insertLineBreak')
-                                    event.preventDefault()
-                                    }
-                                }} className="single-form-entry__textarea" role="textbox" 
-                                    onInput={(event) => this.largeInputChangeHandler(event, value)} 
-                                    contentEditable={true}>
-                                    {this.state.inputs[value]}
-                                </div> 
+
+                                <ContentEditable
+                                    onKeyDown={(event) => {
+                                        if (event.key === 'Enter') {
+                                        document.execCommand('insertLineBreak')
+                                        event.preventDefault()
+                                        }}}
+                                    className="single-form-entry__textarea"
+                                    innerRef={this.contentEditable}
+                                    html={this.state.inputs[value]} // innerHTML of the editable div
+                                    disabled={false}       // use true to disable editing
+                                    onChange={(event) => this.largeInputChangeHandler(event, value)} // handle innerHTML change
+                                    tagName='article' // Use a custom HTML tag (uses a div by default)
+                                />
                             </form>
                             )
                     } else if (this.state.inputTypes[index] === timePeriodInput) {
