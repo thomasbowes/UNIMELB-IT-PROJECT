@@ -121,7 +121,13 @@ class ProjectPage extends Component {
     }
 
     changeEditable = () => {
-        const newEditMode = ! (this.props.match.params.editMode === 'true')
+        let newEditMode = 'view';
+        if (this.props.match.params.editMode === 'edit'){
+            newEditMode = 'view';
+        }
+        else{
+            newEditMode = 'edit'
+        }
 
 
         window.location.href = '/userfolio/' + 
@@ -133,7 +139,7 @@ class ProjectPage extends Component {
     }
 
     InEditMode = () => {
-        return this.props.match.params.editMode === 'true'
+        return this.props.match.params.editMode === 'edit'
     }
 
     editButtons = () => {
