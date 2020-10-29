@@ -1,0 +1,72 @@
+.project-page-container {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 108rem;
+    font-family: "kumbh sans", sans-serif;
+    position: relative;
+}
+
+.project-page-container p {
+    text-align: justify;
+}
+
+.project-page-container__edit {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
+
+.project-page-container__cancel {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
+
+.project-page__go-back {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    color: rgba(0, 58, 88,0.8);
+    font-weight: bold;
+}
+
+.project-page__go-back:hover {
+    color: rgba(0, 58, 88,1);
+}
+
+.project-page-container__title {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: rgba(0, 58, 88, 1);
+}
+
+.ImageGallery {
+    width: 100%;
+    max-width: 108rem;
+    margin: 0 auto;
+}
+
+.image-gallery-slide {
+    background-color: grey;
+}
+
+.image-gallery-slide img {
+    width: 100%;
+    height: 25rem;
+}
+
+.project-attachment-info {
+    text-align: center;
+    height: 100%;
+}
+
+.project-attachment-info h3{
+    text-align: center;
+    margin: 1rem auto;
+    width: 60%;
+}
+

@@ -1,34 +1,60 @@
 import React, {Component} from 'react';
 import './SearchItem.css'
-import userImage from '../../../assets/TeamMembers/Thomas.jpg'
+import defaultUserImage from '../../../assets/ProfilePageDocuments/defaultUserImage.jpg'
+import {Link} from 'react-router-dom';
+import ShowMoreText from 'react-show-more-text';
+
+const defaultTitle = ""
 
 class SearchItem extends Component{
     render() {
         return (
             <section className="search-item">
                 <div className="search-item__profile-pic">
-                    <a href="#search-item__profile-pic">
-                        <img src={userImage} alt="user"/>
-                    </a>
+                    <Link to={"/userfolio/" + this.props.userId} >
+
+                            {this.props.urlProfile === ""?
+                                <img src={defaultUserImage} alt="user" />
+                            :   <img src={this.props.urlProfile} alt="user"/>}
+
+                    </Link>
                 </div>
 
                 <div className="search-item__bio">
                     <div className="bio__name">
-                        <a href="#bio__name">
-                            <h1>Jeff Geofferson</h1>
-                        </a>
+                        <Link to={"/userfolio/" + this.props.userId} >
+                            <h1>{this.props.firstName + " " + this.props.lastName}</h1>
+                        </Link>
                     </div>
 
                     <div className="bio__title">
-                        <h2>A mad dog at big boy industries</h2>
+                        {this.props.title !== "" ? 
+                        <h2>{this.props.title}</h2>
+                        :<h2>{defaultTitle}</h2>}
                     </div>
 
-                    <div className="bio__about">
-                        A dedicated mad dog, pushing the big boy industry to be a welcoming place for all.
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero incidunt dolores quisquam reiciendis quae perferendis at deleniti minus natus dolorum, laboriosam ea tenetur, fuga sint quis optio praesentium dolore maiores. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero incidunt dolores quisquam reiciendis quae perferendis at deleniti minus natus dolorum, laboriosam ea tenetur, fuga sint quis optio praesentium dolore maiores. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero incidunt dolores quisquam reiciendis quae perferendis at deleniti minus natus dolorum, laboriosam ea tenetur, fuga sint quis optio praesentium dolore maiores. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero incidunt dolores quisquam reiciendis quae perferendis at deleniti minus natus dolorum, laboriosam ea tenetur, fuga sint quis optio praesentium dolore maiores. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero incidunt dolores quisquam reiciendis quae perferendis at deleniti minus natus dolorum, laboriosam ea tenetur, fuga sint quis optio praesentium dolore maiores. 
+                    <div className="bio__about ">
+                    {this.props.aboutMe !== "" ? 
+                        <ShowMoreText
+                        /* Default options */
+                        lines={3}
+                        more=''
+                        less=''
+                        anchorClass=''
+                        onClick={()=>console.log("easteregg")}
+                        expanded={false}
+                        
+                        >
+                            <p>{this.props.aboutMe}</p>
+                        </ShowMoreText> 
+                        :null}
                     </div>
+
+                    
                     <div className="bio__see-more">
-                        <a href="#bio__see-more">See more</a>
+                        <Link to={"/userfolio/" + this.props.userId} >
+                            See more
+                        </Link>
                     </div>
                 </div>
             </section>

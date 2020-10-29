@@ -1,151 +1,102 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 
-import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
+import Dropzone from 'react-dropzone-uploader'
+import 'react-dropzone-uploader/dist/styles.css'
+
+//input accept type: ex: "image/*,audio/*,video/*"
+//input maxFiles
+//disabled Boolean
+
 
 //import relevent redux things
 import { connect } from 'react-redux';
-import * as actionCreators from '../../store/actions/index';
 
 class FilesUpload extends Component {
 
     state = {
         file: null,
-        filename: '',
-        uploadedFile: '',
         message: '',
-        loading: false,
-        uploadPercentage: 0
     }
 
-    //read the file from user's computer
-    readFileHandler = event => {
-        event.preventDefault();
-        //init current state
-        this.setState({message: '', uploadPercentage: 0});
-        //if the file pointer point to null return
-        if(!event.target.files[0]) return;
+    //prepare for upload
+    getUploadParams = ({ file, meta }) => {
 
-        //get the file path and name and store into state
-        this.setState({file: event.target.files[0]});
-        this.setState({filename: event.target.files[0].name});
-    };
+        const body = new FormData();
+        body.append('file', file);
+        body.append('itemBlock_id', this.props.itemBlock_id);
+        body.append('type', this.props.type);
 
-
-    //post the file to backend by axios
-    postFileHandler = async (event) => {
-
-        if(!this.state.file) return;
-        event.preventDefault();
-
-        //create a container for the file
-        const formData = new FormData();
-        formData.append('file', this.state.file);
-
-        //construct and add auth token to header
         let authToken;
-        if(!this.props.userAuthToken) authToken = '';
+        if (!this.props.userAuthToken) authToken = '';
         else authToken = this.props.userAuthToken.token;
 
-        //set the loading to true
-        this.setState({loading: true});
+        return {
+            url: '/api/portfolio/upload', body,
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+    }
 
-        try {
-            //post the file
-            await axios.post('http://localhost:5000/api/portfolio/upload', formData,  {
-                //config the http request header with content-type and Authorization header
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': "Bearer " + authToken
-                },
-                //store progression percentage to state //for future use
-                onUploadProgress: progressEvent => {
+    //handle submit button: delete all the contents inside the drop zone
+    handleSubmit = (files, allFiles) => {
+        //console.log(files.map(f => f.meta))
+        allFiles.forEach(f => f.remove())
+    }
 
-                    this.setState({uploadPercentage:
-                            parseInt(
-                                Math.round((progressEvent.loaded * 100) / progressEvent.total))});
+     //handle error status: mainly print out message
+     handleChangeStatus = ({ meta, xhr }, status) => {
+        if(status === 'preparing'){
+            this.setState({message: ''});
+        }
+        if (status === 'error_upload') {
+            if (xhr) {
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4) {
+                        let resObj = JSON.parse(xhr.response);
+                        this.setState({message: resObj.message});
+                    }
                 }
-            })
-                .then( (response) => {
-                    this.setState({message: response.data.status});
-
-                })
-                .catch((error) => {
-                        this.setState({message: error.response.data});
-                    });
-
-            //remove file details
-            this.setState({file: null, filename: ''});
-
-            //const { fileName, filePath } = res.data;
-
-            //setUploadedFile({ fileName, filePath });
-
-        } catch (err) {
-            this.setState({message: err.response.data.status});
+            }
         }
-        this.setState({loading: false});
-    };
-
-    render(){
-        let result;
-
-        if(this.state.loading){
-            result = (
-                <div className="LoginWindow">
-                    <LoadingAnimation />
-                    <p>Please Upload Your Files</p>
-                    {this.state.message}
-                    <form>
-                        <div>
-                            <input
-                                type='file'
-                                className='custom-file-input'
-                                id='customFile'
-                                disabled
-                            />
-                            <label>
-                                {this.state.filename}
-                            </label>
-                        </div>
-
-                        <input
-                            type='submit'
-                            value='Upload'
-                            disabled
-                        />
-                    </form>
-                </div>
-                );
-
-        }else{
-
-            result = (
-                <div className="LoginWindow">
-                    <p>Please Upload Your Files</p>
-                    {this.state.message}
-                    <form onSubmit={this.postFileHandler}>
-                        <div>
-                            <input
-                                type='file'
-                                className='custom-file-input'
-                                id='customFile'
-                                onChange={(event) => this.readFileHandler(event)}
-                            />
-                            <label>
-                                {this.state.filename}
-                            </label>
-                        </div>
-
-                        <input
-                            type='submit'
-                            value='Upload'
-                        />
-                    </form>
-                </div>
-            );
+        else if(status === 'done')
+        {
+            if (xhr.readyState === 4) {
+                let resObj = JSON.parse(xhr.response);
+                this.props.returnResult(resObj.item);
+            }
         }
-        return result;
+
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                
+                {this.state.message?<p>{this.state.message}</p>: null}
+                <Dropzone
+                    getUploadParams={this.getUploadParams}
+                    onChangeStatus={this.handleChangeStatus}
+                    onSubmit={this.handleSubmit}
+                    maxFiles = {this.props.maxFiles}
+                    submitButtonContent = "finished"
+                    maxSizeBytes = {10000000}
+                    canCancel={false}
+                    //accept="image/*,audio/*,video/*"
+                    accept={this.props.accept}
+                    inputContent={(files, extra) => (extra.reject ? this.props.fileRejectMessage : 'Files upload: Drag or Click')}
+                    disabled={files => files.some(f => ['preparing', 'getting_upload_params', 'uploading'].includes(f.meta.status))}
+                    //disabled={this.props.disabled}
+                    inputWithFilesContent={files => `${this.props.maxFiles - files.length} more files allowed`}
+                    styles={{
+                        dropzoneReject: { borderColor: 'red', backgroundColor: '#DAA' },
+                        dropzone: { width: "95%", height: "20rem", overflowX: "auto", overflowY: "auto"},
+                        inputLabel: (files, extra) => (extra.reject ? { color: 'red' } : {}),
+                        contentWithFiles: {color: "red"}
+                    }}
+                />
+            </React.Fragment>
+        )
     }
 }
 
@@ -155,7 +106,6 @@ const mapStateToProps = state => {
         userAuthToken: state.auth.userAuthToken
     };
 };
-
 
 //bring in redux actions
 const mapDispatchToProps = dispatch => {

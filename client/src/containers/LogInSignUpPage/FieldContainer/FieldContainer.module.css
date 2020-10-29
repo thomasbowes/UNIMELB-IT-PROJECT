@@ -14,13 +14,29 @@
     text-align: center;
 }
 
+.field-container__icon.Red {
+    background: rgba(153, 51, 51, 1);
+}
+
 .field-container__input-field {
     width: 100%;
     padding: 0.3rem;
     font-size: 1rem;
     outline: none;
+    -webkit-appearance: none;
+    border-width: 1px;
+    border-color: rgb(118, 118, 118);
 }
+
 
 .field-container__input-field:focus {
     border: 2px solid rgba(8, 103, 150, 1);
+}
+
+.field-container__input-field.Red {
+    color:red;
+}
+
+.field-container__input-field.Red:focus {
+    border: 2px solid rgba(153, 51, 51, 1);
 }

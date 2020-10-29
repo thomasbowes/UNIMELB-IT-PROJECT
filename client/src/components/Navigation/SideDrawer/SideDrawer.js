@@ -23,7 +23,7 @@ class SideDrawer extends Component {
                 <a href="#MyPage">MyPage</a>
                 <a href="#About">About</a>
                 <a href="#Settings">Settings</a> */}
-                <NavBarItems click={this.props.clickItem} loginSignUpclicked = {this.props.loginSignUpclicked}/>
+                <NavBarItems click={this.props.clickItem} loginSignUpclicked = {this.props.loginSignUpclicked} closeBackDrop={this.props.clickItem}/>
             </div>
 
         );

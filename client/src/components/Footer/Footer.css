@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    
+
 }
 
 .main-footer nav {
@@ -108,7 +108,7 @@
 }
 
 /* for mobile */
-@media (max-width: 40rem) {
+@media (max-width: 60rem) {
 
     main {
         min-height: calc(100vh - 2.75rem - 18rem);

@@ -1,4 +1,7 @@
-const User = require('mongoose').model('User');
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
+const ProfileBlock = mongoose.model('ProfileBlock');
+
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -98,7 +101,22 @@ const facebookStrategy = new FacebookTokenStrategy(fbOptions,
 
 					newUser.save()
 						.then(() => {
-							return done(null, newUser);
+							let combinedName = newUser.firstname + " " + newUser.lastname;
+
+							// autogenerate profile block for new facebook user
+							const newProfile = new ProfileBlock({
+								user_id: newUser._id,
+								name: combinedName,
+								email: newUser.email
+							});
+
+							newProfile.save()
+								.then(() => {
+									return done(null, newUser);
+								})
+								.catch((err) => {
+									return done(err, false);
+								});
 						})
 						.catch((err) => {
 							return done(err, false);
@@ -131,7 +149,6 @@ const googleOptions = {
 
 const googleStrategy = new GoogleTokenStrategy(googleOptions, 
 	(accessToken, refreshToken, profile, done) => {
-		console.log(profile);
 		// attempting to find email in database
 		User.findOne({ email: profile.emails[0].value })	
 			.then((user) => {
@@ -163,7 +180,21 @@ const googleStrategy = new GoogleTokenStrategy(googleOptions,
 
 					newUser.save()
 						.then(() => {
-							return done(null, newUser);
+							let combinedName = newUser.firstname + " " + newUser.lastname;
+							// autogenerate profile block for new google user
+							const newProfile = new ProfileBlock({
+								user_id: newUser._id,
+								name: combinedName,
+								email: newUser.email
+							});
+
+							newProfile.save()
+								.then(() => {
+									return done(null, newUser);
+								})
+								.catch((err) => {
+									return done(err, false);
+								});
 						})
 						.catch((err) => {
 							return done(err, false);

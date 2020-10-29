@@ -10,7 +10,8 @@ dotenv.config({ path: './.env' });
 // needed to generate and sign token 
 const jwt = require('jsonwebtoken');
 
-const User = require('mongoose').model('User');
+const User = mongoose.model('User');
+const ProfileBlock = mongoose.model('ProfileBlock');
 
 // Test which environment is the app running in for mailOptions and userEmailConfirmation
 const isDevelopment = function() {
@@ -199,7 +200,7 @@ const registerNewUser = function(req, res){
                });
 
                //send confirmation email
-               sendEmail(newUser.email, newUser._id);
+               sendEmail(newUser.email, newUser._id, newUser.firstname,  newUser.lastname);
 
                //hash the password
                bcrypt.genSalt(10, function(err, salt){
@@ -210,9 +211,20 @@ const registerNewUser = function(req, res){
                        newUser.password = hash;
                        newUser.save()
                            .then(() => {
-                               res.status(201).json({
-                                   status: 'Thank you for registering - Please confirm your email address.'
+                               let combinedName = newUser.firstname + " " + newUser.lastname;
+                               // autogenerate new profile block for new user
+                               const newProfile = new ProfileBlock({
+                                   user_id: newUser._id,
+                                   name: combinedName,
+                                   email: newUser.email
                                });
+
+                               newProfile.save()
+                                   .then(() => {
+                                       res.status(201).json({
+                                           status: 'Thank you for registering - Please confirm your email address.'
+                                       });
+                                   });
                            });
                    });
                });
@@ -221,24 +233,45 @@ const registerNewUser = function(req, res){
 };
 
 //send confirmation email
-const sendEmail =  function(userEmail, userId) {
+const sendEmail =  function(userEmail, userId, userFirstname, UserLastname) {
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: 'folio.exchange.team@gmail.com',
-            pass: 'folioexchange'
+            pass: process.env.EMAILPW
         }
     });
+
+    //The HTML code for making confirmation email prettier
+    let data = "<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional \/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\">\r\n" +
+        "<html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:v=\"urn:schemas-microsoft-com:vml\">\r\n" +
+        "<head>\r\n\r\n<meta content=\"text\/html; charset=utf-8\" http-equiv=\"Content-Type\">\r\n<meta content=\"width=device-width\" name=\"viewport\">" +
+        "\r\n\r\n<meta content=\"IE=edge\" http-equiv=\"X-UA-Compatible\">\r\n\r\n<\/head><body>\r\n    " +
+        "<div class=\"background\" style=\"background-color:rgb(3, 76, 113); font:1em sans-serif; height:inherit; padding-bottom:6rem; padding-top:3rem\" bgcolor=\"rgb(3, 76, 113)\" height=\"inherit\">\r\n      " +
+        "<img src=\"https:\/\/res.cloudinary.com\/dg3osx8ob\/image\/upload\/v1602860266\/logo_upyyhw.png\" alt=\"logo\" style=\"display:block; margin:0 auto; max-width:40rem; width:72%\" width=\"72%\">\r\n      " +
+        "<div class=\"email-body\" style=\"align-items:center; background-color:rgb(243, 246, 248); margin:0 auto; margin-top:3rem; max-width:50rem; padding:1rem; width:90%\" bgcolor=\"rgb(243, 246, 248)\" width=\"90%\">\r\n          " +
+        "<h1 style=\"text-align:center\" align=\"center\">Please verify your email address<\/h1>\r\n          " +
+        "<p style=\"margin:0; text-align:center\" align=\"center\">Dear " +
+        userFirstname +" " + UserLastname +
+        ", Thank you for signing up to Portfolio.Exchange!<\/p>\r\n          " +
+        "<p style=\"margin:0; text-align:center\" align=\"center\">Please confirm your e-mail by either clicking the button below<\/p>\r\n          " +
+        "<a href=\"" +
+        process.env.DOMAIN + "/api/users/confirmation/" + userId + "\"" +
+        "class=\"link\" style=\"background-color:rgb(100, 203, 140); border-radius:1.2rem; color:white; display:block; font-weight:bolder; margin:1.5rem auto; padding:1rem; text-align:center; text-decoration:none; width:8rem\" bgcolor=\"rgb(100, 203, 140)\" align=\"center\" width=\"8rem\">Verify E-Mail" +
+        "<\/a>\r\n          <p style=\"margin:0; text-align:center\" align=\"center\">Clicking the below link:<\/p>\r\n          " +
+        "<p style=\"margin:0; text-align:center\" align=\"center\">" +
+        process.env.DOMAIN + "/api/users/confirmation/" + userId +
+        "<\/p>" +
+        "\r\n      " +
+        "<\/div>\r\n    <\/div>\r\n<\/body>\r\n<\/html>"
+
 
     const mailOptions = {
         from: 'folio.exchange.team@gmail.com',
         to: userEmail,
         subject: 'Folio.Exchange - confirmation email',
-        text: isDevelopment() ?  ("Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId)
-                            : "Thank you for registering with folio.exchange, Here is your conformation link:" + "Heroku:" + process.env.DOMAIN + "/api/users/confirmation/" + userId
-        // text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "Localhost: http://localhost:5000/api/users/confirmation/" + userId + " Heroku: " + userId
-        //text: "Thank you for registering with folio.exchange, Here is your conformation link:" + "https://folioexchangetest.herokuapp.com/api/users/confirmation/" + userId + " Heroku: " + userId
+        html: data
     };
 
     // send mail with defined transport object
@@ -370,6 +403,182 @@ const refreshTokens = (req, res) => {
   }
 };
 
+
+// function dedicated to changing permissible user details (first, last name and password)
+const changeDetails = (req, res) => {
+  const userid = req.user._id;
+  const query = { _id: userid };  
+
+  if (!req.body.contents) {
+    return res.status(401).json({
+      status: "Include body of change"
+    });
+  }
+
+  // if password is included, make sure to encode it 
+  if (req.body.contents.password != undefined) {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.contents.password, salt);
+    req.body.contents.password = hash;
+  }
+
+  User
+    // req.body.contents is an object that contains the fields we want to change in an item block
+    .findOneAndUpdate(query, req.body.contents, {upsert: true, new: true})
+    .then(item => {
+      res.status(200).json({
+        status: "User details have been successfully updated",
+        userDetails: item
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        status: "An error has occurred trying to update user details",
+        err: error
+      });
+    })
+};
+
+
+/* Find the urlProfile in ProfileBlock, and include it with the result of searchUser
+  Input: Array of users (i.e. result of searchUser)
+  Output: A single promise that will resolve to an array of resolved value of individual promises
+          (i.e. array of user object with the urlProfile inserted)
+*/
+const searchUrlProfile = docUsers => {
+
+  const docPromises = docUsers.map(oneUser => {
+    
+    let userWithUrl = oneUser.toObject();
+    profileBlockPromise = ProfileBlock.find( {user_id: oneUser._id}, 'urlProfile title aboutMe' ).exec();
+    return profileBlockPromise.then(doc => {
+      
+      // Matching ProfileBlock has been found, insert urlProfile, title and aboutMe in user
+      if(doc.length === 1) {
+        userWithUrl["urlProfile"] = doc[0].urlProfile;
+        // These two fields are not required, hence not necessarily present
+        if(doc[0].title){
+          userWithUrl["title"] = doc[0].title;
+        }
+        else{
+          userWithUrl["title"] = "";
+        }
+        if(doc[0].aboutMe){
+          userWithUrl["aboutMe"] = doc[0].aboutMe;
+        }
+        else{
+          userWithUrl["aboutMe"] = "";
+        }
+      }
+      // No match has been found. Mark the url as empty
+      else if(doc.length === 0){
+        userWithUrl["urlProfile"] = "";
+        userWithUrl["title"] = "";
+        userWithUrl["aboutMe"] = "";
+      }
+      // Something went wrong. There should be only one match. 
+      else if(doc.length > 1){
+        console.log("More than one profile block has been found, something went wrong");
+        userWithUrl["urlProfile"] = "";
+        userWithUrl["title"] = "";
+        userWithUrl["aboutMe"] = "";
+      }
+
+      return userWithUrl;
+    })
+    .catch(err => {
+      console.log("Something went wrong in searchUrlProfile: " + err);
+    });
+
+  });
+
+  return Promise.all(docPromises);
+}
+
+
+// Find all matching users in the database, returning a promise to be handled later
+const searchUsers = searchStr => {
+
+  let rexp;
+  let queryPromise;
+  const cleanedStr = searchStr.trim();
+  
+  // Input is an email address
+  if( validator.isEmail(cleanedStr)){
+    rexp = new RegExp(cleanedStr, 'i');
+    queryPromise = User.find( {email: rexp}, 'firstname lastname email isAdmin' )
+                      .exec();
+  } 
+  // Else, assume input is a name.
+  else {
+
+    // A full name has been entered
+    if (cleanedStr.indexOf(' ') !== -1) {
+      const names = cleanedStr.split(' ');
+      queryPromise = User.find( { 
+        firstname: new RegExp(names[0], 'i') ,
+        lastname: new RegExp(names[1], 'i') } , 
+        'firstname lastname email isAdmin')
+        .exec();
+    } 
+    // Either firstname or lastname has been entered
+    else {
+      rexp = new RegExp(cleanedStr, 'i');
+      queryPromise = User.find( { $or: [{ firstname: rexp }, { lastname: rexp }] }, 
+                                  'firstname lastname email isAdmin'
+                              ).exec();
+    }
+
+  }
+
+  return queryPromise;
+}
+
+
+// Return the search-user results that is ready to be used by frontend
+const returnSearchUserResults = (req, res) => {
+
+  // The user has input something
+  if (req.query.key){
+    searchUsers(req.query.key)
+    .then(doc => {
+      
+      // No match has been found
+      if(doc.length === 0){
+        res.status(200).json({message: 'No matching result'});
+      }
+      // Matches have been found
+      else if (doc.length > 0){
+        return searchUrlProfile(doc)
+              .then( docWithUrlProfile => {
+                    res.status(200).json({
+                      message: "Matches have been found",
+                      data: docWithUrlProfile
+                    })
+              })
+              .catch(err => {
+                res.status(500).json({
+                  message: 'Something went wrong in returnSearchUserResults'
+                })
+              });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Something went wrong in returnSearchUserResults'
+      });
+    });
+  }
+
+  // The user has input nothing
+  else {
+    res.status(400).json({
+      message: "Please input something to search for"
+    });
+  }
+
+}
+
 module.exports = { signToken, signRefreshToken };
 module.exports.registerNewUser = registerNewUser;
 module.exports.loginUser = loginUser;
@@ -378,3 +587,5 @@ module.exports.userEmailConfirmation = userEmailConfirmation;
 module.exports.testUser = testUser;
 module.exports.checkBody = checkBody;
 module.exports.refreshTokens = refreshTokens;
+module.exports.changeDetails = changeDetails;
+module.exports.returnSearchUserResults = returnSearchUserResults;

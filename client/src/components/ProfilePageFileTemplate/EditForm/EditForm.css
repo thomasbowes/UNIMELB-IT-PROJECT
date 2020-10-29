@@ -1,0 +1,112 @@
+.edit-form__container {
+    width: 100%;
+    padding: 0.5rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.edit-form__container h2 {
+    color: #003A58;
+}
+
+.edit-form__cancel{
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
+
+.edit-form__single-form-entry {
+    width: 95%;
+    margin: 1rem 0;
+}
+
+
+.single-form-entry__desc {
+    margin: 0;
+    margin-bottom: 0.2rem;
+    font-size: 1rem;
+    color: rgba(0, 58, 88, 1);
+    font-weight: bold;
+}
+
+.single-form-entry__regInput {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 0.2rem;
+    font-size: 1rem;
+}
+
+.edit-form__button-selection {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    justify-content: space-between;
+    margin: 0 auto;
+    height: 2rem;
+}
+
+.edit-form__save-button {
+    background-color: rgba(8, 103, 150, 0.8);
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.edit-form__save-button:hover,
+.edit-form__save-button:active {
+    background-color: rgba(8, 103, 150, 1);
+}
+
+
+.edit-form__delete-button {
+    background-color: rgba(0, 0, 0, 0);
+    color: rgba(255, 1, 1, 0.7);
+    border: none;
+    padding: 0rem;
+    cursor: pointer;
+}
+
+.edit-form__delete-button:hover,
+.edit-form__delete-button:active {
+    color: rgba(255, 1, 1, 1);
+    font-weight: bold;
+}
+
+.edit-form-horizontal-line {
+    width: 95%;
+
+}
+
+.input,
+.single-form-entry__textarea {
+    border: 1px solid #ccc;
+    padding: 1px 2px;
+    overflow-wrap: break-word;
+    white-space: pre-wrap; 
+    white-space: -moz-pre-wrap;  
+    white-space: -pre-wrap;   
+    white-space: -o-pre-wrap;  
+    word-wrap: break-word; 
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 0.2rem;
+    font-size: 1rem;
+}
+
+.single-form-entry__textarea {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    resize: vertical;
+    min-height: 40px;
+    background-color: white;
+    border-color: black;
+    line-height: 20px;
+    
+}
+
+  

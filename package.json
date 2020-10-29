@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "IT Project S2 2020 for team O(n!)",
   "main": "server.js",
+  "apidoc": {
+    "name": "API Document",
+    "version": "3.0.0"
+  },
   "scripts": {
     "client-install": "npm install --prefix client",
     "start": "node server.js",
@@ -10,12 +14,15 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "docs": "apidoc -i ./ -e node_modules -e ./docs -o ./docs",
-    "test": "node_modules/.bin/mocha",
+    "test": "mocha",
+    "test-awesome": "mocha test --reporter mochawesome --reporter-options html=false",
+    "generate-test-report": "marge --inline -f testReport ./mochawesome-report/mochawesome.json",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "O (n!)",
   "license": "MIT",
   "dependencies": {
+    "@crossfield/react-read-more": "^0.2.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.23.0",
@@ -27,12 +34,16 @@
     "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.7",
+    "node-sass": "^4.14.1",
     "nodemailer": "^6.4.11",
     "npm-check-updates": "^9.0.2",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
+    "pdfkit": "^0.11.0",
+    "react-show-more-text": "^1.4.4",
+    "read-more-react": "^1.0.10",
     "streamifier": "^0.1.1",
     "validator": "^13.1.17"
   },
@@ -40,6 +51,8 @@
     "apidoc": "^0.25.0",
     "chai": "^4.2.0",
     "mocha": "^8.1.3",
+    "mochawesome": "^6.1.1",
+    "mochawesome-report-generator": "^5.1.0",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
   }

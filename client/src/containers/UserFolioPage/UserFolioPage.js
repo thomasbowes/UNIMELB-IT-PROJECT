@@ -1,113 +1,401 @@
 import React, {Component} from 'react';
-import FilesUpload from '../../components/FilesUpload/FilesUpload';
-import eggImage from '../../assets/ProfilePageDocuments/egg.jpg'
 import './UserFolioPage.css'
-import eggPdf from '../../assets/ProfilePageDocuments/eggPdf.pdf';
-import PdfViewer from '../../components/Viewer/PdfViewer/PdfViewer';
-import PdfPreview from '../../components/Viewer/PdfPreview/PdfPreview';
-import BackDrop from '../../components/UI/BackDrop/BackDrop'
+import {Link} from "react-router-dom"
 
-import ImageGallery from 'react-image-gallery';
-import "react-image-gallery/styles/css/image-gallery.css";
 
-import ProfileBlockWithImage from '../../components/ProfilePageFileTemplate/ProjectBlockWithImage/ProfileBlockWithImage';
-import ProfileBlockNoImage from '../../components/ProfilePageFileTemplate/ProfileBlockNoImage/ProfileBlockNoImage';
-import ProfileBlockTwoProject from '../../components/ProfilePageFileTemplate/ProfileBlockTwoProject/ProfileBlockTwoProject';
+import ProjectOverviewBlock from '../../components/ProfilePageFileTemplate/ProjectOverviewBlock/ProjectOverviewBlock';
 import EducationHistory from '../../components/ProfilePageFileTemplate/EducationHistory/EducationHistory';
+import JobHistory from '../../components/ProfilePageFileTemplate/JobHistory/JobHistory';
+import AddIcon from '../../assets/EditIcons/add.svg';
+import crossIcon from '../../assets/LoginPage-icons/cross.svg';
+import pdfIcon from '../../assets/Homepage-icons/pdf-icon.svg';
+import ShareIcon from '../../assets/Homepage-icons/share-icon.svg';
 
-import eggImg1 from '../../assets/ProfilePageDocuments/egg1.jpg'
-import eggImg2 from '../../assets/ProfilePageDocuments/egg2.jpg'
-import eggImg3 from '../../assets/ProfilePageDocuments/egg3.jpg'
-import eggImg4 from '../../assets/ProfilePageDocuments/egg4.jpg'
-import eggImg5 from '../../assets/ProfilePageDocuments/egg5.jpg'
+import Aux from '../../hoc/Auxiliary/Auxiliary'
 
-import google1 from '../../assets/ProfilePageDocuments/google.png';
-import google2 from '../../assets/ProfilePageDocuments/google2.jpg';
+import "react-image-gallery/styles/css/image-gallery.css";
+import UserProfile from '../../components/ProfilePageFileTemplate/UserProfile/UserProfile'
+
+//redux
+import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
+import axios from "axios";
+
+import EmailShareButton from '../../components/SocialMediaShareButtons/EmailShareButton/EmailShareButton';
+import FacebookShareButton from '../../components/SocialMediaShareButtons/FacebookShareButton/FacebookShareButton';
+import TwitterShareButton from '../../components/SocialMediaShareButtons/TwitterShareButton/TwitterShareButton';
+import LinkedInShareButton from '../../components/SocialMediaShareButtons/LinkedInShareButton/LinkedInShareButton';
 
 
 class UserFolioPage extends Component {
-    state = {showPdf: false}
 
-    showPdfToggle = () => {
-        const newShowPdf = !this.state.showPdf;
-        this.setState({showPdf: newShowPdf})
+    state = {
+        itemBlocks_Job: [],
+        itemBlocks_Education: [],
+        itemBlocks_Project: [],
+        profileBlocks: {},
+        shareModalOpen: false
+    }
+
+    
+    componentDidMount() {
+        const data = {
+            user_id: this.props.match.params.userId
+        }
+
+       //get itemBlocks
+        axios.post('/api/itemblocks/seeall', data)
+            .then(response => {
+
+                const itemBlocks_Job = response.data.itemblocks.flatMap((item) => item.type === 'Job' ? item : []);
+                const itemBlocks_Education = response.data.itemblocks.flatMap((item) => item.type === 'Education' ? item: []);
+                const itemBlocks_Project = response.data.itemblocks.flatMap((item) => item.type === 'Project' ? item : []);
+
+                this.setState({itemBlocks_Job: itemBlocks_Job});
+                this.setState({itemBlocks_Education: itemBlocks_Education});
+                this.setState({itemBlocks_Project: itemBlocks_Project});
+
+            })
+            .catch(error => {
+                this.setState({itemBlocks: []});
+                console.log(error);
+            });
+
+       //get user profileBlock
+        axios.post('/api/profileblocks/see', data)
+            .then(response => {
+
+                if(this.isEmpty(response.data.profile)) this.props.history.push({pathname: '/notfound'});
+                this.setState({profileBlocks: response.data.profile});
+
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({profileBlocks: []});
+                this.props.history.push({pathname: '/notfound'});
+            });
+
+    }
+
+    isEmpty = (value) => {
+        return Boolean(value && typeof value === 'object') && !Object.keys(value).length;
+    }
+
+
+    eduHisCopy = () => {
+        const newItem = []
+        let i = 0
+        for (i=0; i<this.state.itemBlocks_Education.length; i++){
+            newItem.push({...this.state.itemBlocks_Education[i]})
+        }
+        return newItem;
+    }
+
+    eduChangeHisItemHandler = (id, input) => {
+        const newItem = this.eduHisCopy();
+        newItem[id] = input
+        this.setState({itemBlocks_Education: newItem})
+        
+
+    }
+
+    eduItemRemoveHandler = (hisItemIndex) => {
+        const newItem = this.eduHisCopy();       
+        newItem.splice(hisItemIndex, 1);
+        this.setState({itemBlocks_Education: newItem});
+    }
+
+
+    eduAddNewItemHandler = (newHisItem) => {
+
+        const newItem = this.eduHisCopy();
+
+        if (this.state.itemBlocks_Education.length >= 10){
+            return;
+        }
+        newItem.push(newHisItem);
+
+        this.setState({itemBlocks_Education: newItem})
+
+    }
+
+    jobHisCopy = () => {
+        const newItem = []
+        let i = 0
+        for (i=0; i<this.state.itemBlocks_Job.length; i++){
+            newItem.push({...this.state.itemBlocks_Job[i]})
+        }
+        return newItem;
+    }
+
+    jobChangeHisItemHandler = (id, input) => {
+        const newItem = this.jobHisCopy();
+        newItem[id] = input
+        this.setState({itemBlocks_Job: newItem})
+        
+
+    }
+
+    jobItemRemoveHandler = (hisItemIndex) => {
+        const newItem = this.jobHisCopy();       
+        newItem.splice(hisItemIndex, 1);
+        this.setState({itemBlocks_Job: newItem});
+    }
+
+
+    jobAddNewItemHandler = (newJobItem) => {
+        if (this.state.itemBlocks_Job.length >= 10){
+            console.log("Oops, limit reached")
+            return;
+        }
+        const newItem = this.jobHisCopy();
+
+        console.log("ready to push")
+        newItem.push(newJobItem);
+        console.log("pusheded")
+
+        this.setState({itemBlocks_Job: newItem})
+        console.log("state updated")
+
+    }
+
+
+
+    
+    // return true if the visitor has the right to edit this userFolioPage
+    checkHasRightToEdit = () => {
+        const folioOwnerId = this.props.match.params.userId;
+        const visitorToken = this.props.userAuthToken;
+        // return true, if the visitor is the folioPage owner, or the visitor is an admin staff
+        if (visitorToken !== null && folioOwnerId !== null && (folioOwnerId===visitorToken._id || this.props.userAuthToken.isAdmin)){
+            return true;
+        }
+        return false;
+        // otherwise return false
+    }
+
+    changeProfileValues = (values) => {
+        this.setState({profileBlocks: values})
+    }
+
+    projectOverviewBlock = () => {
+        return this.state.itemBlocks_Project.map((item, index) => {
+            return <ProjectOverviewBlock 
+            item={item} 
+            index={index} 
+            key={item._id}
+            hasEditingRight={this.checkHasRightToEdit()}
+            />
+        })
+    }
+
+    addProjectHandler = () => {
+
+        let authToken;
+        if (!this.props.userAuthToken) authToken = '';
+        else authToken = this.props.userAuthToken.token;
+
+        const headers = {
+            headers: {
+                'Authorization': "Bearer " + authToken
+            }
+        }
+
+        const data = {
+            contents: {
+                type: 'Project',
+                title: 'New Project Block'
+            }
+        }
+
+        let newProjects = [...this.state.itemBlocks_Project];
+        if (newProjects >= 10){
+            return;
+        }
+
+        axios.post('/api/itemblocks/create',data, headers)
+            .then((res)=>{
+                    newProjects.push(res.data.item);
+                    this.setState({itemBlocks_Project: newProjects});
+                }
+            )
+            .catch((err)=>{
+                console.log(err);
+            })
+    }
+
+    // return true if the visitor has the right to edit this userFolioPage
+    checkHasRightToEdit = () => {
+        const folioOwnerId = this.props.match.params.userId;
+        const visitorToken = this.props.userAuthToken;
+        // return true, if the visitor is the folioPage owner, or the visitor is an admin staff
+        if (visitorToken !== null && folioOwnerId !== null && (folioOwnerId===visitorToken._id || this.props.userAuthToken.isAdmin)){
+            return true;
+        }
+        return false;
+        // otherwise return false
+    }
+
+    // return the add project button
+    addProjectButton = () => {
+        if (this.state.itemBlocks_Project.length >= 10){
+            return <div>
+                        <button className="profile-item__add-new" onClick={this.addProjectHandler} disabled={true}>No more projects can be added, project Limit Reached</button>
+                    </div>
+        }
+        return <div styles={{display: "flex", alignItems: "center"}}>
+                    <button className="profile-item__add-new" onClick={this.addProjectHandler}><img src={AddIcon} alt="add-item"/> Add a new Project: {(this.state.itemBlocks_Project.length).toString() + '/10'}</button>
+                </div>
+    }
+
+    // change the profile image
+    changeProfilePic = (img) => {
+        let newProfile = {...this.state.profileBlocks}
+        newProfile.urlProfile = img
+        this.setState({profileBlocks: newProfile}) 
+    }
+
+    // change the image for a job history item
+    changeJobItemProfileImg = (img, index) => {
+        let newJobs = this.jobHisCopy();
+        newJobs[index].urlThumbnail = img;
+
+        this.setState({itemBlocks_Job: newJobs});
+    }
+
+    // change the image for a edu history item
+    changeEduItemProfileImg = (img, index) => {
+        let newEdus = this.eduHisCopy();
+        newEdus[index].urlThumbnail = img;
+
+        this.setState({itemBlocks_Education: newEdus});
+    }
+
+    toggleShareWindow = () => {
+        this.setState({shareModalOpen: !this.state.shareModalOpen});
+    }
+    
+    //share-window__close-button
+    generateShareWindow = (url) => {
+        const pdfRoute = "/api/users/createPDF/";
+        if (this.state.shareModalOpen){
+            return(
+                <div className="share-background" onClick={this.toggleShareWindow}>
+                    <div className="share-window">
+                        <div className="share-container">
+                            <div className="share-window__color-bar"></div>
+                            <h1 style={{flex: "1", margin: "0", paddingTop: "2rem"}}>Share Profile</h1>
+
+                            <Link className="share-window__pdf-button" to= {pdfRoute + this.props.match.params.userId} target="_blank">
+                                <img src={pdfIcon} alt="" style={{height: "2.5rem", width: "2.5rem"}}/>Generate Profile PDF
+                            </Link>
+                            <div className="share-window__share-buttons">
+                                <FacebookShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
+                                <TwitterShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
+                                <LinkedInShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
+                                <EmailShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
+                            </div>
+                            <div className="share-window__url">
+                                <h2 style={{textAlign: "center", width: "90%", margin: "0 auto"}}>or share profile link</h2>
+                                <p style={{wordWrap: "break-word", color: "black", textAlign: "center", fontSize: "2rem", borderStyle: "solid", borderWidth: "1px", padding: "1rem", backgroundColor: "rgba(0,0,0,0.1)"}}>{url}</p>
+                            </div>
+                            
+                            <img className="share-window__close-button" src={crossIcon} alt=""  onClick={this.toggleShareWindow}/>
+                            
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        return null;
+    }
+
+    editButton = () => {
+        return (
+        <a className="share-window__open" onClick={this.toggleShareWindow}>
+            Share <img src={ShareIcon} alt=""/>
+        </a>
+        );
     }
 
     render() {
-        const images = [
-            {
-                original: eggImg1,
-                thumbnail: eggImg1,
-            },
-            {
-                original: eggImg2,
-                thumbnail: eggImg2,
-            },
-            {
-                original: eggImg3,
-                thumbnail: eggImg3,
-            },
-            {
-                original: eggImg4,
-                thumbnail: eggImg4,
-            },
-            {
-                original: eggImg5,
-                thumbnail: eggImg5,
-            }
-          ];
-
-          const text = "The egg is the organic vessel containing the zygote in which an embryo develops until it can survive on its own, at which point the animal hatches. An egg results from fertilization of an egg cell. Most arthropods, vertebrates (excluding live-bearing mammals), and mollusks lay eggs, although some, such as scorpions, do not. Reptile eggs, bird eggs, and monotreme eggs are laid out of water and are surrounded by a protective shell, either flexible or inflexible. Eggs laid on land or in nests are usually kept within a warm and favorable temperature range while the embryo grows. When the embryo is adequately developed it hatches, i.e., breaks out of the egg's shell. Some embryos have a temporary egg tooth they use to crack, pip, or break the eggshell or covering."
-          return (
+        
+        return (
             <div className="UserFolioPage">
-                <div className="User-info">
-                    <div className="UserPictureHolder">
-                        <img className="UserPicture"src={eggImage} alt='egg' />
-                    </div>
-    
-                    <div className="UserInfoHolder">
-                        <div className="UserInfo">
-                            <h1>Mr. Eggy Egglington</h1>
-                        </div>
-                        <div className="UserInfo">
-                            <h2>An eggcellent student at Eggy Institute of Technology</h2> 
-                        </div>
-                        <div className="Objective">
-                            <p>A dedicated expert in the field of eggnomics, pushing egg-legislation to be beneficial for your average egg. With my extensive egg-u-cation i bring a dynamic off eggspertise to wherever i work. {text}</p> 
-                        </div>
-                    </div>
-                </div>
-                <ProfileBlockWithImage image={google2} text={text} title="Founded Eooggle" />
-                <ProfileBlockNoImage text={text} title="Founded Eooggle" />
-                <ProfileBlockTwoProject texts={[text, text]} titles={["Founded Eooggle", "Founded Eggipedia"]} />
-                <div className="ImageGallery">   
-                    <ImageGallery items={images} 
-                        showThumbnails={false}
-                        autoPlay={true}
-                    />
-                </div> 
-                <EducationHistory
-                        schools={["Eggy Junior High", "University of Eggplication", "Institute of Making Benedict Egg"]} 
-                        descriptions={[text, text, text]} 
-                        images={[google1, google1, google2]}
-                        durations={["2022-2024", "2024-2027", "2027-2???"]} />
+
+                {/*Share Buttons window*/}              
+                {this.generateShareWindow(window.location.href)} 
+
+
+                {/* Generates User Profile Blocks */}
+                <UserProfile 
+                    hasEditingRight={this.checkHasRightToEdit()}
+                    changeProfileValues={this.changeProfileValues} 
+                    values={this.state.profileBlocks}
+                    changeProfilePic={this.changeProfilePic} 
+                    shareButton={this.editButton}/>
+
+                {/* Only show education block if there are items or the page is owned by observer */}
+                {!this.checkHasRightToEdit() && this.state.itemBlocks_Education.length === 0?
+                    null
+                :   <EducationHistory
+                        contents = {this.state.itemBlocks_Education}
+                        changeItemHandler = {this.eduChangeHisItemHandler}
+                        hisItemRemoveHandler = {this.eduItemRemoveHandler}
+                        hisAddNewItemHandler = {this.eduAddNewItemHandler}
+                        hasEditingRight = {this.checkHasRightToEdit()}
+                        changeEduItemProfileImg={this.changeEduItemProfileImg}/>
+
+                }
+
+                {/* Only show Job block if there are items or the page is owned by observer */}
+                {!this.checkHasRightToEdit() && this.state.itemBlocks_Job.length === 0?
+                    null
+                :   <JobHistory               
+                        contents = {this.state.itemBlocks_Job}
+                        changeItemHandler = {this.jobChangeHisItemHandler}
+                        hisItemRemoveHandler = {this.jobItemRemoveHandler}
+                        hisAddNewItemHandler = {this.jobAddNewItemHandler}                
+                        hasEditingRight = {this.checkHasRightToEdit()}
+                        changeJobItemProfileImg={this.changeJobItemProfileImg}/>
+                }
+
+                {/* Add Projects and Projects Header */}
+                {!this.checkHasRightToEdit() && this.state.itemBlocks_Project.length === 0?
+                    null
+                :<Aux>
+                    <h2 className="user-folio-page__subheading"> My Personal Projects </h2>
+                    {this.projectOverviewBlock()}
+                </Aux>}
+
+                {/* Add Add project button if the owner is viewing their own page */}    
+                {this.checkHasRightToEdit()?
+                    this.addProjectButton()
+                :   null
+                }    
                 
-                <h1>Everything below this is for testing purposes. this is first draft of the profile</h1>
-                <div className="test">
-                    <PdfPreview file={eggPdf} clicked={this.showPdfToggle}/>
-                </div>
-    
-                {this.state.showPdf? <BackDrop clicked={this.showPdfToggle} show={this.state.showPdf}/>:null}
-                {this.state.showPdf? <PdfViewer file={eggPdf} />:null}
-                
-                
-                
-                <FilesUpload />
             </div>
-    
+        
         );
     }
 }
 
+//bring in redux state
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        LoginMessage: state.auth.message,
+        userAuthToken: state.auth.userAuthToken
+    };
+};
 
-export default UserFolioPage;
+
+//bring in redux actions
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (email, password) => dispatch( actionCreators.auth(email, password)),
+        onLogout: () => dispatch(actionCreators.authLogout())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserFolioPage);

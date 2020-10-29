@@ -32,11 +32,12 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 3rem;
+    max-width: 54rem;
 }
 
 .modal__color-bar {
     border-radius: 8px 8px 0 0;
-    height: 0.8rem;;
+    height: 0.8rem;
     width: 100%;
     margin: 0;
     background: linear-gradient(165deg,#003A58 , rgba(8, 103, 150, 1)) 40%;
@@ -64,6 +65,10 @@ a:hover {
     width: 40%;
 }
 
+.LoginSignupPage__error {
+    margin: 0;
+}
+
 .vertical-line {
     border-left: 3px solid rgba(0, 0, 0, 0.3);
     border-radius: 20%;
@@ -80,6 +85,15 @@ a:hover {
     opacity: 0.9;
     margin-top: 1rem;
     outline: none;
+    width: 100%;
+}
+
+.google-login-button {
+    background-color: rgba(237,55,57,0.9) !important;
+}
+
+.facebook-login-button {
+    background-color:rgb(43,92,147,0.9) !important;
 }
 
 .login-signup__form button:hover {
@@ -94,7 +108,7 @@ a:hover {
 }
 
 /* for mobile */
-@media (max-width: 40rem) {
+@media (max-width: 60rem) {
     .modal {
         overflow-x: hidden;
         max-height: calc(100vh);
@@ -124,6 +138,7 @@ a:hover {
         flex-direction: column;
         width: 75%;
         padding: 0 3rem;
+        padding-bottom: 7rem;
     }
 
 

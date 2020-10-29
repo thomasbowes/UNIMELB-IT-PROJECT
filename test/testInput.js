@@ -1,6 +1,9 @@
+const mongoose = require('mongoose');
+
 // Inputs for Getting all existing users
-exports.tests = [
+exports.userTests = [
     {
+        _id: mongoose.Types.ObjectId('1021b706175df1546e3acb09'),
         firstname: 'tester1',
         lastname: 'One',
         password: '$2a$10$BUUI/8btB/pVQHPSZpey7O4QMdyQYl//M1nWKO6hMDXWTtu3KNmoO',
@@ -26,6 +29,93 @@ exports.tests = [
         facebookID: "918749279988"
     }
 ]
+
+exports.rightUpdateUserDetails = {
+    contents: {
+        firstname: "Test Change",
+        lastname: "Test Change"
+    }
+};
+
+exports.itemTests = [
+    {
+        user_id: mongoose.Types.ObjectId('1021b706175df1546e3acb09'),
+        type: 'Project',
+        title: 'Test 1',
+        description: 'Test Body'
+    },
+    {
+        user_id: mongoose.Types.ObjectId('f3d6c9d62d60d057f06440f3'),
+        type: 'Education',
+        title: 'Test 2',
+        description: 'Test Body 2'
+    }
+]
+
+exports.profileTests = [
+    {
+        _id: mongoose.Types.ObjectId('1021b706175df1546e3acb10'),
+        user_id: mongoose.Types.ObjectId('1021b706175df1546e3acb09'),
+        title: 'Test 1',
+        aboutMe: 'Test Body' 
+    }, 
+    {
+        user_id: mongoose.Types.ObjectId('f3d6c9d62d60d057f06440f3'),
+        title: 'Test 2',
+        aboutMe: 'Test Body 2' 
+    }
+]
+
+exports.rightUpdProfileDetails = {
+    contents: {
+        title: "Test 10",
+        aboutMe: "Test Change"
+    }
+}
+
+exports.wrongUpdProfileDetails = {
+    contents: {
+        title: "Test 10",
+        aboutMe: "Test Change"
+    }
+};
+
+exports.correctItemDetails = {
+    contents: {
+        title: "Test 3",
+        type: "Project"
+    }
+};
+
+exports.incorrectItemDetails = {
+    contents: {
+        title: "Test 4",
+        // incorrect spelling of type
+        type: "Prject"
+    }
+}
+
+exports.missingItemDetails = {
+    contents: {
+        // missing type of item block
+        title: "Test 5"
+    }
+}
+
+exports.rightUpdItemDetails = {
+    contents: {
+        title: "Test 4",
+        type: "Education"
+    }
+};
+
+exports.wrongUpdItemDetails = {
+    contents: {
+        title: "Test 4",
+        // incorrect spelling of "Education"
+        type: "Educatio"
+    }
+};
 
 exports.localUserRegister = {
     firstname: 'tester3 - local',
@@ -73,7 +163,7 @@ exports.loginOkay = {
 exports.newUser = {
     firstname: 'TinTin',
     lastname: 'Random',
-    email: 'tester3@mail.com',
+    email: 'folioexchangetesting@gmail.com',
     password: 'tesing123',
     confirm: false,
     isAdmin: false
@@ -82,7 +172,7 @@ exports.newUser = {
 exports.newUserDupEmail = {
     firstname: 'Captain',
     lastname: 'Random',
-    email: 'tester3@mail.com',
+    email: 'folioexchangetesting@gmail.com',
     password: 1234,
     confirm: false,
     isAdmin: false

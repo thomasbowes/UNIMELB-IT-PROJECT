@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import validator from 'validator';
 import './LogInSignUpPage.css'
-import {Link} from "react-router-dom"
 import FieldContainer from './FieldContainer/FieldContainer'
 import crossIcon from '../../assets/LoginPage-icons/cross.svg';
 import emailIcon from '../../assets/LoginPage-icons/email.svg';
@@ -55,7 +54,13 @@ class LogInPage extends Component{
             equalTo: 'registerPassword',
             verify: ''
         },
-        registerMessage: ''
+        registerMessage: null,
+        registerPasswordMessage: null,
+        registerEmailMessage: null,
+        registerFirstNameMessage: null,
+        registerLastNameMessage: null,
+        registerErrorList: []
+
 
     }
 
@@ -67,17 +72,54 @@ class LogInPage extends Component{
 
     registerSubmitHandler = (event) =>{
 
+        const MIN_PASS_LENGTH = 8;
+
         event.preventDefault();
+
+        // Resets all error messages (if thereis any)
+        this.setState({registerFirstNameMessage: null});
+        this.setState({registerLastNameMessage: null});
+        this.setState({registerEmailMessage: null});
+        this.setState({registerPasswordMessage: null});
+
+        console.log(this.state.registerPassword2);
+
+        // Generates message and records all form sections that are broken
+        if (!this.verifyState(this.state.registerPassword) ||
+        !this.verifyState(this.state.registerPassword2) || 
+        this.state.registerPassword.input.length < MIN_PASS_LENGTH || 
+        this.state.registerPassword2.input.length < MIN_PASS_LENGTH) {
+            this.setState({registerPasswordMessage: "Ensure that both passwords match and are longer than 8 characters"});
+            this.setState({registerErrorList: this.state.registerErrorList.concat(["password"])});
+        }
+
+        if (!this.verifyState(this.state.registerEmail)) {
+            this.setState({registerEmailMessage: "Please enter a valid email"});
+            this.setState({registerErrorList: this.state.registerErrorList.concat(["email"])});
+        }
+
+        if (!this.verifyState(this.state.registerFirstname)) {
+            this.setState({registerFirstNameMessage: "Please enter a valid name"});
+            this.setState({registerErrorList: this.state.registerErrorList.concat(["firstname"])});
+        }
+        if (!this.verifyState(this.state.registerLastname)) {
+            this.setState({registerLastNameMessage: "Please enter a valid name"});
+            this.setState({registerErrorList: this.state.registerErrorList.concat(["lastname"])});
+        }
 
         if( !this.verifyState(this.state.registerFirstname) ||
             !this.verifyState(this.state.registerLastname) ||
             !this.verifyState(this.state.registerEmail) ||
             !this.verifyState(this.state.registerPassword) ||
-            !this.verifyState(this.state.registerPassword2)){
-
+            !this.verifyState(this.state.registerPassword2) || 
+            this.state.registerPassword.input.length < MIN_PASS_LENGTH || 
+            this.state.registerPassword2.input.length < MIN_PASS_LENGTH){
+                
             this.setState({registerMessage: "Please verify the Sign up form"});
             return;
         }
+
+
 
         event.preventDefault();
         const data = {
@@ -148,53 +190,117 @@ class LogInPage extends Component{
         else this.verifyStringHandler(newState);
         this.setState({[property]: newState});
     }
+
+    // Generates html for error message
+    errorPrintHandler = (prop) => {
+        if (prop !== "") {
+            return <p className="LoginSignupPage__error">{prop}</p>
+        } else {
+            return null;
+        }
+    }
+    
+    
     //save for SSO link target="_blank" rel="noopener noreferrer"
     render() {
         const textInput = "text";
         const passwordInput = "password";
-
+        
         return(
             <div className="LoginSignUpPage">
                 <div className="modal">
                     <div className="modal__color-bar"></div>
                     <div className="login-signup"> 
-                        <a className="login-signup__close" href="#login-signup__close" onClick={this.props.clickCross}>
+                        <a className="login-signup__close" href="#login-signup__close" onClick={this.props.close}>
                             <img src={crossIcon} alt="" />
                         </a>
                         <div className="login-signup__form">
                             <h1>Log In</h1>
-                            <p>{this.props.LoginMessage}</p>
+                            {this.errorPrintHandler(this.props.LoginMessage)}
 
-                            <FieldContainer image={emailIcon} placeholder="Email" inputType={textInput} inputVerify = {this.state.loginEmail.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "loginEmail")} />
+                            <FieldContainer 
+                            image={emailIcon} 
+                            placeholder="Email" 
+                            inputType={textInput} 
+                            inputVerify = {this.state.loginEmail.verify} 
+                            recordInputValHandler = {(event) => this.setStateHandler(event, "loginEmail")} 
+                            isError={this.props.LoginMessage}
+                            />
 
-                            <FieldContainer image={keyIcon} placeholder="Password" inputType={passwordInput} inputVerify = {this.state.loginPassword.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "loginPassword")} />
+                            <FieldContainer 
+                            image={keyIcon} 
+                            placeholder="Password" 
+                            inputType={passwordInput} 
+                            inputVerify = {this.state.loginPassword.verify} 
+                            recordInputValHandler = {(event) => this.setStateHandler(event, "loginPassword")} 
+                            isError={this.props.LoginMessage}
+                            />
             
                             <button type="button" onClick={this.loginSubmitHandler}>Log In</button>
 
 
                             <a href="/api/users/oauth/google">
-                                <button type="button" >Log In with google</button>
+                                <button type="button" className="google-login-button">Log In with google</button>
                             </a>
 
                             <a href="/api/users/oauth/facebook">
-                                <button type="button">Log Inwith facebook</button>
+                                <button type="button" className="facebook-login-button">Log In with facebook</button>
                             </a>
 
                         </div>
                         <div className="vertical-line"></div>
                         <div className="login-signup__form">
                             <h1>Sign Up</h1>
-                            <p>{this.state.registerMessage}</p>
+                            {this.errorPrintHandler(this.state.registerMessage)}
+                            
+                            {this.errorPrintHandler(this.state.registerFirstNameMessage)}
+                            <FieldContainer 
+                                image={personIcon} 
+                                placeholder="First Name" 
+                                inputType={textInput} 
+                                inputVerify = {this.state.registerFirstname.verify} 
+                                recordInputValHandler = {(event) => this.setStateHandler(event, "registerFirstname")} 
+                                isError={this.state.registerFirstNameMessage}
+                            />
 
-                            <FieldContainer image={personIcon} placeholder="First Name" inputType={textInput} inputVerify = {this.state.registerFirstname.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "registerFirstname")} />
+                            {this.errorPrintHandler(this.state.registerLastNameMessage)}
+                            <FieldContainer 
+                                image={personIcon} 
+                                placeholder="Last Name" 
+                                inputType={textInput} 
+                                inputVerify = {this.state.registerLastname.verify} 
+                                recordInputValHandler = {(event) => this.setStateHandler(event, "registerLastname")} 
+                                isError={this.state.registerLastNameMessage}
+                            />
 
-                            <FieldContainer image={personIcon} placeholder="Last Name" inputType={textInput} inputVerify = {this.state.registerLastname.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "registerLastname")} />
+                            {this.errorPrintHandler(this.state.registerEmailMessage)}
+                            <FieldContainer 
+                                image={emailIcon} 
+                                placeholder="Email" 
+                                inputType={textInput} 
+                                inputVerify = {this.state.registerEmail.verify} 
+                                recordInputValHandler = {(event) => this.setStateHandler(event, "registerEmail")} 
+                                isError={this.state.registerEmailMessage}
+                            />
+                            
+                            {this.errorPrintHandler(this.state.registerPasswordMessage)}
+                            <FieldContainer 
+                                image={keyIcon} 
+                                placeholder="Password" 
+                                inputType={passwordInput} 
+                                inputVerify = {this.state.registerPassword.verify} 
+                                recordInputValHandler = {(event) => this.setStateHandler(event, "registerPassword")} 
+                                isError={this.state.registerPasswordMessage}
+                            />
 
-                            <FieldContainer image={emailIcon} placeholder="Email" inputType={textInput} inputVerify = {this.state.registerEmail.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "registerEmail")} />
-
-                            <FieldContainer image={keyIcon} placeholder="Password" inputType={passwordInput} inputVerify = {this.state.registerPassword.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "registerPassword")} />
-
-                            <FieldContainer image={keyIcon} placeholder="Confirm Password" inputType={passwordInput} inputVerify = {this.state.registerPassword2.verify} recordInputValHandler = {(event) => this.setStateHandler(event, "registerPassword2")} />
+                            <FieldContainer 
+                                image={keyIcon} 
+                                placeholder="Confirm Password" 
+                                inputType={passwordInput} 
+                                inputVerify = {this.state.registerPassword2.verify} 
+                                recordInputValHandler = {(event) => this.setStateHandler(event, "registerPassword2")} 
+                                isError={this.state.registerPasswordMessage}
+                            />
 
                             <p>By creating an account you agree to our <a href="#Terms">Terms & Conditions</a> and <a href="#Policy">Privacy Policy</a>.</p>
                             <button type="button" onClick={this.registerSubmitHandler} >Sign up</button>
@@ -202,6 +308,7 @@ class LogInPage extends Component{
                         </div>
                     </div>   
                 </div>
+                {this.props.userAuthToken? setTimeout(() => {this.props.close()}, 1000):null}
             </div>
         )
     }

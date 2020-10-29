@@ -1,0 +1,13 @@
+.icon-sizing {
+    width: 3rem;
+    height: 3rem;
+    margin: 0 1rem;
+}
+
+@media (max-width: 40rem) {
+    .icon-sizing {
+        width: 3rem;
+        height: 3rem;
+        margin: 0;
+    }
+}
