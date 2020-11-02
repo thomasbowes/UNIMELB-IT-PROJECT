@@ -559,6 +559,18 @@ describe('App test', () => {
 				.expect(200, done);
 		});
 
+		it("Search by existing email", function(done) {
+			request(app)
+				.get('/api/users/search?key=folioexchangetesting@gmail.com')
+				.expect('Content-Type', /json/)
+				.expect( function(res) {
+					if (res.body.data.length !== 2){
+						throw new Error("Not finding the correct number of matches");
+					}
+				})
+				.expect(200, done);
+		});
+
 		it("Search only spaces", function(done) {
 			request(app)
 				.get('/api/users/search?key=        ')
@@ -579,6 +591,16 @@ describe('App test', () => {
 				.expect(200, done);
 		});
 
+		it("Search non-existing email", function(done) {
+			request(app)
+				.get('/api/users/search?key=crazyemail@gmail.com')
+				.expect('Content-Type', /json/)
+				.expect( {
+					message: 'No matching result'
+				})
+				.expect(200, done);
+		});
+
 		it("Search nothing", function(done) {
 			request(app)
 				.get('/api/users/search?key=')
@@ -592,36 +614,12 @@ describe('App test', () => {
 	});
 
 
-	// The result of search users need to include urlProfile
-	describe("Include urlProfile in the search user result", function() {
-
-		it("If the ProfileBlock doesn't exist: title, aboutMe and urlProfile set to empty string", function(done) {
-			request(app)
-			.get('/api/users/search?key=tester')
-			.expect('Content-Type', /json/)
-			.expect( function(res) {
-				
-				if (res.body.data.length === 0){
-					throw new Error("Not the expected response. There should be matches.");
-				}
-
-				if (res.body.data[0].urlProfile || res.body.data[1].urlProfile){
-					throw new Error("Not the expected response. urlProfile should be empty string. ");
-				}
-				if (res.body.data[0].title || res.body.data[1].title){
-					throw new Error("Not the expected response. title should be empty string. ");
-				}
-				if (res.body.data[0].aboutMe || res.body.data[1].aboutMe){
-					throw new Error("Not the expected response. aboutMe should be empty string. ");
-				}
-			})
-			.expect(200, done);
-		});
-
+	// The result of search users need to include urlProfile, title and aboutMe
+	describe("Include urlProfile, title and aboutMe in the search user result", function() {
 		
-		it("For all users, if ProfileBlock exists: title, aboutMe, urlProfile will be sent back (if exist).", function(done){
+		it("For all users: title, aboutMe, urlProfile will be sent back (if exist).", function(done){
 			request(app)
-			.get('/api/users/search?key=t')
+			.get('/api/users/search?key=random')
 			.expect('Content-Type', /json/)
 			.expect( function(res) {
 				
@@ -629,21 +627,22 @@ describe('App test', () => {
 					throw new Error("Not the expected response. There should be matches.");
 				}
 
-				if(!res.body.data[0].urlProfile || !res.body.data[3].urlProfile){
+				if(!res.body.data[0].urlProfile || !res.body.data[1].urlProfile){
 					throw new Error("Not the expected response. urlProfile should not be empty");
+				}
+
+				if(!res.body.data[0].user_id || !res.body.data[1].user_id){
+					throw new Error("Not the expected response. user_id should not be empty");
 				}
 
 				if(!res.body.data[0].title || !res.body.data[0].aboutMe){
 					throw new Error("Not the expected response. title and aboutMe for this user should not be empty");
 				}
 
-				if(res.body.data[3].title || res.body.data[3].aboutMe){
+				if(res.body.data[1].title || res.body.data[1].aboutMe){
 					throw new Error("Not the expected response. aboutMe for these users should be empty string");
 				}
 			
-				if(res.body.data[1].urlProfile || res.body.data[2].urlProfile){
-					throw new Error("Not the expected response. urlProfile should be empty string.");
-				}
 			})
 			.expect(200, done);
 		});

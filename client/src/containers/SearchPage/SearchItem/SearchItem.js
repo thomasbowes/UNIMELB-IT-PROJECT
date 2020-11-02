@@ -23,7 +23,7 @@ class SearchItem extends Component{
                 <div className="search-item__bio">
                     <div className="bio__name">
                         <Link to={"/userfolio/" + this.props.userId} >
-                            <h1>{this.props.firstName + " " + this.props.lastName}</h1>
+                            <h1>{this.props.name}</h1>
                         </Link>
                     </div>
 

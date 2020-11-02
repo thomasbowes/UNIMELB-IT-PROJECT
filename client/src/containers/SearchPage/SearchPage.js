@@ -29,14 +29,13 @@ class SearchPage extends Component {
             // Renders only showNumItems amount ofitems
             if (index < this.state.showNumItems) {
                 return <SearchItem 
-                            userId={item._id}
+                            userId={item.user_id}
                             aboutMe={item.aboutMe}
-                            firstName={item.firstname}
-                            lastName={item.lastname}
+                            name={item.name}
                             title={item.title}
                             urlProfile={item.urlProfile}
-                            id={item._id}
-                            key={item._id}/>
+                            id={item.user_id}
+                            key={item.user_id}/>
             } else {
                 return null;
             }});
