@@ -31,8 +31,7 @@ class SearchPage extends Component {
                 return <SearchItem 
                             userId={item._id}
                             aboutMe={item.aboutMe}
-                            firstName={item.firstname}
-                            lastName={item.lastname}
+                            name={item.name}
                             title={item.title}
                             urlProfile={item.urlProfile}
                             id={item._id}
