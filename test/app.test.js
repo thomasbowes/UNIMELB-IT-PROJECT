@@ -631,6 +631,10 @@ describe('App test', () => {
 					throw new Error("Not the expected response. urlProfile should not be empty");
 				}
 
+				if(!res.body.data[0].user_id || !res.body.data[1].user_id){
+					throw new Error("Not the expected response. user_id should not be empty");
+				}
+
 				if(!res.body.data[0].title || !res.body.data[0].aboutMe){
 					throw new Error("Not the expected response. title and aboutMe for this user should not be empty");
 				}
