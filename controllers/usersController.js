@@ -450,7 +450,7 @@ const searchUrlProfile = docUsers => {
   const docPromises = docUsers.map(oneUser => {
     
     let userWithUrl = oneUser.toObject();
-    profileBlockPromise = ProfileBlock.find( {user_id: oneUser._id}, 'urlProfile title aboutMe' ).exec();
+    profileBlockPromise = ProfileBlock.find({_id: oneUser._id}, 'urlProfile title aboutMe' ).exec();
     return profileBlockPromise.then(doc => {
       
       // Matching ProfileBlock has been found, insert urlProfile, title and aboutMe in user
@@ -506,14 +506,14 @@ const searchUsers = searchStr => {
   // Input is an email address
   if( validator.isEmail(cleanedStr)){
     rexp = new RegExp(cleanedStr, 'i');
-    queryPromise = User.find( {email: rexp}, 'firstname lastname email isAdmin' )
+    queryPromise = ProfileBlock.find( {email: rexp}, 'name email' )
                       .exec();
   } 
   // Else, assume input is a name.
   else {
 
     // A full name has been entered
-    if (cleanedStr.indexOf(' ') !== -1) {
+    /*if (cleanedStr.indexOf(' ') !== -1) {
       const names = cleanedStr.split(' ');
       queryPromise = User.find( { 
         firstname: new RegExp(names[0], 'i') ,
@@ -521,13 +521,12 @@ const searchUsers = searchStr => {
         'firstname lastname email isAdmin')
         .exec();
     } 
-    // Either firstname or lastname has been entered
-    else {
-      rexp = new RegExp(cleanedStr, 'i');
-      queryPromise = User.find( { $or: [{ firstname: rexp }, { lastname: rexp }] }, 
-                                  'firstname lastname email isAdmin'
-                              ).exec();
-    }
+    */
+    // Name has been entered
+    rexp = new RegExp(cleanedStr, 'i');
+    queryPromise = ProfileBlock.find( {name: rexp}, 'name email' )
+                                .exec();
+
 
   }
 
@@ -554,7 +553,7 @@ const returnSearchUserResults = (req, res) => {
                     res.status(200).json({
                       message: "Matches have been found",
                       data: docWithUrlProfile
-                    })
+                    });
               })
               .catch(err => {
                 res.status(500).json({
