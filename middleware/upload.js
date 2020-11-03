@@ -37,7 +37,7 @@ const uploadFileVerify = (req, res, next) =>{
                     next
                 )
                 .catch(()=>{
-                    res.status(400).json({
+                    res.status(401).json({
                         message: 'Error Found - Not authorise',
                         status: false
                     });
@@ -62,7 +62,7 @@ const uploadFileVerify = (req, res, next) =>{
                     next
                 )
                 .catch(()=>{
-                    res.status(400).json({
+                    res.status(401).json({
                         message: 'Error Found - Not authorise',
                         status: false
                     });
@@ -87,7 +87,7 @@ const uploadFileVerify = (req, res, next) =>{
                     next
                 )
                 .catch(()=>{
-                    res.status(400).json({
+                    res.status(401).json({
                         message: 'Error Found - Not authorise',
                         status: false
                     });
