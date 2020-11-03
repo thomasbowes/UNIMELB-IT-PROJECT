@@ -101,9 +101,9 @@ router.route('/register')
  * @apiName UserEmailConfirmation
  * @apiGroup Users
  *
- * @apiSuccess {redirect URL} redirect to /home/notification/welcome
+ * @apiSuccess {String}  userId is found and user info is updated. Response: redirect to /home/notification/welcome
  *
- * @apiError {redirect URL} redirect to /not_found
+ * @apiError {String} userId not found. Error-Response: redirect to /not_found
  *
  */
 router.route('/confirmation/:userId')
