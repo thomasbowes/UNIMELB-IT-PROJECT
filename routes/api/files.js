@@ -5,7 +5,7 @@ const filesController = require('../../controllers/filesController');
 const authMiddleware = require('../../middleware/authorization');
 
 /**
- * @api {post} /deleteAll deletes all files from our database
+ * @api {post} /deleteAll deletes all files by item_id
  * @apiName DeleteAllFiles
  * @apiGroup Files
  *
@@ -24,13 +24,21 @@ const authMiddleware = require('../../middleware/authorization');
  *     "message": "All files have been successfully deleted"
  * }
  *
- * @apiError RequiredDetailsMissing Required parameters not provided or file to delete
- *
- * @apiErrorExample Error-Response:
- * HTTP/1.1 401 Unauthorized
+ * @apiError Action_failed fail to perform action
+ * @apiErrorExample Action_failed:
+ * HTTP/1.1 500 Internal Server Error
  * {
  *     "message": "Error occur could not delete files, please try again"
  * }
+ *
+ * @apiError Unauthorized invalid user token
+ * @apiErrorExample Unauthorized:
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *     "message": "Token is invalid",
+ *     "status": false
+ * }
+ *
  */
 router.use('/deleteAll', authMiddleware.authenticateJWT);
 router.route('/deleteAll')
@@ -38,7 +46,7 @@ router.route('/deleteAll')
 
 //need change file_id
 /**
- * @api {post} /delete deletes a file from our database
+ * @api {post} /delete deletes a file by file_id
  * @apiName DeleteFile
  * @apiGroup Files
  *
@@ -57,13 +65,28 @@ router.route('/deleteAll')
  *     "message": "The file have been successfully deleted"
  * }
  *
- * @apiError RequiredDetailsMissing Required parameters not provided
+ * @apiError Action_failed fail to perform action
+ * @apiErrorExample Action_failed:
+ * HTTP/1.1 500  Internal Server Error
+ * {
+ *     "message": "An error has occurred, could not find file"
+ * }
  *
- * @apiErrorExample Error-Response:
+ * @apiError User_id_not_match user_id not equal to the id in DB
+ * @apiErrorExample Unauthorized:
  * HTTP/1.1 401 Unauthorized
  * {
- *     "status": "Missing file id"
+ *     "message": "unauthorized action"
  * }
+ *
+ * @apiError Unauthorized invalid user token
+ * @apiErrorExample Unauthorized:
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *     "message": "Token is invalid",
+ *     "status": false
+ * }
+ *
  */
 router.use('/delete', authMiddleware.authenticateJWT);
 router.route('/delete')
@@ -72,7 +95,7 @@ router.route('/delete')
 
 //need to change Successful Response:
 /**
- * @api {post} /seeAll get all relevant files by given an itemBlock id from our database
+ * @api {post} /seeAll get all files by item_id
  * @apiName SeeAllFiles
  * @apiGroup Files
  *
@@ -120,12 +143,11 @@ router.route('/delete')
  *      ]
  * }
  *
- * @apiError RequiredDetailsMissing Required parameters not provided
- *
- * @apiErrorExample Error-Response:
- * HTTP/1.1 401 Unauthorized
+ * @apiError Internal_Server_Error unable to process
+ * @apiErrorExample Internal_Server_Error:
+ * HTTP/1.1 500 Internal Server Error
  * {
- *     "status": "Missing  item id"
+ *     message: "error occurred, please try again"
  * }
  */
 router.route('/seeAll')

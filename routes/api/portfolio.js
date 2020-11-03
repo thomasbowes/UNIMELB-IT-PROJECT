@@ -17,8 +17,8 @@ const portfolioController = require('../../controllers/portfolioController');
  * @apiName Upload
  * @apiGroup portfolio
  *
- * @apiParam {Object} The file that you want to upload
- * @apiParam {String} The type of the upload File/ItemBlock/User
+ * @apiParam {Object} file file that you want to upload
+ * @apiParam {String} type The type of the upload File/ItemBlock/User
  * @apiParam {String} item_id ID of an item block you're trying to delete, only require if type = File/ItemBlock
  *
  * @apiParamExample Example Body:
@@ -28,7 +28,7 @@ const portfolioController = require('../../controllers/portfolioController');
  *          type: 'File'
  *     },
  *     files:{
- *          files:{
+ *          file:{
  *              name: '3.jpg',
  *              data: <Buffer ff d8 ff e0 00 10 4a 46  ... 57394 more bytes>,
  *              size: 57444,
@@ -44,8 +44,7 @@ const portfolioController = require('../../controllers/portfolioController');
  * }
  *
  * @apiSuccess {String} message upload successful message
- * @apiSuccess {Object} If type = 'File', return File object
- * @apiSuccess {Object} If type = 'ItemBlock'/'User', return updated 'ItemBlock'/'User' object
+ * @apiSuccess {Object} item If type = 'ItemBlock'/'User', return updated 'ItemBlock'/'User' object. If type = 'File', return File object
  *
  * @apiSuccessExample Successful Response if type = "File":
  * HTTP/1.1 200
@@ -106,76 +105,85 @@ const portfolioController = require('../../controllers/portfolioController');
  *     }
  * }
  *
- * @apiError JWT isn't valid
- * @apiErrorExample Error-Response:
+ * @apiError Unauthorized JWT isn't valid
+ * @apiErrorExample Unauthorized:
  * HTTP/1.1 401 Unauthorized
  * {
  *     "message": "Token provided is invalid",
  *     "status": false
  * }
  *
- * @apiError Incorrect item_id, could not find ItemBlock
- * @apiErrorExample Error-Response:
+ * @apiError ItemBlock_error Incorrect item_id, could not find ItemBlock
+ * @apiErrorExample ItemBlock_error:
  * HTTP/1.1 500 Internal Server Error
  * {
  *     "message": "An error has occurred, could not find ItemBlock",
  *     "err": error
  * }
  *
- * @apiError Could not create new file object
- * @apiErrorExample Error-Response:
+ * @apiError Internal_Server_Error Could not create new file object
+ * @apiErrorExample Internal_Server_Error:
  * HTTP/1.1 500 Internal Server Error
  * {
  *     "message": "An error has occurred, could not create newFile object!",
  *     "err": error
  * }
  *
- * @apiError Incorrect user_id
- * @apiErrorExample Error-Response:
+ * @apiError Incorrect_user_id user_id not found in DB
+ * @apiErrorExample Incorrect_user_id:
  * HTTP/1.1 500 Internal Server Error
  * {
  *     "message": "An error has occurred, please try again",
  *     "err": error
  * }
  *
- * @apiError Missing user_id/itemBlock_id
- * @apiErrorExample Error-Response:
+ * @apiError Missing_info missing user_id/itemBlock_id
+ * @apiErrorExample Missing_info:
  * HTTP/1.1 400 Bad Request
  * {
  *     "message": "Error Found: - ...",
  *     "status": false
  * }
  *
- * @apiError Info not match user id in token does not match user id in database
- * @apiErrorExample Error-Response:
+ * @apiError Info_not_match user id in token does not match user id in database
+ * @apiErrorExample Info_not_match:
  * HTTP/1.1 401 Unauthorized
  * {
  *     "message": "Error Found - Not authorise",
  *     "status": false
  * }
  *
- * @apiError Excess file size limit
- * @apiErrorExample Error-Response:
+ * @apiError File_size_too_large Excess file size limit
+ * @apiErrorExample File_size_too_large:
  * HTTP/1.1 401 Unauthorized
  * {
  *     "status": "excess file limit: max 10 mb",
  *     "message": null
  * }
  *
- * @apiError Fail to upload to Cloudinary
- * @apiErrorExample Error-Response:
+ * @apiError Upload_fail fail to upload to Cloudinary
+ * @apiErrorExample Upload_fail:
  * HTTP/1.1 500 Internal Server Error
  * {
  *     "message": 'fail uploaded'
  * }
  *
- * @apiError Type not match
- * @apiErrorExample Error-Response:
+ * @apiError Type_error type not match
+ * @apiErrorExample Type_error:
  * HTTP/1.1 400 Bad Request
  * {
  *     "message": 'type not match, unable to process, please refresh the web page and try again',
  *     "status": false
  * }
+ *
+ * @apiError Empty_file file size = 0
+ * @apiErrorExample Empty_file:
+ * HTTP/1.1 400 Bad Request
+ * {
+ *     "message": 'Empty file',
+ *     "err": error
+ * }
+ *
  */
 
 

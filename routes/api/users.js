@@ -97,13 +97,13 @@ router.route('/register')
     .post(usersController.checkBody, usersController.registerNewUser);
 
 /**
- * @api {get} /confirmation/:userId Updates a user confirmation status (to true) in our database
+ * @api {get} /confirmation/:userId Updates user email confirmation status
  * @apiName UserEmailConfirmation
  * @apiGroup Users
  *
- * @apiSuccess {String}  userId is found and user info is updated. Response: redirect to /home/notification/welcome
+ * @apiSuccess {String}  Redirect_URL userId is found and user info is updated (status to true). Response: redirect to /home/notification/welcome
  *
- * @apiError {String} userId not found. Error-Response: redirect to /not_found
+ * @apiError {String} Redirect_URL userId not found. Error-Response: redirect to /not_found
  *
  */
 router.route('/confirmation/:userId')
