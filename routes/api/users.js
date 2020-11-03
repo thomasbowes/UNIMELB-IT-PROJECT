@@ -96,7 +96,16 @@ router.route('/alluser')
 router.route('/register')
     .post(usersController.checkBody, usersController.registerNewUser);
 
-
+/**
+ * @api {get} /confirmation/:userId Updates a user confirmation status (to true) in our database
+ * @apiName UserEmailConfirmation
+ * @apiGroup Users
+ *
+ * @apiSuccess {redirect URL} redirect to /home/notification/welcome
+ *
+ * @apiError {redirect URL} redirect to /not_found
+ *
+ */
 router.route('/confirmation/:userId')
     .get(usersController.userEmailConfirmation);
 
