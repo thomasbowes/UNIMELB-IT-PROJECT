@@ -1,10 +1,4 @@
-![Image](https://github.com/thomasbowes/UNIMELB-IT-PROJECT/blob/development/client/src/assets/Logo/Logo.png)
-
-<p align="center">
-  <a>
-    <img alt="Activity" src="https://img.shields.io/github/license/thomasbowes/UNIMELB-IT-PROJECT" />
-  </a>
-</p>
+![Image](https://github.com/thomasbowes/UNIMELB-IT-PROJECT/blob/development/client/src/assets/Logo/logowithbluebg.png)
 
 <div align="center">
   
@@ -13,7 +7,7 @@ A Team IT Project for the subject COMP30022 (IT Project)
 
 # About our Project
 ---
-Our project consists of building an e-portfolio website that caters to people from different industries. Our users can log in to our website via multiple means (Email, Facebook or Google) and can create their projects and customise their profile at any time. Users can also share their portfolio by multiple methods (PDF, social media or by email)
+Folio.exchange is an e-portfolio website that caters to people from any industry. Our users can log in to our website with email, Facebook and google. Once logged in, our users can create projects and customise their profile at any time. Users can also share their portfolio by PDF, social media, or email.
 
 ## Built with
 Our project was built with the following technologies:
@@ -76,6 +70,9 @@ Make sure that you have installed both Node.js and npm.
 * Users can edit information on their portfolio
 * Users can export their portfolio as a PDF
 * Users can share their portfolio via social media or email
+# Test Cases
+---
+[Take a look here](https://github.com/thomasbowes/UNIMELB-IT-PROJECT/actions?query=workflow%3A%22test+CI%22)
 # Contributors
 --- 
 * Yige Song
