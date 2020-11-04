@@ -282,7 +282,7 @@ class UserFolioPage extends Component {
         const pdfRoute = "/api/users/createPDF/";
         if (this.state.shareModalOpen){
             return(
-                <div className="share-background" onClick={this.toggleShareWindow}>
+                <div className="share-background">
                     <div className="share-window">
                         <div className="share-container">
                             
