@@ -3,6 +3,7 @@
   
 A Team IT Project for the subject COMP30022 (IT Project)
 </div>
+
 # About our Project
 ---
 Our project consists of building an e-portfolio website that caters to people from different industries. Add more later.
