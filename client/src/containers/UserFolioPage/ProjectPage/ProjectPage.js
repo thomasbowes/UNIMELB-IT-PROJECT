@@ -62,7 +62,7 @@ class ProjectPage extends Component {
             item_id: this.props.match.params.projectId,
             contents: inputs
         }
-
+        
         axios.post('/api/itemblocks/update',data, headers)
             .then((res)=>{
                     this.setState({projectBlock: res.data.item});
@@ -240,8 +240,6 @@ class ProjectPage extends Component {
         //get itemBlocks
         axios.post('/api/itemblocks/see', data)
             .then(res => {
-                console.log(res.data.itemblock);
-
                 if(this.isEmpty(res.data.itemblock)) this.props.history.push({pathname: '/notfound'});
                 this.setState({projectBlock: res.data.itemblock});
             })
