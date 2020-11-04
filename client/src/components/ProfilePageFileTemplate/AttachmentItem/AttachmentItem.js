@@ -4,11 +4,11 @@ import Aux from '../../../hoc/Auxiliary/Auxiliary';
 import './AttachmentItem.css';
 
 
-
+// Creates Attachment Item Blocks that allow you to download and delete attachments
 class AttachmentItem extends Component {
 
+    // Sets thumbnail
     getThumbnail = () => {
-        
         if (this.props.hasThumbnail) {
             return this.props.url;
         }

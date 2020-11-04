@@ -101,12 +101,6 @@ a:hover {
     outline: none;
 }
 
-
-/* for really wide screens */
-@media (min-width: 120rem) {
-
-}
-
 /* for mobile */
 @media (max-width: 60rem) {
     .modal {

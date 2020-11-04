@@ -6,16 +6,12 @@ import crossIcon from '../../assets/LoginPage-icons/cross.svg';
 import emailIcon from '../../assets/LoginPage-icons/email.svg';
 import keyIcon from '../../assets/LoginPage-icons/key.svg';
 import personIcon from '../../assets/LoginPage-icons/person.svg';
-
-
-//import relevent redux things
 import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
 import axios from "axios";
 
 class LogInPage extends Component{
 
-    //registerPassword2 = Confirm Password
     state = {
         loginEmail: {
             input: '',
@@ -63,6 +59,7 @@ class LogInPage extends Component{
 
 
     }
+
 
     loginSubmitHandler = ( event ) => {
         event.preventDefault();
@@ -193,15 +190,23 @@ class LogInPage extends Component{
 
     // Generates html for error message
     errorPrintHandler = (prop) => {
-        if (prop !== "") {
-            return <p className="LoginSignupPage__error">{prop}</p>
-        } else {
+        if (prop === "" || prop === "Login successful") {
             return null;
+        } else {
+            return <p className="LoginSignupPage__error">{prop}</p>;
+        }
+    }
+
+    // determines if error in login 
+    errorFieldLogHandler = (prop) => {
+        if (prop === "" || prop === "Login successful") {
+            return null;
+        } else {
+            return prop;
         }
     }
     
-    
-    //save for SSO link target="_blank" rel="noopener noreferrer"
+
     render() {
         const textInput = "text";
         const passwordInput = "password";
@@ -224,16 +229,16 @@ class LogInPage extends Component{
                             inputType={textInput} 
                             inputVerify = {this.state.loginEmail.verify} 
                             recordInputValHandler = {(event) => this.setStateHandler(event, "loginEmail")} 
-                            isError={this.props.LoginMessage}
+                            isError={this.errorFieldLogHandler(this.props.LoginMessage)}
                             />
-
+                            
                             <FieldContainer 
                             image={keyIcon} 
                             placeholder="Password" 
                             inputType={passwordInput} 
                             inputVerify = {this.state.loginPassword.verify} 
                             recordInputValHandler = {(event) => this.setStateHandler(event, "loginPassword")} 
-                            isError={this.props.LoginMessage}
+                            isError={this.errorFieldLogHandler(this.props.LoginMessage)}
                             />
             
                             <button type="button" onClick={this.loginSubmitHandler}>Log In</button>

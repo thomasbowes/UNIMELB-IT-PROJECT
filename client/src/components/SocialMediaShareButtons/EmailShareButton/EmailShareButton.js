@@ -3,8 +3,10 @@ import classes from "./EmailShareButton.module.css";
 import "../socialShared.css";
 import mailIcon from '../../../assets/Homepage-icons/mail-icon.svg';
 
+// Social media share button, takes in url of page as prop
 const EmailShareButton = (props) => {
 
+    // Set up mailto url
     let mailToLink = "";
 
     if (props.fromOwner) {

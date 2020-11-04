@@ -6,20 +6,15 @@ import './ProjectPage.css'
 import EditIcon from '../../../assets/EditIcons/edit.svg';
 import CancelIcon from '../../../assets/EditIcons/cancel.svg';
 import {Link} from 'react-router-dom'
-
 import FilesUpload from '../../../components/FilesUpload/FilesUpload';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
-
-//redux
 import { connect } from 'react-redux';
 import * as actionCreators from '../../../store/actions/index';
 import axios from "axios";
-
 import crossIcon from '../../../assets/LoginPage-icons/cross.svg';
-
 import EditForm from '../../../components/ProfilePageFileTemplate/EditForm/EditForm';
 
-
+// Project Page, dynamically displays projects
 class ProjectPage extends Component {
     
     state = {
@@ -30,23 +25,18 @@ class ProjectPage extends Component {
 
 
     componentDidMount() {
-        //const item_id = this.props.itemBlock_id;5f81bdf6db99e33e48002c54
-
         const item_id = this.props.match.params.projectId;
 
         if(!item_id) return;
 
-        //set item id for query data
         const data = {
             item_id: item_id
         }
 
-        //get all files by given item_id
+        // API Call to retrieve project data
         axios.post('/api/files/seeAll', data)
             .then(response => {
-                //console.log(response.data.files);
                 this.setState({files: response.data.files});
- 
             })
             .catch(error => {
                 this.setState({files: []});
@@ -55,7 +45,7 @@ class ProjectPage extends Component {
     }
 
        
-
+    // 
     changeTitleDes = (inputs) => {
 
         let authToken;
@@ -83,43 +73,31 @@ class ProjectPage extends Component {
             })
     }
 
+    // Delete an image attachment
     deleteImageByIndex = (index) => {
         const newImages = [...this.state.images];
         newImages.splice(index, 1);
         this.setState({images: newImages});
     }
-
-
-
-    editingImages = () => {
-        return this.state.images.map((image, index) => {
-            return <Aux>
-                        <img src={crossIcon} alt="delete" onClick={() => this.deleteImageByIndex(index)}/>
-                        <img src={image.original} alt={"image:"+image.id} />
-                    </Aux>
-        })
-    }
-
     
-
+    // does something
     doNothing = () => {
 
     }
-
-  
 
     // return true if the visitor has the right to edit this userFolioPage
     checkHasRightToEdit = () => {
         const folioOwnerId = this.props.match.params.userId;
         const visitorToken = this.props.userAuthToken;
+
         // return true, if the visitor is the folioPage owner, or the visitor is an admin staff
         if (visitorToken !== null && folioOwnerId !== null && (folioOwnerId===visitorToken._id || this.props.userAuthToken.isAdmin)){
             return true;
         }
         return false;
-        // otherwise return false
     }
 
+    // switches between edit mode to view mode
     changeEditable = () => {
         let newEditMode = 'view';
         if (this.props.match.params.editMode === 'edit'){
@@ -129,8 +107,7 @@ class ProjectPage extends Component {
             newEditMode = 'edit'
         }
 
-
-
+        // Update url
         window.location.href = '/userfolio/' + 
                                 this.props.match.params.userId + 
                                 '/projects/' + 
@@ -139,10 +116,12 @@ class ProjectPage extends Component {
                                 newEditMode
     }
 
+    // Check if in edit mode
     InEditMode = () => {
-        return this.props.match.params.editMode === 'edit'
+        return this.props.match.params.editMode === 'edit';
     }
 
+    // Creates edit and cancel edits buttons
     editButtons = () => {
         if (this.InEditMode()){
             return <input className="project-page-container__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.changeEditable} />  
@@ -150,9 +129,7 @@ class ProjectPage extends Component {
         return <input className="project-page-container__edit" type="image" src={EditIcon} onClick={this.changeEditable} alt="edit"/>
     }
 
-    // Renders all the attachment blocks that are not images when in view mode
-    // Renders all the attachments that are not images than all the images when in edit mode
-    
+    // gets list of all image attachments
     getImages = (items) => {
         let imageList = [];
         for (let i=0; i<items.length; i++) {
@@ -163,6 +140,7 @@ class ProjectPage extends Component {
         return imageList;
     }
 
+    // adds file to the list of attachments
     addFile = (file) => {
         let files = [...this.state.files];
         files.push(file);
@@ -170,8 +148,8 @@ class ProjectPage extends Component {
 
     }
 
+    // Deletes an attachment by index
     deleteAttachmentHandler = (index) => {
-
         let authToken;
         if (!this.props.userAuthToken) authToken = '';
         else authToken = this.props.userAuthToken.token;
@@ -186,6 +164,7 @@ class ProjectPage extends Component {
             file_id: this.state.files[index]._id
         }
 
+        // api call
         axios.post('/api/files/delete',data, headers)
             .then((res)=>{
                     let filesNew = [...this.state.files];
@@ -199,6 +178,7 @@ class ProjectPage extends Component {
         
     }
 
+    // Convert image arrray into a format accepted by the gallery plugin
     galleryFormatConvertor = (items) => {
         let convertedList = [];
         for (let i=0; i<items.length; i++) {
@@ -233,6 +213,7 @@ class ProjectPage extends Component {
             item_id: this.props.match.params.projectId,
         }
 
+        //api call
         axios.post('/api/itemblocks/delete',data, headers)
             .then((res)=>{
                 }
@@ -265,49 +246,51 @@ class ProjectPage extends Component {
                 this.setState({projectBlock: res.data.itemblock});
             })
             .catch(error => {
-                //this.setState({projectBlock: {}});
-                //console.log(error);
                 this.props.history.push({pathname: '/notfound'});
             });
     }
 
+    // checks if object is empty
     isEmpty = (value) => {
         return Boolean(value && typeof value === 'object') && !Object.keys(value).length;
     }
 
 
     render() {
+
+        // Generates list of non image attachments
         const showNonImageAttachments = this.state.files.map((item, index) => {
             
             if (item.mimetype.slice(0, 5) !== "image") {
                 return <AttachmentItem
-                    fileName=""
-                    key={item._id}
-                    name={item.title}
-                    size={item.size}
-                    url={item.urlCloudinary}
-                    editable={this.InEditMode()}
-                    hasThumbnail={false}
-                    deleteAttachmentHandler={this.deleteAttachmentHandler}
-                    index={index}/>
+                            fileName=""
+                            key={item._id}
+                            name={item.title}
+                            size={item.size}
+                            url={item.urlCloudinary}
+                            editable={this.InEditMode()}
+                            hasThumbnail={false}
+                            deleteAttachmentHandler={this.deleteAttachmentHandler}
+                            index={index}/>
             } else {
                 return null;
             }
         });
 
+        // generates list of image attachments
         const showImageAttachments = this.state.files.map((item, index) => {
             
             if (item.mimetype.slice(0, 5) === "image") {
                 return <AttachmentItem
-                    fileName=""
-                    key={item._id}
-                    name={item.title}
-                    size={item.size}
-                    url={item.urlCloudinary}
-                    editable={this.InEditMode()}
-                    hasThumbnail={true}
-                    deleteAttachmentHandler={this.deleteAttachmentHandler}
-                    index={index}/>
+                            fileName=""
+                            key={item._id}
+                            name={item.title}
+                            size={item.size}
+                            url={item.urlCloudinary}
+                            editable={this.InEditMode()}
+                            hasThumbnail={true}
+                            deleteAttachmentHandler={this.deleteAttachmentHandler}
+                            index={index}/>
             } else {
                 return null;
             }
@@ -315,16 +298,20 @@ class ProjectPage extends Component {
                        
         return (
             <div className="project-page-container">
+
+                {/* GO back to main page button */}
                 <div style={{margin: "1rem 0"}}>
                     <Link to={"/userfolio/" + this.props.match.params.userId} >
                         <button className="project-page__go-back"> {"<"} Back to main portfolio </button>
                     </Link>
                 </div>
+
                 {this.InEditMode() && this.checkHasRightToEdit()? 
 
                     null
                 :<h1 className="project-page-container__title">{this.state.projectBlock.title}</h1>}
                 
+                {/* Show image carousel */}
                 {this.InEditMode()? null:   
                 <Aux>
                     <div className="ImageGallery">   
@@ -336,7 +323,7 @@ class ProjectPage extends Component {
                     </div> 
                 </Aux>}
 
-
+                {/* Generate edit form */}            
                 {this.InEditMode() && this.checkHasRightToEdit()? 
                     <EditForm 
                         values={this.state.projectBlock} 
@@ -355,7 +342,7 @@ class ProjectPage extends Component {
                 <div className="project-attachment-info">
                     <h3>Delete an attachment</h3>
                 </div>:null}
-                
+                 
                 {showNonImageAttachments}
                 
                 {this.InEditMode() && this.checkHasRightToEdit() && this.getImages(this.state.files).length > 0? 
@@ -364,31 +351,34 @@ class ProjectPage extends Component {
                 </div>:null}
 
                 {this.InEditMode() && this.checkHasRightToEdit()? 
-                showImageAttachments:null}
+                showImageAttachments : null}
 
                 {this.InEditMode() && this.checkHasRightToEdit()? 
                 <div className="project-attachment-info">
                     <h3>Drag and drop images or files below. Images will be added to a viewer and attachments at bottom of page.</h3>
-                </div>:null}    
+                </div> : null}    
 
                 {this.InEditMode() && this.checkHasRightToEdit()?
-                <FilesUpload
-                    itemBlock_id= {this.props.match.params.projectId}
-                    type='File'
-                    maxFiles = {10}
-                    accept = '*'
-                    fileRejectMessage = 'Image, audio and video files only'
-                    returnResult = {this.addFile}
-                />:null}
+                    <FilesUpload
+                        itemBlock_id= {this.props.match.params.projectId}
+                        type='File'
+                        maxFiles = {10}
+                        accept = '*'
+                        fileRejectMessage = 'Image, audio and video files only'
+                        returnResult = {this.addFile}/>
+                :null}
 
-                
+                {/* Generates edit buttons */}
                 {this.checkHasRightToEdit()? this.editButtons()
                 : null}
+
+                {/* GO back to main page button */}
                 <div style={{margin: "1rem 0"}}>
                     <Link to={"/userfolio/" + this.props.match.params.userId}>
                         <button className="project-page__go-back"> {"<"} Back to main portfolio </button>
                     </Link>
                 </div>
+
             </div>
         )
     }

@@ -1,13 +1,12 @@
 import React, {Component} from 'react'
 import Logo from '../../../assets/Homepage-icons/folioexchange-logo.svg';
 import './SideDrawer.css'
-//import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle'
 import NavBarItems from '../NavBar/NavBarItems/NavBarItems'
 import {Link} from 'react-router-dom'
 
+// Generates the side navigation sheet
 class SideDrawer extends Component {
     render () {
-
         let attachedClasses = ["SideDrawer", "Close"];
         if (this.props.open){
             attachedClasses = ["SideDrawer", "Open"];

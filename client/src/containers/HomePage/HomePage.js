@@ -1,20 +1,19 @@
 import React, {Component} from 'react';
-
 import './HomePage.css'
-
 import easy from "../../assets/shapes/easy.svg"
 import share from "../../assets/shapes/share.svg"
 import computer from "../../assets/shapes/computer.svg"
 import arrow from "../../assets/shapes/arrow.svg"
-
 import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
 
+// Home Page Code
 class HomePage extends Component {
 
     linkToExamplePage = () => {
         window.location.href = '/userfolio/5f9947889da95f0017bee5fc'
     }
+    
     render() {
         return (
             <main>

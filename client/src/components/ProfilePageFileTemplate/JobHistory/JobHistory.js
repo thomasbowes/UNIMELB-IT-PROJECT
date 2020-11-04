@@ -6,19 +6,21 @@ import JobHistoryItem from './JobHistoryItem/JobHistoryItem';
 import EditIcon from '../../../assets/EditIcons/edit.svg';
 import AddIcon from '../../../assets/EditIcons/add.svg';
 import CancelIcon from '../../../assets/EditIcons/cancel.svg';
-
 import {connect} from "react-redux";
 import axios from "axios";
 
+// Generates job history section of the profile page
 class JobHistory extends Component {
 
     state = {editable: false}
 
+    // Switches the section between edit and view mode
     editableHandler = () =>{
         let oldEditable = this.state.editable 
         this.setState({editable: !oldEditable})
     }
 
+    // Updates the state and the database to any modification that occur
     changeItemHandler = (id, input) => {
 
         let authToken;
@@ -41,9 +43,9 @@ class JobHistory extends Component {
             contents: input_copy
         }
 
+        // API call to backend
         axios.post('/api/itemblocks/update',data, headers)
             .then((res)=>{
-                    console.log(res.data.item);
                     this.props.changeItemHandler(id, res.data.item);
                 }
             )
@@ -52,6 +54,7 @@ class JobHistory extends Component {
             })
     }
 
+    // Updates the state and the database to any deletions that occur
     hisItemRemoveHandler = (hisItemIndex) => {
 
         const target = this.props.contents[hisItemIndex];
@@ -70,6 +73,7 @@ class JobHistory extends Component {
             item_id: target._id,
         }
 
+        // API call to backend
         axios.post('/api/itemblocks/delete',data, headers)
             .then((res)=>{
                     this.props.hisItemRemoveHandler(hisItemIndex);
@@ -80,7 +84,10 @@ class JobHistory extends Component {
             })
     }
 
+    // Creates an empty new subitem
     addNewItemHander = () => {
+
+        // Makes sure that item limits are not exceeded
         const limitNumBlocks = 10;
         if(this.props.contents.length >= limitNumBlocks) return;
 
@@ -101,6 +108,7 @@ class JobHistory extends Component {
             }
         }
 
+        // API call to back end
         axios.post('/api/itemblocks/create',data, headers)
             .then((res)=>{
                 this.props.hisAddNewItemHandler(res.data.item);
@@ -113,7 +121,7 @@ class JobHistory extends Component {
 
     }
 
-    // if the content is being edited, return the cross button. Otherwise return the pencil button
+    // if the content is being edited, return the cancel button. Otherwise return the edit button
     editButton = () => {
         if (this.state.editable){
             return <input className="profile-item__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.editableHandler} />  
@@ -121,10 +129,12 @@ class JobHistory extends Component {
         return <input className="profile-item__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>
     }
 
+    // Update profile image of a job item
     changeJobItemProfileImg = (img, index) => {
         this.props.changeJobItemProfileImg(img, index);
     }
 
+    // Button that adds new items
     addNewItemButton = () => {
         if (this.props.contents.length >= 10){
             return <button className="profile-item__add-new" disabled={true}><img src={AddIcon} alt="add-item"/> Opps, item limit reached</button>
@@ -134,36 +144,36 @@ class JobHistory extends Component {
 
 
     render (){
-
+        
+        // Generates all the job history items
         const allItemsArray = this.props.contents.map((item, index) => {
             return <JobHistoryItem 
-                    item = {item}
-                    editable={this.state.editable}
-                    key={index}
-                    id = {index}
-                    changeItemHandler={this.changeItemHandler}
-                    hisItemRemoveHandler = {this.hisItemRemoveHandler}
-                    isLastItem={this.props.contents.length === index+1}
-                    changeJobItemProfileImg={this.changeJobItemProfileImg}
+                        item = {item}
+                        editable={this.state.editable}
+                        key={index}
+                        id = {index}
+                        changeItemHandler={this.changeItemHandler}
+                        hisItemRemoveHandler = {this.hisItemRemoveHandler}
+                        isLastItem={this.props.contents.length === index+1}
+                        changeJobItemProfileImg={this.changeJobItemProfileImg}
                     />
-        })
+        });
 
         return(
             <section className="profile-item">
                 <h1 id="heading">Job History</h1>
-                {this.props.hasEditingRight? 
-                    this.editButton()
-                :   null
-                }
+                {this.props.hasEditingRight? this.editButton() : null}
+                
                 <div className="profile-items">
                     {allItemsArray}
                 </div>
+                
                 {this.state.editable && this.props.hasEditingRight? 
                             <div>
                                 <hr style={{margin: "0"}}/>
                                 {this.addNewItemButton()}
                             </div>
-                            :null}
+                :null}
             </section>
 
         );

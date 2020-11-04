@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../../../../store/actions/index';
 import axios from "axios";
 
+// Produces the navbar items that get added to the navbar on large screens
 class NavBarItems extends Component {
 
     state = {

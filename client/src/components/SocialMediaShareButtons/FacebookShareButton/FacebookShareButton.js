@@ -3,9 +3,12 @@ import classes from "./FacebookShareButton.module.css";
 import "../socialShared.css";
 import FacebookIcon from '../../../assets/Homepage-icons/facebook-icon.svg';
 
+// Social media share button, takes in url of page as prop
 const facebookShareButton = (props) => {
-    let facebookLink = "https://www.facebook.com/sharer/sharer.php?u=";
     
+    // Set up facebook url
+    let facebookLink = "https://www.facebook.com/sharer/sharer.php?u=";
+        
     if (props.profileLink) {
         facebookLink = facebookLink.concat(props.profileLink);
     }

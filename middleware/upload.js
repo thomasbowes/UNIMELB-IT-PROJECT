@@ -150,7 +150,6 @@ const profileBlockVerify = (user_id) => {
 // a middleware used to upload file to Cloudinary and return the file info
 const uploadFileToCloudinary = (req, res, next) => {
 
-    //console.log(req.body);
 
     //check size of the file
     if(req.files.file.size > UPLOAD_SIZE_LIMIT)
@@ -166,7 +165,6 @@ const uploadFileToCloudinary = (req, res, next) => {
     uploadFromBuffer(req.files)
         .then( (result) => {
 
-            //console.log(result);
             req.upload_file = {
                 title: req.files.file.name,
                 size: req.files.file.size,

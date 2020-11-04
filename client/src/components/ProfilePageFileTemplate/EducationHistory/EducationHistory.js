@@ -10,15 +10,18 @@ import CancelIcon from '../../../assets/EditIcons/cancel.svg';
 import {connect} from "react-redux";
 import axios from "axios";
 
+// Generates education history section of the profile page
 class EducationHistory extends Component {
 
     state = {editable: false}
 
+    // Switches the section between edit and view mode
     editableHandler = () =>{
         let oldEditable = this.state.editable 
         this.setState({editable: !oldEditable})
     }
 
+    // Updates the state and the database to any modification that occur
     changeItemHandler = (id, input) => {
 
         let authToken;
@@ -41,11 +44,9 @@ class EducationHistory extends Component {
             contents: input_copy
         }
 
-
-
+        // API call to backend
         axios.post('/api/itemblocks/update',data, headers)
             .then((res)=>{
-                    //console.log(res.data.item);
                     this.props.changeItemHandler(id, res.data.item);
                 }
             )
@@ -54,6 +55,7 @@ class EducationHistory extends Component {
             })
     }
 
+    // Updates the state and the database to any deletions that occur
     hisItemRemoveHandler = (hisItemIndex) => {
 
         const target = this.props.contents[hisItemIndex];
@@ -72,6 +74,7 @@ class EducationHistory extends Component {
             item_id: target._id,
         }
 
+        // API call to backend
         axios.post('/api/itemblocks/delete',data, headers)
             .then((res)=>{
                     this.props.hisItemRemoveHandler(hisItemIndex);
@@ -82,7 +85,10 @@ class EducationHistory extends Component {
             })
     }
 
+    // Creates an empty new subitem
     addNewItemHander = () => {
+
+        // Makes sure that item limits are not exceeded
         const limitNumBlocks = 10;
         if(this.props.contents.length >= limitNumBlocks) return;
 
@@ -103,6 +109,7 @@ class EducationHistory extends Component {
             }
         }
 
+        // API call to back end
         axios.post('/api/itemblocks/create',data, headers)
             .then((res)=>{
                 this.props.hisAddNewItemHandler(res.data.item);
@@ -115,7 +122,7 @@ class EducationHistory extends Component {
 
     }
 
-    // if the content is being edited, return the cross button. Otherwise return the pencil button
+    // if the content is being edited, return the cancel button. Otherwise return the edit button
     editButton = () => {
         if (this.state.editable){
             return <input className="profile-item__cancel" type="image" src={CancelIcon} alt="edit" onClick={this.editableHandler} />  
@@ -123,10 +130,12 @@ class EducationHistory extends Component {
         return <input className="profile-item__edit" type="image" src={EditIcon} onClick={this.editableHandler} alt="edit"/>
     }
 
+    // Update profile image of a education item
     changeEduItemProfileImg = (img, index) => {
         this.props.changeEduItemProfileImg(img, index);
     }
-
+    
+    // Button that adds new items
     addNewItemButton = () => {
         if (this.props.contents.length >= 10){
             return <button className="profile-item__add-new" disabled={true}><img src={AddIcon} alt="add-item"/> Opps, item limit reached</button>
@@ -137,37 +146,36 @@ class EducationHistory extends Component {
 
     render (){
 
+        // Generates all the education history items
         const allItemsArray = this.props.contents.map((item, index) => {
             return <EducationalHistoryItem 
-                    item = {item}
-                    editable={this.state.editable}
-                    key={index}
-                    id = {index}
-                    changeItemHandler={this.changeItemHandler}
-                    hisItemRemoveHandler = {this.hisItemRemoveHandler}
-                    isLastItem={this.props.contents.length === index+1}
-                    changeEduItemProfileImg={this.changeEduItemProfileImg}
+                        item = {item}
+                        editable={this.state.editable}
+                        key={index}
+                        id = {index}
+                        changeItemHandler={this.changeItemHandler}
+                        hisItemRemoveHandler = {this.hisItemRemoveHandler}
+                        isLastItem={this.props.contents.length === index+1}
+                        changeEduItemProfileImg={this.changeEduItemProfileImg}
                     />
         })
 
         return(
             <section className="profile-item">
                 <h1 id="heading">Education History</h1>
-                {this.props.hasEditingRight? 
-                    this.editButton()
-                :   null
-                }
+                {this.props.hasEditingRight? this.editButton() : null}
+                
                 <div className="profile-items">
                     {allItemsArray}
                 </div>
+
                 {this.state.editable && this.props.hasEditingRight? 
                         <div>
                             <hr style={{margin: "0"}}/>
                             {this.addNewItemButton()}
                         </div>
-                        :null}
+                :null}
             </section>
-
         );
     }
 }

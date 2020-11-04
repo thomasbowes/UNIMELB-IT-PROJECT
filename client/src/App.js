@@ -12,8 +12,6 @@ import RegisterNotificationPage from './containers/RegisterNotificationPage/Regi
 import ProjectPage from './containers/UserFolioPage/ProjectPage/ProjectPage'
 import Footer from './components/Footer/Footer';
 import './App.css'
-
-//import relevent redux things
 import { connect } from 'react-redux';
 import * as actionCreators from './store/actions/index';
 

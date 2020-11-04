@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './RegisterNotificationPage.css';
 
+// changes page to inform user they are signed up or there verification is completed
 class RegisterNotificationPage extends Component {
     render() {
         return (
