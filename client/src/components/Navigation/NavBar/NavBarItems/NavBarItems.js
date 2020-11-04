@@ -50,7 +50,8 @@ class NavBarItems extends Component {
         </li>
 
     );
-
+    
+    // The my folio page link
     myProfileButton = () => (
         <Aux>
             <li className="main-nav__item">
@@ -62,7 +63,8 @@ class NavBarItems extends Component {
         </Aux>
     );
 
-
+    
+    // When enter is pressed in the search bar, go to the search page
     handleKeyPress = (event) => {
         if(event.key === 'Enter'){
             this.props.history.push('/search');

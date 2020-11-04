@@ -338,6 +338,8 @@ class ProjectPage extends Component {
                         <p style={{fontSize: "1.2rem"}}>{this.state.projectBlock.description}</p>
                     </Aux>
                 }
+
+                {/* Show the delete item words in edit mode */}
                 {this.InEditMode() && this.checkHasRightToEdit() && (this.state.files.length - this.getImages(this.state.files).length) > 0? 
                 <div className="project-attachment-info">
                     <h3>Delete an attachment</h3>
@@ -349,10 +351,12 @@ class ProjectPage extends Component {
                 <div className="project-attachment-info">
                     <h3>Delete an image from carousel</h3>
                 </div>:null}
-
+                
+                {/* Show image carasol if not in edit mode */}
                 {this.InEditMode() && this.checkHasRightToEdit()? 
                 showImageAttachments : null}
 
+                {/* Show the uploading window if in the edit mode */}
                 {this.InEditMode() && this.checkHasRightToEdit()? 
                 <div className="project-attachment-info">
                     <h3>Drag and drop images or files below. Images will be added to a viewer and attachments at bottom of page.</h3>

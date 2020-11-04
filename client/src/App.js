@@ -22,6 +22,7 @@ class App extends Component {
     showLoginSignUpPage: false,
   }
 
+  // change the state of showSideDrawer
   showSideDrawerHandler = () => {
     this.setState({
       showBackDrop: true,
@@ -29,6 +30,7 @@ class App extends Component {
     })
   }
 
+  // change the state of loginSignUpPage
   showLoginSignUpPagehandler = () => {
     this.setState({
       showLoginSignUpPage: !this.state.showLoginSignUpPage,
@@ -36,6 +38,7 @@ class App extends Component {
     })
   }
 
+  // Close side drawer and loginSign up page when the backdrop is clicked
   clickBackDrop = () => {
     this.setState({
       showBackDrop: false,
@@ -55,11 +58,15 @@ class App extends Component {
     return (
       <div className='App'>
         <div className="App_main-content">
+          {/* The navigation bar, back drop and side drawer component */}
           <NavBar sideDrawerClicked={this.showSideDrawerHandler} loginSignUpclicked={this.showLoginSignUpPagehandler} closeBackDrop={this.clickBackDrop}/>
           <BackDrop show={this.state.showBackDrop} clicked={this.clickBackDrop}/>
           <SideDrawer open={this.state.showSideDrawer} clickItem={this.clickBackDrop} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
+
+          {/* show the login signup page when required */}
           {this.state.showLoginSignUpPage? <LogInSignUpPage close={this.clickBackDrop}/>: null }
 
+          {/* Control the routing of the url */}
           <Switch>
             <Route path='/home' exact
               render={(props) => <HomePage {...props} loginSignUpclicked={this.showLoginSignUpPagehandler}/>
@@ -71,6 +78,7 @@ class App extends Component {
             <Route path='/userfolio/:userId' exact component={UserFolioPage} />
             <Route path='/search' component={SearchPage} />
             <Redirect from='/' exact to='/home' />
+            {/* The 404 page */}
             <Route render={() => <h1 style={{textAlign: "center", fontFamily: "sans-serif", marginTop: "4rem"}}>Oh Nooo, An error has occured</h1>}/>
           </Switch>
         </div>
