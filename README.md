@@ -1,7 +1,10 @@
 ![Image](https://github.com/thomasbowes/UNIMELB-IT-PROJECT/blob/development/client/src/assets/Logo/Logo.png)
 
-[![Contributors][contributors-shield]][contributors-url]
-[![MIT License][license-shield]][license-url]
+<p align="center">
+  <a>
+    <img alt="Activity" src="https://img.shields.io/github/license/thomasbowes/UNIMELB-IT-PROJECT" />
+  </a>
+</p>
 
 <div align="center">
   
