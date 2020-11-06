@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 
 // DB Config
-//const db = require('./config/keys').mongoURI;
 DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DB_KEY);
 
 //connect to DB
@@ -16,11 +15,6 @@ mongoose.connect( DB, {useNewUrlParser: true, useUnifiedTopology: true})
 
 const app = require('./app');
 
-//Experiment
-console.log(process.env.NODE_ENV);
-
 const port = process.env.PORT || 5000
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
-
-// Small change for the purpose of deployment

@@ -439,6 +439,13 @@ const changeDetails = (req, res) => {
     })
 };
 
+/* Please note:  The search algorithm implemented here was based on a search in the User collection, followed by 
+                search in the ProfileBlock collection.  A simpler algorithm could have been implemented here, i.e.
+                search in the ProfileBlock ONLY.  Two reasons why the simpler algorithm is not used: 1) Keep the code
+                as a template for handling complex search across different collections in db. 2) Time constrains for
+                this assignment 
+*/
+
 
 /* Find the urlProfile in ProfileBlock, and include it with the result of searchUser
   Input: Array of users (i.e. result of searchUser)
@@ -515,7 +522,6 @@ const searchUsers = searchStr => {
   // Else, assume input is a name.
   else {
 
-    // Name has been entered
     rexp = new RegExp(cleanedStr, 'i');
     queryPromise = ProfileBlock.find( {name: rexp}, 'name email' )
                                 .exec();

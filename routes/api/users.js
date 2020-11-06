@@ -347,6 +347,28 @@ router.route('/update')
 router.route('/search')
 	.get(usersController.returnSearchUserResults);
 
+
+/**
+ * @api {get} /createPDF/:userId Create PDF based on the given userId
+ * @apiName CreatePDF
+ * @apiGroup Users
+ *
+ * @apiParam {String} id Unique user id
+ *
+ * @apiParamExample Example Body:
+ * {
+ *     "userId": "5f123jdiasob2587212032" 
+ * }
+ * 
+ * @apiSuccessExample Successful Response:
+ * HTTP/1.1 200
+ * {
+ *      "":""
+ * }
+ * 
+ * @apiError IssueWithPrinting The pdf will print as much information as possible, worst case is an empty pdf
+ *
+ */
 router.route('/createPDF/:userId')
 	.get(pdfController.createPDF);
 	
