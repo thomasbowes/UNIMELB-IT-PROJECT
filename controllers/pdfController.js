@@ -5,10 +5,12 @@ const User = mongoose.model('User');
 const ProfileBlock = mongoose.model('ProfileBlock');
 const ItemBlock = mongoose.model('ItemBlock');
 
-//From user schema: firstname, lastname (both required)
-//From ProfileBlock schema: title, aboutMe, website, phone, location, name (preferred), email (preferred)
-//From ItemBlock schema: three different types
-                        //For each type: title, description, startdate, enddate, organisation
+/* What is required from each collection:
+    From User: firstname, lastname (both required fields)
+    From ProfileBlock: title, aboutMe, website, phone, location, name (preferred), email (preferred)
+    From ItemBlock: three different types (For each type: title, description, startdate, enddate, organisation)
+*/
+
 
 const searchUserById = (userId) => {
     if(userId){
@@ -36,6 +38,7 @@ const searchItemBlock = (userId) => {
     }
 };
 
+
 // Print out one category of itemBlock on the pdf
 const printItemBlock = (docArray, docPdf) => {
     docPdf.rect(docPdf.x, docPdf.y, 50, 3).fill('#003366');
@@ -47,6 +50,8 @@ const printItemBlock = (docArray, docPdf) => {
     docPdf.fontSize(12).moveDown();
     docArray.forEach( oneDoc => {
         // Assumption: the user will fill in at least the title field (required)
+
+        // If the user fills in 'organisation' field, handle it first
         if(oneDoc['organisation']){
             docPdf.fontSize(16)
                 .text(oneDoc['organisation'], {
@@ -55,6 +60,7 @@ const printItemBlock = (docArray, docPdf) => {
                 });
         }
 
+        // If the user fills in 'title' and not 'organisation'
         if(!oneDoc['organisation'] && oneDoc['title']){
             docPdf.fontSize(16)
                 .text(oneDoc['title'], {
@@ -70,6 +76,7 @@ const printItemBlock = (docArray, docPdf) => {
                 });
         }
 
+        // Treat the 'stateDate' and 'endDate' fields
         if(oneDoc['startDate'] || oneDoc['endDate']){
             let dateToPrint;
             if(oneDoc['startDate'] && oneDoc['endDate']){
@@ -86,6 +93,8 @@ const printItemBlock = (docArray, docPdf) => {
             docPdf.fontSize(12)
                 .text(dateToPrint);
         }
+
+        // Treat the 'description' field
         if(oneDoc['description']){
             docPdf.fontSize(12).moveDown();
             docPdf.fontSize(12)
@@ -116,7 +125,7 @@ const createPDF = async (req, res) => {
     doc.pipe(res);
 
 
-    // The first Promise (User)
+    // The first Promise: obtain data from the User collection
     try{
         const userDoc = await searchUserById(userId);
         const normalUserDoc = userDoc.toObject();
@@ -128,12 +137,10 @@ const createPDF = async (req, res) => {
     }
     
 
-    //const tempText = '--  Diligent and hardworking student with a passion in chemistry as well as computer science.  Attended the University of Melbourne and obtained excellent academic outcome (H1).  Ready to become a Master of Engineering (Software) student at the University of Melbourne.';
-    // The second Promise (Profile Block) 
+    // The second Promise: obtain and display info from ProfileBlock
     try {
         const profileDoc = await searchProfileBlock(userId);
         const normalProfileDoc = profileDoc.toObject();
-        console.log(JSON.stringify(normalProfileDoc));
         contactInfo = normalProfileDoc;
 
         // Check if the user has preferred name
@@ -164,12 +171,13 @@ const createPDF = async (req, res) => {
         console.log("The Profile Block is not present, or, Error in finding Profile Block: " + err);
     }
 
-    // The third Promise (the ItemBlock) title, description, startdate, enddate, organisation
+    // The third Promise: obtain and display info from ItemBlock (title, description, startdate, enddate, organisation)
     try{
         const itemDocArray = await searchItemBlock(userId);
         let eduDoc = [];
         let jobDoc = [];
         let projectDoc = [];
+
         // Categorise the itemBlocks based on their type 
         itemDocArray.forEach(oneDoc => {
             oneDoc.toObject();
@@ -184,7 +192,7 @@ const createPDF = async (req, res) => {
             }
         });
 
-        // If a category is not empty, print it out
+        // If a category is not empty, print it out on pdf
         if(eduDoc.length !== 0){
             printItemBlock(eduDoc, doc);
         }
