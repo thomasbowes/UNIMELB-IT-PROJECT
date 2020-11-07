@@ -50,8 +50,6 @@
     margin: 0;
 }
 
-
-
 .bio__title {
     margin-bottom: .4rem;
     
@@ -71,13 +69,10 @@
     text-overflow: ellipsis;
     color: rgba(0,0,0,0.6);
     font-size: 0.8rem;
-    
 }
 
 .bio__about p {
     margin: 0;
-    
-
 }
 
 .bio__see-more {
@@ -96,9 +91,6 @@
     color: rgba(8, 103, 150, 1);
     text-decoration: underline;
 }
-
-
-
 
 /* for really wide screens */
 @media (min-width: 120rem) {

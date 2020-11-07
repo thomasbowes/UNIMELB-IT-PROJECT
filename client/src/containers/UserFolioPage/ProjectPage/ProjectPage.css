@@ -11,6 +11,7 @@
 
 .project-page-container p {
     text-align: justify;
+    white-space: pre-wrap;
 }
 
 .project-page-container__edit {

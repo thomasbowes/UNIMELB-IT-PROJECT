@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
 import './UserProfile.css';
-
 import EditIcon from '../../../assets/EditIcons/edit.svg';
 import EditForm from '../EditForm/EditForm';
 import Aux from '../../../hoc/Auxiliary/Auxiliary'
 import ShowMoreText from 'react-show-more-text';
-
-//redux
 import { connect } from 'react-redux';
 import axios from "axios";
 import FilesUpload from '../../FilesUpload/FilesUpload';
 
+// Creates profile and user blocks
 class UserProfile extends Component{
 
     state = {
@@ -22,22 +20,25 @@ class UserProfile extends Component{
         
     }
 
+    // Function that switches profile edit mode
     changeProfileEditable = () => {
         const oldEditable = this.state.profileEditable
         this.setState({profileEditable: !oldEditable, nameEditing: false, highLevelDesEditing: false, descriptionEditing: false})
     }
 
+    // Function that switches about section edit mode
     changeAboutEditable = () => {
         const oldEditable = this.state.aboutEditable
         this.setState({aboutEditable: !oldEditable, nameEditing: false, highLevelDesEditing: false, descriptionEditing: false})
     }
 
+    // Updates profile picture
     changeProfilePic = (img) => {
         this.props.changeProfilePic(img);
     }
 
+    // Changes values and sends them to server
     changeValues = (inputs) => {
-
 
         let authToken;
         if (!this.props.userAuthToken) authToken = '';
@@ -59,6 +60,7 @@ class UserProfile extends Component{
             contents: input_copy
         }
 
+        // call api
         axios.post('/api/profileblocks/update',data, headers)
             .then((res)=>{
                 this.props.changeProfileValues(res.data.profile);
@@ -127,47 +129,43 @@ class UserProfile extends Component{
                     
                 </div>
                 
-
-
                 {/* Renders the about description. If no description it only shows for the profile owner. */}
-                {this.props.values.aboutMe || this.props.hasEditingRight ? <div className="profile-item">
+                {this.props.values.aboutMe || this.props.hasEditingRight ? 
+                    <div className="profile-item">
+                                
+                    {!this.state.aboutEditable?
+                        <Aux>
+                            <h1 id="heading_no-bottom-margin">About Me</h1>
+                        
+                            <div className="profile-item__main-text-nowrap">  
+                                <ShowMoreText
+                                    lines={6}
+                                    more='Show more'
+                                    less='Show less'
+                                    anchorClass=''
+                                    onClick={this.executeOnClick}
+                                    expanded={false}
+                                    style={{color: "red"}}>
+                                        <div className="profile-item__main-text"> 
+                                            {this.props.values.aboutMe} 
+                                        </div>
+                                </ShowMoreText> 
+                            </div>
+                        </Aux>
+                        :<Aux>
+                            <EditForm values={this.props.values} 
+                                fields={["aboutMe"]} 
+                                fieldName={["About Me"]}                                        
+                                inputTypes={["large input"]} 
+                                isDeletable={false}
+                                changeValues={this.changeValues} 
+                                changeEditable={this.changeAboutEditable}/>
+                        </Aux>}
                             
-                                
-                                
-                                
-                                {!this.state.aboutEditable?
-                                <Aux>
-                                    <h1 id="heading_no-bottom-margin">About Me</h1>
-                                
-                                    <div className="profile-item__main-text-nowrap">  
-                                        <ShowMoreText
-                                            lines={6}
-                                            more='Show more'
-                                            less='Show less'
-                                            anchorClass=''
-                                            onClick={this.executeOnClick}
-                                            expanded={false}
-                                            style={{color: "red"}}>
-                                                <div className="profile-item__main-text"> 
-                                                    {this.props.values.aboutMe} 
-                                                </div>
-                                        </ShowMoreText> 
-                                    </div>
-                                </Aux>
-                                :<Aux>
-                                    <EditForm values={this.props.values} 
-                                        fields={["aboutMe"]} 
-                                        fieldName={["About Me"]}                                        
-                                        inputTypes={["large input"]} 
-                                        isDeletable={false}
-                                        changeValues={this.changeValues} 
-                                        changeEditable={this.changeAboutEditable}/>
-                                </Aux>}
-                            
-                            {this.state.aboutEditable || (!this.props.hasEditingRight) ? null
-                                :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeAboutEditable} />}
-                        </div>
-                        :null}
+                    {this.state.aboutEditable || (!this.props.hasEditingRight) ? null
+                        :<input className="User-info__edit" type="image" src={EditIcon} alt="edit" onClick={this.changeAboutEditable} />}
+                    </div>
+                :null}
             </Aux>
         );
 

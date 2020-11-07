@@ -5,9 +5,7 @@
     margin: 0.5rem auto;
     margin-top: 3rem;
     display: flex;
-    
     border: 1px solid rgba(0, 58, 88, 0.2);
-    /* height: 15rem; */
     align-items: stretch;
     overflow-y: hidden;
     position: relative;

@@ -34,13 +34,14 @@
     text-decoration: underline;
 }
 
+/* for eide screens */
 @media (min-width: 120rem) {
     .search__info {
         max-width: 108rem;
     }
 }
 
-
+/* for mobile */
 @media (max-width: 40rem) {
     
     .page-selector { 

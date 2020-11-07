@@ -29,16 +29,6 @@ body {
     height: 100%;
 }
 
-/* .NavBar a {
-    float: left;
-    color:#5c5c5c;
-    background-color: #b3b3b3;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-} */
-
 .NavBar img {
     align-content: center;
     height: 2.65rem;
@@ -47,11 +37,7 @@ body {
     margin-right: auto;
     margin-bottom: 0.1rem;
 }
-/* 
-.NavBar a:hover{
-    background-color: #3ad6a7;
-    color: #454545;
-} */
+
 .NavBar button {
     color: #333333
 }
@@ -81,22 +67,6 @@ body {
     width: auto;
     height: 100%;
 }
-
-
-
-
-
-
-/* @media (max-width: 499px) {
-    .NavBar a {
-        display: none;
-    }
-    .NavBar img {
-        width: 200px;
-        height: auto;
-        max-width: none;
-    }
-} */
 
 /* for really wide screens */
 @media (min-width: 120rem) {

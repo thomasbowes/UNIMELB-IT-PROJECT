@@ -1,16 +1,9 @@
 import React, {Component} from 'react';
-
 import Dropzone from 'react-dropzone-uploader'
 import 'react-dropzone-uploader/dist/styles.css'
-
-//input accept type: ex: "image/*,audio/*,video/*"
-//input maxFiles
-//disabled Boolean
-
-
-//import relevent redux things
 import { connect } from 'react-redux';
 
+// Creates File Upload Block
 class FilesUpload extends Component {
 
     state = {
@@ -40,7 +33,6 @@ class FilesUpload extends Component {
 
     //handle submit button: delete all the contents inside the drop zone
     handleSubmit = (files, allFiles) => {
-        //console.log(files.map(f => f.meta))
         allFiles.forEach(f => f.remove())
     }
 
@@ -82,11 +74,9 @@ class FilesUpload extends Component {
                     submitButtonContent = "finished"
                     maxSizeBytes = {10000000}
                     canCancel={false}
-                    //accept="image/*,audio/*,video/*"
                     accept={this.props.accept}
                     inputContent={(files, extra) => (extra.reject ? this.props.fileRejectMessage : 'Files upload: Drag or Click')}
                     disabled={files => files.some(f => ['preparing', 'getting_upload_params', 'uploading'].includes(f.meta.status))}
-                    //disabled={this.props.disabled}
                     inputWithFilesContent={files => `${this.props.maxFiles - files.length} more files allowed`}
                     styles={{
                         dropzoneReject: { borderColor: 'red', backgroundColor: '#DAA' },

@@ -4,6 +4,7 @@ import './SearchPage.css'
 import './SearchItem/SearchItem'
 import SearchItem from './SearchItem/SearchItem';
 
+// Search Page
 class SearchPage extends Component {
 
     state = {
@@ -54,11 +55,13 @@ class SearchPage extends Component {
         }
         return <div className="search__info">{this.props.location.searchResult.length} results found:</div>
     }
+
     render(){
         return (
             <Aux>
                 {this.searchInfo()}
 
+                {/* Prints out all search results*/}
                 <div className="search-list">
                     {this.searchItems()}
                 </div>

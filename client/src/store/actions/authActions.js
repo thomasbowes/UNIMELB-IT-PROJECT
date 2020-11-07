@@ -38,7 +38,6 @@ const authSSOFound = (userAuthCookie, userRefreshCookie) => {
         //const url = 'http://localhost:5000/api/users/authenticate';
         const url = '/api/users/authenticate';
 
-        //console.log(userAuthCookie);
 
         axios.get(url, {
             headers: {
@@ -85,11 +84,9 @@ export const auth = (email, password) => {
 
         axios.post(url, data)
             .then(response => {
-                //console.log(response);
                 dispatch(authSuccess(response.data.userAuthToken, response.data.message));
             })
             .catch(error => {
-                //console.log(error.response.data.message);
                 dispatch(authFail(error.response.data.message));
             });
     };

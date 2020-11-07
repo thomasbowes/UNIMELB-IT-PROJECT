@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-
 import classes from './FieldContainer.module.css';
 
+// Generates login fields 
 class FieldContainer extends Component {
+    
+    // determines if field are incorrect
     errorInformHandler = () => {
         if (this.props.isError != null) {
             return true;
@@ -17,6 +19,7 @@ class FieldContainer extends Component {
         let iconClass = [classes["field-container__icon"]];
         let inputClass = [classes["field-container__input-field"]]
 
+        // if incorrect change colour to red
         if (this.errorInformHandler()) {
             iconClass.push(classes.Red);
             inputClass.push(classes.Red);

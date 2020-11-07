@@ -7,7 +7,7 @@ import TwitterIcon from '../../assets/Homepage-icons/twitter-icon.svg';
 import InstagramIcon from '../../assets/Homepage-icons/instagram-icon.svg';
 
 
-
+// Creates footer that is displayed at bottom of the page
 class Footer extends Component {
     render(){
         return (
