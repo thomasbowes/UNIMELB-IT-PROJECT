@@ -73,7 +73,8 @@ Make sure that you have installed both Node.js and npm
 # Test Cases
 ---
 If you want to take a look at the tests done by Github Actions,
-[Take a look here](https://github.com/thomasbowes/UNIMELB-IT-PROJECT/actions?query=workflow%3A%22test+CI%22)
+[take a look here](https://github.com/thomasbowes/UNIMELB-IT-PROJECT/actions?query=workflow%3A%22test+CI%22)
+
 Otherwise, if you want to take a look at the test report, go to the tests folder and download the file there and view the file in a browser
 # Contributors
 --- 
