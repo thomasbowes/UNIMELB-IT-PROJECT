@@ -78,9 +78,9 @@ const authenticateUser = async (req, res, next) => {
 const authAdminUser = (req, res, next) => {
 	if (req.user.isAdmin) {
 		next();
+	}else{
+		authenticateUser(req, res, next);
 	}
-
-	authenticateUser(req, res, next);
 };
 
 module.exports = { authenticateJWT, authenticateUser, authAdminUser };

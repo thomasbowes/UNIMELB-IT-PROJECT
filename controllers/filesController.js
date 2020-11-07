@@ -87,7 +87,6 @@ const deleteAllFilesIn = (req,res) => {
     let query2;
     if(isAdmin) query2 = { _id: item_id };
     else query2 = { _id: item_id, user_id: user_id};
-    console.log(query2);
 
     return new Promise((resolve, reject) => {
 
@@ -95,8 +94,6 @@ const deleteAllFilesIn = (req,res) => {
             .findOne(query2)
             .then((item)=>{
                 if(item.type !== 'Project'){
-                    console.log(item);
-                    console.log(item.public_id);
                     if(item.public_id){
                         deleteFileCloudinary(item.public_id, "image");
                         resolve();
