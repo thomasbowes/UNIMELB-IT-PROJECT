@@ -96,7 +96,16 @@ router.route('/alluser')
 router.route('/register')
     .post(usersController.checkBody, usersController.registerNewUser);
 
-
+/**
+ * @api {get} /confirmation/:userId Updates user email confirmation status
+ * @apiName UserEmailConfirmation
+ * @apiGroup Users
+ *
+ * @apiSuccess {String}  Redirect_URL userId is found and user info is updated (status to true). Response: redirect to /home/notification/welcome
+ *
+ * @apiError {String} Redirect_URL userId not found. Error-Response: redirect to /not_found
+ *
+ */
 router.route('/confirmation/:userId')
     .get(usersController.userEmailConfirmation);
 
@@ -338,6 +347,28 @@ router.route('/update')
 router.route('/search')
 	.get(usersController.returnSearchUserResults);
 
+
+/**
+ * @api {get} /createPDF/:userId Create PDF based on the given userId
+ * @apiName CreatePDF
+ * @apiGroup Users
+ *
+ * @apiParam {String} id Unique user id
+ *
+ * @apiParamExample Example Body:
+ * {
+ *     "userId": "5f123jdiasob2587212032" 
+ * }
+ * 
+ * @apiSuccessExample Successful Response:
+ * HTTP/1.1 200
+ * {
+ *      "":""
+ * }
+ * 
+ * @apiError IssueWithPrinting The pdf will print as much information as possible, worst case is an empty pdf
+ *
+ */
 router.route('/createPDF/:userId')
 	.get(pdfController.createPDF);
 	

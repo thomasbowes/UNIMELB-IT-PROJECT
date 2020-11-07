@@ -3,7 +3,10 @@ import classes from "./LinkedInShareButton.module.css";
 import "../socialShared.css";
 import LinkedInIcon from '../../../assets/Homepage-icons/linkedin-icon.svg';
 
+// Social media share button, takes in url of page as prop
 const linkedInShareButton = (props) => {
+
+    // Set up linked in url
     let linkedInLink = "https://www.linkedin.com/sharing/share-offsite/?url=";
     
     if (props.profileLink) {

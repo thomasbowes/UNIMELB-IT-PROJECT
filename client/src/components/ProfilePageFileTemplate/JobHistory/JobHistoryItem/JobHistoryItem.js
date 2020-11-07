@@ -7,7 +7,7 @@ import EditIcon from '../../../../assets/EditIcons/edit.svg';
 import FilesUpload from '../../../FilesUpload/FilesUpload';
 import ShowMoreText from 'react-show-more-text';
 
-
+// Generates job history item
 class JobHistoryItem extends Component {
     state = {
         itemEditable: false,
@@ -15,14 +15,15 @@ class JobHistoryItem extends Component {
         durationEditable: false,
         descriptionEditable: false,
     }
-
+    
+    // determines whether item is editable
     componentDidUpdate = () => {
         if (! this.props.editable && this.state.itemEditable){
             this.setState({itemEditable: false})
         }
     } 
 
-
+    // Switches edit mode
     itemEditableHandler = () => {
         this.setState({itemEditable: !this.state.itemEditable, 
                         jobEditable: false,
@@ -30,19 +31,23 @@ class JobHistoryItem extends Component {
                         descriptionEditable: false})
     }
 
+    // Checks if in edit mode
     checkItemEditable = () => {
         return this.props.editable && this.state.itemEditable;
     }
 
+    // Change item info
     changeItemHandler = (input) =>{
         this.props.changeItemHandler(this.props.id, input)
     }
 
+    // Delete itme
     itemDeleteHandler = () => {
         this.setState({itemEditable: false});
         this.props.hisItemRemoveHandler(this.props.id);
     }
 
+    // change item image
     changeJobItemProfileImg = (img) => {
         this.props.changeJobItemProfileImg(img, this.props.id);
     }
@@ -50,7 +55,9 @@ class JobHistoryItem extends Component {
 
 
     render(){
-        let overviewOffset = ["profile-sub-item__title"]; //classes
+
+        // offsets item if in edit mode
+        let overviewOffset = ["profile-sub-item__title"];
 
         if (this.props.editable) {
             overviewOffset.push("profile-sub-item__tab-off-set");
@@ -73,15 +80,13 @@ class JobHistoryItem extends Component {
 
                                 <div className="profile-sub-item__description-nowrap">
                                     <ShowMoreText
-                                        /* Default options */
                                         lines={3}
                                         more='Show more'
                                         less='Show less'
                                         anchorClass=''
                                         onClick={this.executeOnClick}
-                                        expanded={false}
-                                        
-                                    >
+                                        expanded={false}>
+
                                     <div className="profile-sub-item__description">   
                                         {this.props.item["description"]}
                                     </div> 
@@ -101,7 +106,9 @@ class JobHistoryItem extends Component {
                                     isDeletable={true}
                                     deleteItem={this.itemDeleteHandler}
                                     />
+                                
                                 <p>Upload Thumbnail Below. Note: File uploads cannot be undone.</p>
+                                
                                 <FilesUpload
                                     type='ItemBlock'
                                     maxFiles = {1}

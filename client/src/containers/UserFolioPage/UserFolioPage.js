@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import './UserFolioPage.css'
 import {Link} from "react-router-dom"
-
-
 import ProjectOverviewBlock from '../../components/ProfilePageFileTemplate/ProjectOverviewBlock/ProjectOverviewBlock';
 import EducationHistory from '../../components/ProfilePageFileTemplate/EducationHistory/EducationHistory';
 import JobHistory from '../../components/ProfilePageFileTemplate/JobHistory/JobHistory';
@@ -10,17 +8,12 @@ import AddIcon from '../../assets/EditIcons/add.svg';
 import crossIcon from '../../assets/LoginPage-icons/cross.svg';
 import pdfIcon from '../../assets/Homepage-icons/pdf-icon.svg';
 import ShareIcon from '../../assets/Homepage-icons/share-icon.svg';
-
 import Aux from '../../hoc/Auxiliary/Auxiliary'
-
 import "react-image-gallery/styles/css/image-gallery.css";
 import UserProfile from '../../components/ProfilePageFileTemplate/UserProfile/UserProfile'
-
-//redux
 import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
 import axios from "axios";
-
 import EmailShareButton from '../../components/SocialMediaShareButtons/EmailShareButton/EmailShareButton';
 import FacebookShareButton from '../../components/SocialMediaShareButtons/FacebookShareButton/FacebookShareButton';
 import TwitterShareButton from '../../components/SocialMediaShareButtons/TwitterShareButton/TwitterShareButton';
@@ -77,11 +70,12 @@ class UserFolioPage extends Component {
 
     }
 
+    // Check if object is empty
     isEmpty = (value) => {
         return Boolean(value && typeof value === 'object') && !Object.keys(value).length;
     }
 
-
+    // Make a copu of education items
     eduHisCopy = () => {
         const newItem = []
         let i = 0
@@ -91,6 +85,7 @@ class UserFolioPage extends Component {
         return newItem;
     }
 
+    // Change Education Items
     eduChangeHisItemHandler = (id, input) => {
         const newItem = this.eduHisCopy();
         newItem[id] = input
@@ -99,13 +94,14 @@ class UserFolioPage extends Component {
 
     }
 
+    // remove education items
     eduItemRemoveHandler = (hisItemIndex) => {
         const newItem = this.eduHisCopy();       
         newItem.splice(hisItemIndex, 1);
         this.setState({itemBlocks_Education: newItem});
     }
 
-
+    // Add new education item
     eduAddNewItemHandler = (newHisItem) => {
 
         const newItem = this.eduHisCopy();
@@ -119,6 +115,7 @@ class UserFolioPage extends Component {
 
     }
 
+    // Make a copu of job items
     jobHisCopy = () => {
         const newItem = []
         let i = 0
@@ -128,6 +125,7 @@ class UserFolioPage extends Component {
         return newItem;
     }
 
+    // Change job Items
     jobChangeHisItemHandler = (id, input) => {
         const newItem = this.jobHisCopy();
         newItem[id] = input
@@ -136,13 +134,14 @@ class UserFolioPage extends Component {
 
     }
 
+    // remove job items
     jobItemRemoveHandler = (hisItemIndex) => {
         const newItem = this.jobHisCopy();       
         newItem.splice(hisItemIndex, 1);
         this.setState({itemBlocks_Job: newItem});
     }
 
-
+    // Add new job item
     jobAddNewItemHandler = (newJobItem) => {
         if (this.state.itemBlocks_Job.length >= 10){
             console.log("Oops, limit reached")
@@ -174,10 +173,12 @@ class UserFolioPage extends Component {
         // otherwise return false
     }
 
+    // Update profile information
     changeProfileValues = (values) => {
         this.setState({profileBlocks: values})
     }
 
+    // Display project overview blocks
     projectOverviewBlock = () => {
         return this.state.itemBlocks_Project.map((item, index) => {
             return <ProjectOverviewBlock 
@@ -189,6 +190,7 @@ class UserFolioPage extends Component {
         })
     }
 
+    // Add a new project block
     addProjectHandler = () => {
 
         let authToken;
@@ -275,26 +277,30 @@ class UserFolioPage extends Component {
         this.setState({shareModalOpen: !this.state.shareModalOpen});
     }
     
-    //share-window__close-button
+    // Share profile window
     generateShareWindow = (url) => {
         const pdfRoute = "/api/users/createPDF/";
         if (this.state.shareModalOpen){
             return(
-                <div className="share-background" onClick={this.toggleShareWindow}>
+                <div className="share-background">
                     <div className="share-window">
                         <div className="share-container">
+                            
                             <div className="share-window__color-bar"></div>
+                           
                             <h1 style={{flex: "1", margin: "0", paddingTop: "2rem"}}>Share Profile</h1>
 
                             <Link className="share-window__pdf-button" to= {pdfRoute + this.props.match.params.userId} target="_blank">
                                 <img src={pdfIcon} alt="" style={{height: "2.5rem", width: "2.5rem"}}/>Generate Profile PDF
                             </Link>
+                            
                             <div className="share-window__share-buttons">
                                 <FacebookShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
                                 <TwitterShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
                                 <LinkedInShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
                                 <EmailShareButton profileLink={url} fromOwner={this.checkHasRightToEdit()}/>
                             </div>
+                            
                             <div className="share-window__url">
                                 <h2 style={{textAlign: "center", width: "90%", margin: "0 auto"}}>or share profile link</h2>
                                 <p style={{wordWrap: "break-word", color: "black", textAlign: "center", fontSize: "2rem", borderStyle: "solid", borderWidth: "1px", padding: "1rem", backgroundColor: "rgba(0,0,0,0.1)"}}>{url}</p>
@@ -310,6 +316,7 @@ class UserFolioPage extends Component {
         return null;
     }
 
+    // Gnerates edit button
     editButton = () => {
         return (
         <a className="share-window__open" onClick={this.toggleShareWindow}>
@@ -371,7 +378,7 @@ class UserFolioPage extends Component {
                 {/* Add Add project button if the owner is viewing their own page */}    
                 {this.checkHasRightToEdit()?
                     this.addProjectButton()
-                :   null
+                :   <div style={{padding: "1rem"}}></div>
                 }    
                 
             </div>

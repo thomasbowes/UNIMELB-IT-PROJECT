@@ -24,7 +24,6 @@ const deleteAFile = (req,res) => {
                 File
                     .findByIdAndRemove(items._id)
                         .then( (response) => {
-                            //console.log(response);
                                 res.status(200).json({
                                     message: "The file have been successfully deleted"
                                 })

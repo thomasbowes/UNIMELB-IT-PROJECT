@@ -63,6 +63,13 @@ exports.profileTests = [
         user_id: mongoose.Types.ObjectId('f3d6c9d62d60d057f06440f3'),
         title: 'Test 2',
         aboutMe: 'Test Body 2' 
+    },
+    {
+        user_id: mongoose.Types.ObjectId('5f9fe2105e358344044b0941'),
+        name: 'Tester2 Random',
+        email: 'folioexchangetesting@gmail.com',
+        title: 'Computer Student',
+        aboutMe: 'Nice to meet you'
     }
 ]
 

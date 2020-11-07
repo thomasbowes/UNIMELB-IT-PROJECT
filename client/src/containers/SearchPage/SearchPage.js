@@ -4,6 +4,7 @@ import './SearchPage.css'
 import './SearchItem/SearchItem'
 import SearchItem from './SearchItem/SearchItem';
 
+// Search Page
 class SearchPage extends Component {
 
     state = {
@@ -29,14 +30,13 @@ class SearchPage extends Component {
             // Renders only showNumItems amount ofitems
             if (index < this.state.showNumItems) {
                 return <SearchItem 
-                            userId={item._id}
+                            userId={item.user_id}
                             aboutMe={item.aboutMe}
-                            firstName={item.firstname}
-                            lastName={item.lastname}
+                            name={item.name}
                             title={item.title}
                             urlProfile={item.urlProfile}
-                            id={item._id}
-                            key={item._id}/>
+                            id={item.user_id}
+                            key={item.user_id}/>
             } else {
                 return null;
             }});
@@ -55,11 +55,13 @@ class SearchPage extends Component {
         }
         return <div className="search__info">{this.props.location.searchResult.length} results found:</div>
     }
+
     render(){
         return (
             <Aux>
                 {this.searchInfo()}
 
+                {/* Prints out all search results*/}
                 <div className="search-list">
                     {this.searchItems()}
                 </div>

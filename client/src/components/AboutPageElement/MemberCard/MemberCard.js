@@ -5,8 +5,10 @@ import Song from '../../../../src/assets/TeamMembers/Song.jpg';
 import Lily from '../../../../src/assets/TeamMembers/Lily.jpg';
 import Thomas from '../../../../src/assets/TeamMembers/Thomas.jpg';
 import Ray from '../../../../src/assets/TeamMembers/Ray.jpg';
-//import Aux from '../../../hoc/Auxiliary/Auxiliary'
 
+
+
+// Creates Member Cards on about page
 class MemberCard extends Component{
 
     state = {
@@ -16,6 +18,8 @@ class MemberCard extends Component{
         name: null
     }
 
+    // Information on each folio.exchange team member
+    // Sets the information based on prop
     stateSetter = (name) => {
         const frontEndWork = "Front-End Engineer";
         const backEndWork = "Back-End Engineer";
@@ -45,7 +49,7 @@ class MemberCard extends Component{
         this.stateSetter(this.props.name);
     }
 
-
+    // renders card with corresponding information
     render() {
         const unimelb = "@student.unimelb.edu.au"
 

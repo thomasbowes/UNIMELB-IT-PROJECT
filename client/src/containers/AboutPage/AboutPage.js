@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import MemberCard from '../../components/AboutPageElement/MemberCard/MemberCard'
 import './AboutPage.css'
 
+// About page
 class AboutPage extends Component{
     render () {
         return (

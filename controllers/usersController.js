@@ -439,6 +439,13 @@ const changeDetails = (req, res) => {
     })
 };
 
+/* Please note:  The search algorithm implemented here was based on a search in the User collection, followed by 
+                search in the ProfileBlock collection.  A simpler algorithm could have been implemented here, i.e.
+                search in the ProfileBlock ONLY.  Two reasons why the simpler algorithm is not used: 1) Keep the code
+                as a template for handling complex search across different collections in db. 2) Time constrains for
+                this assignment 
+*/
+
 
 /* Find the urlProfile in ProfileBlock, and include it with the result of searchUser
   Input: Array of users (i.e. result of searchUser)
@@ -450,12 +457,13 @@ const searchUrlProfile = docUsers => {
   const docPromises = docUsers.map(oneUser => {
     
     let userWithUrl = oneUser.toObject();
-    profileBlockPromise = ProfileBlock.find( {user_id: oneUser._id}, 'urlProfile title aboutMe' ).exec();
+    profileBlockPromise = ProfileBlock.find({_id: oneUser._id}, 'urlProfile title aboutMe user_id' ).exec();
     return profileBlockPromise.then(doc => {
       
-      // Matching ProfileBlock has been found, insert urlProfile, title and aboutMe in user
+      // Matching ProfileBlock has been found, insert urlProfile, title, aboutMe and user_id in final result
       if(doc.length === 1) {
         userWithUrl["urlProfile"] = doc[0].urlProfile;
+        userWithUrl["user_id"] = doc[0].user_id;
         // These two fields are not required, hence not necessarily present
         if(doc[0].title){
           userWithUrl["title"] = doc[0].title;
@@ -475,6 +483,7 @@ const searchUrlProfile = docUsers => {
         userWithUrl["urlProfile"] = "";
         userWithUrl["title"] = "";
         userWithUrl["aboutMe"] = "";
+        userWithUrl["user_id"] = "";
       }
       // Something went wrong. There should be only one match. 
       else if(doc.length > 1){
@@ -482,6 +491,7 @@ const searchUrlProfile = docUsers => {
         userWithUrl["urlProfile"] = "";
         userWithUrl["title"] = "";
         userWithUrl["aboutMe"] = "";
+        userWithUrl["user_id"] = "";
       }
 
       return userWithUrl;
@@ -506,28 +516,16 @@ const searchUsers = searchStr => {
   // Input is an email address
   if( validator.isEmail(cleanedStr)){
     rexp = new RegExp(cleanedStr, 'i');
-    queryPromise = User.find( {email: rexp}, 'firstname lastname email isAdmin' )
+    queryPromise = ProfileBlock.find( {email: rexp}, 'name email' )
                       .exec();
   } 
   // Else, assume input is a name.
   else {
 
-    // A full name has been entered
-    if (cleanedStr.indexOf(' ') !== -1) {
-      const names = cleanedStr.split(' ');
-      queryPromise = User.find( { 
-        firstname: new RegExp(names[0], 'i') ,
-        lastname: new RegExp(names[1], 'i') } , 
-        'firstname lastname email isAdmin')
-        .exec();
-    } 
-    // Either firstname or lastname has been entered
-    else {
-      rexp = new RegExp(cleanedStr, 'i');
-      queryPromise = User.find( { $or: [{ firstname: rexp }, { lastname: rexp }] }, 
-                                  'firstname lastname email isAdmin'
-                              ).exec();
-    }
+    rexp = new RegExp(cleanedStr, 'i');
+    queryPromise = ProfileBlock.find( {name: rexp}, 'name email' )
+                                .exec();
+
 
   }
 
@@ -554,7 +552,7 @@ const returnSearchUserResults = (req, res) => {
                     res.status(200).json({
                       message: "Matches have been found",
                       data: docWithUrlProfile
-                    })
+                    });
               })
               .catch(err => {
                 res.status(500).json({
