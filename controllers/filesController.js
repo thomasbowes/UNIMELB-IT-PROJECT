@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const { cloudinary } = require('../config/cloudinary');
 
 const File = require('../models/Files');
+const ItemBlock = mongoose.model('ItemBlock');
 
 //delete a file by given a file_id
 const deleteAFile = (req,res) => {
@@ -83,7 +84,29 @@ const deleteAllFilesIn = (req,res) => {
     if(isAdmin) query = { itemBlock_id: item_id };
     else query = { itemBlock_id: item_id, user_id: user_id};
 
+    let query2;
+    if(isAdmin) query2 = { _id: item_id };
+    else query2 = { _id: item_id, user_id: user_id};
+
     return new Promise((resolve, reject) => {
+
+        ItemBlock
+            .findOne(query2)
+            .then((item)=>{
+                if(item.type !== 'Project'){
+                    if(item.public_id){
+                        deleteFileCloudinary(item.public_id, "image");
+                        resolve();
+                    }
+                    else{
+                        resolve();
+                    }
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+                reject();
+            });
 
         File
             .find(query)
