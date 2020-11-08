@@ -23,7 +23,7 @@ Our project was built with the following technologies:
 # Building this Project
 ---
 ## Prerequisites
-Make sure that you have installed both Node.js and npm.
+Make sure that you have installed both Node.js and npm
 ## Installation
 1. Install server dependencies with 'npm install'
 2. Once done, move to client folder ('cd client') and run 'npm install'
@@ -72,7 +72,10 @@ Make sure that you have installed both Node.js and npm.
 * Users can share their portfolio via social media or email
 # Test Cases
 ---
-[Take a look here](https://github.com/thomasbowes/UNIMELB-IT-PROJECT/actions?query=workflow%3A%22test+CI%22)
+If you want to take a look at the tests done by Github Actions,
+[take a look here](https://github.com/thomasbowes/UNIMELB-IT-PROJECT/actions?query=workflow%3A%22test+CI%22)
+
+Otherwise, if you want to take a look at the test report, go to the tests folder and download the file there and view the file in a browser
 # Contributors
 --- 
 * Yige Song
